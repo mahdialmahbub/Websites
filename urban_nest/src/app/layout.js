@@ -27,6 +27,7 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
           href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-straight/css/uicons-regular-straight.css"
         />
+        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-brands/css/uicons-brands.css'></link>
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-straight/css/uicons-solid-straight.css'></link>
       </head>
       <body className="min-h-full flex flex-col">{children}</body>
