@@ -68,3 +68,178 @@ body {
 input {
   @apply bg-none outline-none placeholder:font-primary placeholder:text-placeholder pl-space-3 placeholder:font-semibold placeholder:text-xl text-xl font-semibold ;
 }
+
+/* scrollbar লুকানোর জন্য, কিন্তু scroll কাজ করবে */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari, Opera */
+}
+
+.card {
+  position: relative;
+}
+
+/* Top Right */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 15px;
+  height: 13px;
+
+  border-top: 4px solid var(--color-primary-7);
+  border-right: 4px solid var(--color-primary-7);
+
+  transform: scale(0);
+  transform-origin: top right;
+  transition: 0.35s ease;
+}
+
+/* Bottom Left */
+.card::after {
+  content: "";
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 15px;
+  height: 13px;
+
+  border-bottom: 4px solid var(--color-primary-7);
+  border-left: 4px solid var(--color-primary-7);
+
+  transform: scale(0);
+  transform-origin: bottom left;
+  transition: 0.35s ease;
+}
+
+.card:hover::before,
+.card:hover::after {
+  transform: scale(1);
+}
+
+.btn{
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+
+.btn span:last-child{
+    position:relative;
+    z-index:2;
+}
+
+.btn::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-150%;
+
+    width:40%;
+    height:100%;
+
+    background:linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,.35),
+        transparent
+    );
+
+    transform:skewX(-25deg);
+
+    transition:left .8s ease;
+
+    z-index:2;
+}
+
+.btn:hover::before{
+    left:160%;
+}
+
+.hTitle {
+  position: relative;
+}
+
+/* Top Right */
+.hTitle::before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 30px;
+  height: 30px;
+
+  border-top: 4px solid var(--color-primary-7);
+  border-right: 4px solid var(--color-primary-7);
+
+}
+
+/* Bottom Left */
+.hTitle::after {
+  content: "";
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 30px;
+  height: 30px;
+
+  border-bottom: 4px solid var(--color-primary-7);
+  border-left: 4px solid var(--color-primary-7);
+
+}
+
+.navbar {
+  animation: nav 2s ease ;
+}
+
+@keyframes nav {
+  from {
+    transform: translateY(-72px);
+  } to {
+    transform: translateY(0px);
+  }
+}
+
+.herotext {
+  animation-name: herotextOpacity;
+  animation-fill-mode: both;
+  animation-timeline: view();
+  animation-duration: 1s;
+}
+
+@keyframes herotextOpacity {
+  from {
+    opacity: 0;
+  } 
+  to {
+    opacity: 1;
+  }
+}
+
+.review-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #2ECC71 transparent; /* firefox: thumb color, track color */
+}
+
+.review-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.review-scroll::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  border-radius: 999px;
+}
+
+.review-scroll::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  border-radius: 999px;
+}
+
+.review-scroll::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;    
+}

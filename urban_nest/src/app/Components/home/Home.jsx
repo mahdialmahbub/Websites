@@ -21,7 +21,7 @@ const Home = () => {
           <source src="/hero-video.mp4" type="video/mp4" />
         </video>
         {/* texts and button */}
-        <div className="max-w-125 z-10">
+        <div className="max-w-125 z-10 herotext">
           <h1 className="font-primary font-medium text-[58px] text-background mb-space-3">
             Find Your Dream Property With AI
           </h1>

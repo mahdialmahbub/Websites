@@ -1,13 +1,37 @@
-import React from "react";
+"use client"
+
+import React, { useRef, useState } from "react";
+import toast from "react-hot-toast";
 import SectionHeader from "../SectionHeader";
 import FindFrom from "./FindFrom";
 import Image from "next/image";
-import { assets, dummyPropertyInfo, propertyProgress } from "@/app/assets/assets";
-import Button from "../Button";
-import IndividualProgressBar from "./IndividualProgressBar";
-import PropertyCard from "../PropertyCard";
+import { assets, properties as allProperties } from "@/app/assets/assets";
+import PropertyExplorer from "./PropertyExplorer";
+import { filterProperties } from "./filterProperties";
+
 
 const FindProperty = () => {
+
+    const [filteredProperties, setFilteredProperties] = useState(allProperties);
+  const resultsRef = useRef(null);
+
+  const handleSearch = (filters) => {
+    const results = filterProperties(allProperties, filters);
+    setFilteredProperties(results);
+
+    if (results.length === 0) {
+      toast.error("Property not found. Search Again");
+      return; // কিছু না মিললে স্ক্রল করার দরকার নেই
+    }
+
+    // ম্যাচ পাওয়া গেলে একটু নিচে স্কোর-চার্ট + প্রপার্টি সেকশনে স্ক্রল করা
+    resultsRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
+
   return (
     <section className="p-space-9 bg-foreground overflow-hidden ">
       <div className="">
@@ -17,59 +41,15 @@ const FindProperty = () => {
         <div className="mt-space-7">
           {/* form and map */}
           <div className="flex gap-space-7">
-            <FindFrom />
+            <FindFrom onSearch={handleSearch} />
             <Image
               src={assets.Map}
               alt="Map"
               className="w-full h-full object-cover"
             />
           </div>
-
-          {/* progress and properties */}
-          <div className="flex gap-space-7 mt-space-7">
-            <div className="min-w-100 p-space-5 min-h-125 bg-[#182033] flex flex-col items-center shadow-[inset_3px_3px_20px_0px_rgba(255,255,255,0.1),-7px_-7px_10px_rgba(0,0,0,0.25)]">
-              {/* title */}
-              <h2 className="text-md font-semibold text-background w-full mb-space-6">
-                Selected Property Score
-              </h2>
-
-              {/* Progress Bar */}
-              <div className="w-42.75 h-22.5 bg-amber-50 mb-space-6"></div>
-
-              {/* indevidual progress */}
-              <div className="flex flex-col gap-space-5 py-3.5 px-[4px] w-full">
-                {propertyProgress.map((item, index) => (
-                  <IndividualProgressBar
-                    key={index}
-                    icon={item.icon}
-                    label={item.label}
-                    color={item.color}
-                    value={item.value}
-                  />
-                ))}
-              </div>
-
-              {/* Button */}
-              <Button
-                text={"View Details"}
-                property="text"
-                type="button"
-                className="mt-space-6"
-              />
-            </div>
-
-            {/* Matched properies */}
-            <div className="flex flex-col items-end gap-space-5">
-
-            <div className="flex items-end gap-space-5">
-              {dummyPropertyInfo.map((property, i) => (
-                <PropertyCard key={i} image={property.image} price={property.price} baths={property.baths} beds={property.beds} location={property.location} propertyName={property.propertyName} sqft={property.sqft}  />
-              ))}
-            </div>
-
-            {/* property scroll */}
-            </div>
-          </div>
+          <div ref={resultsRef}>
+          <PropertyExplorer properties={filteredProperties} /></div>
         </div>
       </div>
     </section>

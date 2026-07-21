@@ -10,12 +10,42 @@ const Feature = () => {
         <SectionHeader text={"What makes us"} mainText={"Deferent"} />
 
         {/* Cards */}
-        <div className="flex flex-col items-center gap-space-5 *:w-full">
-            {/* Feature 1 */}
-            <FeatureCard imageURL={assets.Feature_1} title={'AI Property Match'} subtitle={'Find properties that perfectly match your lifestyle and preferences'} />
-            <FeatureCard isRight imageURL={assets.Feature_2} title={'Investment Predictor'} subtitle={'AI predicts future property value and investment potential.'} />
-            <FeatureCard imageURL={assets.Feature_3} title={'Smart Location Analysis'} subtitle={'Analysis schools, hospitals, traffic, safety and energyis around any location.'} />
-            <FeatureCard isRight imageURL={assets.Feature_4} title={'Price estimator'} subtitle={'Get instant AI-powered property valuation with market insights.'} />
+        <div className="flex flex-col items-center gap-space-5 *:w-full mt-space-7">
+          {/* Feature 1 */}
+          <FeatureCard
+            imageURL={assets.Feature_1}
+            title={"AI Property Match"}
+            subtitle={
+              "Find properties that perfectly match your lifestyle and preferences"
+            }
+            icon="fi fi-rr-home"
+          />
+          <FeatureCard
+            isRight
+            imageURL={assets.Feature_2}
+            title={"Investment Predictor"}
+            subtitle={
+              "AI predicts future property value and investment potential."
+            }
+            icon="fi fi-rs-growth-chart-invest"
+          />
+          <FeatureCard
+            imageURL={assets.Feature_3}
+            title={"Smart Location Analysis"}
+            subtitle={
+              "Analysis schools, hospitals, traffic, safety and energyis around any location."
+            }
+            icon="fi fi-rs-marker"
+          />
+          <FeatureCard
+            isRight
+            imageURL={assets.Feature_4}
+            title={"Price estimator"}
+            subtitle={
+              "Get instant AI-powered property valuation with market insights."
+            }
+            icon="fi fi-ss-dollar"
+          />
         </div>
       </div>
     </section>

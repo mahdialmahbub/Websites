@@ -7,7 +7,7 @@ import Button from '../Button'
 
 const NavBar = () => {
   return (
-    <nav className='px-space-7 py-space-3 flex items-center justify-between bg-primary-1 shadow'>
+    <nav className='px-space-7 py-space-3 flex items-center justify-between bg-primary-1 shadow-[0px_2px_4px_rgba(13,100,94,0.2)] navbar'>
         {/* Logo */}
         <Image className='h-full w-auto' src={navbarItems.logo} alt='Logo' />
 

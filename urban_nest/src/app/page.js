@@ -8,6 +8,9 @@ import AiAssistent from './Components/AiAssistent'
 import MobileApp from './Components/MobileApp'
 import Review from './Components/clientReview/Review'
 import FinalCTA from './Components/FinalCTA'
+import Footer from './Components/footer/Footer'
+import FeaturedProperty from './Components/featuredProperty/FeaturedProperty'
+import Trends from './Components/trends/Trends'
 
 const page = () => {
   return (
@@ -17,10 +20,13 @@ const page = () => {
         <Counter/> 
         <Feature/>
         <FindProperty/>
+        <FeaturedProperty />
+        <Trends />
         <AiAssistent />
         <MobileApp />
         <Review />
         <FinalCTA />
+        <Footer />
     </div>
   )
 }
