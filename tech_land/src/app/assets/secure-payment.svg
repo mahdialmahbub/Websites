@@ -1,0 +1,23 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg2" cx="30%" cy="25%" r="80%">
+      <stop offset="0%" stop-color="#132B26"/>
+      <stop offset="100%" stop-color="#0E0E16"/>
+    </radialGradient>
+    <linearGradient id="stroke2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6FF0C6"/>
+      <stop offset="100%" stop-color="#22D3A4"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="64" fill="url(#bg2)"/>
+  <circle cx="256" cy="256" r="150" fill="#22D3A4" opacity="0.10"/>
+
+  <!-- shield -->
+  <path d="M256 130 L346 166 V244 C346 312 308 356 256 382 C204 356 166 312 166 244 V166 Z"
+        fill="none" stroke="url(#stroke2)" stroke-width="14" stroke-linejoin="round"/>
+
+  <!-- lock -->
+  <rect x="222" y="248" width="68" height="54" rx="10" fill="none" stroke="url(#stroke2)" stroke-width="12"/>
+  <path d="M234 248 V228 a22 22 0 0 1 44 0 V248" fill="none" stroke="url(#stroke2)" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="256" cy="274" r="6" fill="url(#stroke2)"/>
+</svg>

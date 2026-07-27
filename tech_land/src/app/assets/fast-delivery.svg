@@ -1,0 +1,35 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg1" cx="30%" cy="25%" r="80%">
+      <stop offset="0%" stop-color="#1B2340"/>
+      <stop offset="100%" stop-color="#0E0E16"/>
+    </radialGradient>
+    <linearGradient id="stroke1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7FA8FF"/>
+      <stop offset="100%" stop-color="#3E6BFF"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="64" fill="url(#bg1)"/>
+  <circle cx="256" cy="256" r="150" fill="#3E6BFF" opacity="0.10"/>
+
+  <!-- truck body -->
+  <g stroke="url(#stroke1)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <rect x="120" y="196" width="150" height="110" rx="10"/>
+    <path d="M270 226 H340 L376 266 V306 H270 Z"/>
+    <path d="M120 260 H86" opacity="0.7"/>
+    <path d="M120 292 H70" opacity="0.5"/>
+    <path d="M120 228 H100" opacity="0.5"/>
+  </g>
+
+  <!-- wheels -->
+  <circle cx="188" cy="322" r="26" fill="#0E0E16" stroke="url(#stroke1)" stroke-width="12"/>
+  <circle cx="188" cy="322" r="7" fill="url(#stroke1)"/>
+  <circle cx="330" cy="322" r="26" fill="#0E0E16" stroke="url(#stroke1)" stroke-width="12"/>
+  <circle cx="330" cy="322" r="7" fill="url(#stroke1)"/>
+
+  <!-- speed lines -->
+  <g stroke="#7FA8FF" stroke-width="10" stroke-linecap="round" opacity="0.55">
+    <line x1="60" y1="352" x2="110" y2="352"/>
+    <line x1="80" y1="376" x2="140" y2="376"/>
+  </g>
+</svg>
