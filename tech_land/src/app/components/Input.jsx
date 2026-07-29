@@ -1,196 +1,161 @@
 "use client";
 
-import React, { forwardRef, useId, useState, useCallback } from "react";
+import { useState } from "react";
 
 /**
- * ============================================================================
- * Input Component — fully controlled from parent, API-ready
- * ============================================================================
+ * InputField
+ * -----------------------------------------------------------------------
+ * Reusable input component with full external control over:
+ *  - title (label)
+ *  - placeholder
+ *  - required badge (toggle)
+ *  - leading icon inside the input (toggle)
+ *  - info / error / success / loading messages (each individually toggled)
  *
- * Design goal: match the reference (dark navy field, soft rounded corners,
- * muted label above, subtle placeholder). Behavior goal: parent owns 100%
- * of the state (value, error, loading) so this component never has to know
- * where the data comes from — a local form, an API call, react-hook-form,
- * anything.
- *
- * Props:
- *  - label            : string  — label shown above the field (e.g. "Name")
- *  - value             : string  — current value, parent fully controls this
- *  - onChange          : (value, event) => void — fires on every keystroke
- *  - onValidate        : (value) => void — optional, fires on blur (handy
- *                        for triggering an async API check)
- *  - error             : string | null — error message from parent
- *  - success           : string | null — success/help message from parent
- *  - helperText        : string  — neutral helper text (shown when no
- *                        error/success)
- *  - isLoading         : boolean — shows a spinner (e.g. API call in flight)
- *  - leftIcon          : ReactNode — icon rendered on the left inside the field
- *  - rightIcon         : ReactNode — icon rendered on the right (hidden while
- *                        isLoading)
- *  - wrapperClassName  : string  — extra classes for the outer wrapper
- *  - className         : string  — extra classes for the <input> itself
- *  - ...rest           : any other standard <input> props (type, maxLength,
- *                        autoComplete, disabled, required, name, etc.) are
- *                        passed straight through to the <input>
- *
- * forwardRef -> works with react-hook-form's `register()` or any ref-based
- * library out of the box.
+ * USAGE EXAMPLE
+ * -----------------------------------------------------------------------
+ * <InputField
+ *   title="Email address"
+ *   placeholder="Enter your email"
+ *   required={true}
+ *   showIcon={true}
+ *   icon={User} // optional, defaults to User icon
+ *   value={value}
+ *   onChange={(e) => setValue(e.target.value)}
+ *   showInfo={true}
+ *   infoMessage="We'll never share your email."
+ *   showError={false}
+ *   errorMessage="This field is required."
+ *   showSuccess={false}
+ *   successMessage="Looks good!"
+ *   showLoading={false}
+ *   loadingMessage="Checking availability..."
+ * />
+ * -----------------------------------------------------------------------
  */
+export default function InputField({
+  // Label / basic config
+  title = "",
+  placeholder = "Placeholder",
+  required = false,
 
-const Input = forwardRef(function Input(
-  {
-    label,
-    value,
-    onChange,
-    onValidate,
-    error,
-    success,
-    helperText,
-    isLoading = false,
-    leftIcon,
-    rightIcon,
-    wrapperClassName = "",
-    className = "",
-    id,
-    disabled,
-    required,
-    onBlur,
-    onFocus,
-    ...rest
-  },
-  ref
-) {
-  const generatedId = useId();
-  const inputId = id ?? generatedId;
-  const [focused, setFocused] = useState(false);
+  // Icon inside the input
+  showIcon = false,
+  icon = "fi fi-sr-user",
 
-  const handleChange = useCallback(
-    (e) => {
-      onChange(e.target.value, e);
-    },
-    [onChange]
-  );
+  // Controlled input (optional — component also works uncontrolled)
+  value,
+  defaultValue,
+  onChange,
+  type = "text",
+  disabled = false,
 
-  const handleBlur = useCallback(
-    (e) => {
-      setFocused(false);
-      onBlur?.(e);
-      onValidate?.(value);
-    },
-    [onBlur, onValidate, value]
-  );
+  // Status messages — each has its own visibility toggle
+  showInfo = false,
+  infoMessage = "Information message",
 
-  const handleFocus = useCallback(
-    (e) => {
-      setFocused(true);
-      onFocus?.(e);
-    },
-    [onFocus]
-  );
+  showError = false,
+  errorMessage = "Error message",
 
-  const describedBy = error
-    ? `${inputId}-error`
-    : success
-    ? `${inputId}-success`
-    : helperText
-    ? `${inputId}-helper`
-    : undefined;
+  showSuccess = false,
+  successMessage = "Success message",
+
+  showLoading = false,
+  loadingMessage = "Loading message",
+}) {
+  const [internalValue, setInternalValue] = useState(defaultValue ?? "");
+  const isControlled = value !== undefined;
+  const currentValue = isControlled ? value : internalValue;
+
+  const handleChange = (e) => {
+    if (!isControlled) setInternalValue(e.target.value);
+    onChange?.(e);
+  };
+
+  // Border color reacts to the highest-priority active status
+  const borderClass = showError
+    ? "border-red-500 focus-within:border-red-500"
+    : showSuccess
+    ? "border-emerald-500 focus-within:border-emerald-500"
+    : "border-secondary focus-within:border-secondary/80";
 
   return (
-    <div className={`w-full ${wrapperClassName}`}>
-      {label && (
-        <label
-          htmlFor={inputId}
-          className="mb-1.5 block text-sm font-medium text-slate-400"
-        >
-          {label}
-          {required && <span className="ml-0.5 text-rose-400">*</span>}
-        </label>
+    <div className="w-full h-full">
+      {/* Title row */}
+      {(title || required) && (
+        <div className="flex items-center justify-between mb-2 px-space-1">
+          {title && (
+            <label className="font-semibold font-primary text-size-h6 text-foreground">
+              {title}
+            </label>
+          )}
+          {required && (
+            <span className="text-xs font-primary font-semibold text-green">
+              Required
+            </span>
+          )}
+        </div>
       )}
 
+      {/* Input row */}
       <div
-        className={[
-          "relative flex items-center rounded-xl border bg-[#0B0F1A] transition-colors",
-          error
-            ? "border-rose-500/70"
-            : success
-            ? "border-emerald-500/60"
-            : focused
-            ? "border-slate-500"
-            : "border-slate-800",
-          disabled ? "opacity-50" : "",
-        ].join(" ")}
+        className={`flex items-center gap-2.5 rounded-xl bg-background border px-4 py-3 transition-colors ${borderClass} ${
+          disabled ? "opacity-50 cursor-not-allowed" : ""
+        }`}
       >
-        {leftIcon && (
-          <span className="pl-3.5 text-slate-500 flex items-center">{leftIcon}</span>
+        {showIcon && icon && (
+          <i className={`${icon} text-size-h6 text-[#2BE7C4]/70`} />
         )}
-
         <input
-          ref={ref}
-          id={inputId}
-          value={value}
+          type={type}
+          value={currentValue}
           onChange={handleChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
+          placeholder={placeholder}
           disabled={disabled}
-          required={required}
-          aria-invalid={!!error}
-          aria-describedby={describedBy}
-          className={[
-            "peer w-full bg-transparent px-4 py-3 text-[15px] text-slate-100",
-            "placeholder:text-slate-600 outline-none disabled:cursor-not-allowed",
-            leftIcon ? "pl-2" : "",
-            className,
-          ].join(" ")}
-          {...rest}
+          className="w-full bg-background text-foreground placeholder-placeholder_3 outline-none text-sm"
         />
-
-        {isLoading && (
-          <span className="pr-3.5 flex items-center">
-            <svg
-              className="h-4 w-4 animate-spin text-slate-500"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              />
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-              />
-            </svg>
-          </span>
-        )}
-
-        {!isLoading && rightIcon && (
-          <span className="pr-3.5 text-slate-500 flex items-center">{rightIcon}</span>
-        )}
       </div>
 
-      {error && (
-        <p id={`${inputId}-error`} className="mt-1.5 text-sm text-rose-400">
-          {error}
-        </p>
-      )}
-      {!error && success && (
-        <p id={`${inputId}-success`} className="mt-1.5 text-sm text-emerald-400">
-          {success}
-        </p>
-      )}
-      {!error && !success && helperText && (
-        <p id={`${inputId}-helper`} className="mt-1.5 text-sm text-slate-500">
-          {helperText}
-        </p>
-      )}
+      {/* Status messages */}
+      <div className="mt-space-3 flex flex-col gap-space-3">
+        {showInfo && (
+          <StatusLine
+            icon={<i className="fi fi-rr-info text-[14px] text-secondary" />}
+            colorClass="text-secondary"
+            message={infoMessage}
+          />
+        )}
+        {showError && (
+          <StatusLine
+            icon={<i className="fi fi-rr-cross-circle text-[14px] text-red" />}
+            colorClass="text-red"
+            message={errorMessage}
+          />
+        )}
+        {showSuccess && (
+          <StatusLine
+            icon={<i className="fi fi-rr-check-circle text-[14px] text-green" />}
+            colorClass="text-green"
+            message={successMessage}
+          />
+        )}
+        {showLoading && (
+          <StatusLine
+            icon={<i className="fi fi-rr-loading text-[14px] text-placeholder_2" />}
+            colorClass="text-placeholder_2"
+            message={loadingMessage}
+          />
+        )}
+      </div>
     </div>
   );
-});
+}
 
-export default Input;
+function StatusLine({ icon, colorClass, message }) {
+  return (
+    <div className={`flex items-center gap-1.5 text-sm ${colorClass}`}>
+      {icon}
+      <span>{message}</span>
+    </div>
+  );
+}

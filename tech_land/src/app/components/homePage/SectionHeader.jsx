@@ -26,8 +26,16 @@ const SectionHeader = ({ title, subtitle, type = "withBTN" }) => {
       )}
 
       {type === "product" && (
-        <div className="flex items-center justify-between rounded-[20px] px-space-11 py-space-4">
-          <h2 className="text-background font-primary font-semibold text-size-h3">
+        <div
+          className="flex items-center justify-between rounded-[20px] px-space-11 py-space-4"
+          style={{
+            backgroundImage: `url('image.jpg')`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          <h2 className=" font-primary font-semibold text-size-h3 capitalize">
             {title}
           </h2>
           <SearchBar placeholder={"Search for anything tech..."} />

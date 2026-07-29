@@ -7,20 +7,24 @@ import ForYou from "./components/homePage/ForYou";
 import Feature from "./components/homePage/features/Feature";
 import Marketing from "./components/homePage/Marketing";
 import Contact from "./components/homePage/contact/Contact";
+import FAQ from "./components/homePage/FAQ/FAQ";
+import FInalCTA from "./components/homePage/FInalCTA";
+import Footer from "./components/Footer";
+import TopSellingProduct from "./components/homePage/TopSellingProduct";
 
 const page = () => {
   return (
     <div>
-      <div className="w-full px-space-8 py-space-7 flex items-center justify-center">
-        <Navbar />
-      </div>
       <Hero />
       <InfinityScroll />
       <Category />
       <ForYou />
+      <TopSellingProduct />
       <Feature />
       <Marketing />
       <Contact />
+      <FAQ />
+      <FInalCTA />
     </div>
   );
 };

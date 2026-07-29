@@ -1,16 +1,18 @@
 import { Poppins, Roboto } from "next/font/google";
 import "./globals.css";
+import Navbar from "./components/navbar/Navbar";
+import Footer from "./components/Footer";
 
 const poppins = Poppins({
   subsets: ["latin"],
   variable: "--font-poppins",
-  weight: [ "100", "200", "300", "400", "500", "600", "700", "800", "900" ]
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 const roboto = Roboto({
   subsets: ["latin"],
   variable: "--font-roboto",
-  weight: ["100", "300", "400", "500", "700", "900"]
+  weight: ["100", "300", "400", "500", "700", "900"],
 });
 
 export const metadata = {
@@ -31,7 +33,7 @@ export default function RootLayout({ children }) {
         ></link>
         <link
           rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
+          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css"
         ></link>
         <link
           rel="stylesheet"
@@ -41,9 +43,25 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
           href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
         ></link>
-        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-straight/css/uicons-solid-straight.css'></link>
+        <link
+          rel="stylesheet"
+          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
+        ></link>
+        <link
+          rel="stylesheet"
+          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-straight/css/uicons-solid-straight.css"
+        ></link>
       </head>
-      <body className="min-h-full flex flex-col w-[1440px] mx-auto">{children}</body>
+      <div className="w-full px-space-8 py-space-7 flex items-center justify-center">
+        <Navbar />
+      </div>
+
+      <body className="min-h-screen flex flex-col w-360 mx-auto">
+        {children}
+      </body>
+      <div className="w-full px-space-8 py-space-8">
+        <Footer />
+      </div>
     </html>
   );
 }
