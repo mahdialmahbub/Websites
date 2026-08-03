@@ -11,6 +11,7 @@ import FAQ from "./components/homePage/FAQ/FAQ";
 import FInalCTA from "./components/homePage/FInalCTA";
 import Footer from "./components/Footer";
 import TopSellingProduct from "./components/homePage/TopSellingProduct";
+import ProductCardShowcase, { ProductCard } from "./components/ProductCard";
 
 const page = () => {
   return (

@@ -1,6 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
 import Button from "../Button";
+import TextButton from "../TextButton";
+import { motion } from "motion/react";
 
 const FeatureCard = ({
   title,
@@ -10,8 +14,13 @@ const FeatureCard = ({
   icon = "fi fi-rs-home",
 }) => {
   return (
-    <div
-      className={`flex items-center ${isRight ? "justify-end" : "justify-start"} p-space-5 gap-space-6 relative border border-primary-2 shadow-[0_0_8px_rgba(13,100,94,0.10)] overflow-hidden`}
+    <motion.div
+      ininitial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{
+        amount: "all",
+      }}
+      className={`flex items-center ${isRight ? "justify-end featureLeft" : "justify-start featureRight"} p-space-5 gap-space-6 relative border border-primary-2 shadow-[0_0_8px_rgba(13,100,94,0.10)] overflow-hidden`}
     >
       <i
         className={`${icon} text-[348px] text-primary-3 opacity-10 absolute top-0 ${isRight ? "-left-25" : "-right-25"}`}
@@ -25,15 +34,20 @@ const FeatureCard = ({
         <div
           className={`${isRight ? "justify-end *:text-end " : "justify-start *:text-start"}`}
         >
-          <h3 className="mb-2 font-primary font-semibold text-xl ">{title}</h3>
-          <p className="mb-3 font-medium text-md text-placeholder">{subtitle}</p>
+          <h3 className="mb-2 font-primary font-semibold text-[24px] ">
+            {title}
+          </h3>
+          <p className="mb-3 font-medium text-xl text-placeholder">
+            {subtitle}
+          </p>
         </div>
-
-        <div className={isRight ? "flex justify-end" : "flex justify-start"}>
-          <Button text="Explore Now" type="text" />
-        </div>
+        <TextButton
+          text="Explore Now"
+          type="text"
+          className={`${isRight && "justify-end content-end"}`}
+        />{" "}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

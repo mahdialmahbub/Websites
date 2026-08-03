@@ -1,10 +1,18 @@
+import { useId } from "react";
+
 export default function TrendCard({
   title = "Price Trends",
   changePercent = 12.5,
   comparisonLabel = "vs Last year",
   data = [20, 45, 70, 55, 40, 30, 45, 60, 50, 65, 80, 72, 85],
-  color
+  color = "#EC4899"
 }) {
+  // প্রতিটা কার্ডের জন্য ইউনিক id, নাহলে একই পেজে একাধিক কার্ড থাকলে
+  // সবাই DOM-এর প্রথম <linearGradient>/<filter> শেয়ার করে ফেলে
+  const uid = useId();
+  const gradientId = `trendFill-${uid}`;
+  const glowId = `trendGlow-${uid}`;
+
   const width = 700;
   const height = 200;
   const padding = 10;
@@ -37,7 +45,6 @@ export default function TrendCard({
   const areaPath = `${linePath} L ${lastPoint[0]},${height} L ${points[0][0]},${height} Z`;
 
   const isPositive = changePercent >= 0;
-  const accent = color ? color : "#e74cdc";
 
   return (
     <div className="bg-[#0b1120] border border-white/5 p-6 w-79.5 shadow-[inset_4px_4px_10px_rgba(255,255,255,0.10),inset_-4px_-4px_10px_rgba(0,0,0,0.25)]">
@@ -46,7 +53,7 @@ export default function TrendCard({
       <div className="flex items-baseline gap-1 ">
         <span
           className="text-[32px] font-semibold"
-          style={{ color: accent }}
+          style={{ color: color }}
         >
           {isPositive ? "+" : ""}
           {changePercent}%
@@ -62,11 +69,11 @@ export default function TrendCard({
           preserveAspectRatio="none"
         >
           <defs>
-            <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={accent} stopOpacity="0.35" />
-              <stop offset="100%" stopColor={accent} stopOpacity="0" />
+            <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={color} stopOpacity="0.35" />
+              <stop offset="100%" stopColor={color} stopOpacity="0" />
             </linearGradient>
-            <filter id="trendGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <filter id={glowId} x="-50%" y="-50%" width="200%" height="200%">
               <feGaussianBlur stdDeviation="4" result="blur" />
               <feMerge>
                 <feMergeNode in="blur" />
@@ -75,31 +82,31 @@ export default function TrendCard({
             </filter>
           </defs>
 
-          <path d={areaPath} fill="url(#trendFill)" />
+          <path d={areaPath} fill={`url(#${gradientId})`} />
 
           <path
             d={linePath}
             fill="none"
-            stroke={accent}
+            stroke={color}
             strokeWidth="3.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            filter="url(#trendGlow)"
+            filter={`url(#${glowId})`}
           />
 
           <circle
             cx={lastPoint[0]}
             cy={lastPoint[1]}
             r="6"
-            fill={accent}
-            filter="url(#trendGlow)"
+            fill={color}
+            filter={`url(#${glowId})`}
           />
           <circle
             cx={lastPoint[0]}
             cy={lastPoint[1]}
             r="9"
             fill="none"
-            stroke={accent}
+            stroke={color}
             strokeOpacity="0.35"
             strokeWidth="2"
           />

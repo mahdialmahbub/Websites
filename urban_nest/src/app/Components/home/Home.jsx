@@ -5,14 +5,14 @@ import { assets } from "@/app/assets/assets";
 
 const Home = () => {
   return (
-    <section className="p-space-9">
-      <div className="py-space-8 px-space-7 flex items-center justify-between max-h-120.5 relative">
+    <section className="px-space-9 min-h-screen flex items-center justify-center w-[1440px] container mx-auto">
+      <div className="py-space-8 px-space-7 flex items-center justify-between h-120.5 relative min-w-full">
         {/* overlay */}
-        <div className='absolute inset-0 w-full h-full bg-black/60 z-9'>
+        <div className='absolute inset-0 w-full h-120.5 bg-black/60 z-9'>
 
         </div>
         <video
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-120.5 object-cover"
           autoPlay
           loop
           muted
@@ -21,15 +21,15 @@ const Home = () => {
           <source src="/hero-video.mp4" type="video/mp4" />
         </video>
         {/* texts and button */}
-        <div className="max-w-125 z-10 herotext">
-          <h1 className="font-primary font-medium text-[58px] text-background mb-space-3">
+        <div className="max-w-125 z-10 hero-text">
+          <h1 className="font-primary font-medium text-[58px] text-background mb-space-3 hero-title">
             Find Your Dream Property With AI
           </h1>
-          <p className="text-lg text-background/70 font-medium mb-space-5">
+          <p className="text-lg text-background/70 font-medium mb-space-5 hero-subtitle">
             Discover high-potential properties, predict future value. and make
             smarter real estate decisions.
           </p>
-          <Button text={"View Properties"} type={"primary"} />
+          <Button text={"View Properties"} type={"primary"} className="hero-button" />
         </div>
 
         {/* Images */}
@@ -38,7 +38,7 @@ const Home = () => {
           alt="Hero Image"
           width={500}
           height={300}
-          className="h-full w-auto z-10"
+          className="h-full w-auto z-10 hero-images"
         />
       </div>
     </section>

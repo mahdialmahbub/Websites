@@ -5,20 +5,8 @@ import { products } from "@/app/assets/assets";
 import { Breadcrumb } from "@/app/components/Breadcrumb";
 import SectionHeader from "@/app/components/homePage/SectionHeader";
 import { ProductCard } from "@/app/components/ProductCard";
+import toCardData from "@/app/components/ToCardData";
 import { useParams } from "next/navigation";
-
-function toCardData(product) {
-  return {
-    image: product.images?.[0],
-    badge: product.category,
-    title: product.title,
-    rating: product.rating,
-    reviewCount: product.reviewCount,
-    price: product.price,
-    originalPrice: product.originalPrice,
-    buttonText: "Add to cart",
-  };
-}
 
 export default function page() {
   // eslint-disable-next-line react-hooks/rules-of-hooks

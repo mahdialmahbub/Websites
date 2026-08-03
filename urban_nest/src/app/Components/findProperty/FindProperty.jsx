@@ -1,23 +1,34 @@
 "use client"
 
 import React, { useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import toast from "react-hot-toast";
 import SectionHeader from "../SectionHeader";
 import FindFrom from "./FindFrom";
-import Image from "next/image";
-import { assets, properties as allProperties } from "@/app/assets/assets";
+import { properties as allProperties } from "@/app/assets/assets";
 import PropertyExplorer from "./PropertyExplorer";
 import { filterProperties } from "./filterProperties";
 
+// Leaflet window/document ইউজ করে, তাই SSR বন্ধ রেখে dynamic import করতে হবে
+const PropertyMap = dynamic(() => import("./PropertyMap"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full w-full items-center justify-center rounded-xl bg-slate-100 text-slate-400">
+      ম্যাপ লোড হচ্ছে...
+    </div>
+  ),
+});
 
 const FindProperty = () => {
 
     const [filteredProperties, setFilteredProperties] = useState(allProperties);
+  const [selectedId, setSelectedId] = useState(allProperties[0]?.id ?? null);
   const resultsRef = useRef(null);
 
   const handleSearch = (filters) => {
     const results = filterProperties(allProperties, filters);
     setFilteredProperties(results);
+    setSelectedId(results[0]?.id ?? null);
 
     if (results.length === 0) {
       toast.error("Property not found. Search Again");
@@ -33,23 +44,31 @@ const FindProperty = () => {
 
 
   return (
-    <section className="p-space-9 bg-foreground overflow-hidden ">
-      <div className="">
-        <SectionHeader mainText={"Match"} text={"Find your perfect"} isDark />
+    <section className="p-space-9 bg-foreground overflow-hidden">
+      <div className="w-[1440px] container mx-auto">
+        <SectionHeader mainText={"Match"} text={"Find your perfect"} isDark className={"sectionTitle"} />
 
         {/* content */}
         <div className="mt-space-7">
           {/* form and map */}
           <div className="flex gap-space-7">
             <FindFrom onSearch={handleSearch} />
-            <Image
-              src={assets.Map}
-              alt="Map"
-              className="w-full h-full object-cover"
-            />
+            {/* w-full/h-full এর বদলে flex-1 + নির্দিষ্ট পিক্সেল height —
+                Leaflet-কে 0x0 container-এ mount হতে দেওয়া যাবে না */}
+            <div className="flex-1 h-[420px] min-h-[420px] relative z-10">
+              <PropertyMap
+                properties={filteredProperties}
+                selectedId={selectedId}
+                onSelect={setSelectedId}
+              />
+            </div>
           </div>
           <div ref={resultsRef}>
-          <PropertyExplorer properties={filteredProperties} /></div>
+          <PropertyExplorer
+            properties={filteredProperties}
+            selectedId={selectedId}
+            onSelect={setSelectedId}
+          /></div>
         </div>
       </div>
     </section>

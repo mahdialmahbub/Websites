@@ -4,7 +4,7 @@ import { assets } from "../assets/assets";
 
 const FinalCTA = () => {
   return (
-    <section className="p-space-9">
+    <section className="p-space-9 w-[1440px] container mx-auto">
       <div
         className="flex flex-col items-center justify-center gap-space-5 bg-cover bg-center py-space-8 relative"
         style={{ backgroundImage: `url(${assets.FinalCTA.src})` }}

@@ -1,6 +1,9 @@
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import NavBar from "./Components/navbar/NavBar";
+import Footer from "./Components/footer/Footer";
+import "leaflet/dist/leaflet.css";
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
@@ -21,7 +24,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${playfairDisplay.variable} ${inter.variable} h-full antialiased max-w-[1440px] mx-auto`}
+      className={`${playfairDisplay.variable} ${inter.variable} h-full antialiased mx-auto`}
     >
       <head>
         <link
@@ -53,9 +56,12 @@ export default function RootLayout({ children }) {
           href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-straight/css/uicons-solid-straight.css"
         ></link>
       </head>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col relative">
         <Toaster position="top-center" />
-        {children}</body>
+        <NavBar/>
+        {children}
+        <Footer />
+        </body>
     </html>
   );
 }

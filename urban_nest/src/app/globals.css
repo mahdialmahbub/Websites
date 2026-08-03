@@ -42,7 +42,7 @@
   --spacing-space-6: 32px;
   --spacing-space-7: 48px;
   --spacing-space-8: 64px;
-  --spacing-space-9: 80px;
+  --spacing-space-9: 120px;
   --spacing-space-10: 96px;
   --spacing-space-11: 112px;
 
@@ -194,7 +194,7 @@ input {
 }
 
 .navbar {
-  animation: nav 2s ease ;
+  animation: nav 1s ease ;
 }
 
 @keyframes nav {
@@ -205,41 +205,98 @@ input {
   }
 }
 
-.herotext {
-  animation-name: herotextOpacity;
-  animation-fill-mode: both;
-  animation-timeline: view();
-  animation-duration: 1s;
+/* ডান পাশের element (images) - ডান থেকে আসবে */
+.hero-images {
+  opacity: 0;
+  transform: translateX(60px);
+  animation: slideInRight 1s ease-out forwards;
 }
 
-@keyframes herotextOpacity {
+.hero-title,
+.hero-subtitle,
+.hero-button {
+  opacity: 0;
+  transform: translateX(-60px);
+  animation: slideInLeft 1s ease-out forwards;
+}
+
+.hero-title    { animation-delay: 0s; }
+.hero-subtitle { animation-delay: 0.2s; }
+.hero-button   { animation-delay: 0.4s; }
+
+@keyframes slideInLeft {
   from {
     opacity: 0;
-  } 
+    transform: translateX(-60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+.scrollBar {
+  scrollbar-width: thin;
+  scrollbar-color: #2ECC71 transparent; /* firefox: thumb color, track color */
+}
+
+.scrollBar::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scrollBar::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  border-radius: 999px;
+}
+
+.scrollBar::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  border-radius: 999px;
+}
+
+.scrollBar::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;    
+}
+
+.sectionTitle {
+  opacity: 0;
+  animation: titleVisible both;
+  animation-timeline: view(50% 10%);
+}
+
+@keyframes titleVisible {
+  from {
+    opacity: 0;
+  }
   to {
     opacity: 1;
   }
 }
 
-.review-scroll {
-  scrollbar-width: thin;
-  scrollbar-color: #2ECC71 transparent; /* firefox: thumb color, track color */
+.findForm {
+  opacity: 0;
+  animation: formVisible 1s ease-out forwards;
 }
 
-.review-scroll::-webkit-scrollbar {
-  height: 6px;
+@keyframes formVisible {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.review-scroll::-webkit-scrollbar-track {
-  background: #e5e7eb;
-  border-radius: 999px;
-}
 
-.review-scroll::-webkit-scrollbar-thumb {
-  background: #9ca3af;
-  border-radius: 999px;
-}
-
-.review-scroll::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;    
-}

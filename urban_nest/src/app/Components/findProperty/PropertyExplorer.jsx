@@ -1,31 +1,33 @@
 // components/PropertyExplorer.jsx
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { properties as allProperties } from "../../assets/assets";
+import { useEffect, useRef } from "react";
 import PropertyScoreChart from "./PropertyScoreChart";
 import PropertyCard from "../PropertyCard";
 
-// props.properties না দিলে ডিফল্টভাবে পুরো লিস্ট দেখাবে (আগের মতোই কাজ করবে)
-export default function PropertyExplorer({ properties = allProperties }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+// এখন এটা fully controlled: selectedId/onSelect প্যারেন্ট থেকে আসে,
+// তাই ম্যাপ, কার্ড, চার্ট সবাই একই "সোর্স অফ ট্রুথ" ব্যবহার করে।
+export default function PropertyExplorer({ properties, selectedId, onSelect }) {
+  const list = properties ?? [];
   const cardRefs = useRef([]);
 
-  const total = properties.length;
-  const selectedProperty = properties[currentIndex] ?? null;
+  const total = list.length;
+  const currentIndex = Math.max(
+    0,
+    list.findIndex((p) => p.id === selectedId),
+  );
+  const selectedProperty = list[currentIndex] ?? null;
 
-  // বাইরে থেকে নতুন (filtered) property list এলে index রিসেট করে দাও,
-  // নাহলে পুরনো index দিয়ে ভুল কার্ড সিলেক্টেড দেখাবে
   useEffect(() => {
     cardRefs.current = [];
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setCurrentIndex(0);
   }, [properties]);
 
   // নির্দিষ্ট index-এ যাওয়া + সেই কার্ডটাকে ভিউতে স্ক্রল করা
   const goTo = (index) => {
     const clamped = Math.max(0, Math.min(total - 1, index));
-    setCurrentIndex(clamped);
+    const target = list[clamped];
+    if (!target) return;
+    onSelect?.(target.id);
     cardRefs.current[clamped]?.scrollIntoView({
       behavior: "smooth",
       inline: "center",
@@ -38,7 +40,7 @@ export default function PropertyExplorer({ properties = allProperties }) {
 
   // কার্ডে সরাসরি ক্লিক করলেও সিলেকশন সিঙ্ক থাকবে
   const handleSelect = (id) => {
-    const index = properties.findIndex((p) => p.id === id);
+    const index = list.findIndex((p) => p.id === id);
     if (index !== -1) goTo(index);
   };
 
@@ -65,7 +67,7 @@ export default function PropertyExplorer({ properties = allProperties }) {
           {/* ডানে: কার্ড রো + নিচে arrow/counter */}
           <div className="flex flex-1 flex-col gap-3 overflow-hidden">
             <div className="flex gap-4 overflow-x-auto pb-2 scroll-smooth scrollbar-hide overflow-hidden relative">
-              {properties.map((property, index) => (
+              {list.map((property, index) => (
                 <div
                   key={property.id}
                   ref={(el) => (cardRefs.current[index] = el)}

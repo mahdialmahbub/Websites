@@ -5,7 +5,7 @@ import { assets } from "../assets/assets";
 
 const MobileApp = () => {
   return (
-    <section className="p-space-9 gap-space-7 flex items-center">
+    <section className="p-space-9 gap-space-7 flex items-center w-[1440px] container mx-auto">
       <Image alt="image" src={assets.Mobileapp} className="object-cover w-[525px] h-[350px] order-2" />
       <div className="">
         <div className="">

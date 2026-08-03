@@ -23,6 +23,10 @@ import feature_1 from "./feature_1.svg";
 import feature_2 from "./feature_2.svg";
 import feature_3 from "./feature_3.svg";
 import feature_4 from "./feature_4.svg";
+import fire from "./fire.svg";
+import mastercardLogo from "./mastercardLogo.png";
+import visaCardLogo from "./visaCardLogo.png";
+
 
 export const assets = {
   logo,
@@ -39,6 +43,9 @@ export const assets = {
   feature_2,
   feature_3,
   feature_4,
+  fire,
+  mastercardLogo,
+  visaCardLogo
 };
 
 export const bannerImages = [
@@ -182,14 +189,16 @@ export const legalLinks = [
 
 export const products = [
   {
-    id: 1,
+    id: "laptop-dell-novatech-x15-pro-gaming-laptop",
     title: "NovaTech X15 Pro Gaming Laptop",
     category: "Laptop",
     brand: "Dell",
     tags: ["International Best Seller", "25% Discount"],
     rating: 4.5,
     reviewCount: 129,
-    soldCount: "500+",
+    soldCount: 587,
+    status: "out of stock",
+    stock: 42,
     description:
       "NovaTech X15 Pro একটি high-performance gaming laptop যা powerful processor, dedicated graphics এবং ultra-smooth display নিয়ে তৈরি — Gaming, streaming এবং heavy multitasking এর জন্য একদম ideal।",
 
@@ -303,14 +312,16 @@ export const products = [
   },
 
   {
-    id: 2,
+    id: "smartphone-samsung-zenith-s24-ultra-smartphone",
     title: "Zenith S24 Ultra Smartphone",
     category: "Smartphone",
     brand: "Samsung",
     tags: ["New Arrival", "10% Discount"],
     rating: 4.7,
     reviewCount: 214,
-    soldCount: "1.2k+",
+    soldCount: 1243,
+    status: "active",
+    stock: 78,
     description:
       "Zenith S24 Ultra একটি flagship smartphone যেখানে আছে AI-powered camera, edge-to-edge AMOLED display এবং সারাদিনের ব্যাটারি ব্যাকআপ — power user দের জন্য একদম perfect।",
 
@@ -405,14 +416,16 @@ export const products = [
   },
 
   {
-    id: 3,
+    id: "tablet-apple-aerotab-11-pro-tablet",
     title: "AeroTab 11 Pro Tablet",
     category: "Tablet",
     brand: "Apple",
     tags: ["Best Seller", "15% Discount"],
     rating: 4.4,
     reviewCount: 96,
-    soldCount: "700+",
+    soldCount: 734,
+    status: "active",
+    stock: 55,
     description:
       "AeroTab 11 Pro হালকা, powerful এবং versatile — drawing, note-taking, streaming বা multitasking, সব কাজেই সমান comfortable একটি tablet।",
 
@@ -494,14 +507,16 @@ export const products = [
   },
 
   {
-    id: 4,
+    id: "camera-canon-lumashot-x-mirrorless-camera",
     title: "LumaShot X Mirrorless Camera",
     category: "Camera",
     brand: "Canon",
     tags: ["Editor's Choice", "20% Discount"],
     rating: 4.8,
     reviewCount: 178,
-    soldCount: "350+",
+    soldCount: 362,
+    status: "pending",
+    stock: 12,
     description:
       "LumaShot X একটি professional-grade mirrorless camera যেখানে আছে 24MP full-frame sensor এবং 4K video recording — photography এবং videography দুই ক্ষেত্রেই দুর্দান্ত performance।",
 
@@ -582,14 +597,16 @@ export const products = [
   },
 
   {
-    id: 5,
+    id: "headphone-sony-sonicwave-pro-headphones",
     title: "SonicWave Pro Headphones",
     category: "Headphone",
     brand: "Sony",
     tags: ["Top Rated", "18% Discount"],
     rating: 4.6,
     reviewCount: 312,
-    soldCount: "2k+",
+    soldCount: 2087,
+    status: "active",
+    stock: 130,
     description:
       "SonicWave Pro headphones এ আছে active noise cancellation, 40-hour battery life এবং studio-quality sound — music lovers এবং travelers এর জন্য perfect companion।",
 
@@ -670,14 +687,16 @@ export const products = [
   },
 
   {
-    id: 6,
+    id: "smartwatch-samsung-pulsefit-gt-smartwatch",
     title: "PulseFit GT Smartwatch",
     category: "Smartwatch",
     brand: "Samsung",
     tags: ["Trending", "12% Discount"],
     rating: 4.3,
     reviewCount: 158,
-    soldCount: "900+",
+    soldCount: 915,
+    status: "out of stock",
+    stock: 0,
     description:
       "PulseFit GT একটি all-round smartwatch যেখানে আছে heart rate monitoring, GPS tracking এবং 10 দিনের ব্যাটারি ব্যাকআপ — fitness enthusiasts দের জন্য নির্ভরযোগ্য সঙ্গী।",
 
@@ -758,14 +777,16 @@ export const products = [
   },
 
   {
-    id: 7,
+    id: "earbuds-apple-airbeat-pro-wireless-earbuds",
     title: "AirBeat Pro Wireless Earbuds",
     category: "Earbuds",
     brand: "Apple",
     tags: ["Hot Deal", "22% Discount"],
     rating: 4.5,
     reviewCount: 267,
-    soldCount: "1.5k+",
+    soldCount: 1568,
+    status: "active",
+    stock: 95,
     description:
       "AirBeat Pro earbuds এ আছে active noise cancellation, sweat resistance এবং crystal clear sound quality — workout এবং daily use দুই ক্ষেত্রেই একদম মানানসই।",
 
@@ -845,14 +866,16 @@ export const products = [
   },
 
   {
-    id: 8,
+    id: "monitor-lg-viewmax-32-4k-uhd-monitor",
     title: "ViewMax 32 4K UHD Monitor",
     category: "Monitor",
     brand: "LG",
     tags: ["Staff Pick", "16% Discount"],
     rating: 4.6,
     reviewCount: 143,
-    soldCount: "420+",
+    soldCount: 438,
+    status: "active",
+    stock: 27,
     description:
       "ViewMax 32 একটি 4K UHD monitor যেখানে আছে HDR support এবং 144Hz refresh rate — gaming, editing এবং professional কাজের জন্য একদম নিখুঁত display।",
 
@@ -932,14 +955,16 @@ export const products = [
   },
 
   {
-    id: 9,
+    id: "keyboard-logitech-cascade-rgb-mechanical-keyboard",
     title: "Cascade RGB Mechanical Keyboard",
     category: "Keyboard",
     brand: "Logitech",
     tags: ["Popular", "14% Discount"],
     rating: 4.4,
     reviewCount: 189,
-    soldCount: "800+",
+    soldCount: 812,
+    status: "pending",
+    stock: 18,
     description:
       "Cascade RGB mechanical keyboard এ আছে hot-swappable switches, per-key RGB lighting এবং durable aluminum body — gamers এবং typists উভয়ের জন্যই উপযুক্ত।",
 
@@ -1017,5 +1042,665 @@ export const products = [
         },
       ],
     },
+  },
+];
+
+export const cartProducts = [
+  {
+    id: "cart-001",
+    productId: "laptop-dell-novatech-x15-pro-gaming-laptop",
+    image:
+      "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=200&q=80",
+    title: "NovaTech X15 Pro Gaming Laptop",
+    selectedOptions: {
+      ram: { id: "16gb", label: "16GB", extraPrice: 0 },
+      storage: { id: "128gb", label: "128GB", extraPrice: 0 },
+      processor: { id: "i9", label: "i9", extraPrice: 0 },
+    },
+    requirement: "16GB ram, 128GB storage, i9 processor.",
+    unitPrice: 1299,
+    quantity: 1,
+    totalPrice: 1299,
+  },
+
+  {
+    id: "cart-002",
+    productId: "laptop-dell-novatech-x15-pro-gaming-laptop",
+    image:
+      "https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?w=200&q=80",
+    title: "NovaTech X15 Pro Gaming Laptop",
+    selectedOptions: {
+      ram: { id: "64gb", label: "64GB", extraPrice: 1000 },
+      storage: { id: "16gb", label: "16GB", extraPrice: 1000 },
+      processor: { id: "i7", label: "i7", extraPrice: 1000 },
+    },
+    requirement: "64GB ram, 16GB storage, i7 processor.",
+    unitPrice: 4299,
+    quantity: 1,
+    totalPrice: 4299,
+  },
+
+  {
+    id: "cart-003",
+    productId: "smartphone-samsung-zenith-s24-ultra-smartphone",
+    image:
+      "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=200&q=80",
+    title: "Zenith S24 Ultra Smartphone",
+    selectedOptions: {
+      ram: { id: "8gb", label: "8GB", extraPrice: 0 },
+      storage: { id: "128gb", label: "128GB", extraPrice: 0 },
+      processor: { id: "snap8g2", label: "8 Gen 2", extraPrice: 0 },
+    },
+    requirement: "8GB ram, 128GB storage, 8 Gen 2 processor.",
+    unitPrice: 899,
+    quantity: 2,
+    totalPrice: 1798,
+  },
+
+  {
+    id: "cart-004",
+    productId: "tablet-apple-aerotab-11-pro-tablet",
+    image:
+      "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200&q=80",
+    title: "AeroTab 11 Pro Tablet",
+    selectedOptions: {
+      ram: { id: "12gb", label: "12GB", extraPrice: 90 },
+      storage: { id: "512gb", label: "512GB", extraPrice: 150 },
+      processor: { id: "a17", label: "Chip A17", extraPrice: 100 },
+    },
+    requirement: "12GB ram, 512GB storage, Chip A17 processor.",
+    unitPrice: 889,
+    quantity: 1,
+    totalPrice: 889,
+  },
+
+  {
+    id: "cart-005",
+    productId: "camera-canon-lumashot-x-mirrorless-camera",
+    image:
+      "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=200&q=80",
+    title: "LumaShot X Mirrorless Camera",
+    selectedOptions: {
+      ram: { id: "dual-lens", label: "Dual Lens Kit", extraPrice: 450 },
+      storage: { id: "128gb", label: "128GB Card", extraPrice: 45 },
+      processor: { id: "pro-max", label: "Pro Max Engine", extraPrice: 280 },
+    },
+    requirement: "Dual Lens Kit, 128GB Card, Pro Max Engine.",
+    unitPrice: 2274,
+    quantity: 1,
+    totalPrice: 2274,
+  },
+
+  {
+    id: "cart-006",
+    productId: "headphone-sony-sonicwave-pro-headphones",
+    image:
+      "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=200&q=80",
+    title: "SonicWave Pro Headphones",
+    selectedOptions: {
+      ram: { id: "anc", label: "ANC Edition", extraPrice: 30 },
+      storage: { id: "travel-case", label: "Travel Case", extraPrice: 20 },
+      processor: { id: "bt53", label: "Bluetooth 5.3", extraPrice: 15 },
+    },
+    requirement: "ANC Edition, Travel Case, Bluetooth 5.3.",
+    unitPrice: 244,
+    quantity: 1,
+    totalPrice: 244,
+  },
+
+  {
+    id: "cart-007",
+    productId: "headphone-sony-sonicwave-pro-headphones",
+    image:
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&q=80",
+    title: "SonicWave Pro Headphones",
+    selectedOptions: {
+      ram: { id: "hifi", label: "Hi-Fi Edition", extraPrice: 60 },
+      storage: { id: "hard-case", label: "Hard Case", extraPrice: 35 },
+      processor: { id: "ldac", label: "LDAC Codec", extraPrice: 25 },
+    },
+    requirement: "Hi-Fi Edition, Hard Case, LDAC Codec.",
+    unitPrice: 299,
+    quantity: 2,
+    totalPrice: 598,
+  },
+
+  {
+    id: "cart-008",
+    productId: "earbuds-apple-airbeat-pro-wireless-earbuds",
+    image:
+      "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=200&q=80",
+    title: "AirBeat Pro Wireless Earbuds",
+    selectedOptions: {
+      ram: { id: "pro", label: "Pro Edition", extraPrice: 45 },
+      storage: {
+        id: "extended-case",
+        label: "Extended Battery Case",
+        extraPrice: 35,
+      },
+      processor: { id: "aptx", label: "aptX Adaptive", extraPrice: 20 },
+    },
+    requirement: "Pro Edition, Extended Battery Case, aptX Adaptive.",
+    unitPrice: 199,
+    quantity: 1,
+    totalPrice: 199,
+  },
+
+  {
+    id: "cart-009",
+    productId: "monitor-lg-viewmax-32-4k-uhd-monitor",
+    image:
+      "https://images.unsplash.com/photo-1585792180666-f7347c490ee2?w=200&q=80",
+    title: "ViewMax 32 4K UHD Monitor",
+    selectedOptions: {
+      ram: { id: "32inch", label: "32\"", extraPrice: 80 },
+      storage: { id: "4k", label: "4K UHD Panel", extraPrice: 100 },
+      processor: { id: "144hz", label: "144Hz", extraPrice: 60 },
+    },
+    requirement: "32\" size, 4K UHD panel, 144Hz refresh rate.",
+    unitPrice: 639,
+    quantity: 1,
+    totalPrice: 639,
+  },
+
+  {
+    id: "cart-010",
+    productId: "keyboard-logitech-cascade-rgb-mechanical-keyboard",
+    image:
+      "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=200&q=80",
+    title: "Cascade RGB Mechanical Keyboard",
+    selectedOptions: {
+      ram: { id: "brown-switch", label: "Brown Switch", extraPrice: 10 },
+      storage: { id: "full-size", label: "Full Size", extraPrice: 15 },
+      processor: { id: "wireless", label: "Wireless 2.4G", extraPrice: 25 },
+    },
+    requirement: "Brown Switch, Full Size, Wireless 2.4G.",
+    unitPrice: 129,
+    quantity: 3,
+    totalPrice: 387,
+  },
+];
+
+export const customers = [
+  {
+    id: "cus-1021",
+    customerCode: "CUS-1021",
+    name: "Imran Hossain",
+    avatar: null,
+    customerSince: "May 12, 2024",
+    gender: "Male",
+    stats: [
+      { label: "Pending Orders", value: 2 },
+      { label: "Completed Orders", value: 46 },
+      { label: "Total Orders", value: 50 },
+    ],
+    personalInfo: {
+      email: "mahdi@gmail.com",
+      phone: "+880 17359 99190",
+      dateOfBirth: "30 May, 2006",
+      gender: "Male",
+    },
+    shippingAddresses: [
+      {
+        id: "addr-1",
+        label: "Home",
+        address: "House 12, Road 5, Kafrul, Mirpur, Dhaka 1212, Bangladesh.",
+        isDefault: true,
+      },
+    ],
+    paymentMethods: [
+      {
+        id: "card-1",
+        type: "mastercard",
+        cardNumberMasked: "1234 5678 9012 3456",
+      },
+      {
+        id: "card-2",
+        type: "mastercard",
+        cardNumberMasked: "1234 5678 9012 3456",
+      },
+    ],
+    orderHistory: [
+      {
+        id: "ORD-10245",
+        date: "10 Mar 2026",
+        itemCount: 2,
+        price: 1299,
+        state: "Pending",
+      },
+    ],
+  },
+
+  {
+    id: "cus-1022",
+    customerCode: "CUS-1022",
+    name: "Nusrat Jahan",
+    avatar: null,
+    customerSince: "July 3, 2024",
+    gender: "Female",
+    stats: [
+      { label: "Pending Orders", value: 1 },
+      { label: "Completed Orders", value: 27 },
+      { label: "Total Orders", value: 28 },
+    ],
+    personalInfo: {
+      email: "nusrat.jahan@gmail.com",
+      phone: "+880 17812 44210",
+      dateOfBirth: "14 Feb, 1999",
+      gender: "Female",
+    },
+    shippingAddresses: [
+      {
+        id: "addr-1",
+        label: "Home",
+        address: "Flat 3B, House 27, Road 11, Banani, Dhaka 1213, Bangladesh.",
+        isDefault: true,
+      },
+    ],
+    paymentMethods: [
+      {
+        id: "card-1",
+        type: "visa",
+        cardNumberMasked: "4521 7788 3312 9087",
+      },
+    ],
+    orderHistory: [
+      {
+        id: "ORD-10198",
+        date: "22 Feb 2026",
+        itemCount: 1,
+        price: 899,
+        state: "Completed",
+      },
+      {
+        id: "ORD-10233",
+        date: "5 Mar 2026",
+        itemCount: 3,
+        price: 549,
+        state: "Pending",
+      },
+    ],
+  },
+
+  {
+    id: "cus-1023",
+    customerCode: "CUS-1023",
+    name: "Rafiul Karim",
+    avatar: null,
+    customerSince: "January 20, 2023",
+    gender: "Male",
+    stats: [
+      { label: "Pending Orders", value: 0 },
+      { label: "Completed Orders", value: 63 },
+      { label: "Total Orders", value: 63 },
+    ],
+    personalInfo: {
+      email: "rafiul.karim@yahoo.com",
+      phone: "+880 19934 55810",
+      dateOfBirth: "9 November, 1994",
+      gender: "Male",
+    },
+    shippingAddresses: [
+      {
+        id: "addr-1",
+        label: "Home",
+        address: "House 4, Lane 2, Agrabad, Chittagong 4100, Bangladesh.",
+        isDefault: true,
+      },
+      {
+        id: "addr-2",
+        label: "Office",
+        address: "Level 6, Sky Tower, GEC Circle, Chittagong 4000, Bangladesh.",
+        isDefault: false,
+      },
+    ],
+    paymentMethods: [
+      {
+        id: "card-1",
+        type: "mastercard",
+        cardNumberMasked: "5588 2210 4470 1123",
+      },
+    ],
+    orderHistory: [
+      {
+        id: "ORD-10102",
+        date: "18 Dec 2025",
+        itemCount: 1,
+        price: 1499,
+        state: "Completed",
+      },
+    ],
+  },
+
+  {
+    id: "cus-1024",
+    customerCode: "CUS-1024",
+    name: "Sadia Islam",
+    avatar: null,
+    customerSince: "September 8, 2024",
+    gender: "Female",
+    stats: [
+      { label: "Pending Orders", value: 3 },
+      { label: "Completed Orders", value: 9 },
+      { label: "Total Orders", value: 12 },
+    ],
+    personalInfo: {
+      email: "sadia.islam@outlook.com",
+      phone: "+880 18645 22301",
+      dateOfBirth: "2 August, 2001",
+      gender: "Female",
+    },
+    shippingAddresses: [
+      {
+        id: "addr-1",
+        label: "Home",
+        address: "House 9, Block C, Bashundhara R/A, Dhaka 1229, Bangladesh.",
+        isDefault: true,
+      },
+    ],
+    paymentMethods: [],
+    orderHistory: [
+      {
+        id: "ORD-10267",
+        date: "15 Mar 2026",
+        itemCount: 1,
+        price: 179,
+        state: "Shipped",
+      },
+      {
+        id: "ORD-10271",
+        date: "20 Mar 2026",
+        itemCount: 2,
+        price: 99,
+        state: "Pending",
+      },
+    ],
+  },
+
+  {
+    id: "cus-1025",
+    customerCode: "CUS-1025",
+    name: "Tanvir Ahmed",
+    avatar: null,
+    customerSince: "March 30, 2022",
+    gender: "Male",
+    stats: [
+      { label: "Pending Orders", value: 1 },
+      { label: "Completed Orders", value: 88 },
+      { label: "Total Orders", value: 89 },
+    ],
+    personalInfo: {
+      email: "tanvir.ahmed92@gmail.com",
+      phone: "+880 17123 88765",
+      dateOfBirth: "17 June, 1992",
+      gender: "Male",
+    },
+    shippingAddresses: [
+      {
+        id: "addr-1",
+        label: "Home",
+        address: "House 21, Uposhohor, Sylhet 3100, Bangladesh.",
+        isDefault: true,
+      },
+    ],
+    paymentMethods: [
+      {
+        id: "card-1",
+        type: "visa",
+        cardNumberMasked: "4012 8890 1123 6654",
+      },
+      {
+        id: "card-2",
+        type: "amex",
+        cardNumberMasked: "3782 822463 10005",
+      },
+    ],
+    orderHistory: [
+      {
+        id: "ORD-09988",
+        date: "2 Jan 2026",
+        itemCount: 1,
+        price: 399,
+        state: "Completed",
+      },
+    ],
+  },
+
+  {
+    id: "cus-1026",
+    customerCode: "CUS-1026",
+    name: "Farhana Akter",
+    avatar: null,
+    customerSince: "November 11, 2024",
+    gender: "Female",
+    stats: [
+      { label: "Pending Orders", value: 2 },
+      { label: "Completed Orders", value: 4 },
+      { label: "Total Orders", value: 6 },
+    ],
+    personalInfo: {
+      email: "farhana.akter@gmail.com",
+      phone: "+880 19456 30987",
+      dateOfBirth: "25 December, 2003",
+      gender: "Female",
+    },
+    shippingAddresses: [
+      {
+        id: "addr-1",
+        label: "Home",
+        address: "House 55, New Market Area, Khulna 9100, Bangladesh.",
+        isDefault: true,
+      },
+    ],
+    paymentMethods: [
+      {
+        id: "card-1",
+        type: "mastercard",
+        cardNumberMasked: "5401 3345 7712 9980",
+      },
+    ],
+    orderHistory: [
+      {
+        id: "ORD-10290",
+        date: "28 Mar 2026",
+        itemCount: 1,
+        price: 249,
+        state: "Pending",
+      },
+    ],
+  },
+
+  {
+    id: "cus-1027",
+    customerCode: "CUS-1027",
+    name: "Shakil Rahman",
+    avatar: null,
+    customerSince: "June 2, 2023",
+    gender: "Male",
+    stats: [
+      { label: "Pending Orders", value: 0 },
+      { label: "Completed Orders", value: 34 },
+      { label: "Total Orders", value: 34 },
+    ],
+    personalInfo: {
+      email: "shakil.rahman@gmail.com",
+      phone: "+880 17789 40021",
+      dateOfBirth: "3 April, 1997",
+      gender: "Male",
+    },
+    shippingAddresses: [
+      {
+        id: "addr-1",
+        label: "Home",
+        address: "House 8, Sector 7, Uttara, Dhaka 1230, Bangladesh.",
+        isDefault: true,
+      },
+      {
+        id: "addr-2",
+        label: "Office",
+        address: "Suite 12, Bashundhara City, Panthapath, Dhaka 1205, Bangladesh.",
+        isDefault: false,
+      },
+    ],
+    paymentMethods: [
+      {
+        id: "card-1",
+        type: "visa",
+        cardNumberMasked: "4916 5523 8871 0042",
+      },
+    ],
+    orderHistory: [
+      {
+        id: "ORD-10054",
+        date: "9 Nov 2025",
+        itemCount: 1,
+        price: 79,
+        state: "Completed",
+      },
+      {
+        id: "ORD-10091",
+        date: "2 Dec 2025",
+        itemCount: 1,
+        price: 899,
+        state: "Completed",
+      },
+    ],
+  },
+
+  {
+    id: "cus-1028",
+    customerCode: "CUS-1028",
+    name: "Priya Chowdhury",
+    avatar: null,
+    customerSince: "April 17, 2025",
+    gender: "Female",
+    stats: [
+      { label: "Pending Orders", value: 1 },
+      { label: "Completed Orders", value: 1 },
+      { label: "Total Orders", value: 2 },
+    ],
+    personalInfo: {
+      email: "priya.chowdhury@gmail.com",
+      phone: "+880 15678 90234",
+      dateOfBirth: "11 September, 2000",
+      gender: "Female",
+    },
+    shippingAddresses: [
+      {
+        id: "addr-1",
+        label: "Home",
+        address: "House 3, Road 9, Dhanmondi, Dhaka 1209, Bangladesh.",
+        isDefault: true,
+      },
+    ],
+    paymentMethods: [
+      {
+        id: "card-1",
+        type: "mastercard",
+        cardNumberMasked: "5312 9087 4421 3356",
+      },
+    ],
+    orderHistory: [
+      {
+        id: "ORD-10301",
+        date: "2 Apr 2026",
+        itemCount: 2,
+        price: 99,
+        state: "Pending",
+      },
+    ],
+  },
+
+  {
+    id: "cus-1029",
+    customerCode: "CUS-1029",
+    name: "Kamal Uddin",
+    avatar: null,
+    customerSince: "August 25, 2022",
+    gender: "Male",
+    stats: [
+      { label: "Pending Orders", value: 0 },
+      { label: "Completed Orders", value: 71 },
+      { label: "Total Orders", value: 71 },
+    ],
+    personalInfo: {
+      email: "kamal.uddin@gmail.com",
+      phone: "+880 17245 67891",
+      dateOfBirth: "6 July, 1988",
+      gender: "Male",
+    },
+    shippingAddresses: [
+      {
+        id: "addr-1",
+        label: "Home",
+        address: "House 17, Boyra, Khulna 9000, Bangladesh.",
+        isDefault: true,
+      },
+    ],
+    paymentMethods: [
+      {
+        id: "card-1",
+        type: "visa",
+        cardNumberMasked: "4556 7712 3390 8845",
+      },
+    ],
+    orderHistory: [
+      {
+        id: "ORD-09876",
+        date: "14 Oct 2025",
+        itemCount: 1,
+        price: 399,
+        state: "Completed",
+      },
+    ],
+  },
+
+  {
+    id: "cus-1030",
+    customerCode: "CUS-1030",
+    name: "Mahia Rahman",
+    avatar: null,
+    customerSince: "December 1, 2024",
+    gender: "Female",
+    stats: [
+      { label: "Pending Orders", value: 1 },
+      { label: "Completed Orders", value: 5 },
+      { label: "Total Orders", value: 6 },
+    ],
+    personalInfo: {
+      email: "mahia.rahman@gmail.com",
+      phone: "+880 18990 11223",
+      dateOfBirth: "28 January, 2005",
+      gender: "Female",
+    },
+    shippingAddresses: [
+      {
+        id: "addr-1",
+        label: "Home",
+        address: "House 40, Naya Paltan, Dhaka 1000, Bangladesh.",
+        isDefault: true,
+      },
+    ],
+    paymentMethods: [
+      {
+        id: "card-1",
+        type: "mastercard",
+        cardNumberMasked: "5123 8890 2234 7761",
+      },
+      {
+        id: "card-2",
+        type: "visa",
+        cardNumberMasked: "4321 5566 7788 9900",
+      },
+    ],
+    orderHistory: [
+      {
+        id: "ORD-10315",
+        date: "10 Apr 2026",
+        itemCount: 1,
+        price: 1568,
+        state: "Pending",
+      },
+    ],
   },
 ];

@@ -63,7 +63,7 @@ export default function Button({
   className = "",
 }) {
 
-  const baseClasses = `inline-flex items-center justify-center font-primary font-bold rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed`;
+  const baseClasses = `inline-flex items-center justify-center font-primary rounded-[8px] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed`;
 
   if (variant === "primary") {
     const bg = color || "#E63A1E";
@@ -72,7 +72,7 @@ export default function Button({
         type={type}
         onClick={onClick}
         disabled={disabled}
-        className={`${baseClasses} text-white shadow-md hover:brightness-110 active:brightness-95 ${className} px-space-4 py-space-3`}
+        className={`${baseClasses} shadow-md hover:brightness-110 active:brightness-95 ${className} px-space-4 py-space-3 font-semibold`}
         style={{ backgroundColor: bg }}
       >
         {children}
@@ -87,7 +87,7 @@ export default function Button({
         type={type}
         onClick={onClick}
         disabled={disabled}
-        className={`${baseClasses} bg-background border-2 hover:brightness-125 active:brightness-95 ${className}`}
+        className={`${baseClasses} bg-background border-2 hover:brightness-125 active:brightness-95 font-medium ${className}`}
         style={{ borderColor: accent, color: accent }}
       >
         {showLeftIcon && <i className={leftIcon} style={{ color: accent }} />}

@@ -13,8 +13,8 @@ function Star({ fillPercent, size = 16 }) {
     >
       <defs>
         <linearGradient id={id} x1="0" x2="100%" y1="0" y2="0">
-          <stop offset={`${fillPercent}%`} stopColor="#3A8F88" />
-          <stop offset={`${fillPercent}%`} stopColor="#E2E2E2" />
+          <stop offset={`${fillPercent}%`} stopColor="#06B6D4" />
+          <stop offset={`${fillPercent}%`} stopColor="#464850" />
         </linearGradient>
       </defs>
       <path

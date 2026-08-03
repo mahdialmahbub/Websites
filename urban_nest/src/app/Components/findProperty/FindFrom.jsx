@@ -8,7 +8,7 @@ import { propertyBudgets, propertyTypes } from "@/app/assets/assets";
 
 // onSearch: (filters: { location, propertyType, budget }) => void
 // প্যারেন্ট থেকে পাস করবে, ওখানেই ফিল্টারিং + স্ক্রল হ্যান্ডেল হবে
-const FindFrom = ({ onSearch }) => {
+const FindForm = ({ onSearch }) => {
   const [location, setLocation] = useState('');
   const [selectedPropertyType, setSelectedPropertyType] = useState('Apartment');
   const [selectedBudget, setSelectedBudget] = useState('Under $100K');
@@ -26,7 +26,7 @@ const FindFrom = ({ onSearch }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-space-5 bg-background ">
+    <form onSubmit={handleSubmit} className="p-space-5 bg-background findForm max-w-[480px]">
       <div className="mb-space-7">
         <div className='flex items-end gap-space-3'>
         <Input
@@ -89,4 +89,4 @@ const FindFrom = ({ onSearch }) => {
   );
 };
 
-export default FindFrom;
+export default FindForm;

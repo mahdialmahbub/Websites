@@ -4,19 +4,7 @@ import React from "react";
 import SectionHeader from "./SectionHeader";
 import { products } from "@/app/assets/assets";
 import { ProductCard } from "../ProductCard";
-
-function toCardData(product) {
-  return {
-    image: product.images?.[0],
-    badge: product.category,
-    title: product.title,
-    rating: product.rating,
-    reviewCount: product.reviewCount,
-    price: product.price,
-    originalPrice: product.originalPrice,
-    buttonText: "Add to cart",
-  };
-}
+import toCardData from "../ToCardData";
 
 const TopSellingProduct = () => {
   const bestSellingProducts = products.filter((product) =>

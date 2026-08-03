@@ -14,8 +14,7 @@ import Trends from './Components/trends/Trends'
 
 const page = () => {
   return (
-    <div>
-        <NavBar/>
+    <div className=''>
         <Home/>
         <Counter/> 
         <Feature/>
@@ -26,7 +25,6 @@ const page = () => {
         <MobileApp />
         <Review />
         <FinalCTA />
-        <Footer />
     </div>
   )
 }

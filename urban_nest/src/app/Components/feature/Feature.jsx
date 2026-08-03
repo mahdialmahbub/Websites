@@ -5,8 +5,8 @@ import { assets } from "@/app/assets/assets";
 
 const Feature = () => {
   return (
-    <section className="p-space-9 w-full">
-      <div className="w-full ">
+    <section className="p-space-9 ">
+      <div className="w-[1440px] container mx-auto ">
         <SectionHeader text={"What makes us"} mainText={"Deferent"} />
 
         {/* Cards */}
