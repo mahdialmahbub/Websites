@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+:root {
+  /* Colors */
+  --background: #F8FAFC;
+  --foreground: #0B0F19;
+
+    /* Dark Colors */
+  /* --background: #0B0F19;
+  --foreground: #F8FAFC; */
+
+  /* Fonts */
+  --font-primary: var(--font-sora);
+  --font-secondary: var(--font-inter);
+}
+
+@theme inline {
+  /* Fonts */
+  --font-primary: var(--font-poppins);
+  --font-secondary: var(--font-roboto);
+
+  /* Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-red: #D10000;
+  --color-green: #00D100;
+
+  /* Primary Colors */
+  --color-primary-50: #F0EFFF;
+  --color-primary-100: #D1CFFF;
+  --color-primary-200: #BBB7FF;
+  --color-primary-300: #9D96FF;
+  --color-primary-400: #8982FF;
+  --color-primary-500: #6C63FF;
+  --color-primary-600: #625AE8;
+  --color-primary-700: #4D46B5;
+  --color-primary-800: #3B368C;
+  --color-primary-900: #2D2A6B;
+
+  /* Secondary Colors */
+  --color-secondary-50: #E9FBFD;
+  --color-secondary-100: #BAF1FA;
+  --color-secondary-200: #99EBF7;
+  --color-secondary-300: #6BE2F4;
+  --color-secondary-400: #4EDCF1;
+  --color-secondary-500: #22D3EE;
+  --color-secondary-600: #1FC0D9;
+  --color-secondary-700: #1896A9;
+  --color-secondary-800: #137483;
+  --color-secondary-900: #0E5964;
+
+  --color-placeholder_2: #6B7280;
+  --color-placeholder: #9CA3AF;
+
+  /* Spacing */
+  --spacing-space-1: 4px;
+  --spacing-space-2: 8px;
+  --spacing-space-3: 12px;
+  --spacing-space-4: 16px;
+  --spacing-space-5: 20px;
+  --spacing-space-6: 24px;
+  --spacing-space-7: 32px;
+  --spacing-space-8: 40px;
+  --spacing-space-9: 48px;
+  --spacing-space-10: 64px;
+  --spacing-space-11: 80px;
+  --spacing-space-12: 96px;
+  --spacing-space-13: 120px;
+
+  /* Font Sizes */
+  --text-size-xs: 10px;
+  --text-size-xs_2: 12px;
+  --text-size-sm: 14px;
+  --text-size-base: 16px;
+  --text-size-md: 18px;
+  --text-size-lg: 20px;
+  --text-size-xl: 24px;
+  --text-size-2xl: 32px;
+  --text-size-3xl: 40px;
+  --text-size-4xl: 64px;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-secondary), Arial, Helvetica, sans-serif;
+}
+
+i {
+  @apply flex items-center justify-center ;
+}
