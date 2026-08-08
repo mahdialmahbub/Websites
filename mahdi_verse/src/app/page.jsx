@@ -29,78 +29,42 @@ const page = () => {
       {/* image */}
       <div className="px-2.5 flex flex-col items-center justify-center relative gap-[50px]">
         <div className="relative">
-          <Image
-            alt="myImage"
-            src={assets.profile}
-            className="rounded-full w-[150px] h-auto"
-          />
+  <Image
+    alt="myImage"
+    src={assets.profile}
+    className="rounded-full w-[150px] h-auto"
+  />
 
-          {/* Node js */}
-          <div className="rounded-full w-[48px] h-[48px] shadow-[2_2px_5px_rgba(196, 196, 196, 0.9),-2_-2px_4px_rgba((255, 255, 255, 0.90)),2_-2px_4px_rgba(196, 196, 196, 0.2),-2_2px_4px_rgba(196, 196, 196, 0.2),inset_-1_-1px_2px_rgba(196, 196, 196, 0.5),inset_1_1px_2px_rgba(255, 255, 255, 0.30)] bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -left-7.5 -top-2.5 flex items-center justify-center">
-            <Image
-              alt="icon"
-              src={assets.Node_js}
-              height={100}
-              width={100}
-              className="h-6.25 w-auto"
-            />
-          </div>
+  {/* Node js - top left */}
+  <div className="rounded-full w-13 h-13 shadow-[2px_2px_5px_rgba(196,196,196,0.9),-2px_-2px_4px_rgba(255,255,255,0.9),2px_-2px_4px_rgba(196,196,196,0.2),-2px_2px_4px_rgba(196,196,196,0.2),inset_-1px_-1px_2px_rgba(196,196,196,0.5),inset_1px_1px_2px_rgba(255,255,255,0.3)] bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -left-14 -top-9 flex items-center justify-center">
+    <Image alt="icon" src={assets.Node_js} height={100} width={100} className="h-6.25 w-auto" />
+  </div>
 
-          {/* react js */}
-          <div className="rounded-full w-17.5 h-17.5 shadow-[2_2px_5px_rgba(196, 196, 196, 0.9),-2_-2px_4px_rgba((255, 255, 255, 0.90)),2_-2px_4px_rgba(196, 196, 196, 0.2),-2_2px_4px_rgba(196, 196, 196, 0.2),inset_-1_-1px_2px_rgba(196, 196, 196, 0.5),inset_1_1px_2px_rgba(255, 255, 255, 0.30)] bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -right-7.5 -top-2.5 flex items-center justify-center">
-            <Image
-              alt="icon"
-              src={assets.React_js}
-              height={100}
-              width={100}
-              className="h-6.25 w-auto"
-            />
-          </div>
+  {/* react js - top right */}
+  <div className="rounded-full w-13 h-13 shadow-[2px_2px_5px_rgba(196,196,196,0.9),-2px_-2px_4px_rgba(255,255,255,0.9),2px_-2px_4px_rgba(196,196,196,0.2),-2px_2px_4px_rgba(196,196,196,0.2),inset_-1px_-1px_2px_rgba(196,196,196,0.5),inset_1px_1px_2px_rgba(255,255,255,0.3)] bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -right-14 -top-9 flex items-center justify-center">
+    <Image alt="icon" src={assets.React_js} height={100} width={100} className="h-6.25 w-auto" />
+  </div>
 
-          {/* next js */}
-          <div className="rounded-full w-17.5 h-17.5 shadow-[2_2px_5px_rgba(196, 196, 196, 0.9),-2_-2px_4px_rgba((255, 255, 255, 0.90)),2_-2px_4px_rgba(196, 196, 196, 0.2),-2_2px_4px_rgba(196, 196, 196, 0.2),inset_-1_-1px_2px_rgba(196, 196, 196, 0.5),inset_1_1px_2px_rgba(255, 255, 255, 0.30)] bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -left-15 top-24.75 flex items-center justify-center">
-            <Image
-              alt="icon"
-              src={assets.nextjs}
-              height={100}
-              width={100}
-              className="h-6.25 w-auto"
-            />
-          </div>
+  {/* next js - middle left */}
+  <div className="rounded-full w-13 h-13 shadow-[2px_2px_5px_rgba(196,196,196,0.9),-2px_-2px_4px_rgba(255,255,255,0.9),2px_-2px_4px_rgba(196,196,196,0.2),-2px_2px_4px_rgba(196,196,196,0.2),inset_-1px_-1px_2px_rgba(196,196,196,0.5),inset_1px_1px_2px_rgba(255,255,255,0.3)] bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -left-20 top-12 flex items-center justify-center">
+    <Image alt="icon" src={assets.nextjs} height={100} width={100} className="h-6.25 w-auto" />
+  </div>
 
-          {/* redux js */}
-          <div className="rounded-full w-17.5 h-17.5 shadow-[2_2px_5px_rgba(196, 196, 196, 0.9),-2_-2px_4px_rgba((255, 255, 255, 0.90)),2_-2px_4px_rgba(196, 196, 196, 0.2),-2_2px_4px_rgba(196, 196, 196, 0.2),inset_-1_-1px_2px_rgba(196, 196, 196, 0.5),inset_1_1px_2px_rgba(255, 255, 255, 0.30)] bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -right-15 top-24.75 flex items-center justify-center">
-            <Image
-              alt="icon"
-              src={assets.redux}
-              height={100}
-              width={100}
-              className="h-6.25 w-auto"
-            />
-          </div>
+  {/* redux js - middle right */}
+  <div className="rounded-full w-13 h-13 shadow-[2px_2px_5px_rgba(196,196,196,0.9),-2px_-2px_4px_rgba(255,255,255,0.9),2px_-2px_4px_rgba(196,196,196,0.2),-2px_2px_4px_rgba(196,196,196,0.2),inset_-1px_-1px_2px_rgba(196,196,196,0.5),inset_1px_1px_2px_rgba(255,255,255,0.3)] bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -right-20 top-12 flex items-center justify-center">
+    <Image alt="icon" src={assets.redux} height={100} width={100} className="h-6.25 w-auto" />
+  </div>
 
-          {/* react js */}
-          <div className="rounded-full w-17.5 h-17.5 shadow-[2_2px_5px_rgba(196, 196, 196, 0.9),-2_-2px_4px_rgba((255, 255, 255, 0.90)),2_-2px_4px_rgba(196, 196, 196, 0.2),-2_2px_4px_rgba(196, 196, 196, 0.2),inset_-1_-1px_2px_rgba(196, 196, 196, 0.5),inset_1_1px_2px_rgba(255, 255, 255, 0.30)] bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -left-7.5 bottom-0 flex items-center justify-center">
-            <Image
-              alt="icon"
-              src={assets.figma}
-              height={100}
-              width={100}
-              className="h-6.25 w-auto"
-            />
-          </div>
+  {/* figma - bottom left */}
+  <div className="rounded-full w-13 h-13 shadow-[2px_2px_5px_rgba(196,196,196,0.9),-2px_-2px_4px_rgba(255,255,255,0.9),2px_-2px_4px_rgba(196,196,196,0.2),-2px_2px_4px_rgba(196,196,196,0.2),inset_-1px_-1px_2px_rgba(196,196,196,0.5),inset_1px_1px_2px_rgba(255,255,255,0.3)] bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -left-14 -bottom-9 flex items-center justify-center">
+    <Image alt="icon" src={assets.figma} height={100} width={100} className="h-6.25 w-auto" />
+  </div>
 
-          {/* react js */}
-          <div className="rounded-full w-17.5 h-17.5 shadow-[2_2px_5px_rgba(196, 196, 196, 0.9),-2_-2px_4px_rgba((255, 255, 255, 0.90)),2_-2px_4px_rgba(196, 196, 196, 0.2),-2_2px_4px_rgba(196, 196, 196, 0.2),inset_-1_-1px_2px_rgba(196, 196, 196, 0.5),inset_1_1px_2px_rgba(255, 255, 255, 0.30)] bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -right-7.5 bottom-0 flex items-center justify-center">
-            <Image
-              alt="icon"
-              src={assets.Visual_Studio_Code}
-              height={100}
-              width={100}
-              className="h-6.25 w-auto"
-            />
-          </div>
-        </div>
+  {/* VS code - bottom right */}
+  <div className="rounded-full w-13 h-13 shadow-[2px_2px_5px_rgba(196,196,196,0.9),-2px_-2px_4px_rgba(255,255,255,0.9),2px_-2px_4px_rgba(196,196,196,0.2),-2px_2px_4px_rgba(196,196,196,0.2),inset_-1px_-1px_2px_rgba(196,196,196,0.5),inset_1px_1px_2px_rgba(255,255,255,0.3)] bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -right-14 -bottom-9 flex items-center justify-center">
+    <Image alt="icon" src={assets.Visual_Studio_Code} height={100} width={100} className="h-6.25 w-auto" />
+  </div>
+</div>
         <div className="flex items-center justify-center gap-space-2 px-space-7 py-space-2 rounded-xl max-w-max border border-[#00DE00]/20">
           <span className="relative flex size-3">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#00dE00] opacity-75"></span>
@@ -135,7 +99,7 @@ const page = () => {
           {count.map((item, i) => (
             <div
               key={i}
-              className="flex flex-col items-center justify-center gap-space-2 px-space-6 py-space-3 w-[240px]"
+              className="flex flex-col items-center justify-center gap-space-2 px-space-6 w-[240px]"
             >
               <div >
                 <div className="flex items-center gap-space-3 text-secondary-700">

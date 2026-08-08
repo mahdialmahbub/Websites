@@ -33,7 +33,7 @@ const Navbar = () => {
   const buttonText = isProjectsPage ? "Contact" : "Projects";
 
   return (
-    <div className='flex items-center justify-between py-space-4 h-13.5'>
+    <div className='flex items-center justify-between py-space-4 h-[64px]'>
       <p className='font-primary text-size-xl font-semibold opacity-50'>{title}</p>
       <div className='flex items-center gap-space-6'>
         {/* Dark Button */}

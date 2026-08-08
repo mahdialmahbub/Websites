@@ -2,6 +2,7 @@ import { Sora, Inter } from "next/font/google";
 import "./globals.css";
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
+import { ThemeProvider } from "./components/ThemeProvider";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -24,7 +25,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${sora.variable} ${inter.variable} h-full antialiased`}
+      className={`${sora.variable} ${inter.variable}  antialiased`}
     >
       <head>
         <link
@@ -52,16 +53,23 @@ export default function RootLayout({ children }) {
           href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css"
         ></link>
       </head>
-      <body className="min-h-full p-space-7">
-        <div className="flex min-h-[calc(100vh-64px)] w-full gap-9">
+      <body className="h-dvh ">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+        <div className="flex h-full w-full gap-9 p-space-7">
           <Sidebar />
-          <div className="w-full">
+          <div className="w-full flex flex-col">
             <Navbar />
-            <div className=" mx-auto flex justify-center min-w-full max-w-[2000px]">
+            <div className="mx-auto flex justify-center min-w-full max-w-[2000px] flex-1 overflow-y-auto">
               {children}
             </div>
           </div>
         </div>
+        </ThemeProvider>
       </body>
     </html>
   );

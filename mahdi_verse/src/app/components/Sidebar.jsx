@@ -34,8 +34,8 @@ const navItems = [
   {
     label: "Clients",
     href: "/clients",
-    icon: "fi fi-sr-employee-man-alt",
-    fillIcon: "fi fi-sr-customer-service",
+    icon: "fi fi-rr-employee-man-alt",
+    fillIcon: "fi fi-sr-employee-man-alt",
   },
   {
     label: "Contact Us",

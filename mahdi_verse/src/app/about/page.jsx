@@ -12,7 +12,8 @@ const page = () => {
 
   const aboutMeContent = [
     {
-      image: "https://images.unsplash.com/photos/3d-abstract-shapes-and-emojis-on-purple-background-zrOBY-0hF-g",
+      image:
+        "https://images.unsplash.com/photos/3d-abstract-shapes-and-emojis-on-purple-background-zrOBY-0hF-g",
       title: "UI UX design",
       subtitle:
         "I'm a UI/UX and Product Designer who creates user-centered websites that balance great design with real business goals.",
@@ -20,7 +21,8 @@ const page = () => {
         "Beyond design, I also build responsive frontends using React, Next.js, and Redux, ensuring every detail is implemented as intended. By handling both design and development, I streamline the process, reduce communication gaps, and deliver a smoother experience from concept to launch.",
     },
     {
-      image: "https://images.unsplash.com/photos/silver-imac-turned-on-inside-room-DtDlVpy-vvQ",
+      image:
+        "https://images.unsplash.com/photos/silver-imac-turned-on-inside-room-DtDlVpy-vvQ",
       title: "MERN stact website development",
       subtitle:
         "I'm a UI/UX and Product Designer who creates user-centered websites that balance great design with real business goals.",
@@ -41,7 +43,7 @@ const page = () => {
             <h1 className="font-primary font-semibold text-size-2xl mb-space-5 text-background">
               Designing Experiences, Building Websites
             </h1>
-            <p className="font-medium text-[18px] text-placeholder">
+            <p className="font-medium text-size-md text-placeholder">
               I&apos;m a UI/UX and Product Designer who creates user-centered
               websites that balance great design with real business goals.
             </p>
@@ -68,15 +70,19 @@ const page = () => {
         </div>
         <div className="relative">
           {/* overlay */}
-          <div className="absolute inset-0 bg-conic from-primary-500 to-secondary-500 rounded-[12px] blur-[20px] z-0 "></div>
+          <div className="box after:blur-[20px]">
+            <i className="fi fi-rr-website-design absolute top-1 left-1 transform -translate-x-1/2 -translate-y-1/2 z-20 text-secondary-500/10 text-[86px]"></i>
 
-          <Image
-            alt="about"
-            src={assets.about}
-            width={600}
-            height={400}
-            className="z-20"
-          />
+            <i className="fi fi-rr-code-window absolute -bottom-20 left-1 transform -translate-x-1/2 -translate-y-1/2 z-20 text-secondary-500/10 text-[86px]"></i>
+
+            <Image
+              alt="about"
+              src={assets.about}
+              width={600}
+              height={400}
+              className="relative z-30"
+            />
+          </div>
         </div>
       </div>
       <h2 className="font-primary font-semibold text-size-lg mt-space-7 mb-space-7 ">
@@ -88,12 +94,24 @@ const page = () => {
             key={i}
             className="bg-secondary-50 flex items-center gap-space-6 p-space-7 rounded-[12px] border border-secondary-500/20"
           >
-            <Image width={200} height={140} src={item.image} alt="image" />
-            <div >
-                <h3 className="font-primary font-semibold text-size-md mb-space-5">{item.title}</h3>
-                <h4 className="font-medium text-size-sm mb-[10px]">{item.subtitle}</h4>
-                <p className="font-medium text-size-sm text-placeholder_2 mb-space-5">{item.descripiton}</p>
-                <Button variant="text" text={"View Workflow"} rightIcon />
+            <Image
+              width={250}
+              height={250}
+              src={assets.backgroundImage}
+              alt="image"
+              className="object-cover h-full"
+            />
+            <div>
+              <h3 className="font-primary font-semibold text-size-md mb-space-5">
+                {item.title}
+              </h3>
+              <h4 className="font-medium text-size-sm mb-[10px]">
+                {item.subtitle}
+              </h4>
+              <p className="font-medium text-size-sm text-placeholder_2 mb-space-5">
+                {item.descripiton}
+              </p>
+              <Button variant="text" text={"View Workflow"} rightIcon />
             </div>
           </div>
         ))}

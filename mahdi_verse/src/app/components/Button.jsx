@@ -25,7 +25,7 @@ const Button = ({
       {icon && rightIcon && <i className={`text-size-md ${icon} `}></i>}
     </button>
   ) : (
-    <button className="flex items-center justify-center gap-space-1 text-primary-900 hover:text-primary-500">
+    <button className={`flex items-center justify-center gap-space-1 text-primary-900 hover:text-primary-500 ${fullWidth && "w-full"}`}>
       {icon && leftIcon && <i className={`text-size-md ${icon} `}></i>}
       <h4 className="font-semibold font-primary text-size-sm">{text}</h4>
       {icon && rightIcon && <i className={`text-size-md ${icon} `}></i>}

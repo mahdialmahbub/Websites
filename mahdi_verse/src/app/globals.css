@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   /* Colors */
   --background: #F8FAFC;
@@ -12,6 +14,11 @@
   /* Fonts */
   --font-primary: var(--font-sora);
   --font-secondary: var(--font-inter);
+}
+
+.dark {
+  --background: #0B0F19;
+  --foreground: #F8FAFC;
 }
 
 @theme inline {
@@ -88,4 +95,41 @@ body {
 
 i {
   @apply flex items-center justify-center ;
+}
+
+input, textarea {
+  @apply outline-none bg-white border border-placeholder/50 placeholder:text-placeholder placeholder:font-medium placeholder:text-size-sm px-space-4 py-3.5 w-full text-size-sm font-medium rounded-[12px] ;
+}
+
+.inputLabel {
+  @apply p-space-1 font-primary text-size-base font-semibold text-primary-900 ;
+}
+
+.box {
+  position: relative; /* ::after absolute positioning er jonno dorkar, na thakle add koro */
+}
+
+.box::after {
+  --angle: 0deg;
+  content: '';
+  position: absolute;
+  inset: -5px;
+  background: conic-gradient(from var(--angle), #6C63FF, #22D3EE);
+  z-index: 0;
+  animation: glowing-border 3.5s linear infinite;
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes glowing-border {
+  from {
+    --angle: 0deg;
+  }
+  to {
+    --angle: 360deg;
+  }
 }
