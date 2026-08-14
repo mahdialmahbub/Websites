@@ -1,0 +1,23 @@
+import { orders } from "@/app/assets/data";
+import OrdersTable from "@/app/components/dashboard/orders/OrderTable";
+import Select from "@/app/components/dashboard/Select";
+import TableToolbar from "@/app/components/dashboard/TableToolbar";
+import SearchBar from "@/app/components/SearchBar";
+import React from "react";
+
+const page = () => {
+  return (
+    <div className="px-space-6 pb-space-6 mt-space-3">
+      <div className="p-space-6 space-y-space-9 rounded-[16px] bg-[#1A1E3D]/50">
+      <TableToolbar title="Pending Orders">
+            {/* Select, SearchInput ekhane */}
+            <Select />
+            <SearchBar />
+          </TableToolbar>
+          <OrdersTable orders={orders} isDashboard= {false} />
+      </div>
+    </div>
+  );
+};
+
+export default page;
