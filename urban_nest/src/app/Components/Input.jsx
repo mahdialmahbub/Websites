@@ -7,18 +7,26 @@ const Input = ({
   className,
   type,
   value,
-  onChange
+  onChange,
 }) => {
   return (
     <div className={`${className} group`}>
-      <label
-        htmlFor="input"
-        className="flex items-center gap-1.5 text-placeholder "
-      >
-        <i className={`${icon} text-[12px] flex items-center justify-center`}></i>
-        <p className="font-primary font-semibold text-lg">{label}</p>
+      <label htmlFor="input" className="">
+        <div className="flex items-center gap-1.5 text-placeholder">
+          <i
+            className={`${icon} text-[12px] flex items-center justify-center`}
+          ></i>
+          <p className="font-primary font-semibold text-lg">{label}</p>
+        </div>
+
+        <input
+          type={type}
+          placeholder={placeholder}
+          className="w-full font-medium"
+          onChange={onChange}
+          value={value}
+        />
       </label>
-      <input type={type} placeholder={placeholder} className="w-full placeholder:font-semibold font-medium" onChange={onChange} value={value} />
       <div className="h-0.75 w-full bg-placeholder/40 mx-3 mt-space-1">
         <div className="line h-full w-0 bg-primary-5 transition-all duration-300 group-hover:w-full group-focus-within:w-full"></div>
       </div>

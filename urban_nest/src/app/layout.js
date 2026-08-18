@@ -4,6 +4,8 @@ import { Toaster } from "react-hot-toast";
 import NavBar from "./Components/navbar/NavBar";
 import Footer from "./Components/footer/Footer";
 import "leaflet/dist/leaflet.css";
+import { ToastContainer, toast, Slide } from "react-toastify";
+import SmoothScrollProvider from "./Components/SmoothScrollProvider";
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
@@ -56,10 +58,26 @@ export default function RootLayout({ children }) {
           href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-straight/css/uicons-solid-straight.css"
         ></link>
       </head>
-      <body className="min-h-full flex flex-col relative">
+      <body className="min-h-full flex flex-col relative ">
         <Toaster position="top-center" />
+              {/* Toast */}
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        limit={5}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Slide}
+      />
+
         <NavBar/>
-        {children}
+        <SmoothScrollProvider>{children}</SmoothScrollProvider>
         <Footer />
         </body>
     </html>

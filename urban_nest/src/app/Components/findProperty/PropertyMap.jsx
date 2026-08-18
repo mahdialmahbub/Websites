@@ -1,15 +1,12 @@
-// components/PropertyMap.jsx
 "use client";
 
 import { useEffect, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
-import "leaflet/dist/leaflet.css"; // <-- এটা মিসিং ছিল, এজন্য ম্যাপ দেখাচ্ছিল না
+import "leaflet/dist/leaflet.css";
 
-// কাস্টম পিন আইকন — leaflet-এর ডিফল্ট মার্কার ইমেজ bundler-এ প্রায়ই ভাঙে,
-// তাই SVG দিয়ে নিজেরাই একটা পিন বানাচ্ছি (সিলেক্টেড হলে রঙ বদলাবে)
 function createPinIcon(isSelected) {
-  const color = isSelected ? "#0D9488" : "#334155"; // teal-600 vs slate-700
+  const color = isSelected ? "#0D9488" : "#334155";
   const size = isSelected ? 38 : 30;
 
   const svg = `
@@ -22,15 +19,25 @@ function createPinIcon(isSelected) {
 
   return L.divIcon({
     html: svg,
-    className: "", // ডিফল্ট leaflet ক্লাস বাদ (নাহলে সাদা বক্স দেখাবে)
+    className: "",
     iconSize: [size, size],
-    iconAnchor: [size / 2, size], // পিনের ডগা ঠিক কো-অর্ডিনেটে বসবে
+    iconAnchor: [size / 2, size],
     popupAnchor: [0, -size],
   });
 }
 
-// mount হওয়ার পর container-এর আসল সাইজ ধরে Leaflet-কে রিক্যালকুলেট করতে বাধ্য করা
-// (dynamic/ssr:false লোডে কখনো কখনো Leaflet 0x0 সাইজ ধরে ফেলে)
+// ইউজারের বর্তমান লোকেশনের জন্য আলাদা পিন — নীল ডট, FindForm-এর বাটনের সাথে ম্যাচ করে
+const userLocationIcon = L.divIcon({
+  html: `
+    <div style="width:22px;height:22px;border-radius:50%;background:rgba(99,147,242,0.3);display:flex;align-items:center;justify-content:center;">
+      <div style="width:11px;height:11px;border-radius:50%;background:#6393F2;border:2px solid white;"></div>
+    </div>
+  `,
+  className: "",
+  iconSize: [22, 22],
+  iconAnchor: [11, 11],
+});
+
 function InvalidateSizeOnMount() {
   const map = useMap();
 
@@ -44,7 +51,6 @@ function InvalidateSizeOnMount() {
   return null;
 }
 
-// সব প্রপার্টি ভিউতে আনার জন্য bounds ফিট করা (properties বদলালে রি-রান হবে)
 function FitBounds({ properties }) {
   const map = useMap();
 
@@ -63,7 +69,6 @@ function FitBounds({ properties }) {
   return null;
 }
 
-// সিলেক্টেড প্রপার্টি বদলালে ম্যাপ smoothly সেই মার্কারে fly করবে
 function FlyToSelected({ properties, selectedId }) {
   const map = useMap();
 
@@ -78,16 +83,27 @@ function FlyToSelected({ properties, selectedId }) {
   return null;
 }
 
-export default function PropertyMap({ properties, selectedId, onSelect }) {
+// flyToLocation বদলালে ম্যাপ smoothly ইউজারের কারেন্ট লোকেশনে fly করবে
+function FlyToUserLocation({ location }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!location) return;
+    map.flyTo([location.lat, location.lng], 14, { duration: 1 });
+  }, [location, map]);
+
+  return null;
+}
+
+export default function PropertyMap({ properties, selectedId, onSelect, flyToLocation }) {
   const list = properties?.filter((p) => p.lat && p.lng) ?? [];
-  // প্রথমবার map center/zoom (bounds fit হয়ে গেলে এটা আর ম্যাটার করে না)
-  const initialCenter = list[0] ? [list[0].lat, list[0].lng] : [23.8103, 90.4125]; // Dhaka fallback
+  const initialCenter = list[0] ? [list[0].lat, list[0].lng] : [23.8103, 90.4125];
   const mapRef = useRef(null);
 
   if (list.length === 0) {
     return (
       <div className="flex h-full w-full items-center justify-center rounded-xl bg-slate-100 text-slate-400">
-        ম্যাপে দেখানোর মতো কোনো প্রপার্টি নেই
+        No property match
       </div>
     );
   }
@@ -107,6 +123,7 @@ export default function PropertyMap({ properties, selectedId, onSelect }) {
 
       <FitBounds properties={list} />
       <FlyToSelected properties={list} selectedId={selectedId} />
+      <FlyToUserLocation location={flyToLocation} />
       <InvalidateSizeOnMount />
 
       {list.map((property) => (
@@ -129,6 +146,12 @@ export default function PropertyMap({ properties, selectedId, onSelect }) {
           </Popup>
         </Marker>
       ))}
+
+      {flyToLocation && (
+        <Marker position={[flyToLocation.lat, flyToLocation.lng]} icon={userLocationIcon}>
+          <Popup>আপনার লোকেশন</Popup>
+        </Marker>
+      )}
     </MapContainer>
   );
 }

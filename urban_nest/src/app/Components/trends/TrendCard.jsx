@@ -3,6 +3,7 @@ import { useId } from "react";
 export default function TrendCard({
   title = "Price Trends",
   changePercent = 12.5,
+  percent = true,
   comparisonLabel = "vs Last year",
   data = [20, 45, 70, 55, 40, 30, 45, 60, 50, 65, 80, 72, 85],
   color = "#EC4899"
@@ -56,7 +57,7 @@ export default function TrendCard({
           style={{ color: color }}
         >
           {isPositive ? "+" : ""}
-          {changePercent}%
+          {changePercent}{percent && "%"}
         </span>
       </div>
 

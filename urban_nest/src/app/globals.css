@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
-
+/* =========================================================================
+   1. CSS VARIABLES — raw values, Tailwind theme-er baire o use kora jay
+   ========================================================================= */
 :root {
   /* Colors */
   --background: #fafaf9;
@@ -11,6 +13,10 @@
   --font-secondary: var(--font-inter);
 }
 
+/* =========================================================================
+   2. TAILWIND THEME MAPPING — upor-er variable gulo theke Tailwind utility
+   generate hoy (e.g. font-primary, bg-background, p-space-3, text-xl)
+   ========================================================================= */
 @theme inline {
   /* Fonts */
   --font-primary: var(--font-playfair-display);
@@ -59,6 +65,9 @@
   --text-6xl: 64px;
 }
 
+/* =========================================================================
+   3. BASE ELEMENT STYLES
+   ========================================================================= */
 body {
   background: var(--color-background);
   color: var(--color-foreground);
@@ -66,24 +75,39 @@ body {
 }
 
 input {
-  @apply bg-none outline-none placeholder:font-primary placeholder:text-placeholder pl-space-3 placeholder:font-semibold placeholder:text-xl text-xl font-semibold ;
+  @apply bg-none outline-none pl-space-3 text-xl font-semibold
+    placeholder:font-primary placeholder:font-semibold placeholder:text-xl
+    placeholder:text-placeholder;
 }
 
-/* scrollbar লুকানোর জন্য, কিন্তু scroll কাজ করবে */
+/* Flaticon `<i>` tag gulo default e icon center kore rakhe */
+i {
+  @apply flex items-center justify-center;
+}
+
+/* =========================================================================
+   4. UTILITY CLASSES
+   ========================================================================= */
+
+/* Scrollbar লুকানোর জন্য, কিন্তু scroll কাজ করবে */
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;             /* Chrome, Safari, Opera */
+  display: none; /* Chrome, Safari, Opera */
 }
 
+/* =========================================================================
+   5. DECORATIVE COMPONENT CLASSES
+   ========================================================================= */
+
+/* .card — hover korle corner-e chhoto "L" shape bracket dekhay (top-right + bottom-left) */
 .card {
   position: relative;
 }
 
-/* Top Right */
 .card::before {
   content: "";
   position: absolute;
@@ -100,7 +124,6 @@ input {
   transition: 0.35s ease;
 }
 
-/* Bottom Left */
 .card::after {
   content: "";
   position: absolute;
@@ -122,50 +145,48 @@ input {
   transform: scale(1);
 }
 
-.btn{
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
+/* .btn — hover korle diagonal shine/glare effect ekbar left theke right e chole jay */
+.btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
 }
 
-
-.btn span:last-child{
-    position:relative;
-    z-index:2;
+.btn span:last-child {
+  position: relative;
+  z-index: 2;
 }
 
-.btn::before{
-    content:"";
-    position:absolute;
-    top:0;
-    left:-150%;
+.btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
 
-    width:40%;
-    height:100%;
+  width: 40%;
+  height: 100%;
 
-    background:linear-gradient(
-        120deg,
-        transparent,
-        rgba(255,255,255,.35),
-        transparent
-    );
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
 
-    transform:skewX(-25deg);
-
-    transition:left .8s ease;
-
-    z-index:2;
+  transform: skewX(-25deg);
+  transition: left 0.8s ease;
+  z-index: 2;
 }
 
-.btn:hover::before{
-    left:160%;
+.btn:hover::before {
+  left: 160%;
 }
 
+/* .hTitle — section heading-er corner-e static "L" shape bracket (always visible) */
 .hTitle {
   position: relative;
 }
 
-/* Top Right */
 .hTitle::before {
   content: "";
   position: absolute;
@@ -176,10 +197,8 @@ input {
 
   border-top: 4px solid var(--color-primary-7);
   border-right: 4px solid var(--color-primary-7);
-
 }
 
-/* Bottom Left */
 .hTitle::after {
   content: "";
   position: absolute;
@@ -190,113 +209,22 @@ input {
 
   border-bottom: 4px solid var(--color-primary-7);
   border-left: 4px solid var(--color-primary-7);
-
 }
 
+/* =========================================================================
+   6. ANIMATIONS
+   ========================================================================= */
+
+/* Navbar page load hole upor theke slide-down kore ashe */
 .navbar {
-  animation: nav 1s ease ;
+  animation: nav 1s ease;
 }
 
 @keyframes nav {
   from {
     transform: translateY(-72px);
-  } to {
+  }
+  to {
     transform: translateY(0px);
   }
 }
-
-/* ডান পাশের element (images) - ডান থেকে আসবে */
-.hero-images {
-  opacity: 0;
-  transform: translateX(60px);
-  animation: slideInRight 1s ease-out forwards;
-}
-
-.hero-title,
-.hero-subtitle,
-.hero-button {
-  opacity: 0;
-  transform: translateX(-60px);
-  animation: slideInLeft 1s ease-out forwards;
-}
-
-.hero-title    { animation-delay: 0s; }
-.hero-subtitle { animation-delay: 0.2s; }
-.hero-button   { animation-delay: 0.4s; }
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-60px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(60px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-
-.scrollBar {
-  scrollbar-width: thin;
-  scrollbar-color: #2ECC71 transparent; /* firefox: thumb color, track color */
-}
-
-.scrollBar::-webkit-scrollbar {
-  height: 6px;
-}
-
-.scrollBar::-webkit-scrollbar-track {
-  background: #e5e7eb;
-  border-radius: 999px;
-}
-
-.scrollBar::-webkit-scrollbar-thumb {
-  background: #9ca3af;
-  border-radius: 999px;
-}
-
-.scrollBar::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;    
-}
-
-.sectionTitle {
-  opacity: 0;
-  animation: titleVisible both;
-  animation-timeline: view(50% 10%);
-}
-
-@keyframes titleVisible {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.findForm {
-  opacity: 0;
-  animation: formVisible 1s ease-out forwards;
-}
-
-@keyframes formVisible {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-

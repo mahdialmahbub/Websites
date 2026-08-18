@@ -25,7 +25,8 @@ export default function PropertyCard({
           src={property.image}
           alt={property.name}
           fill
-          className="object-cover h-full w-full group-hover:scale-110 transition-all duration-300 overflow-hidden"
+          sizes="(max-width: 768px) 100vw, 400px"
+          className="object-cover group-hover:scale-110 transition-transform duration-300"
         />
 
         {/* Chips — top left */}
@@ -43,7 +44,6 @@ export default function PropertyCard({
             ))}
           </div>
         )}
-
       </div>
 
       {/* Body */}
@@ -59,9 +59,7 @@ export default function PropertyCard({
           {isProgress && (
             <div className="flex flex-col gap-space-2 items-center">
               <div className="flex items-end gap-0.5">
-                <p className="font-semibold text-md">
-                  {property.overallScore}
-                </p>
+                <p className="font-semibold text-md">{property.overallScore}</p>
                 <p className="font-semibold text-[8px]">/100</p>
               </div>
               <div className="w-17 h-2 bg-[#8B5CF6]/20">

@@ -4,19 +4,13 @@ import { assets } from "../../assets/assets";
 import StarRating from "./StarRating";
 import Button from "../Button";
 import FormattedNumber from "../FormattedNumber";
+import Link from "next/link";
 
-const ReviewCard = ({
-  content = "Booking was super easy, and the car was spotless and ready right on time. The pickup location was just 5 minutes from my hotel — super convenient!",
-  clientInfo,
-  clientProperty,
-  rating = "4",
-  aiRecommended,
-  detailsLink,
-}) => {
-  const { name: clientName, role: clientRole, clientAvatar } = clientInfo;
-
-  const { propertyName, propertyLocation, propertyImage, beds, baths, sqft } =
-    clientProperty;
+const ReviewCard = ({ clientInfo }) => {
+  const { quote, client, rating, property, aiRecommended, detailsLink } =
+    clientInfo;
+  const { name, role, avatar } = client;
+  const { name: propertyName, location, image, beds, baths, sqft } = property;
 
   return (
     <div className="flex items-center gap-space-4 p-space-5 min-w-140 mb-space-4 border-2 border-primary-3 relative">
@@ -25,7 +19,7 @@ const ReviewCard = ({
       <div className="w-full">
         <p className="text-lg font-medium">
           &quot;
-          {content}
+          {quote}
           &quot;
         </p>
         <div className="mt-space-4 py-space-3 border-t-2 border-placeholder/20">
@@ -33,16 +27,14 @@ const ReviewCard = ({
             {/* client avatar and name */}
             <Image
               alt="Client Avatar"
-              src={clientAvatar || assets.User}
+              src={avatar || assets.User}
               width={100}
               height={100}
               className="rounded-full size-10.5 object-cover object-top"
             />
             <div className="">
-              <h2 className="font-primary font-semibold text-[12px]">
-                {clientName}
-              </h2>
-              <p className="font-medium text-[10px] text-placeholder">{clientRole}</p>
+              <h2 className="font-primary font-semibold text-[12px]">{name}</h2>
+              <p className="font-medium text-[10px] text-placeholder">{role}</p>
             </div>
           </div>
           {/* Rating */}
@@ -56,9 +48,11 @@ const ReviewCard = ({
       <div className="w-42 flex flex-col gap-space-3">
         <div>
           <Image
-            alt=""
-            src={propertyImage || assets.Property_1}
-            className="h-25 mb-space-2 object-cover"
+            alt="property"
+            width={168}
+            height={100}
+            src={image || assets.Property_1}
+            className="h-25 min-w-[168px] mb-space-2 object-cover"
           />
           <div>
             <div>
@@ -66,7 +60,7 @@ const ReviewCard = ({
                 {propertyName || "Property Name"}
               </h2>
               <p className="font-medium text-placeholder text-[10px]">
-                {propertyLocation || "Location"}
+                {location || "Location"}
               </p>
             </div>
             <div className="flex items-center justify-between border-t border-b border-placeholder/20 py-space-2">
@@ -98,18 +92,22 @@ const ReviewCard = ({
             </div>
           </div>
           <div className="flex items-center gap-space-3 justify-center mt-space-3">
-            <div className="p-space-2 flex items-center gap-space-1 bg-primary-1 text-primary-5">
-              <i className="fi fi-ss-sparkles flex items-center justify-center text-[10px]"></i>
-              <p className="font-semibold text-[10px] text-nowrap">
-                AI Recommended
-              </p>
-            </div>
-            <div className="p-space-1 flex items-center gap-0.5 text-primary-5">
-              {" "}
-              <p className="font-bold font-primary text-[12px] text-nowrap hover:underline cursor-pointer">
+            {aiRecommended && (
+              <div className="p-space-2 flex items-center gap-space-1 bg-primary-1 text-primary-5">
+                <i className="fi fi-ss-sparkles flex items-center justify-center text-[10px]"></i>
+                <p className="font-semibold text-[10px] text-nowrap">
+                  AI Recommended
+                </p>
+              </div>
+            )}
+            <Link
+              href={detailsLink}
+              className="p-space-1 flex items-center gap-0.5 text-primary-5"
+            >
+              <p className="font-bold font-primary text-[12px] text-nowrap hover:underline underline-offset-4 cursor-pointer">
                 Details
               </p>
-            </div>
+            </Link>
           </div>
         </div>
       </div>
