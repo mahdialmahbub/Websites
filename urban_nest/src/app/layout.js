@@ -6,6 +6,7 @@ import Footer from "./Components/footer/Footer";
 import "leaflet/dist/leaflet.css";
 import { ToastContainer, toast, Slide } from "react-toastify";
 import SmoothScrollProvider from "./Components/SmoothScrollProvider";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],

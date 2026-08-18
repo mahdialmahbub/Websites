@@ -61,18 +61,16 @@ const Review = () => {
         </button>
 
         {/* Scrollable card row */}
-        <div
-          ref={scrollRef}
-          className="flex gap-space-4 overflow-x-scroll scrollbar-hide w-full"
-        >
-          {clientReviews.map((item, i) => (
-            <FadeUp key={item.id} delay={0.2}>
-              <ReviewCard
-                key={item.id}
-                clientInfo={item}              />
-            </FadeUp>
-          ))}
-        </div>
+        <FadeUp delay={0.2}>
+          <div
+            ref={scrollRef}
+            className="flex gap-space-4 overflow-x-scroll scrollbar-hide w-full"
+          >
+            {clientReviews.map((item, i) => (
+              <ReviewCard key={item.id} clientInfo={item} />
+            ))}
+          </div>
+        </FadeUp>
 
         {/* Right arrow */}
         <button

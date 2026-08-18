@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Button from "./Button";
 import FormattedNumber from "./FormattedNumber";
@@ -10,12 +11,14 @@ export default function PropertyCard({
   onSelect,
   isProgress = false,
 }) {
+  const [hoveredBadge, setHoveredBadge] = useState(null);
+
   return (
     <div
-      className={`bg-background border shadow-md overflow-hidden min-w-95 group ${
+      className={`bg-background border overflow-hidden min-w-95 group ${
         isSelected
           ? "border-primary-5 border-4"
-          : "transition-all duration-200 border-4 border-transparent"
+          : "transition-all duration-200 border-4 border-primary-3/50"
       }`}
       onClick={onSelect ? () => onSelect(property.id) : undefined}
     >
@@ -31,17 +34,31 @@ export default function PropertyCard({
 
         {/* Chips — top left */}
         {property.badges && (
-          <div className="absolute top-3 left-3 flex gap-2">
-            {property.badges?.map((badge, i) => (
+          <div className="absolute top-3 left-3 flex items-center gap-2">
+            {property.badges.map((badge, i) => (
               <div
                 key={badge.tag ?? i}
-                className="flex items-center justify-center gap-space-1 bg-primary-9/70 px-space-3 py-space-2 font-medium text-primary-1 backdrop-blur shadow-[inset_1px_1px_6px_rgba(255,255,255,0.10),inset_-1px_-1px_6px_rgba(0,0,0,0.25)]"
+                onMouseEnter={() => setHoveredBadge(badge)}
+                onMouseLeave={() => setHoveredBadge(null)}
+                className="flex items-center justify-center gap-space-1 bg-primary-9/70 px-space-3 py-space-2 font-medium text-primary-1 backdrop-blur shadow-[inset_1px_1px_6px_rgba(255,255,255,0.10),inset_-1px_-1px_6px_rgba(0,0,0,0.25)] cursor-pointer"
               >
                 <i
                   className={`${badge.icon} flex items-center justify-center text-[12px] text-primary-1`}
                 ></i>
               </div>
             ))}
+
+            {/* Tooltip - joto gulai badge thakuk, sob shesh e right side e boshbe */}
+            <div
+              className={`absolute left-full top-1/2 -translate-y-1/2 ml-2 transition-all duration-150 pointer-events-none z-10 ${
+                hoveredBadge ? "opacity-100 scale-100" : "opacity-0 scale-95"
+              }`}
+            >
+              <div className="relative bg-slate-900 text-white text-xs font-medium px-2.5 py-1 rounded-md whitespace-nowrap">
+                {hoveredBadge?.tag}
+                <div className="absolute right-full top-1/2 -translate-y-1/2 -mr-1 w-2 h-2 bg-slate-900 rotate-45"></div>
+              </div>
+            </div>
           </div>
         )}
       </div>

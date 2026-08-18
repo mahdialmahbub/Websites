@@ -13,7 +13,7 @@ const ReviewCard = ({ clientInfo }) => {
   const { name: propertyName, location, image, beds, baths, sqft } = property;
 
   return (
-    <div className="flex items-center gap-space-4 p-space-5 min-w-140 mb-space-4 border-2 border-primary-3 relative">
+    <div className="flex items-center gap-space-4 p-space-5 min-w-140 mb-space-4 border-2 border-primary-3/50 relative">
       <i className="fi fi-bs-quote-right flex items-center justify-center text-[120px] text-primary-5 absolute -top-5 left-0 opacity-10"></i>
       {/* review content, client information, and rating*/}
       <div className="w-full">
@@ -55,7 +55,7 @@ const ReviewCard = ({ clientInfo }) => {
             className="h-25 min-w-[168px] mb-space-2 object-cover"
           />
           <div>
-            <div>
+            <div className="mb-space-2">
               <h2 className="font-primary text-[12px] font-semibold mt-space-1">
                 {propertyName || "Property Name"}
               </h2>
@@ -86,12 +86,12 @@ const ReviewCard = ({ clientInfo }) => {
               <span className="px-space-2 flex items-center">
                 <i className="fi fi-rs-ruler-combined flex items-center justify-center text-[10px]"></i>
                 <p className="font-medium text-[10px] text-placeholder ml-space-1">
-                  <FormattedNumber number={sqft || "1,400"} />
+                  {sqft || "1,400"}
                 </p>
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-space-3 justify-center mt-space-3">
+          <div className="flex items-center gap-space-3 justify-start mt-space-3">
             {aiRecommended && (
               <div className="p-space-2 flex items-center gap-space-1 bg-primary-1 text-primary-5">
                 <i className="fi fi-ss-sparkles flex items-center justify-center text-[10px]"></i>
@@ -102,9 +102,9 @@ const ReviewCard = ({ clientInfo }) => {
             )}
             <Link
               href={detailsLink}
-              className="p-space-1 flex items-center gap-0.5 text-primary-5"
+              className=" flex items-center gap-0.5 text-primary-5 max-w-max"
             >
-              <p className="font-bold font-primary text-[12px] text-nowrap hover:underline underline-offset-4 cursor-pointer">
+              <p className="font-bold font-primary text-[12px] text-nowrap hover:underline underline-offset-2 cursor-pointer">
                 Details
               </p>
             </Link>
