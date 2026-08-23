@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import MobileNav from "./components/MobileNav";
 import Providers from "./providers";
+import SmoothScrolling from "./components/SmoothScrolling";
 
 const workSans = Work_Sans({
   variable: "--font-work-sans",
@@ -53,8 +54,7 @@ export default function RootLayout({ children }) {
         <Providers>
           <Navbar />
           <MobileNav />
-
-          {children}
+          <SmoothScrolling>{children}</SmoothScrolling>
           <Footer />
         </Providers>
       </body>
