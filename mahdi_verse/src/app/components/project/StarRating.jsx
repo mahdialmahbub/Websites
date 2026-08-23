@@ -13,8 +13,8 @@ function Star({ fillPercent, size = 16 }) {
     >
       <defs>
         <linearGradient id={id} x1="0" x2="100%" y1="0" y2="0">
-          <stop offset={`${fillPercent}%`} stopColor="#3A8F88" />
-          <stop offset={`${fillPercent}%`} stopColor="#E2E2E2" />
+          <stop offset={`${fillPercent}%`} stopColor="#1FC0D9" />
+          <stop offset={`${fillPercent}%`} stopColor="#6B7280" />
         </linearGradient>
       </defs>
       <path
@@ -50,9 +50,9 @@ export default function StarRating({
       style={{ display: "flex", alignItems: "center", gap: 8 }}
     >
       <div style={{ display: "flex", gap: 3 }}>{stars}</div>
-      <span className="text-md font-semibold text-primary-5 flex items-end gap-0.5">
+      <span className="text-md font-semibold text-secondary-600 flex items-end gap-0.5">
         {clamped.toFixed(1)}
-        <span className="text-[12px] font-semibold opacity-60 text-placeholder">
+        <span className="text-size-xs_2 font-semibold opacity-60 text-placeholder">
           /5
         </span>
       </span>

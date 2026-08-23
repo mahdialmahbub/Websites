@@ -3,6 +3,9 @@ import "./globals.css";
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 import { ThemeProvider } from "./components/ThemeProvider";
+import HomePageChecker from "./components/HomePageChecker";
+import SmoothScrolling from "./components/SmoothScrolling";
+import { Toaster } from "react-hot-toast";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -25,7 +28,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${sora.variable} ${inter.variable}  antialiased`}
+      className={`${sora.variable} ${inter.variable} antialiased`}
     >
       <head>
         <link
@@ -53,22 +56,31 @@ export default function RootLayout({ children }) {
           href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css"
         ></link>
       </head>
-      <body className="h-dvh ">
+      <body className="h-dvh bg-background dark:bg-linear-to-br dark:from-secondary-500/5 dark:to-primary-500/2">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-        <div className="flex h-full w-full gap-9 p-space-7">
-          <Sidebar />
-          <div className="w-full flex flex-col">
-            <Navbar />
-            <div className="mx-auto flex justify-center min-w-full max-w-[2000px] flex-1 overflow-y-auto">
-              {children}
+          <div className="flex h-full w-full gap-9 p-space-7">
+            <Sidebar />
+            <div className="w-full flex flex-col">
+              <Navbar />
+              <HomePageChecker>{children}</HomePageChecker>
             </div>
           </div>
-        </div>
+          <Toaster
+            position="top-center"
+            reverseOrder={true}
+            toastOptions={{
+              duration: 3000,
+              style: {
+                background: "var(--color-background, #fff)",
+                color: "var(--color-foreground, #000)",
+              },
+            }}
+          />
         </ThemeProvider>
       </body>
     </html>

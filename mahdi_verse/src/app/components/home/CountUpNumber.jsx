@@ -8,7 +8,7 @@ const CountUpNumber = ({number}) => {
     <CountUp
       start={0}
       end={number}
-      duration={2}
+      duration={3}
       suffix="+"
       className="font-primary text-[26px] font-semibold text-secondary-700"
     />

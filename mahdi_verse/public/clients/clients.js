@@ -17,18 +17,11 @@ export const clientsData = [
   {
     id: "c1",
     name: "Ahmed Al-Farsi",
-    Image: "/clientImages/Ahmed_Al-Farsi.jpg", // shown in the glow placeholder if avatarSrc isn't set yet
+    country: "South Africa" ,
+    image: "/clients/clientImages/Ahmed_Al_Farsi.jpg", // shown in the glow placeholder if avatarSrc isn't set yet
     shortIntro: "Trusted by clients across different industries to design and develop",
     rating: 4.5,
     mood: "Satisfied",
-  },
-  {
-    id: "c2",
-    name: "Fatima Al-Hashimi",
-    Image: "/clientImages/Fatima_Al-Hashimi.jpg", // shown in the glow placeholder if avatarSrc isn't set yet
-    shortIntro: "Trusted by clients across different industries to design and develop",
-    rating: 4.8,
-    mood: "Happy",
   },
   // more clients go here — each just needs a unique `id` that matches
   // the `client.id` used inside the relevant project(s) in projectsData.js
@@ -39,9 +32,6 @@ export const clientsData = [
  * A client can have more than one project, so this always returns an array —
  * even if it's empty (client with no projects yet) or has just one.
  *
- * @param {string} clientId - the client's id, e.g. "c1"
- * @param {Array}  allProjects - the full projectsData array
- * @returns {Array} matching project objects
  */
 export function getClientProjects(clientId, allProjects) {
   return allProjects.filter((project) => project.client?.id === clientId);

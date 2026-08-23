@@ -7,7 +7,7 @@ import FadeLeft from "./motions/FadeLeft";
 
 const AiAssistent = () => {
   return (
-    <section className="p-space-9 gap-space-7 flex items-center w-360 container mx-auto">
+    <section className="p-space-9 gap-space-7 flex items-center max-w-360 container mx-auto">
       <FadeLeft className="min-w-131.25 min-h-87.5">
         <Image
           alt="image"

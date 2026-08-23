@@ -5,7 +5,7 @@ import FadeUp from "./motions/FadeUp";
 
 const FinalCTA = () => {
   return (
-    <section className="p-space-9 w-[1440px] container mx-auto">
+    <section className="p-space-9 max-w-[1440px] container mx-auto">
       <FadeUp>
         <div
           className="flex flex-col items-center justify-center gap-space-5 bg-cover bg-center py-space-8 relative"

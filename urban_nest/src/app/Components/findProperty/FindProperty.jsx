@@ -48,7 +48,7 @@ const FindProperty = () => {
   return (
     <section className="p-space-9 bg-foreground overflow-hidden relative">
       <i className="fi fi-rs-house-chimney text-[350px] absolute top-0 right-0 text-primary-3/10"></i>
-      <div className="w-[1440px] container mx-auto">
+      <div className="max-w-360 container mx-auto"> 
         <SectionHeader
           mainText={"Match"}
           text={"Find your perfect"}
@@ -83,7 +83,7 @@ const FindProperty = () => {
               Tomar actual navbar height onujayi value ta adjust koro
               (e.g. navbar 88px hole scroll-mt-[88px]) */}
           <FadeUp>
-            <div ref={resultsRef} className="scroll-mt-[100px]">
+            <div ref={resultsRef} className="scroll-mt-25">
               <PropertyExplorer
                 properties={filteredProperties}
                 selectedId={selectedId}

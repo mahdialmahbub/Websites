@@ -9,7 +9,7 @@ const DarkToggleBTN = () => {
 
   if (!mounted) {
     return (
-      <div className="flex items-center justify-center p-space-1 rounded-md bg-primary-50 border border-primary-900/10 max-w-max">
+      <div className="flex items-center justify-center p-space-1 rounded-md bg-secondary-50 border border-secondary-900/10 max-w-max">
         <div className="w-[24px] h-[24px] rounded-sm" />
         <div className="w-[24px] h-[24px] rounded-sm" />
       </div>
@@ -19,16 +19,16 @@ const DarkToggleBTN = () => {
   const isDark = resolvedTheme === "dark";
 
   return (
-    <div className="flex items-center justify-center p-space-1 rounded-md bg-primary-50 border border-primary-900/10 max-w-max">
+    <div className="flex items-center gap-space-1 justify-center p-space-1 rounded-md bg-secondary-50 border border-secondary-900/10 max-w-max dark:bg-secondary-900/20 dark:border-primary-900/30">
       <button
         type="button"
         aria-label="Light mode"
         aria-pressed={!isDark}
         onClick={() => setTheme("light")}
-        className={`w-[24px] h-[24px] rounded-sm ${!isDark && "bg-primary-500"} *:text-size-xs_2 flex items-center justify-center`}
+        className={`w-[32px] h-[32px] rounded-sm ${!isDark ? "bg-secondary-500" : "hover:bg-secondary-500/10"} flex items-center justify-center`}
       >
         <i
-          className={`${!isDark ? "fi fi-sr-brightness text-primary-50" : "fi fi-rr-brightness text-primary-500"}`}
+          className={`${!isDark ? "fi fi-sr-brightness text-secondary-50" : "fi fi-rr-brightness text-secondary-100"}`}
         ></i>
       </button>
       <button
@@ -36,10 +36,10 @@ const DarkToggleBTN = () => {
         aria-label="Dark mode"
         aria-pressed={isDark}
         onClick={() => setTheme("dark")}
-        className={`w-[24px] h-[24px] rounded-sm ${isDark && "bg-primary-500"} *:text-size-xs_2 flex items-center justify-center`}
+        className={`w-[32px] h-[32px] rounded-sm ${isDark ? "bg-secondary-500" : "hover:bg-secondary-500/10"} flex items-center justify-center`}
       >
         <i
-          className={`${isDark ? "fi fi-sr-moon-stars text-primary-50" : "fi fi-rr-moon-stars text-primary-500"}`}
+          className={`${isDark ? "fi fi-sr-moon-stars text-secondary-50" : "fi fi-rr-moon-stars text-secondary-500"}`}
         ></i>
       </button>
     </div>

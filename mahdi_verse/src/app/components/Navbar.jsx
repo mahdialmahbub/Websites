@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { usePathname } from 'next/navigation';
-import React from 'react'
-import DarkToggleBTN from './DarkToggleBTN';
-import Button from './Button';
-import Link from 'next/link';
+import { usePathname } from "next/navigation";
+import React from "react";
+import DarkToggleBTN from "./DarkToggleBTN";
+import Button from "./Button";
+import Link from "next/link";
 
 const pageTitles = {
   "/": "",
@@ -16,34 +16,35 @@ const pageTitles = {
 };
 
 const Navbar = () => {
+  const pathname = usePathname();
 
-    const pathname = usePathname();
-  // const { theme, setTheme } = useTheme();
+  // dynamic project details route ("/projects/some-slug") match korar jonno
+  // exact "/projects" theke alada check — nahole listing page-eo eita true hoye jabe
+  const isProjectDetailsPage =
+    pathname.startsWith("/projects/") && pathname !== "/projects";
 
-  // avoids hydration mismatch: theme is only known client-side
-  // const [mounted, setMounted] = useState(false);
-  // useEffect(() => {
-  //   setMounted(true);
-  // }, []);
-
-  const title = pageTitles[pathname] ?? "";
+  const title = isProjectDetailsPage
+    ? "Project Details"
+    : (pageTitles[pathname] ?? "");
 
   const isProjectsPage = pathname === "/projects";
   const buttonHref = isProjectsPage ? "/contact" : "/projects";
   const buttonText = isProjectsPage ? "Contact" : "Projects";
 
   return (
-    <div className='flex items-center justify-between py-space-4 h-[64px]'>
-      <p className='font-primary text-size-xl font-semibold opacity-50'>{title}</p>
-      <div className='flex items-center gap-space-6'>
+    <div className="flex items-center justify-between py-space-4 h-[64px]">
+      <h4 className="font-primary text-size-xl font-semibold opacity-50 text-secondary-900/70 dark:text-secondary-200/50">
+        {title}
+      </h4>
+      <div className="flex items-center gap-space-6">
         {/* Dark Button */}
         <DarkToggleBTN />
-        <Link href={buttonHref} >
+        <Link href={buttonHref}>
           <Button text={buttonText} />
         </Link>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

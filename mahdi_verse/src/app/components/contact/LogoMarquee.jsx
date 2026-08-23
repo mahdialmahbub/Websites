@@ -27,7 +27,7 @@ export default function LogoMarquee({
   const track = [...logos, ...logos];
 
   return (
-    <div className="relative py-space-6">
+    <div className="relative py-space-6 w-full min-w-0">
       <style>{`
         @keyframes marqueeLeft {
           from { transform: translateX(0); }
@@ -59,7 +59,7 @@ export default function LogoMarquee({
         }
       `}</style>
 
-      <div className="marquee-wrapper overflow-hidden">
+      <div className="marquee-wrapper overflow-hidden w-full min-w-0">
         <div className="marquee-track flex items-center gap-space-9">
           {track.map((logo, i) => (
             <div

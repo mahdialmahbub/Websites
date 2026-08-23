@@ -7,7 +7,7 @@ import FadeUp from "../motions/FadeUp";
 const Feature = () => {
   return (
     <section className="p-space-9 ">
-      <div className="w-[1440px] container mx-auto ">
+      <div className="max-w-[1440px] container mx-auto ">
           <SectionHeader text={"What makes us"} mainText={"Deferent"} />
 
         {/* Cards */}

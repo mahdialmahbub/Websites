@@ -7,7 +7,7 @@ import FadeRight from "../motions/FadeRight";
 
 const Home = () => {
   return (
-    <section className="px-space-9 min-h-screen flex items-center justify-center w-[1440px] container mx-auto">
+    <section className="px-space-9 min-h-screen flex items-center justify-center w-[1440px] container mx-auto relative">
       <div className="py-space-8 px-space-7 flex items-center justify-between h-120.5 relative min-w-full">
         {/* overlay */}
         <div className="absolute inset-0 w-full h-120.5 bg-black/60 z-9"></div>
@@ -22,11 +22,8 @@ const Home = () => {
         </video>
         {/* texts and button */}
         <div className="max-w-125 z-10 hero-text">
-          <FadeLeft
-            as="h1"
-            className="font-primary font-medium text-[58px] text-background mb-space-3"
-          >
-            Find Your Dream Property With AI
+          <FadeLeft className="font-primary font-medium text-background mb-space-3">
+            <h1 className="">Find Your Dream Property With AI</h1>
           </FadeLeft>
           <FadeLeft
             as="p"

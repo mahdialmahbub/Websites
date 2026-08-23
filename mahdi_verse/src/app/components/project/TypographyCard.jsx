@@ -49,9 +49,7 @@ export default function TypographyCard({
   const fontStack = `"${fontName}", sans-serif`;
 
   return (
-    <div className="rounded-[16px] border-2 border-secondary-500 bg-secondary-50 shadow-xl p-space-7 w-full" style={{
-      boxShadow: "4px 4px 0px rgba(34, 211, 238, 1)"
-    }}>
+    <div className="rounded-2xl border-2 border-secondary-500 bg-secondary-50 dark:bg-secondary-900/10 dark:border-secondary-500/20 shadow-[4px_4px_0px_rgba(34,211,238,1)] dark:shadow-[4px_4px_0px_rgba(34,211,238,0.2)] p-space-7 w-full ">
       {/* Header: font name + where it's used */}
       <div className="flex items-center justify-between gap-4">
         <h2
@@ -64,7 +62,7 @@ export default function TypographyCard({
       </div>
 
       {/* A-Z / a-z sample in the loaded font */}
-      <div style={{ fontFamily: fontStack, fontWeight: 700 }} className="mt-space-4 tracking-wide max-w-[200px]">
+      <div style={{ fontFamily: fontStack, fontWeight: 700 }} className="mt-space-4 tracking-wide max-w-50">
         <p className="text-size-xs_2 mb-space-1">{UPPER}</p>
         <p className="text-size-xs_2 ">{LOWER}</p>
       </div>
@@ -74,9 +72,8 @@ export default function TypographyCard({
         {weights.map((w) => (
           <span
             key={w}
-            style={{ fontFamily: fontStack, fontWeight: getWeightValue(w), boxShadow:
-          "1px 1px 2px rgba(255, 255, 255, 0.3), -1px -1px 2px rgba(196, 211, 213, 0.50), inset 1px -1px 2px rgba(196, 211, 213, 0.2), inset -1px 1px 2px rgba(196, 211, 213, 0.2), inset -1px -1px 2px rgba(255, 255, 255, 0.9), inset 1px 1px 3px rgba(196, 211, 213, 0.90)", }}
-            className="rounded-full bg-secondary-50 px-5 py-2 text-sm text-teal-700 shadow border border-cyan-100"
+            style={{ fontFamily: fontStack, fontWeight: getWeightValue(w), }}
+            className="rounded-full flex items-center justify-center bg-secondary-50 px-5 py-2 text-sm text-teal-700 chips-shadow dark:bg-[#0C1E28] dark:text-secondary-100"
           >
             {w}
           </span>

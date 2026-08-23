@@ -14,7 +14,7 @@ const Trends = () => {
   return (
     <section className="p-space-9 bg-foreground relative">
       <i className="fi fi-rs-growth-chart-invest text-[350px] absolute top-0 right-0 text-primary-3/10"></i>
-      <div className="w-[1440px] container mx-auto relative">
+      <div className="max-w-[1440px] container mx-auto relative">
         <SectionHeader mainText={"Trends"} text={"Market Insight and"} isDark />
         <div className="flex items-center justify-center gap-space-5 mt-space-7">
           <FadeUp delay={0}>

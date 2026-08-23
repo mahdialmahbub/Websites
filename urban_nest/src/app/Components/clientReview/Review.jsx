@@ -45,7 +45,7 @@ const Review = () => {
   };
 
   return (
-    <section className="p-space-9 gap-space-7 flex flex-col items-center w-[1440px] container mx-auto">
+    <section className="p-space-9 gap-space-7 flex flex-col items-center max-w-[1440px] container mx-auto">
       <SectionHeader mainText={"reviews"} text={"Real Client"} />
 
       <div className="relative w-full">

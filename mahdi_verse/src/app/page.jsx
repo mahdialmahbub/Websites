@@ -4,6 +4,8 @@ import { assets } from "./assets/assets";
 import Button from "./components/Button";
 import CountUp from "react-countup";
 import CountUpNumber from "./components/home/CountUpNumber";
+import Link from "next/link";
+import FadeUp from "./components/motions/FadeUp";
 
 const page = () => {
   const count = [
@@ -27,92 +29,140 @@ const page = () => {
   return (
     <div className="flex flex-col">
       {/* image */}
-      <div className="px-2.5 flex flex-col items-center justify-center relative gap-[50px]">
-        <div className="relative">
-  <Image
-    alt="myImage"
-    src={assets.profile}
-    className="rounded-full w-[150px] h-auto"
-  />
+      <FadeUp delay={0}>
+        <div className="px-2.5 flex flex-col items-center justify-center relative gap-[50px]">
+          <div className="relative">
+            <Image
+              alt="myImage"
+              src={assets.profile}
+              className="rounded-full w-[150px] h-auto"
+            />
 
-  {/* Node js - top left */}
-  <div className="rounded-full w-13 h-13 shadow-[2px_2px_5px_rgba(196,196,196,0.9),-2px_-2px_4px_rgba(255,255,255,0.9),2px_-2px_4px_rgba(196,196,196,0.2),-2px_2px_4px_rgba(196,196,196,0.2),inset_-1px_-1px_2px_rgba(196,196,196,0.5),inset_1px_1px_2px_rgba(255,255,255,0.3)] bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -left-14 -top-9 flex items-center justify-center">
-    <Image alt="icon" src={assets.Node_js} height={100} width={100} className="h-6.25 w-auto" />
-  </div>
+            {/* Node js - top left */}
+            <FadeUp delay={0.1} className="rounded-full w-13 h-13 heroIcon bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -left-14 -top-9 flex items-center justify-center">
+              <Image
+                alt="icon"
+                src={assets.Node_js}
+                height={100}
+                width={100}
+                className="h-6.25 w-auto"
+              />
+            </FadeUp>
 
-  {/* react js - top right */}
-  <div className="rounded-full w-13 h-13 shadow-[2px_2px_5px_rgba(196,196,196,0.9),-2px_-2px_4px_rgba(255,255,255,0.9),2px_-2px_4px_rgba(196,196,196,0.2),-2px_2px_4px_rgba(196,196,196,0.2),inset_-1px_-1px_2px_rgba(196,196,196,0.5),inset_1px_1px_2px_rgba(255,255,255,0.3)] bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -right-14 -top-9 flex items-center justify-center">
-    <Image alt="icon" src={assets.React_js} height={100} width={100} className="h-6.25 w-auto" />
-  </div>
+            {/* react js - top right */}
+            <FadeUp delay={0.2} className="rounded-full w-13 h-13 heroIcon bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -right-14 -top-9 flex items-center justify-center">
+              <Image
+                alt="icon"
+                src={assets.React_js}
+                height={100}
+                width={100}
+                className="h-6.25 w-auto"
+              />
+            </FadeUp>
 
-  {/* next js - middle left */}
-  <div className="rounded-full w-13 h-13 shadow-[2px_2px_5px_rgba(196,196,196,0.9),-2px_-2px_4px_rgba(255,255,255,0.9),2px_-2px_4px_rgba(196,196,196,0.2),-2px_2px_4px_rgba(196,196,196,0.2),inset_-1px_-1px_2px_rgba(196,196,196,0.5),inset_1px_1px_2px_rgba(255,255,255,0.3)] bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -left-20 top-12 flex items-center justify-center">
-    <Image alt="icon" src={assets.nextjs} height={100} width={100} className="h-6.25 w-auto" />
-  </div>
+            {/* next js - middle left */}
+            <FadeUp delay={0.3} className="rounded-full w-13 h-13 heroIcon bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -left-20 top-12 flex items-center justify-center">
+              <Image
+                alt="icon"
+                src={assets.nextjs}
+                height={100}
+                width={100}
+                className="h-6.25 w-auto"
+              />
+            </FadeUp>
 
-  {/* redux js - middle right */}
-  <div className="rounded-full w-13 h-13 shadow-[2px_2px_5px_rgba(196,196,196,0.9),-2px_-2px_4px_rgba(255,255,255,0.9),2px_-2px_4px_rgba(196,196,196,0.2),-2px_2px_4px_rgba(196,196,196,0.2),inset_-1px_-1px_2px_rgba(196,196,196,0.5),inset_1px_1px_2px_rgba(255,255,255,0.3)] bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -right-20 top-12 flex items-center justify-center">
-    <Image alt="icon" src={assets.redux} height={100} width={100} className="h-6.25 w-auto" />
-  </div>
+            {/* redux js - middle right */}
+            <FadeUp delay={0.4} className="rounded-full w-13 h-13 heroIcon bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -right-20 top-12 flex items-center justify-center">
+              <Image
+                alt="icon"
+                src={assets.redux}
+                height={100}
+                width={100}
+                className="h-6.25 w-auto"
+              />
+            </FadeUp>
 
-  {/* figma - bottom left */}
-  <div className="rounded-full w-13 h-13 shadow-[2px_2px_5px_rgba(196,196,196,0.9),-2px_-2px_4px_rgba(255,255,255,0.9),2px_-2px_4px_rgba(196,196,196,0.2),-2px_2px_4px_rgba(196,196,196,0.2),inset_-1px_-1px_2px_rgba(196,196,196,0.5),inset_1px_1px_2px_rgba(255,255,255,0.3)] bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -left-14 -bottom-9 flex items-center justify-center">
-    <Image alt="icon" src={assets.figma} height={100} width={100} className="h-6.25 w-auto" />
-  </div>
+            {/* figma - bottom left */}
+            <FadeUp delay={0.5} className="rounded-full w-13 h-13 heroIcon bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -left-14 -bottom-9 flex items-center justify-center">
+              <Image
+                alt="icon"
+                src={assets.figma}
+                height={100}
+                width={100}
+                className="h-6.25 w-auto"
+              />
+            </FadeUp>
 
-  {/* VS code - bottom right */}
-  <div className="rounded-full w-13 h-13 shadow-[2px_2px_5px_rgba(196,196,196,0.9),-2px_-2px_4px_rgba(255,255,255,0.9),2px_-2px_4px_rgba(196,196,196,0.2),-2px_2px_4px_rgba(196,196,196,0.2),inset_-1px_-1px_2px_rgba(196,196,196,0.5),inset_1px_1px_2px_rgba(255,255,255,0.3)] bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -right-14 -bottom-9 flex items-center justify-center">
-    <Image alt="icon" src={assets.Visual_Studio_Code} height={100} width={100} className="h-6.25 w-auto" />
-  </div>
-</div>
-        <div className="flex items-center justify-center gap-space-2 px-space-7 py-space-2 rounded-xl max-w-max border border-[#00DE00]/20">
-          <span className="relative flex size-3">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#00dE00] opacity-75"></span>
-            <span className="relative inline-flex size-3 rounded-full bg-[#00de00]"></span>
-          </span>
-          <p className="font-primary font-semibold text-size-sm text-[#00de00]">
-            Available for work
-          </p>
+            {/* VS code - bottom right */}
+            <FadeUp delay={0.6} className="rounded-full w-13 h-13 heroIcon bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] absolute -right-14 -bottom-9 flex items-center justify-center">
+              <Image
+                alt="icon"
+                src={assets.Visual_Studio_Code}
+                height={100}
+                width={100}
+                className="h-6.25 w-auto"
+              />
+            </FadeUp>
+          </div>
+          <FadeUp delay={0.7} className="flex items-center justify-center gap-space-2 px-space-7 py-space-2 rounded-xl max-w-max border border-[#00DE00]/20">
+            <div className="relative size-4 shrink-0">
+              {/* Ping animation */}
+              <span className="absolute inset-0 rounded-full bg-green-500/50 animate-ping" />
+
+              {/* Main circle */}
+              <span className="absolute top-1/2 left-1/2 size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-500" />
+            </div>
+
+            <p className="font-primary font-semibold text-size-sm text-[#00DE00]">
+              Available for work
+            </p>
+          </FadeUp>
         </div>
-      </div>
+      </FadeUp>
 
       {/* content */}
       <div className="flex flex-col items-center gap-space-6 mt-space-6">
         <div className="flex flex-col items-center gap-space-4">
           <div className="flex flex-col items-center text-center gap-space-2">
-            <h1 className="font-primary text-size-2xl font-bold">
+            <FadeUp as="h1" delay={0.1} className="font-primary text-size-2xl font-bold">
               Designing Experiences, Building
               <br />
               <span className="bg-linear-to-r from-[#7C3AED] to-[#06B6D4] bg-clip-text text-transparent">
                 Modern Web Interfaces
               </span>
-            </h1>
-            <p className="font-medium text-size-base opacity-70 w-[700px]">
+            </FadeUp>
+            <FadeUp as="p" delay={0.2} className="font-medium text-size-base text-foreground/60 w-[700px]">
               I’m Mahdi — a UI/UX Designer and Next.js Frontend Developer
               focused on creating aesthetic, user-centered, and high-performance
               digital experiences that feel smooth, modern, and impactful.
-            </p>
+            </FadeUp>
           </div>
-          <Button text={"About me"} />
+          <FadeUp delay={0.3}>
+          <Link
+            href={"/about"}
+            className="animate-fade-up [animation-delay:360ms]"
+          >
+            <Button text={"About me"} />
+          </Link></FadeUp>
         </div>
-        <div className="flex items-center gap-space-7">
+        <FadeUp delay={0.4} className="flex items-center gap-space-7 *:animate-fade-up [animation-delay:480ms]">
           {count.map((item, i) => (
             <div
               key={i}
               className="flex flex-col items-center justify-center gap-space-2 px-space-6 w-[240px]"
             >
-              <div >
+              <div>
                 <div className="flex items-center gap-space-3 text-secondary-700">
                   <i className={`text-[26px] ${item.icon}`}></i>
                   <CountUpNumber key={i} number={item.number} />
                 </div>
-                <h4 className="font-semibold text-size-base text-placeholder mt-space-1">
+                <h4 className="font-semibold text-size-base text-placeholder dark:text-placeholder_2 mt-space-1">
                   {item.label}
                 </h4>
               </div>
             </div>
           ))}
-        </div>
+        </FadeUp>
       </div>
     </div>
   );

@@ -1,7 +1,14 @@
+"use client";
+
 import React from "react";
 import Button from "../components/Button";
 import Image from "next/image";
 import { assets } from "../assets/assets";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import FadeLeft from "../components/motions/FadeLeft";
+import FadeRight from "../components/motions/FadeRight";
+import FadeUp from "../components/motions/FadeUp";
 
 const page = () => {
   const aboutMeLabel = [
@@ -32,24 +39,48 @@ const page = () => {
   ];
 
   return (
-    <section className="min-w-full">
-      <div className="w-full bg-foreground flex items-center gap-space-6 rounded-[12px] p-space-7 relative">
+    <section className="min-w-full ">
+      <div className="overflow-hidden w-full bg-foreground dark:bg-background flex items-center gap-space-6 rounded-xl p-space-7 relative">
+        {/* Background Pattern */}
+        <Image
+          alt="background pattern"
+          src="/Background_patterns.png"
+          fill
+          className="object-cover z-0 top-0 opacity-8"
+        />
         {/* content */}
         <div className="w-full">
           <div>
-            <div className="rounded-full px-space-3 py-space-3 mb-space-3 font-primary font-semibold text-size-xs_2 bg-secondary-800/10 text-secondary-50 max-w-max">
+            <FadeLeft
+              delay={0}
+              className="rounded-full px-space-5 py-space-3 mb-space-3 font-primary font-semibold text-size-xs_2 bg-secondary-600/10 text-secondary-50 max-w-max "
+            >
               UI/UX Design • MERN stack website development
-            </div>
-            <h1 className="font-primary font-semibold text-size-2xl mb-space-5 text-background">
+            </FadeLeft>
+            <FadeLeft
+              as="h1"
+              className="font-primary font-semibold text-size-2xl mb-space-5 text-background dark:text-foreground"
+            >
               Designing Experiences, Building Websites
-            </h1>
-            <p className="font-medium text-size-md text-placeholder">
+            </FadeLeft>
+            <FadeLeft
+              as="p"
+              delay={0.1}
+              className="font-medium text-size-md text-placeholder"
+            >
               I&apos;m a UI/UX and Product Designer who creates user-centered
               websites that balance great design with real business goals.
-            </p>
-            <div className="flex flex-col gap-space-4 mt-space-7 mb-space-7">
+            </FadeLeft>
+            <FadeLeft
+              delay={0.2}
+              className="flex flex-col gap-space-4 mt-space-7 mb-space-7"
+            >
               {aboutMeLabel.map((item, i) => (
-                <div key={i} className="flex items-center gap-1.5">
+                <FadeLeft
+                  key={i}
+                  delay={i * 0.08}
+                  className="flex items-center gap-1.5"
+                >
                   <Image
                     alt="checkBox"
                     width={22}
@@ -59,16 +90,20 @@ const page = () => {
                   <p className="font-medium text-size-md text-placeholder">
                     {item}
                   </p>
-                </div>
+                </FadeLeft>
               ))}
-            </div>
+            </FadeLeft>
           </div>
-          <div className="flex items-center gap-space-4">
-            <Button text={"Intro Video"} />
-            <Button text={"Download Resume"} />
-          </div>
+          <FadeLeft delay={0.3} className="flex items-center gap-space-4">
+            <Button varient="text" text={"Intro Video"} />
+            <Button
+              text={"Download Resume"}
+              rightIcon
+              icon="fi fi-sr-file-download"
+            />
+          </FadeLeft>
         </div>
-        <div className="relative">
+        <FadeRight delay={0.2} className="relative">
           {/* overlay */}
           <div className="box after:blur-[20px]">
             <i className="fi fi-rr-website-design absolute top-1 left-1 transform -translate-x-1/2 -translate-y-1/2 z-20 text-secondary-500/10 text-[86px]"></i>
@@ -83,37 +118,56 @@ const page = () => {
               className="relative z-30"
             />
           </div>
-        </div>
+        </FadeRight>
       </div>
-      <h2 className="font-primary font-semibold text-size-lg mt-space-7 mb-space-7 ">
+      <FadeLeft
+        delay={0.4}
+        as="h2"
+        className="font-primary font-semibold text-size-lg mt-space-7 mb-space-7 "
+      >
         Why I choose these professions
-      </h2>
+      </FadeLeft>
       <div className="space-y-space-6">
         {aboutMeContent.map((item, i) => (
-          <div
-            key={i}
-            className="bg-secondary-50 flex items-center gap-space-6 p-space-7 rounded-[12px] border border-secondary-500/20"
-          >
-            <Image
-              width={250}
-              height={250}
-              src={assets.backgroundImage}
-              alt="image"
-              className="object-cover h-full"
-            />
-            <div>
-              <h3 className="font-primary font-semibold text-size-md mb-space-5">
-                {item.title}
-              </h3>
-              <h4 className="font-medium text-size-sm mb-[10px]">
-                {item.subtitle}
-              </h4>
-              <p className="font-medium text-size-sm text-placeholder_2 mb-space-5">
-                {item.descripiton}
-              </p>
-              <Button variant="text" text={"View Workflow"} rightIcon />
+          <FadeUp key={i}>
+            <div className="bg-secondary-50 dark:bg-background flex items-center gap-space-6 p-space-7 rounded-xl border border-secondary-500/20 dark:border-secondary-500/10">
+              <Image
+                width={250}
+                height={250}
+                src={assets.backgroundImage}
+                alt="image"
+                className="object-cover h-full rounded-xl"
+              />
+              <div>
+                <FadeUp
+                  as="h3"
+                  delay={0.1}
+                  className="font-primary font-semibold text-size-md mb-space-5"
+                >
+                  {item.title}
+                </FadeUp>
+                <FadeUp
+                  as="h4"
+                  delay={0.2}
+                  className="font-medium text-size-sm mb-2.5"
+                >
+                  {item.subtitle}
+                </FadeUp>
+                <FadeUp
+                  as="p"
+                  delay={0.3}
+                  className="font-medium text-size-sm text-placeholder mb-space-5"
+                >
+                  {item.descripiton}
+                </FadeUp>
+                <FadeUp delay={0.35}>
+                  <Link href={"/workflow"}>
+                    <Button varient="text" text={"View Workflow"} rightIcon />
+                  </Link>
+                </FadeUp>
+              </div>
             </div>
-          </div>
+          </FadeUp>
         ))}
       </div>
     </section>

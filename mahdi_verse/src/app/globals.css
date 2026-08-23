@@ -88,7 +88,6 @@
 }
 
 body {
-  background: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-secondary), Arial, Helvetica, sans-serif;
 }
@@ -98,11 +97,11 @@ i {
 }
 
 input, textarea {
-  @apply outline-none bg-white border border-placeholder/50 placeholder:text-placeholder placeholder:font-medium placeholder:text-size-sm px-space-4 py-3.5 w-full text-size-sm font-medium rounded-[12px] ;
+  @apply outline-none bg-white border border-placeholder/50 placeholder:text-placeholder placeholder:font-medium placeholder:text-size-sm px-space-4 py-3.5 w-full text-size-sm font-medium rounded-xl dark:bg-primary-900/20 dark:border-placeholder/10 ;
 }
 
 .inputLabel {
-  @apply p-space-1 font-primary text-size-base font-semibold text-primary-900 ;
+  @apply p-space-1 font-primary text-size-base font-semibold text-primary-900 dark:text-primary-100 ;
 }
 
 .box {
@@ -132,4 +131,251 @@ input, textarea {
   to {
     --angle: 360deg;
   }
+}
+
+/* Active nav item shadow (light mode) */
+.nav-active-shadow {
+  background: linear-gradient(to bottom right, #52E7FD, #4AD1E5);
+  box-shadow:
+    1px 1px 3px rgba(210, 222, 223, 0.9),
+    -1px -1px 2px rgba(255, 255, 255, 0.9),
+    1px -1px 2px rgba(210, 222, 223, 0.2),
+    -1px 1px 2px rgba(210, 222, 223, 0.2),
+    inset -1px -1px 2px rgba(74, 209, 239, 0.5),
+    inset 1px 1px 2px rgba(82, 231, 253, 0.3);
+}
+
+.dark .nav-active-shadow {
+  background: rgba(34, 211, 238, 0.6);
+  box-shadow: none;
+}
+
+/* Hover nav item shadow (light mode) */
+.nav-hover-shadow:hover {
+  background: linear-gradient(to bottom right, #DDEEF0, #F5FFFF);
+  box-shadow:
+    1px 1px 3px rgba(74, 209, 239, 0.9),
+    -1px -1px 2px rgba(82, 231, 253, 0.9),
+    1px -1px 2px rgba(74, 209, 239, 0.2),
+    -1px 1px 2px rgba(74, 209, 239, 0.2),
+    inset -1px -1px 2px rgba(210, 222, 223, 0.5),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+.dark .nav-hover-shadow:hover {
+  box-shadow: none;
+  background: rgba(74, 209, 239, 0.1);
+}
+
+.chips-shadow {
+  box-shadow:
+    1px 1px 2px rgba(255, 255, 255, 0.3),
+    -1px -1px 2px rgba(196, 211, 213, 0.50),
+    inset 1px -1px 2px rgba(196, 211, 213, 0.2),
+    inset -1px 1px 2px rgba(196, 211, 213, 0.2),
+    inset -1px -1px 2px rgba(255, 255, 255, 0.9),
+    inset 1px 1px 3px rgba(196, 211, 213, 0.90);
+}
+
+.dark .chips-shadow {
+  box-shadow:
+    1px 1px 2px rgba(0, 0, 0, 0.3),
+    -1px -1px 2px rgba(20, 30, 40, 0.5),
+    inset 1px -1px 2px rgba(0, 0, 0, 0.2),
+    inset -1px 1px 2px rgba(0, 0, 0, 0.2),
+    inset -1px -1px 2px rgba(30, 40, 50, 0.4),
+    inset 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.clientCard-shadow {
+  box-shadow:
+    2px 2px 5px rgba(210, 222, 223, 0.9),
+    -2px -2px 4px rgba(225, 225, 255, 0.9),
+    2px -2px 4px rgba(210, 222, 223, 0.2),
+    -2px 2px 4px rgba(210, 222, 223, 0.2),
+    inset -1px -1px 2px rgba(210, 222, 223, 0.5),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+.clientCard-shadow:hover {
+  box-shadow:
+    1px 1px 2px rgba(225, 225, 255, 0.3),
+    -1px -1px 2px rgba(210, 222, 223, 0.5),
+    inset 2px -2px 4px rgba(210, 222, 223, 0.2),
+    inset -2px 2px 4px rgba(210, 222, 223, 0.2),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.9),
+    inset 2px 2px 5px rgba(210, 222, 223, 0.9);
+}
+
+.dark .card-shadow,
+.dark .card-shadow:hover {
+  box-shadow: none;
+}
+
+/* globals.css */
+
+/* Chrome, Safari, Edge, Opera */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Firefox */
+html {
+  scrollbar-width: none;
+}
+
+/* IE/old Edge */
+body {
+  -ms-overflow-style: none;
+}
+
+html, body {
+  overflow-x: clip; /* horizontal overflow o আটকায়, kintu scroll container create kore na */
+}
+
+.switch-icon-shadow {
+  box-shadow:
+    1px 1px 2px rgba(255, 255, 255, 0.3),
+    -1px -1px 2px rgba(210, 226, 228, 0.5),
+    inset 1px -1px 2px rgba(210, 226, 228, 0.2),
+    inset -1px 1px 2px rgba(210, 226, 228, 0.2),
+    inset -1px -1px 2px rgba(255, 255, 255, 0.9),
+    inset 1px 1px 3px rgba(210, 226, 228, 0.9);
+}
+
+.dark .switch-icon-shadow {
+  box-shadow:
+    1px 1px 2px rgba(18, 116, 130, 0.5),
+    -1px -1px 2px rgba(10, 62, 70, 0.5),
+    inset 1px -1px 2px rgba(10, 62, 70, 0.2),
+    inset -1px 1px 2px rgba(10, 62, 70, 0.2),
+    inset -1px -1px 2px rgba(18, 116, 130, 0.9),
+    inset 1px 1px 3px rgba(10, 62, 70, 0.9);
+}
+
+.switch-btn--active {
+  background: linear-gradient(to bottom right, #20C8E2, #24DEFA);
+}
+
+.switch-btn--inactive {
+  background: linear-gradient(to bottom right, #F5FFFF, #DDE8E8);
+}
+
+.switch-btn--inactive:hover {
+  background: linear-gradient(to bottom right, #DDE8E9, #F5FFFF);
+}
+
+.dark .switch-btn--active {
+  background: #1896A9; /* same, adjust if dark needs different tone */
+}
+
+.dark .switch-btn--inactive {
+  background: rgba(14, 89, 100, 0.6); /* swap for your actual secondary-700 hex */
+}
+
+.dark .switch-btn--inactive:hover {
+  background: #0E5964; /* swap for your actual secondary-50 hex */
+}
+
+
+.heroIcon {
+  box-shadow:
+    2px 2px 5px rgba(196, 196, 196, 0.9),
+    -2px -2px 5px rgba(255, 255, 255, 0.9),
+    2px -2px 4px rgba(196, 196, 196, 0.2),
+    -2px 2px 4px rgba(196, 196, 196, 0.2),
+    inset -1px -1px 2px rgba(196, 196, 196, 0.5),
+    inset 1px 1px 3px rgba(255, 255, 255, 0.3);
+  background: linear-gradient(to bottom right, #EAEAEA, #FFFFFF);
+}
+
+.dark .heroIcon {
+  background: #0B0F19;
+  box-shadow:
+    2px 2px 5px rgba(4, 6, 10, 0.9),
+    -2px -2px 4px rgba(18, 24, 40, 0.9),
+    2px -2px 4px rgba(4, 6, 10, 0.2),
+    -2px 2px 4px rgba(4, 6, 10, 0.2),
+    inset -1px -1px 2px rgba(4, 6, 10, 0.5),
+    inset 1px 1px 2px rgba(18, 24, 40, 0.3);
+}
+
+.card-fadeUp-2 {
+  animation: fade-in-up linear both;
+  animation-timeline: view();
+  animation-range: entry 0% cover 30%;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@theme {
+  --animate-fade-up: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-right: fade-right 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-left: fade-left 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-shimmer: shimmer 1.6s ease-in-out infinite;
+  
+
+    @keyframes shimmer {
+    from { background-position: -150% 0; }
+    to { background-position: 150% 0; }
+  }
+
+    @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(28px) scale(0.98);
+      filter: blur(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+  }
+
+    @keyframes fade-right {
+    from {
+      opacity: 0;
+      transform: translateX(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+    @keyframes fade-left {
+    from {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+}
+
+
+
+@media (prefers-reduced-motion: reduce) {
+  [class*="animate-fade-up"] {
+    animation: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+}
+
+button {
+  cursor: pointer;
 }

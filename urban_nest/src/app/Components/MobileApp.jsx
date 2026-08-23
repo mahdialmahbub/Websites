@@ -8,7 +8,7 @@ import FadeUp from "./motions/FadeUp";
 
 const MobileApp = () => {
   return (
-    <section className="p-space-9 gap-space-7 flex items-center w-[1440px] container mx-auto">
+    <section className="p-space-9 gap-space-7 flex items-center max-w-[1440px] container mx-auto">
       <FadeRight className="min-w-131.25 min-h-87.5 order-2">
         <Image
           alt="image"

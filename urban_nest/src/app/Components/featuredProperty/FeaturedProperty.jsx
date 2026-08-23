@@ -45,7 +45,7 @@ const FeaturedProperty = () => {
   };
 
   return (
-    <section className="py-space-9 w-[1440px] mx-auto">
+    <section className="py-space-9 max-w-[1440px] mx-auto">
       <div>
         <SectionHeader mainText={"Property"} text={"Featured"} />
 

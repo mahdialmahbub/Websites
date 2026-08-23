@@ -49,46 +49,46 @@ export const projectsData = [
       "Explore the complete design process, from identifying user problems and researching ideas to wireframing, prototyping, and refining the final solution through iterative improvements.",
     projectJourney: [
       {
-        icon: "fi fi-rr-search-alt",
-        title: "Research",
+        icon: "fi fi-rr-users-alt",
+        title: "Discovery",
         subtitle:
-          "Interviewed home buyers and agents to map out pain points in the search journey",
-        duration: "1 - 4 days",
+          "Conducted interviews with home buyers and agents to uncover pain points and define the core problems within the property search experience.",
+        duration: "1 - 3 days",
       },
       {
-        icon: "fi fi-rr-search-alt",
-        title: "Research",
+        icon: "fi fi-rr-sitemap",
+        title: "Information Architecture",
         subtitle:
-          "Explored user flows for property search, comparison, and contact",
-        duration: "1 - 4 days",
+          "Mapped out user flows for property search, listing comparison, and agent contact to establish a clear and intuitive navigation structure.",
+        duration: "2 - 3 days",
       },
       {
-        icon: "fi fi-rr-search-alt",
-        title: "Research",
+        icon: "fi fi-rr-pencil-ruler",
+        title: "Wireframing",
         subtitle:
-          "Built low-fidelity wireframes to test listing layout and filter placement",
-        duration: "1 - 4 days",
+          "Designed low-fidelity wireframes to explore listing layout options and validate filter placement before committing to visual design.",
+        duration: "3 - 5 days",
       },
       {
-        icon: "fi fi-rr-search-alt",
-        title: "Research",
+        icon: "fi fi-rr-palette",
+        title: "Visual Identity",
         subtitle:
-          "Defined a warm, trustworthy visual identity suited for real estate",
-        duration: "1 - 4 days",
+          "Crafted a warm, trustworthy design language — including typography, color palette, and iconography — tailored to the tone of real estate.",
+        duration: "2 - 4 days",
       },
       {
-        icon: "fi fi-rr-search-alt",
-        title: "Research",
+        icon: "fi fi-rr-layers",
+        title: "UI Design",
         subtitle:
-          "Converted wireframes into detailed UI screens with real listing data",
-        duration: "1 - 4 days",
+          "Translated wireframes into high-fidelity screens, incorporating real listing data to produce a polished, production-ready interface.",
+        duration: "5 - 7 days",
       },
       {
-        icon: "fi fi-rr-search-alt",
-        title: "Research",
+        icon: "fi fi-rr-comment-check",
+        title: "Usability Testing",
         subtitle:
-          "Tested the prototype with users to validate the search and contact flow",
-        duration: "1 - 4 days",
+          "Ran prototype testing sessions with target users to validate the search flow, refine micro-interactions, and ensure a seamless contact experience.",
+        duration: "2 - 3 days",
       },
     ],
 
@@ -116,24 +116,31 @@ export const projectsData = [
           "#2E1160",
         ],
         secondary: [
-          "#F0EEFB",
-          "#DAD4F7",
-          "#C1B6F1",
-          "#A392EA",
-          "#8368E2",
-          "#6041D6",
-          "#432AB0",
-          "#2C1A80",
-          "#180D4D",
+          "#EEF2FF",
+          "#E0E7FF",
+          "#C7D2FE",
+          "#A5B4FC",
+          "#818CF8",
+          "#6366F1",
+          "#4F46E5",
+          "#4338CA",
+          "#312E81",
         ],
       },
       others: [
-        { name: "Placeholder", code: "#000000" },
-        { name: "Background", code: "#000000" },
-        { name: "Foreground", code: "#000000" },
+        { name: "Placeholder", code: "#9CA3AF" },
+        { name: "Background", code: "#F8FAFC" },
+        { name: "Foreground", code: "#0B0F19" },
+      ],
+      dark: [
+        { name: "Background", code: "#0D0D14" },
+        { name: "Surface", code: "#16161F" },
+        { name: "Elevated", code: "#1E1E2C" },
+        { name: "Border", code: "#2C2C3E" },
+        { name: "Muted", code: "#3E3E55" },
+        { name: "Foreground", code: "#E2E4F0" },
       ],
     },
-
     // ---------- Spacing ----------
     spacing: {
       description:
@@ -214,7 +221,7 @@ export const projectsData = [
       "User feedback and project outcomes that highlight improvements in usability, visual appeal, and overall experience, along with key insights that shaped the final design.",
     client: {
       id: "c1",
-      Image: "/clientImages/Ahmed_Al-Farsi.jpg",
+      image: "/clients/clientImages/Ahmed_Al_Farsi.jpg",
       name: "Ahmed Al-Farsi",
       position: "First-time Home Buyer",
       feedback: [

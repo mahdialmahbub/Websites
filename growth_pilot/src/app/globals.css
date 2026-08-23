@@ -1,0 +1,218 @@
+@import "tailwindcss";
+
+/* dark mode class control */
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+@theme inline {
+  --font-sans: var(--font-work-sans);
+  /* =========================
+     SPACING SCALE
+  ========================== */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-sm2: 12px;
+  --spacing-md: 16px;
+  --spacing-md2: 20px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xl2: 40px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  --spacing-4xl: 96px;
+  --spacing-5xl: 128px;
+
+  /* =========================
+     FONT SIZES
+  ========================== */;
+  --text-h1: 64px;
+  --text-h2: 36px;
+  --text-h3: 28px;
+  --text-h4: 22px;
+  --text-h5: 18px;
+  --text-h6: 16px;
+  --text-large: 14px;
+  --text-medium: 12px;
+  --text-small: 10px;
+ 
+  /* =========================
+     COLORS
+  ========================== */
+   --color-white: #FAFBFF;
+   --color-black: #0B1120;
+   --color-primary: #5A4BFF;
+   --color-primary2: #8F6BFF;
+   --color-secondary: #F093FB;
+   --color-secondary2: #F5576C;
+   --color-accent1: #6C5CE7;
+   --color-accent1-bg: #F3F0FF;
+   --color-accent2: #56CCF2;
+   --color-accent2-bg: #EAF6FF;
+   --color-accent3: #22C55E;
+   --color-accent3-bg: #EAFBF3;
+   --color-accent4: #F59E0B;
+   --color-accent4-bg: #FFF4E6;
+   --color-accent5: #EC4899;
+   --color-accent5-bg: #FFF0F6;
+   --color-accent6: #4F46E5;
+   --color-accent6-bg: #EEF2FF;
+}
+
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* .input, .textarea, .select {
+  @apply placeholder:text-h6 placeholder:font-medium placeholder:text-neutral border-[1.5px] bg-white p-[12px] rounded-lg border-accent/30 hover:border-accent/80 focus:border-accent text-black;
+} */
+
+.section {
+  @apply flex flex-col items-center py-[40px] px-[16px] gap-[32px] md:py-[40px] md:px-[48px] md:gap-[48px] xl:py-[80px] xl:px-[80px] xl:gap-[64px] ;
+}
+
+
+.grou {
+  animation: bla 10s infinite linear;
+  padding-right: 1em;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes bla {
+  from {translate: 0;}
+  to {translate: -100%;}
+}
+
+.grou {
+  animation: bla 5s infinite linear;
+}
+
+
+
+.testiCard {
+  background-image: url(assets/testimonialCard.png);
+  background-size: cover;        /* পুরো div cover করবে */
+  background-position: center;   /* image center এ থাকবে */
+  background-repeat: no-repeat;  /* repeat হবে না */
+
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes blob1 {
+  0%   { left: -20%;   top: -70%; }
+  25%  { left:95%;  top: -70%; }
+  50%  { left:95%;  top: 70%; }
+  75%  { left:-20%;  top: 70%; }
+  100%  { left:-20%;  top: -70%; }
+}
+
+@keyframes blob2 {
+  0%   { left: 95%;   top: -70%; }
+  25%  { left:95%;  top: 70%; }
+  50%  { left:-20%;  top: 70%; }
+  75%  { left:-20%;  top: -70%; }
+  100%  { left:95%;  top: -70%; }
+}
+ 
+@keyframes blob3 {
+  0%   { left: 95%;   top: 70%; }
+  25%  { left:-20%;  top: 70%; }
+  50%  { left:-20%;  top: -70%; }
+  75%  { left:95%;  top: -70%; }
+  100%  { left:95%;  top: 70%; }
+}
+
+@keyframes blob4 {
+  0%   { left: -20%;   top: 70%; }
+  25%  { left:-20%;  top: -70%; }
+  50%  { left:95%;  top: -70%; }
+  75%  { left:95%;  top: 70%; }
+  100%  { left:-20%;  top: 70%; }
+}
+
+
+
+@keyframes blob11 {
+  0%   { left: -20%;   top: -20%; }
+  25%  { left: 90%;  top: -20%; }
+  50%  { left: 90%;  top: 90%; }
+  75%  { left: -20%;   top: 90%; }
+  100% { left: -20%;   top: -20%; }
+}
+
+@keyframes blob22 {
+  0%   { left: 90%;   top: -20%; }
+  25%  { left: 90%;  top: 90%; }
+  50%  { left: -20%;  top: 90%; }
+  75%  { left: -20%;   top: -20%; }
+  100% { left: 90%;   top: -20%; }
+}
+ 
+@keyframes blob33 {
+  0%   { left: 90%;   top: 90%; }
+  25%  { left: -20%;  top: 90%; }
+  50%  { left: -20%;  top: -20%; }
+  75%  { left: 90%;   top: -20%; }
+  100% { left: 90%;   top: 90%; }
+}
+
+@keyframes blob44 {
+  0%   { left: -20%;   top: 90%; }
+  25%  { left: -20%;  top: -20%; }
+  50%  { left: 90%;  top: -20%; }
+  75%  { left: 90%;   top: 90%; }
+  100% { left: -20%;   top: 90%; }
+}
+
+
+
+
+.animate-blob1 { animation: blob1 10s infinite linear; }
+ .animate-blob2 { animation: blob2 10s infinite linear; }
+.animate-blob3 { animation: blob3 10s infinite linear; }
+.animate-blob4 { animation: blob4 10s infinite linear; }
+
+ .animate-blob11 { animation: blob11 10s infinite linear; }
+.animate-blob22 { animation: blob22 10s infinite linear; }
+.animate-blob33 { animation: blob33 10s infinite linear; }
+.animate-blob44 { animation: blob44 10s infinite linear; }
+
+
+/* Practice */
+
+.box .glass {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  display: block;
+  pointer-events: none;
+}
+
+.box::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  bottom: -5px;
+  left: -5px;
+  right: -5px;
+  background: conic-gradient(from 0deg, #d11149, #e68aff, #ff4800, #11ebff, #cdff58, #d11149);
+  z-index: -1;
+}

@@ -86,7 +86,7 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
           />
           <div className="absolute" />
 
-          <span className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-secondary-50/90 backdrop-blur px-3 py-1 text-xs font-semibold tracking-wide text-secondary-500 shadow-[0px_0px_5px_rgba(34,211,238,0.5)]">
+          <span className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-secondary-50/90 backdrop-blur px-3 py-1 text-xs font-semibold tracking-wide text-secondary-800 shadow-[0px_0px_5px_rgba(34,211,238,0.5)]">
             {String(selected + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
           </span>
 
@@ -95,10 +95,10 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
         {/* Thumbnail rail */}
         <div className="relative mt-space-3">
           {edges.left && (
-            <div className="pointer-events-none absolute left-0 top-0 bottom-3 w-10 bg-linear-to-r from-violet-50 to-transparent z-10" />
+            <div className="pointer-events-none absolute left-0 top-0 bottom-3 w-10 bg-linear-to-r from-secondary-50 dark:from-background to-transparent z-10" />
           )}
           {edges.right && (
-            <div className="pointer-events-none absolute right-0 top-0 bottom-3 w-10 bg-linear-to-l from-violet-50 to-transparent z-10" />
+            <div className="pointer-events-none absolute right-0 top-0 bottom-3 w-10 bg-linear-to-l from-secondary-50 dark:from-background to-transparent z-10" />
           )}
 
           {edges.left && (
@@ -106,7 +106,7 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
               type="button"
               onClick={() => scrollBy(-1)}
               aria-label="Scroll thumbnails left"
-              className="hidden sm:flex items-center justify-center absolute -left-3 top-1/2 -translate-y-1/2 z-20 h-8 w-8 rounded-full bg-white border border-violet-200 shadow text-violet-700 hover:bg-violet-50"
+              className="hidden sm:flex items-center justify-center absolute -left-3 top-9 -translate-y-1/2 z-20 h-8 w-8 rounded-full bg-white border border-violet-200 shadow text-violet-700 hover:bg-violet-50"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -116,7 +116,7 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
               type="button"
               onClick={() => scrollBy(1)}
               aria-label="Scroll thumbnails right"
-              className="hidden sm:flex items-center justify-center absolute -right-3 top-1/2 -translate-y-1/2 z-20 h-8 w-8 rounded-full bg-white border border-violet-200 shadow text-violet-700 hover:bg-violet-50"
+              className="hidden sm:flex items-center justify-center absolute -right-3 top-9 -translate-y-1/2 z-20 h-8 w-8 rounded-full bg-white border border-violet-200 shadow text-violet-700 hover:bg-violet-50"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
@@ -149,8 +149,8 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
                   className={[
                     "relative shrink-0 w-28 aspect-video rounded-sm overflow-hidden transition-all duration-200",
                     isSelected
-                      ? "border-secondary-600 ring-2 ring-secondary-300 ring-offset-2 ring-offset-white"
-                      : "border-transparent opacity-70 hover:opacity-100 hover:border-2 hover:border-secondary-200",
+                      ? "border-secondary-600 ring-2 ring-secondary-300/50"
+                      : "opacity-80 hover:opacity-100 ring-2 ring-transparent hover:ring-secondary-200",
                   ].join(" ")}
                 >
                   <Image
@@ -158,10 +158,10 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
                     alt={img.alt}
                     width={900}
                     height={620}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-all duration-200"
                   />
                   {isSelected && (
-                    <div className="absolute inset-0 bg-linear-to-t from-secondary-700/40 via-secondary-600/10 to-transparent flex items-end justify-center pb-1.5">
+                    <div className="absolute inset-0 bg-linear-to-t from-secondary-700/70 via-secondary-600/20 to-transparent flex items-end justify-center pb-1.5">
                       <Eye className="h-3.5 w-3.5 text-white" />
                     </div>
                   )}
