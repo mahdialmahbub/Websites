@@ -1,0 +1,22 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg3" cx="30%" cy="25%" r="80%">
+      <stop offset="0%" stop-color="#302411"/>
+      <stop offset="100%" stop-color="#0E0E16"/>
+    </radialGradient>
+    <linearGradient id="stroke3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFDE85"/>
+      <stop offset="100%" stop-color="#FFC53D"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="64" fill="url(#bg3)"/>
+  <circle cx="256" cy="256" r="150" fill="#FFC53D" opacity="0.10"/>
+
+  <!-- badge ribbon -->
+  <path d="M196 300 L160 372 L204 364 L226 402 L256 340" fill="none" stroke="url(#stroke3)" stroke-width="12" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M316 300 L352 372 L308 364 L286 402 L256 340" fill="none" stroke="url(#stroke3)" stroke-width="12" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- medal circle -->
+  <circle cx="256" cy="234" r="86" fill="#0E0E16" stroke="url(#stroke3)" stroke-width="14"/>
+  <path d="M220 234 L245 259 L296 206" fill="none" stroke="url(#stroke3)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

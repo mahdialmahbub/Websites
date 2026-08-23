@@ -1,0 +1,30 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg4" cx="30%" cy="25%" r="80%">
+      <stop offset="0%" stop-color="#241638"/>
+      <stop offset="100%" stop-color="#0E0E16"/>
+    </radialGradient>
+    <linearGradient id="stroke4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B892FF"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="64" fill="url(#bg4)"/>
+  <circle cx="256" cy="256" r="150" fill="#7C3AED" opacity="0.10"/>
+
+  <!-- head + headset -->
+  <circle cx="256" cy="230" r="60" fill="none" stroke="url(#stroke4)" stroke-width="14"/>
+  <path d="M196 230 a60 60 0 0 1 120 0" fill="none" stroke="url(#stroke4)" stroke-width="14" stroke-linecap="round"/>
+
+  <!-- ear cups -->
+  <rect x="182" y="222" width="26" height="46" rx="10" fill="none" stroke="url(#stroke4)" stroke-width="12"/>
+  <rect x="304" y="222" width="26" height="46" rx="10" fill="none" stroke="url(#stroke4)" stroke-width="12"/>
+
+  <!-- mic -->
+  <path d="M317 258 v22 a26 26 0 0 1 -26 26 h-18" fill="none" stroke="url(#stroke4)" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="269" cy="306" r="8" fill="url(#stroke4)"/>
+
+  <!-- 24/7 badge -->
+  <circle cx="336" cy="356" r="34" fill="#0E0E16" stroke="url(#stroke4)" stroke-width="8"/>
+  <text x="336" y="363" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="url(#stroke4)" text-anchor="middle">24/7</text>
+</svg>
