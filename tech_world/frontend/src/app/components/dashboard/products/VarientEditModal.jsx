@@ -46,7 +46,7 @@ const [selectedProcessor, setSelectedProcessor] = useState(
 
 const VarientEditModal = ({}) => {
   return (
-    <div className="p-space-7 rounded-2xl bg-background border-2 border-secondary max-w-[700px] space-y-space-8">
+    <div className="p-space-7 rounded-2xl bg-background border-2 border-secondary max-w-175 space-y-space-8">
       <div className="flex items-center gap-space-3 mb-space-7">
         <i className="text-[32px] fi fi-sr-microchip"></i>
         <h2 className="font-semibold text-size-h3">Processor</h2>

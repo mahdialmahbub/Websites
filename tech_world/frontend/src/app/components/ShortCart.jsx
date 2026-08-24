@@ -10,6 +10,7 @@ import { ProductCard } from "./ProductCard";
 import { usePathname, useRouter } from "next/navigation";
 import Button from "./Button";
 import { useSelector } from "react-redux";
+import EditCartItemModal from "./EditCartItemModal";
 
 const toCartCardData = (item) => ({
   image: item.product?.image,
@@ -43,6 +44,8 @@ const ShortCart = () => {
   // Drawer starts closed — it's a peek tab now, not an always-open box
   const [isOpen, setIsOpen] = useState(false);
   const [isRemovingAll, setIsRemovingAll] = useState(false);
+
+  const [editingCartItem, setEditingCartItem] = useState(null); // the cart item currently being edited, or null
 
   // Remove single cart item
   const handleRemoveItem = async (cartItemId) => {
@@ -150,9 +153,7 @@ const ShortCart = () => {
                     data={toCartCardData(item)}
                     actions={{
                       onDelete: () => handleRemoveItem(item.cartItemId),
-
-                      onEdit: () =>
-                        router.push(`/product/${item.product?._id}`),
+                      onEdit: () => setEditingCartItem(item),
                     }}
                   />
                 ))}
@@ -202,6 +203,12 @@ const ShortCart = () => {
           </div>
         )}
       </div>
+      {editingCartItem && (
+        <EditCartItemModal
+          item={editingCartItem}
+          onClose={() => setEditingCartItem(null)}
+        />
+      )}
     </div>
   );
 };

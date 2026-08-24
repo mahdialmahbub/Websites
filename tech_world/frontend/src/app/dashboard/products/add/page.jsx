@@ -516,47 +516,6 @@ const page = () => {
                 />
               </div>
             </div>
-
-            {/* Features */}
-            <div>
-              <h2 className="font-medium text-size-h6 text-placeholder_3">
-                Features
-              </h2>
-              <div className="px-space-3 space-y-space-6">
-                <div className="flex items-end gap-space-2 ">
-                  <InputField
-                    showInfo={true}
-                    infoMessage="You can add multiple features"
-                    title="Feature"
-                    value={featureInput}
-                    onChange={(e) => setFeatureInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        handleAddFeature();
-                      }
-                    }}
-                  />
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    className="text-size-large mb-space-7"
-                    onClick={handleAddFeature}
-                  >
-                    Add Feature
-                  </Button>
-                </div>
-                <div className="flex w-full flex-wrap gap-space-3">
-                  {features.map((feature, i) => (
-                    <FeatureTag
-                      key={i}
-                      text={feature}
-                      onRemove={() => handleRemoveFeature(i)}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* key informations */}
@@ -581,7 +540,7 @@ const page = () => {
                   PNG or JPG, up to {MAX_IMAGE_SIZE_MB}MB
                 </p>
               </label>
-              <div className="flex items-center gap-space-3 w-full overflow-x-auto">
+              <div className="flex items-center gap-space-3 w-full overflow-x-auto overflow-y-visible custom-scrollbar">
                 {imagePreviews.map((src, i) => (
                   <div key={i} className="relative shrink-0">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -644,7 +603,7 @@ const page = () => {
                       onClick={() => setSelectedDiscount(d.percentage)}
                       className={
                         selectedDiscount === d.percentage
-                          ? "ring-2 ring-secondary rounded-full"
+                          ? "ring-2 ring-secondary rounded-lg"
                           : ""
                       }
                     >
@@ -658,24 +617,33 @@ const page = () => {
                 </div>
               </div>
               {showAddDiscount && (
-                <div className="flex items-center gap-space-3 mt-space-3">
-                  <input
-                    type="number"
-                    min="1"
-                    max="100"
-                    value={newDiscountValue}
-                    onChange={(e) => setNewDiscountValue(e.target.value)}
-                    placeholder="e.g. 20"
-                    className="w-24 rounded-lg border border-white/10 bg-[#12141c] px-3 py-2 text-sm"
-                  />
-                  <Button
+                <div className="flex items-start gap-space-3 mt-space-5">
+                  <div className="min-w-50">
+                    <InputField
+                      type="number"
+                      min="1"
+                      max="100"
+                      value={newDiscountValue}
+                      onChange={(e) => setNewDiscountValue(e.target.value)}
+                      placeholder="e.g. 20"
+                      showIcon
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          handleCreateDiscount();
+                        }
+                      }}
+                      icon="fi fi-sr-badge-percent"
+                    />
+                  </div>
+                  <button
                     type="button"
-                    variant="secondary"
                     onClick={handleCreateDiscount}
                     disabled={creatingDiscount}
+                    className="mt-space-3"
                   >
                     Save
-                  </Button>
+                  </button>
                 </div>
               )}
             </div>
@@ -702,7 +670,7 @@ const page = () => {
                       onClick={() => toggleBadge(b._id)}
                       className={
                         selectedBadges.includes(b._id)
-                          ? "ring-2 ring-secondary rounded-full"
+                          ? "ring-2 ring-secondary rounded-lg"
                           : ""
                       }
                     >
@@ -712,34 +680,87 @@ const page = () => {
                 </div>
               </div>
               {showAddBadge && (
-                <div className="flex items-center gap-space-3 mt-space-3">
-                  <input
-                    value={newBadgeName}
-                    onChange={(e) => setNewBadgeName(e.target.value)}
-                    placeholder="e.g. International Best Seller"
-                    className="rounded-lg border border-white/10 bg-[#12141c] px-3 py-2 text-sm"
-                  />
-                  <Button
+                <div className="flex items-start gap-space-3 mt-space-5">
+                  <div className="min-w-50">
+                    <InputField
+                      value={newBadgeName}
+                      onChange={(e) => setNewBadgeName(e.target.value)}
+                      placeholder="e.g. International Best Seller"
+                      showIcon
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          handleCreateBadge();
+                        }
+                      }}
+                      icon="fi fi-sr-badge-percent"
+                    />
+                  </div>
+                  <button
                     type="button"
-                    variant="secondary"
                     onClick={handleCreateBadge}
                     disabled={creatingBadge}
+                    className="mt-space-3"
                   >
                     Save
-                  </Button>
+                  </button>
                 </div>
               )}
             </div>
 
-            <Button
-              type="button"
-              onClick={handleSubmit}
-              disabled={submitting}
-              className="w-full mt-space-6"
-            >
-              {submitting ? "Adding Product..." : "Add Product"}
-            </Button>
+            {/* Features */}
+            <div>
+              <h2 className="font-medium text-size-h6 text-placeholder_3">
+                Features
+              </h2>
+              <div className="px-space-3 space-y-space-6 mt-space-6">
+                <div className="flex items-end gap-space-2 ">
+                  <InputField
+                    showInfo={true}
+                    infoMessage="You can add multiple features"
+                    title="Feature"
+                    value={featureInput}
+                    onChange={(e) => setFeatureInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleAddFeature();
+                      }
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    className="text-size-large mb-space-7"
+                    onClick={handleAddFeature}
+                  >
+                    Add Feature
+                  </Button>
+                </div>
+                <div className="flex w-full flex-wrap gap-space-3">
+                  {features.map((feature, i) => (
+                    <FeatureTag
+                      key={i}
+                      text={feature}
+                      onRemove={() => handleRemoveFeature(i)}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+
+        {/* Button */}
+        <div className=" p-space-4 rounded-lg bg-[#1A1E3D]/50">
+          <Button
+            type="button"
+            onClick={handleSubmit}
+            disabled={submitting}
+            className="w-full"
+          >
+            {submitting ? "Adding Product..." : "Add Product"}
+          </Button>
         </div>
       </div>
 

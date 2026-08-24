@@ -16,8 +16,8 @@ const NavItem = ({ href, text, stockIcon, fillIcon }) => {
       href={href}
       className={`font-primary flex items-center gap-space-2 px-space-5 py-space-3 rounded-lg font-semibold text-size-h6 transition-colors duration-200 ${
         isActive
-          ? "bg-secondary text-background"
-          : "text-foreground hover:text-secondary"
+          ? "bg-secondary/10 text-secondary"
+          : "text-foreground/50 hover:text-secondary"
       }`}
     >
       <i className={`${isActive ? fillIcon : stockIcon} text-[20px]`}></i>

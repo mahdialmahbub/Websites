@@ -48,7 +48,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className="min-h-screen flex flex-col w-360 mx-auto">
         <StoreProvider>
-          <Toaster position="top-right" />
+          <Toaster position="top-center" />
           {children}
         </StoreProvider>
       </body>

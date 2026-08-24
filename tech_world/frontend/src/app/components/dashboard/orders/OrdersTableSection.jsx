@@ -1,23 +1,34 @@
 import React, { useState } from "react";
 import Select from "../Select";
 import SearchBar from "../../SearchBar";
-import Button from "../../Button";
 import TableToolbar from "../TableToolbar";
 import { useGetOrdersAdminQuery } from "@/redux";
 import OrdersTable from "./OrderTable";
 
 const statusOptions = [
   { label: "All Status", value: "" },
-  { label: "Pending", value: "pending" },
-  { label: "Processing", value: "processing" },
-  { label: "Delivered", value: "delivered" },
-  { label: "Cancelled", value: "cancelled" },
+  { label: "Pending", value: "Pending" },
+  { label: "Placed", value: "Placed" },
+  { label: "Processing", value: "Processing" },
+  { label: "Packed", value: "Packed" },
+  { label: "Shipped", value: "Shipped" },
+  { label: "Out for Delivery", value: "Out for Delivery" },
+  { label: "Delivered", value: "Delivered" },
+  { label: "Canceled", value: "Canceled" },
 ];
 
 const paymentOptions = [
   { label: "All Payment Methods", value: "" },
-  { label: "Card", value: "card" },
-  { label: "Cash on Delivery", value: "cod" },
+  { label: "Credit Card", value: "Credit Card" },
+  { label: "Cash on Delivery", value: "Cash on Delivery" },
+];
+
+const paymentStatusOptions = [
+  { label: "All Payment Status", value: "" },
+  { label: "Pending", value: "Pending" },
+  { label: "Paid", value: "Paid" },
+  { label: "Failed", value: "Failed" },
+  { label: "Refunded", value: "Refunded" },
 ];
 
 const sortOptions = [
@@ -30,6 +41,7 @@ const OrdersTableSection = () => {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentStatus, setPaymentStatus] = useState("");
   const [sortByPrice, setSortByPrice] = useState("");
   const [page, setPage] = useState(1);
 
@@ -37,6 +49,7 @@ const OrdersTableSection = () => {
     search,
     status,
     paymentMethod,
+    paymentStatus,
     sortByPrice,
     page,
     limit: 10,
@@ -52,8 +65,12 @@ const OrdersTableSection = () => {
     setStatus(value);
     setPage(1);
   };
-  const handlePaymentChange = (value) => {
+  const handlePaymentMethodChange = (value) => {
     setPaymentMethod(value);
+    setPage(1);
+  };
+  const handlePaymentStatusChange = (value) => {
+    setPaymentStatus(value);
     setPage(1);
   };
   const handleSortChange = (value) => {
@@ -75,10 +92,16 @@ const OrdersTableSection = () => {
           onChange={handleStatusChange}
         />
         <Select
-          label="Payment"
+          label="Payment Options"
           options={paymentOptions}
           value={paymentMethod}
-          onChange={handlePaymentChange}
+          onChange={handlePaymentMethodChange}
+        />
+        <Select
+          label="Payment Status"
+          options={paymentStatusOptions}
+          value={paymentStatus}
+          onChange={handlePaymentStatusChange}
         />
         <Select
           label="Sort"

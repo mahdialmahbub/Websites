@@ -27,7 +27,7 @@ export const adminDashboardApi = baseApi.injectEndpoints({
     }),
 
     getOrderDetailsAdmin: builder.query({
-      query: (orderId) => `/admin/orders/${orderId}`,
+      query: ({orderId}) => `/admin/orders/${orderId}`,
       providesTags: (result, error, orderId) => [{ type: "AdminOrder", id: orderId }],
     }),
 

@@ -8,7 +8,7 @@ import React from "react";
 const page = () => {
   return (
     <div className="px-space-6 pb-space-6 mt-space-3">
-      <div className="p-space-6 space-y-space-9 rounded-[16px] bg-[#1A1E3D]/50">
+      <div className="p-space-6 space-y-space-9 rounded-2xl bg-[#1A1E3D]/50">
       <TableToolbar title="Pending Orders">
             {/* Select, SearchInput ekhane */}
             <Select />

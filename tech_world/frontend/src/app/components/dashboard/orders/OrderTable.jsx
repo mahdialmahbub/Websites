@@ -3,8 +3,10 @@
 import OrderRow from "./OrderRow";
 
 const OrdersTable = ({ orders, isDashboard = true }) => {
+
+console.log(orders)
   return (
-    <div className="rounded-2xl border-2 border-secondary/10 overflow-x-auto px-space-2">
+    <div className="rounded-2xl border-2 border-secondary/10 px-space-2">
       <table className="w-full text-left border-separate border-spacing-x-0 border-spacing-y-space-3">
         <thead>
           <tr className="text-[#CBD5F5] text-size-h6 *:font-medium *:border-b *:border-secondary/10 *:px-space-3 *:py-space-2">
@@ -24,7 +26,7 @@ const OrdersTable = ({ orders, isDashboard = true }) => {
         </thead>
         <tbody>
           {orders?.map((order) => (
-            <OrderRow key={order.id} order={order} isDashboard={isDashboard} />
+            <OrderRow key={order._id} order={order} isDashboard={isDashboard} />
           ))}
         </tbody>
       </table>

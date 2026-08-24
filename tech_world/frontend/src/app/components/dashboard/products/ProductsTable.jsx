@@ -13,9 +13,7 @@ const ProductsTable = ({ products, isDashboard = true }) => {
             <th className="">Status</th>
             <th className="">Category</th>
             <th className="">Stock</th>
-            {!isDashboard && (
-              <th className="">Added On</th>
-            )}
+            {!isDashboard && <th className="">Added On</th>}
             <th className="text-right">Actions</th>
           </tr>
         </thead>

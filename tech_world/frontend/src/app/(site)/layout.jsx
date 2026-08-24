@@ -6,11 +6,9 @@ import ShortCart from "../components/ShortCart";
 const SiteLayout = ({ children }) => {
   return (
     <>
-      <div className="w-full px-space-8 py-space-7 flex items-center justify-center">
-        <Navbar />
-      </div>
+      <Navbar />
       {children}
-      <ShortCart/>
+      <ShortCart />
       <div className="w-full px-space-8 py-space-8">
         <Footer />
       </div>

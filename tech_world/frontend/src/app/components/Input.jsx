@@ -19,6 +19,7 @@ export default function InputField({
   onChange,
   type = "text",
   disabled = false,
+  onKeyDown,
 
   // Status messages — each has its own visibility toggle
   showInfo = false,
@@ -32,6 +33,9 @@ export default function InputField({
 
   showLoading = false,
   loadingMessage = "Loading message",
+
+  max,
+  min,
 }) {
   const [internalValue, setInternalValue] = useState(defaultValue ?? "");
   const isControlled = value !== undefined;
@@ -50,7 +54,7 @@ export default function InputField({
       : "border-secondary/30 hover:border-secondary/50 focus-within:border-secondary/80";
 
   return (
-    <label className="w-full h-full">
+    <label className="w-full">
       {/* Title row */}
       {(title || required) && (
         <div className="flex items-center justify-between mb-2 px-space-1">
@@ -83,6 +87,9 @@ export default function InputField({
           onChange={handleChange}
           placeholder={placeholder}
           disabled={disabled}
+          max={max}
+          min={min}
+          onKeyDown={onKeyDown}
           className="w-full bg-background text-foreground placeholder-placeholder_3 outline-none text-sm"
         />
       </div>
@@ -91,14 +98,18 @@ export default function InputField({
       <div className="mt-space-3 flex flex-col gap-space-3 px-space-1">
         {showInfo && (
           <StatusLine
-            icon={<i className="fi fi-rr-info text-size-large text-secondary" />}
+            icon={
+              <i className="fi fi-rr-info text-size-large text-secondary" />
+            }
             colorClass="text-secondary"
             message={infoMessage}
           />
         )}
         {showError && (
           <StatusLine
-            icon={<i className="fi fi-rr-cross-circle text-size-large text-red" />}
+            icon={
+              <i className="fi fi-rr-cross-circle text-size-large text-red" />
+            }
             colorClass="text-red"
             message={errorMessage}
           />

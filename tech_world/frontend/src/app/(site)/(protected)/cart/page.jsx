@@ -2,13 +2,6 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import Chips from "../../../components/Chips";
-import SavedCard from "../../../components/cart/SavedCard";
-import SavedAddress from "../../../components/cart/SavedAddress";
-import AddCardModal from "../../../components/AddCardModal";
-import AddressModal from "../../../components/AddressModal";
-import Button from "../../../components/Button";
-import { ProductCard } from "../../../components/ProductCard";
 import {
   useGetMyCartQuery,
   useUpdateCartItemMutation,
@@ -22,6 +15,14 @@ import {
   useDeleteAddressMutation,
 } from "@/redux";
 import toast from "react-hot-toast";
+import AddCardModal from "@/app/components/AddCardModal";
+import EditCartItemModal from "@/app/components/EditCartItemModal";
+import AddressModal from "@/app/components/AddressModal";
+import Button from "@/app/components/Button";
+import Chips from "@/app/components/Chips";
+import { ProductCard } from "@/app/components/ProductCard";
+import SavedCard from "@/app/components/cart/SavedCard";
+import SavedAddress from "@/app/components/cart/SavedAddress";
 
 const money = (n) => `$ ${Number(n || 0).toFixed(2)}`;
 
@@ -29,7 +30,10 @@ const money = (n) => `$ ${Number(n || 0).toFixed(2)}`;
 const toCartCardData = (item) => ({
   image: item.product?.image,
   title: item.product?.title,
-  requirement: [...(item.selectedVariants || []).map((v) => v.name), item.selectedColor]
+  requirement: [
+    ...(item.selectedVariants || []).map((v) => v.name),
+    item.selectedColor,
+  ]
     .filter(Boolean)
     .join(", "),
   price: item.totalPrice,
@@ -63,8 +67,16 @@ const Page = () => {
   };
 
   // ---------- Price summary ----------
-  const { data: previewData } = useGetCheckoutPreviewQuery(undefined, { skip: items.length === 0 });
-  const pricing = previewData?.data || { subtotal: 0, discount: 0, shippingCharge: 0, vat: 0, total: 0 };
+  const { data: previewData } = useGetCheckoutPreviewQuery(undefined, {
+    skip: items.length === 0,
+  });
+  const pricing = previewData?.data || {
+    subtotal: 0,
+    discount: 0,
+    shippingCharge: 0,
+    vat: 0,
+    total: 0,
+  };
 
   // ---------- Saved cards ----------
   const { data: cardsData } = useGetMyCardsQuery();
@@ -73,6 +85,7 @@ const Page = () => {
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [showCardModal, setShowCardModal] = useState(false);
   const [editingCard, setEditingCard] = useState(null); // null = adding new
+  const [editingCartItem, setEditingCartItem] = useState(null); // the cart item currently being edited, or null
 
   const handleDeleteCard = async (cardId) => {
     try {
@@ -121,7 +134,8 @@ const Page = () => {
   // ---------- Checkout ----------
   const [paymentMethod, setPaymentMethod] = useState("Cash on Delivery");
   const [placeOrder, { isLoading: placingOrder }] = usePlaceOrderMutation();
-  const [verifyPaymentOtp, { isLoading: verifyingOtp }] = useVerifyPaymentOtpMutation();
+  const [verifyPaymentOtp, { isLoading: verifyingOtp }] =
+    useVerifyPaymentOtpMutation();
   const [awaitingCardOtp, setAwaitingCardOtp] = useState(false);
   const [otp, setOtp] = useState("");
 
@@ -143,7 +157,8 @@ const Page = () => {
       const res = await placeOrder({
         paymentMethod,
         addressId: selectedAddressId,
-        savedCardId: paymentMethod === "Credit Card" ? selectedCardId : undefined,
+        savedCardId:
+          paymentMethod === "Credit Card" ? selectedCardId : undefined,
       }).unwrap();
 
       if (res.data.paymentVerificationRequired) {
@@ -168,9 +183,14 @@ const Page = () => {
   };
 
   return (
-    <section>
+    <div>
       <div className="px-space-11 py-space-7">
-        <Button variant="text" showLeftIcon leftIcon="fi fi-rr-arrow-small-left" onClick={() => router.back()}>
+        <Button
+          variant="text"
+          showLeftIcon
+          leftIcon="fi fi-rr-arrow-small-left"
+          onClick={() => router.back()}
+        >
           Back
         </Button>
       </div>
@@ -180,7 +200,9 @@ const Page = () => {
           <div className="flex items-center gap-space-5">
             <div className="flex items-center gap-space-4">
               <i className="fi fi-rr-cart-shopping-fast text-[30px] text-secondary"></i>
-              <h1 className="font-primary font-semibold text-size-h4">Your Cart Items</h1>
+              <h1 className="font-primary font-semibold text-size-h4">
+                Your Cart Items
+              </h1>
             </div>
             <Chips text={String(items.length).padStart(2, "0")} />
           </div>
@@ -192,13 +214,15 @@ const Page = () => {
         {/* cart items and checkout */}
         <div className="flex gap-space-7">
           {/* products */}
-          <div className="space-y-space-6 w-300 *:w-full ">
+          <div className="space-y-space-6 w-187.5 *:w-full">
             {cartLoading ? (
               <p className="text-slate-500">Loading your cart...</p>
             ) : items.length === 0 ? (
               <div className="text-center py-space-10">
                 <p className="text-slate-500 mb-space-4">Your cart is empty.</p>
-                <Button onClick={() => router.push("/")}>Continue Shopping</Button>
+                <Button onClick={() => router.push("/")}>
+                  Continue Shopping
+                </Button>
               </div>
             ) : (
               items.map((item) => (
@@ -207,9 +231,10 @@ const Page = () => {
                   variant="cart"
                   data={toCartCardData(item)}
                   actions={{
-                    onQuantityChange: (qty) => handleQuantityChange(item.cartItemId, qty),
+                    onQuantityChange: (qty) =>
+                      handleQuantityChange(item.cartItemId, qty),
                     onDelete: () => handleRemoveItem(item.cartItemId),
-                    onEdit: () => router.push(`/product/${item.product._id}`),
+                    onEdit: () => setEditingCartItem(item),
                     onView: () => router.push(`/product/${item.product._id}`),
                   }}
                 />
@@ -218,14 +243,18 @@ const Page = () => {
           </div>
 
           {/* checkout */}
-          <div className="rounded-xl p-space-6 space-y-[20px] border-3 border-secondary/20 min-w-[500px]">
-            <h2 className="font-medium text-size-h5 text-placeholder_3">Payment Summary</h2>
+          <div className="rounded-xl p-space-6 space-y-[20px] border-3 border-secondary/20 max-w-[40%]">
+            <h2 className="font-medium text-size-h5 text-placeholder_3">
+              Payment Summary
+            </h2>
 
             {/* payment method */}
             <div className="p-space-2">
-              <h5 className="mb-space-5 font-semibold text-size-h6">Payment Method</h5>
+              <h5 className="mb-space-5 font-semibold text-size-h6">
+                Payment Method
+              </h5>
               <div className="space-y-space-5">
-                <div className="flex items-center gap-space-5 *:flex-1 *:justify-center">
+                <div className="flex items-center gap-space-5">
                   <button
                     type="button"
                     onClick={() => setPaymentMethod("Cash on Delivery")}
@@ -314,23 +343,33 @@ const Page = () => {
             <div className="space-y-space-5 p-space-2 rounded-[10px]">
               <div className="flex items-center justify-between text-[#CBD5F5]">
                 <p className="font-medium text-size-h4">Subtotal</p>
-                <h4 className="font-primary font-semibold text-size-h4">{money(pricing.subtotal)}</h4>
+                <h4 className="font-primary font-semibold text-size-h4">
+                  {money(pricing.subtotal)}
+                </h4>
               </div>
               <div className="flex items-center justify-between text-[#CBD5F5]">
                 <p className="font-medium text-size-h4">Discount</p>
-                <h4 className="font-primary font-semibold text-size-h4">-{money(pricing.discount)}</h4>
+                <h4 className="font-primary font-semibold text-size-h4">
+                  -{money(pricing.discount)}
+                </h4>
               </div>
               <div className="flex items-center justify-between text-[#CBD5F5]">
                 <p className="font-medium text-size-h4">Shipping Charge</p>
-                <h4 className="font-primary font-semibold text-size-h4">{money(pricing.shippingCharge)}</h4>
+                <h4 className="font-primary font-semibold text-size-h4">
+                  {money(pricing.shippingCharge)}
+                </h4>
               </div>
               <div className="flex items-center justify-between text-[#CBD5F5]">
                 <p className="font-medium text-size-h4">VAT</p>
-                <h4 className="font-primary font-semibold text-size-h4">{money(pricing.vat)}</h4>
+                <h4 className="font-primary font-semibold text-size-h4">
+                  {money(pricing.vat)}
+                </h4>
               </div>
               <div className="flex items-center justify-between py-space-2 border-t-2 border-placeholder_3/30">
                 <p className="font-medium text-size-h3 text-[#CBD5F5]">Total</p>
-                <h4 className="font-primary font-semibold text-size-h3 text-secondary">{money(pricing.total)}</h4>
+                <h4 className="font-primary font-semibold text-size-h3 text-secondary">
+                  {money(pricing.total)}
+                </h4>
               </div>
             </div>
 
@@ -347,12 +386,20 @@ const Page = () => {
                     placeholder="Enter OTP"
                     className="w-full rounded-lg border border-white/10 bg-[#0d0f16] px-3 py-2 text-sm"
                   />
-                  <Button className="w-full" onClick={handleVerifyOtp} disabled={verifyingOtp}>
+                  <Button
+                    className="w-full"
+                    onClick={handleVerifyOtp}
+                    disabled={verifyingOtp}
+                  >
                     {verifyingOtp ? "Verifying..." : "Verify & Confirm Order"}
                   </Button>
                 </div>
               ) : (
-                <Button className="w-full" onClick={handlePlaceOrder} disabled={placingOrder}>
+                <Button
+                  className="w-full"
+                  onClick={handlePlaceOrder}
+                  disabled={placingOrder}
+                >
                   {placingOrder ? "Placing Order..." : "Buy Now"}
                 </Button>
               )}
@@ -363,8 +410,12 @@ const Page = () => {
                     <i className="fi fi-rr-shield-check text-secondary text-[24px]"></i>
                   </div>
                   <div>
-                    <h5 className="font-semibold text-size-h6 mb-0.5">Secure Payment</h5>
-                    <p className="text-size-large text-placeholder">for heavy materials</p>
+                    <h5 className="font-semibold text-size-h6 mb-0.5">
+                      Secure Payment
+                    </h5>
+                    <p className="text-size-large text-placeholder">
+                      for heavy materials
+                    </p>
                   </div>
                 </div>
                 <div>
@@ -372,8 +423,12 @@ const Page = () => {
                     <i className="fi fi-rr-wrench-alt text-secondary text-[24px]"></i>
                   </div>
                   <div>
-                    <h5 className="font-semibold text-size-h6 mb-0.5">Reliable Support</h5>
-                    <p className="text-size-large text-placeholder">for heavy materials</p>
+                    <h5 className="font-semibold text-size-h6 mb-0.5">
+                      Reliable Support
+                    </h5>
+                    <p className="text-size-large text-placeholder">
+                      for heavy materials
+                    </p>
                   </div>
                 </div>
               </div>
@@ -383,12 +438,24 @@ const Page = () => {
       </div>
 
       {showCardModal && (
-        <AddCardModal editingCard={editingCard} onClose={() => setShowCardModal(false)} />
+        <AddCardModal
+          editingCard={editingCard}
+          onClose={() => setShowCardModal(false)}
+        />
       )}
       {showAddressModal && (
-        <AddressModal editingAddress={editingAddress} onClose={() => setShowAddressModal(false)} />
+        <AddressModal
+          editingAddress={editingAddress}
+          onClose={() => setShowAddressModal(false)}
+        />
       )}
-    </section>
+      {editingCartItem && (
+        <EditCartItemModal
+          item={editingCartItem}
+          onClose={() => setEditingCartItem(null)}
+        />
+      )}
+    </div>
   );
 };
 

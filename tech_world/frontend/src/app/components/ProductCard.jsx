@@ -179,7 +179,7 @@ function PrimaryCard({ data, actions, link }) {
     }
   };
   return (
-    <div className="min-w-84.5 max-h-max overflow-hidden rounded-2xl border border-secondary/20 bg-[#12141c] shadow-lg shadow-black/30 p-space-4">
+    <div className="min-w-84.5 max-h-max overflow-hidden rounded-2xl border border-secondary/20 bg-[#12141c] shadow-lg shadow-black/30 p-space-4 w-85">
       <div className="relative h-50 w-full rounded-xl overflow-hidden">
         <ClickableWrap href={productLink}>
           <Image
@@ -244,9 +244,10 @@ function PrimaryCard({ data, actions, link }) {
           </div>
         ) : !isInCart ? (
           <Button
-            type="button"
+            type="text"
             onClick={handleAddToCart}
-            className="mt-[12px] h-9.5 w-full bg-linear-to-r from-indigo-500 to-violet-500 transition-opacity hover:opacity-90 text-size-large"
+            className="mt-[12px] h-9.5 w-full hover:opacity-90 text-size-h6 font-bold text-secondary"
+            variant="text"
           >
             {buttonText}
           </Button>

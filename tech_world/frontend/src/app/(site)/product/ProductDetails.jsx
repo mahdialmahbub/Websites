@@ -175,21 +175,21 @@ const ProductDetails = ({ productId }) => {
             <div>
               <div className="flex gap-space-7 h-78.5 w-179.25">
                 {/* images */}
-                <div className="flex flex-col w-43 h-full gap-3.75">
+                <div className="flex flex-col w-43 h-full gap-3.75 overflow-y-auto scrollbar-none">
                   {product.images.map((img, i) => (
                     <button
                       key={img._id}
                       type="button"
                       onClick={() => setActiveImage(i)}
-                      className={`h-25 overflow-hidden rounded-lg border-2 transition-colors ${
+                      className={`min-h-20 overflow-hidden rounded-lg border-2 transition-colors ${
                         activeImage === i
                           ? "border-cyan-400"
                           : "border-white/10"
                       }`}
                     >
                       <Image
-                        width={1000}
-                        height={1000}
+                        width={100}
+                        height={100}
                         src={img.url}
                         alt={"product Image"}
                         className="h-full w-full object-cover hover:scale-110 transition-all"
@@ -325,16 +325,22 @@ const ProductDetails = ({ productId }) => {
                     {variants.map((v) => (
                       <button
                         key={v._id}
+                        type="button"
                         onClick={() => toggleVariant(v._id, group)}
-                        className={`px-5 h-16.25 rounded-lg border text-sm ${
+                        className={`rounded-sm border min-w-25 h-16.25 p-space-3 text-size-h6 font-primary font-semibold transition-colors text-center ${
                           selectedVariantIds.includes(v._id)
-                            ? "border-secondary text-secondary bg-secondary/5"
-                            : "border-white/10 text-slate-400"
+                            ? "border-secondary bg-secondary/5 text-secondary"
+                            : "border-white/10 bg-white/5 text-slate-400 hover:bg-white/5"
                         }`}
                       >
-                        {v.name}{" "}
-                        {v.priceAdjustment !== 0 &&
-                          `(${v.priceAdjustment > 0 ? "+" : ""}$${v.priceAdjustment})`}
+                        <p className="font-semibold">{v.name}</p>
+
+                        {v.priceAdjustment !== 0 && (
+                          <p className="text-size-medium text-placeholder_2/80">
+                            {v.priceAdjustment > 0 ? "+" : ""}$
+                            {v.priceAdjustment}
+                          </p>
+                        )}
                       </button>
                     ))}
                   </div>
@@ -374,8 +380,11 @@ const ProductDetails = ({ productId }) => {
                       {money(pricing.unitOriginalPrice)}
                     </p>
                   )}
+
                   <p className="text-size-h2 font-primary font-semibold text-nowrap">
-                    {money(pricing.totalPrice)}
+                    {pricing.discountPercentage > 0
+                      ? money(pricing.totalPrice)
+                      : money(pricing.unitOriginalPrice)}
                   </p>
                 </div>
               </div>

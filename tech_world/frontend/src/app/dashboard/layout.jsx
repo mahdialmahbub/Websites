@@ -6,11 +6,9 @@ import RequireAdminAuth from "../components/dashboard/RequireAdminAuth";
 const Layout = ({ children }) => {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col min-w-[360px] mx-auto">
+      <body className="">
         <RequireAdminAuth>
-          <div className="w-full px-space-6 pt-space-6 pb-space-3 flex items-center justify-center">
             <Navbar isDashboard />
-          </div>
 
           {children}
         </RequireAdminAuth>

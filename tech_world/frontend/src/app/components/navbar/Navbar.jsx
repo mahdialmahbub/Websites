@@ -79,7 +79,7 @@ const Navbar = ({ isDashboard }) => {
   return (
     <>
       {isDashboard ? (
-        <nav className="sticky top-0 z-50 rounded-full bg-linear-to-r from-[#0F172A] via-[#1E293B] to-[#1E1B4B] border border-secondary/5 flex items-center justify-between px-space-11 py-space-3 w-full">
+        <nav className="sticky top-0 z-50 mx-space-8 my-space-7 rounded-full bg-linear-to-r from-[#0F172A] via-[#1E293B] to-[#1E1B4B] border border-secondary/5 flex items-center justify-between px-space-11 py-space-3">
           <Link href={"/"}>
             <Image
               width={1000}
@@ -105,7 +105,7 @@ const Navbar = ({ isDashboard }) => {
           </button>
         </nav>
       ) : (
-        <nav className="sticky top-0 z-50 rounded-full bg-linear-to-r from-[#0F172A] via-[#1E293B] to-[#1E1B4B] border border-secondary/5 flex items-center justify-between px-space-11 py-space-3 w-full">
+        <nav className="sticky top-0 z-50 mx-space-8 my-space-7 rounded-full bg-linear-to-r from-[#0F172A] via-[#1E293B] to-[#1E1B4B] border border-secondary/5 flex items-center justify-between px-space-11 py-space-3">
           <Link href={"/"}>
             <Image
               width={1000}

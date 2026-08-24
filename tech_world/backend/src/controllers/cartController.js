@@ -10,7 +10,7 @@ const { calculatePrice } = require("../services/pricingService");
 const buildCartResponse = async (customerId) => {
   const cart = await Cart.findOne({ customer: customerId }).populate({
     path: "items.product",
-    select: "title images variants startingPrice discountPercentage stock status",
+    select: "title images variants colors startingPrice discountPercentage stock status",
   });
 
   if (!cart) return { items: [], subtotal: 0 };
@@ -27,8 +27,11 @@ const buildCartResponse = async (customerId) => {
           image: item.product.images?.[0]?.url,
           stock: item.product.stock,
           status: item.product.status,
+          variants: item.product.variants, // full available list — needed to edit the selection
+          colors: item.product.colors, // full available list — needed to edit the selection
         },
-        selectedVariants: pricing.appliedVariants,
+        selectedVariantIds: item.selectedVariantIds, // raw ids, so an edit form can pre-check the right ones
+        selectedVariants: pricing.appliedVariants, // resolved {name, group, priceAdjustment} for display
         selectedColor: item.selectedColor,
         quantity: item.quantity,
         unitPrice: pricing.unitDiscountedPrice,

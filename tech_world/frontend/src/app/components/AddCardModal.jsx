@@ -345,10 +345,10 @@ export default function AddCardModal({ onClose, editingCard }) {
   // ---------- Main form ----------
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 overflow-y-auto ">
-      <div className="w-full rounded-2xl max-w-150 space-y-space-7 p-space-7  bg-background border-2 border-secondary/10 my-8">
+      <div className="w-full rounded-2xl max-w-150 space-y-space-7 p-space-7 bg-background border-2 border-secondary/10 my-8">
         {/* header */}
         <div className="flex items-center gap-space-3">
-          <i className="fi fi-sr-credit-card text-secondary/80 text-size-h3"></i>
+          <i className="fi fi-rr-credit-card text-secondary/80 text-[24px]"></i>
           <h2 className="font-semibold text-size-h4 text-placeholder_3">
             {isEditMode ? "Edit Card information" : "Add Card information"}
           </h2>

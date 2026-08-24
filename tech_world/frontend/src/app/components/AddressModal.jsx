@@ -92,7 +92,7 @@ const AddressModal = ({ onClose, editingAddress }) => {
       >
         {/* header */}
         <div className="flex items-center gap-space-3">
-          <i className="fi fi-sr-credit-card text-secondary/80 text-size-h3"></i>
+          <i className="fi fi-rr-land-layer-location text-secondary/80 text-[24px]"></i>
           <h2 className="font-semibold text-size-h4 text-placeholder_3">
             {isEditMode ? "Edit Address" : "Add Address"}
           </h2>
