@@ -31,15 +31,15 @@ const DarkToggle = () => {
   return (
     <button
       onClick={() => setIsDark(!isDark)}
-      className="rounded-full flex items-center gap-[4px] bg-linear-to-tr from-secondary to-secondary2 *:aspect-square *:rounded-full p-[4px] *:w-4.5 xl:*:w-6.25 *:h-4.5 xl:*:h-6.25 outline-none"
+      className={`rounded-full flex items-center gap-[4px]  *:aspect-square *:rounded-full p-[4px] *:w-4.5 xl:*:w-6.25 *:h-4.5 xl:*:h-6.25 ${isDark ? "bg-black" : "bg-white"} ring ring-secondary2/20`}
     >
       <div
-        className={`flex items-center justify-center ${!isDark ? "bg-white text-secondary2" : "text-white"}`}
+        className={`flex items-center justify-center ${!isDark ? "bg-linear-to-tr from-secondary/80 to-secondary2/80 text-white" : "text-secondary"}`}
       >
         <i className="fi fi-rr-brightness inline-flex items-center justify-center text-[8px] xl:text-large"></i>
       </div>
       <div
-        className={`flex items-center justify-center ${isDark ? "bg-white text-secondary2" : "text-white"}`}
+        className={`flex items-center justify-center ${isDark ? "bg-linear-to-tr from-secondary/80 to-secondary2/80 text-white" : "text-secondary"}`}
       >
         <i className="fi fi-sr-moon-stars inline-flex items-center justify-center text-[8px] xl:text-large"></i>
       </div>

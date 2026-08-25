@@ -1,10 +1,11 @@
 import Image from "next/image";
 import React from "react";
 import { trustUser } from "../assets/assets";
+import Reveal from "./motions/Reveal";
 
 const TrustNews = () => {
   return (
-    <div className="flex items-center gap-[4px] md:gap-2.5 py-[4px] px-[10px] md:py-[12px] md:px-[20px] bg-linear-to-tr from-secondary/10 to-secondary2/10 border border-secondary2 rounded-full">
+    <Reveal  className="flex items-center gap-[4px] md:gap-2.5 py-[4px] px-2.5 md:py-[12px] md:px-[20px] bg-linear-to-tr from-secondary/5 to-secondary2/5 border border-secondary2/30 rounded-full">
       <div className="flex items-center -gap-[6px] md:-gap-[10px] *:border-2 md:*:border-4 *:border-[#F9EEF9] dark:*:border-[#221C31] *:size-5.5 *:md:size-9 *:rounded-full *:-ml-1.5 md:*:-ml-2.5">
         {trustUser.map((item, i) => (
           <Image key={i} src={item} alt="user" />
@@ -14,7 +15,7 @@ const TrustNews = () => {
         Trusted by{" "}
         <span className="text-secondary2">1000+ Business Owners</span>
       </p>
-    </div>
+    </Reveal>
   );
 };
 

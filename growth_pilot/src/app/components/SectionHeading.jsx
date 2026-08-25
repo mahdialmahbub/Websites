@@ -1,5 +1,6 @@
 import React from "react";
 import SectionTag from "./SectionTag";
+import FadeUp from "./motions/FadeUp";
 
 const SectionHeading = ({ title, subtitle, tagName, isCenter = true }) => {
   return (
@@ -8,8 +9,8 @@ const SectionHeading = ({ title, subtitle, tagName, isCenter = true }) => {
     >
       <SectionTag text={tagName}/>
       <div className={`${isCenter && "items-center *:text-center"} w-full`}>
-        <h2 className="text-h4 md:text-h3 xl:text-h2 font-bold">{title}</h2>
-        <p className="text-large md:text-h5 xl:text-[20px] font-medium text-black/70 dark:text-white/70">{subtitle}</p>
+        <FadeUp delay={0.3} as="h2" className="text-h4 md:text-h3 xl:text-h2 font-bold">{title}</FadeUp>
+        <FadeUp delay={0.6} as="p" className="text-large md:text-h5 xl:text-[20px] font-medium text-black/70 dark:text-white/70">{subtitle}</FadeUp>
       </div>
     </header>
   );
