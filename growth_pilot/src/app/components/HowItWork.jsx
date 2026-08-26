@@ -48,7 +48,6 @@ const HowItWork = () => {
       <div className="flex max-md:flex-col gap-6 md:gap-[20px] xl:gap-[64px] items-stretch">
         {/* Left: Image */}
         <FadeRight
-          key={`image-${currentStep}`}
           className="relative flex-1 rounded-3xl aspect-video overflow-hidden"
         >
           {/* Gradient border wrapper */}
@@ -90,7 +89,7 @@ const HowItWork = () => {
             const isActive = index === currentStep;
             return (
               <button
-                key={step.title}
+                key={index}
                 onClick={() => goToStep(index)}
                 className={`
                   group text-left rounded-2xl border transition-all duration-300 cursor-pointer
@@ -116,7 +115,7 @@ const HowItWork = () => {
                     {index + 1}
                   </span>
                   <h3
-                    className={`text-h5 md:text-h4 font-semibold transition-colors duration-300 ${
+                    className={`text-h5 md:text-h4 font-semibold  ${
                       isActive
                         ? "text-primary"
                         : "text-black/70 dark:text-white/70"

@@ -21,9 +21,9 @@ const Navbar = () => {
       className="top-[8px] md:top-[12px] w-full sticky z-40 mt-[16px] md:mt-7.5 py-[12px] px-[16px] md:py-[12px] md:px-[32px] xl:py-[16px] xl:px-20 rounded-full bg-[#f8fafc]/80 dark:bg-[#080b10]/80 border border-black/10 dark:border-white/10 flex items-center justify-between backdrop-blur-[30px]"
     >
       <Link
-        href={"/"}
+        href="/"
         aria-label="GrowthPilot home"
-        className="shrink-0 inline-flex items-center"
+        className="inline-flex shrink-0 items-center"
       >
         <Image
           src="/growthpilot-logo-black.svg"
@@ -31,25 +31,41 @@ const Navbar = () => {
           height={48}
           alt="GrowthPilot"
           priority
-          className="max-h-11.75 h-7 md:h-8.75 xl:h-11.75 w-auto dark:hidden"
+          className="
+      h-7
+      w-auto
+      object-contain
+      md:h-[35px]
+      xl:h-[47px]
+      dark:hidden
+    "
         />
+
         <Image
           src="/growthpilot-logo-white.svg"
           width={200}
           height={48}
-          alt="GrowthPilot"
-          priority
-          className="max-h-11.75 h-7 md:h-8.75 xl:h-11.75 w-auto hidden dark:block"
+          alt=""
+          className="
+      hidden
+      h-7
+      w-auto
+      object-contain
+      md:h-[35px]
+      xl:h-[47px]
+      dark:block
+    "
         />
       </Link>
 
       {/* navLinks */}
       <div className="flex items-center gap-[12px] text-black dark:text-white max-md:hidden">
-        <NavLink text="Features" link="#features" />
-        <NavLink text="Pricing" link="/features" />
-        <NavLink text="How It Works" link="/features" />
-        <NavLink text="Blog" link="/features" />
-        <NavLink text="Contact" link="/features" />
+        <NavLink text="Home" link="/" />
+        <NavLink text="Features" link="#" />
+        <NavLink text="Pricing" link="#" />
+        <NavLink text="How It Works" link="#" />
+        <NavLink text="Blog" link="#" />
+        <NavLink text="Contact" link="#" />
       </div>
 
       <div className="flex items-center gap-[12px] xl:gap-[20px]">

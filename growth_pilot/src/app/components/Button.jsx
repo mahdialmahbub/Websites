@@ -16,7 +16,7 @@ const Button = ({
       "py-[8px] xl:py-[12px] px-[12px] xl:px-[16px] bg-linear-to-tr from-[#5A4BFF] to-[#8F6BFF] text-white shadow-[0_4px_14px_-4px_rgba(90,75,255,0.45)] hover:shadow-[0_8px_22px_-4px_rgba(90,75,255,0.6)] hover:-translate-y-px active:translate-y-0 active:scale-[0.98]",
     secondary:
       "py-[8px] xl:py-[12px] px-[12px] xl:px-[16px] text-black dark:text-white hover:text-secondary2 active:scale-[0.98]",
-    text: "text-black/60 dark:text-white/60 hover:text-[#8F6BFF] flex group items-center justify-center",
+    text: "text-black/60 dark:text-white/60 flex group items-center justify-center",
   };
 
   return (
@@ -54,7 +54,7 @@ const Button = ({
         </svg>
       )}
 
-      <p className="text-nowrap group-hover:text-primary2">{text}</p>
+      <p className={`text-nowrap cursor-pointer ${variant == "text" && "hover:text-primary2"} transition-[transform,box-shadow,color,opacity] duration-200 ease-out`}>{text}</p>
 
       {!loading && variant === "text" && isIcon && (
         <div className="flex items-center justify-center">

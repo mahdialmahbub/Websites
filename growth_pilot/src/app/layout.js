@@ -50,7 +50,7 @@ export default function RootLayout({ children }) {
           href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-straight/css/uicons-solid-straight.css"
         ></link>
       </head>
-      <body className="min-h-screen flex flex-col max-w-[2000px] mx-auto bg-white text-black dark:bg-black dark:text-white relative">
+      <body className="min-h-screen flex flex-col container mx-auto overflow-hidden bg-white text-black dark:bg-black dark:text-white relative">
         <Providers>
           <Navbar />
           <MobileNav />

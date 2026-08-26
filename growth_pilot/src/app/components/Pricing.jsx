@@ -89,7 +89,10 @@ const Pricing = () => {
       />
 
       {/* Billing toggle */}
-      <Reveal delay={0.5} className="flex items-center justify-center gap-[16px] mt-[16px] md:mt-[24px] ">
+      <Reveal
+        delay={0.5}
+        className="flex items-center justify-center gap-[16px] mt-[16px] md:mt-[24px] "
+      >
         <span
           className={`text-large font-medium transition-colors ${
             !isYearly
@@ -130,7 +133,10 @@ const Pricing = () => {
       {/* Pricing cards */}
       <div className="flex flex-col md:flex-row gap-[24px] xl:gap-[32px] items-stretch">
         {plans.map((plan) => (
-          <FadeUp scale={plan.highlighted} delay={!plan.highlighted && 0.50} duration={plan.highlighted ? 2.5 : 2}
+          <FadeUp
+            scale={plan.highlighted}
+            delay={!plan.highlighted && 0.5}
+            duration={plan.highlighted ? 2.5 : 2}
             key={plan.id}
             className={`relative flex flex-col w-full md:flex-1 rounded-[32px] p-[24px] md:p-[32px] gap-[20px] bg-white dark:bg-black transition-shadow duration-300 ${
               plan.highlighted
@@ -148,7 +154,9 @@ const Pricing = () => {
             {/* Plan name */}
             <div className="flex flex-col gap-[8px] text-left">
               <div className="flex items-center gap-[8px]">
-                <span className={`size-[8px] rounded-full ${plan.accentSolid}`} />
+                <span
+                  className={`size-[8px] rounded-full ${plan.accentSolid}`}
+                />
                 <h3 className="text-h6 xl:text-h5 font-semibold text-black dark:text-white">
                   {plan.name}
                 </h3>
@@ -182,7 +190,11 @@ const Pricing = () => {
                   <span
                     className={`flex items-center justify-center shrink-0 size-[20px] rounded-full mt-[2px] ${plan.accentBg} dark:bg-white/10 ${plan.accentText}`}
                   >
-                    <svg viewBox="0 0 20 20" fill="none" className="size-[12px]">
+                    <svg
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      className="size-[12px]"
+                    >
                       <path
                         d="M4 10.5L8 14.5L16 6"
                         stroke="currentColor"
@@ -201,7 +213,12 @@ const Pricing = () => {
 
             {/* CTA */}
             <div className="mt-auto pt-[8px]">
-              <Button variant={!plan.highlighted ? "text" : "primary"} fullWidth text={plan.cta} />
+              <Button
+                variant={!plan.highlighted ? "text" : "primary"}
+                fullWidth
+                text={plan.cta}
+                isIcon={false}
+              />
             </div>
           </FadeUp>
         ))}

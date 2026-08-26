@@ -4,16 +4,28 @@ import { sroll, whiteSroll } from "../assets/assets";
 import Reveal from "./motions/Reveal";
 
 const LogoGroup = ({ items }) => (
-  <div className="flex items-center gap-[40px] md:gap-[96px] shrink-0 opacity-50">
+  <div className="flex shrink-0 items-center gap-[40px] opacity-50 md:gap-[96px]">
     {items.map((item, i) => (
-      <Image
+      <div
         key={i}
-        alt="Company Icon"
-        src={item}
-        width={120}
-        height={40}
-        className="h-[24px] md:h-[32px] xl:h-[40px] w-auto object-contain"
-      />
+        className="
+          relative
+          h-[24px]
+          w-25
+          md:h-[32px]
+          md:w-30
+          xl:h-[40px]
+          xl:w-37.5
+        "
+      >
+        <Image
+          alt="Company Logo"
+          src={item}
+          fill
+          sizes="150px"
+          className="object-contain"
+        />
+      </div>
     ))}
   </div>
 );

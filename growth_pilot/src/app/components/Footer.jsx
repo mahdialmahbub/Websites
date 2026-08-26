@@ -113,7 +113,7 @@ const Footer = () => {
 
             <FadeUp delay={0.3} className="flex flex-col gap-3.5">
               {footerLinks.productLinks.map((item, i) => (
-                <FadeUp key={item.name} delay={i * 0.5}>
+                <FadeUp key={i} delay={i * 0.5}>
                 <Link
                   href={item.href}
                   className="
@@ -151,7 +151,7 @@ const Footer = () => {
 
             <FadeUp delay={0.6} className="flex flex-col gap-3.5">
               {footerLinks.companyLinks.map((item, i) => (
-                <FadeUp key={item.name} delay={i * 0.5}>
+                <FadeUp key={i} delay={i * 0.5}>
                 <Link
                   href={item.href}
                   className="
@@ -189,7 +189,7 @@ const Footer = () => {
 
             <FadeUp delay={0.9} className="flex flex-col gap-3.5">
               {footerLinks.supportAndLegal.map((item, i) => (
-                <FadeUp key={item.name} delay={i * 0.5}>
+                <FadeUp key={i} delay={i * 0.5}>
                 <Link
                   
                   href={item.href}

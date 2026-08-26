@@ -81,7 +81,7 @@ body {
 } */
 
 .section {
-  @apply flex flex-col items-center py-[40px] px-[16px] gap-[32px] md:py-[40px] md:px-[48px] md:gap-[48px] xl:py-[80px] xl:px-[80px] xl:gap-[64px] ;
+  @apply flex flex-col items-center py-[40px] px-[16px] gap-[32px] md:py-[40px] md:px-[48px] md:gap-[48px] xl:py-20 xl:px-20 xl:gap-[64px] ;
 }
 
 
@@ -189,4 +189,8 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-secondary2); /* hover-e ektu dark shade */
+}
+
+.container {
+  width: clamp(300px, 80%, 2000px);
 }

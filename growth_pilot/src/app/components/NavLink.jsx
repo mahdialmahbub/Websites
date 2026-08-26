@@ -1,16 +1,124 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import React from 'react'
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React from "react";
 
-const NavLink = ({text = 'Text', link = "/"}) => {
+const NavLink = ({
+  text = "Text",
+  link = "/",
+}) => {
+  const pathname = usePathname();
 
-  const path = usePathname()
+  const isActive =
+    link === "/"
+      ? pathname === "/"
+      : pathname === link || pathname.startsWith(`${link}/`);
 
   return (
-    <Link href={link} className={`flex items-center justify-center py-[4px] px-[12px] rounded-full text-large md:text-h5 font-semibold hover:bg-linear-to-tr hover:from-secondary/10 hover:to-secondary2/10 hover:text-secondary2/90 w-max  ${path == link ? "text-secondary2" : "text-black dark:text-white"}`}>{text}</Link>
-  ) 
-}
+    <Link
+      href={link}
+      aria-current={isActive ? "page" : undefined}
+      className={`
+        group
+        relative
+        inline-flex
+        items-center
+        justify-center
+        overflow-hidden
+        whitespace-nowrap
+        rounded-full
+        px-3.5
+        py-2
 
-export default NavLink
+        font-primary
+        text-sm
+        font-semibold
+        tracking-[-0.01em]
+
+        transition-all
+        duration-300
+        ease-[cubic-bezier(0.22,1,0.36,1)]
+
+        md:px-4
+        md:py-2.5
+        md:text-base
+
+        ${
+          isActive
+            ? `
+              text-secondary2
+
+              bg-gradient-to-r
+              from-secondary2/[0.10]
+              via-secondary2/[0.06]
+              to-secondary/[0.06]
+
+              ring-1
+              ring-inset
+              ring-secondary2/15
+
+              shadow-[0_4px_18px_rgba(0,0,0,0.04)]
+
+              dark:from-secondary2/[0.14]
+              dark:via-secondary2/[0.08]
+              dark:to-secondary/[0.08]
+
+              dark:ring-secondary2/20
+              dark:shadow-[0_4px_18px_rgba(0,0,0,0.20)]
+            `
+            : `
+              text-black/50
+              dark:text-white/50
+
+              hover:bg-black/[0.035]
+              hover:text-black/80
+
+              dark:hover:bg-white/[0.05]
+              dark:hover:text-white/90
+            `
+        }
+      `}
+    >
+      {/* Active indicator */}
+      <span
+        className={`
+          absolute
+          bottom-1
+          left-1/2
+          h-[2px]
+          -translate-x-1/2
+          rounded-full
+          bg-secondary2
+
+          transition-all
+          duration-300
+          ease-[cubic-bezier(0.22,1,0.36,1)]
+
+          ${
+            isActive
+              ? "w-3 opacity-100"
+              : "w-0 opacity-0 group-hover:w-2 group-hover:opacity-60"
+          }
+        `}
+      />
+
+      {/* Text */}
+      <span
+        className={`
+          relative
+          z-10
+          transition-transform
+          duration-300
+          ease-[cubic-bezier(0.22,1,0.36,1)]
+
+          group-hover:-translate-y-[0.5px]
+        `}
+      >
+        {text}
+      </span>
+    </Link>
+  );
+};
+
+export default NavLink;

@@ -33,7 +33,7 @@ const MobileNav = () => {
   }, [isOpen, dispatch]);
 
   return (
-    <div className="flex md:hidden items-center">
+    <div className="flex md:hidden  items-center">
       {/* Backdrop */}
       <div
         onClick={() => dispatch(closeNavbar())}
