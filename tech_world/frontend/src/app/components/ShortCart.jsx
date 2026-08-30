@@ -6,11 +6,11 @@ import Tag from "./Tag";
 
 import { useGetMyCartQuery, useRemoveCartItemMutation } from "@/redux";
 
-import { ProductCard } from "./ProductCard";
 import { usePathname, useRouter } from "next/navigation";
 import Button from "./Button";
 import { useSelector } from "react-redux";
 import EditCartItemModal from "./EditCartItemModal";
+import { ProductCard } from "./ProductCard";
 
 const toCartCardData = (item) => ({
   image: item.product?.image,
@@ -101,16 +101,16 @@ const ShortCart = () => {
         onClick={() => setIsOpen((prev) => !prev)}
         aria-label={isOpen ? "Collapse cart" : "Expand cart"}
         aria-expanded={isOpen}
-        className="relative z-10 flex flex-col items-center gap-space-2 bg-secondary text-background rounded-r-[12px] py-space-4 px-space-2"
+        className="relative cursor-pointer z-10 flex flex-col items-center gap-space-2 bg-secondary text-background rounded-r-xl py-space-4 px-space-2"
       >
-        <i className="fi fi-sr-shopping-cart text-[18px]" />
+        <i className="fi fi-sr-shopping-cart text-size-h5" />
 
         <span className="font-primary font-semibold text-size-small">
           {user ? items.length : 0}
         </span>
 
         <i
-          className={`fi fi-sr-sort-down text-[14px] transition-transform ${
+          className={`fi fi-sr-sort-down text-size-largearge transition-transform ${
             isOpen ? "rotate-90" : "-rotate-90"
           }`}
         />
@@ -118,7 +118,7 @@ const ShortCart = () => {
 
       {/* Sliding cart panel — slides out to the right, from behind the tab */}
       <div
-        className={`absolute bottom-0 left-full w-[500px] p-space-4 space-y-space-4 rounded-[12px] bg-background border-2 border-secondary/60 shadow-lg transition-all duration-300 ease-in-out will-change-transform ${
+        className={`absolute bottom-0 left-full w-125 p-space-4 space-y-space-4 rounded-xl bg-background border-2 border-secondary/60 shadow-lg transition-all duration-300 ease-in-out will-change-transform ${
           isOpen
             ? "translate-x-3 opacity-100 pointer-events-auto"
             : "-translate-x-full opacity-0 pointer-events-none"
@@ -179,7 +179,7 @@ const ShortCart = () => {
         ) : (
           // ---------- Logged out state ----------
           <div className="flex flex-col items-center gap-space-3 py-space-6 text-center">
-            <i className="fi fi-sr-user text-secondary text-[28px]" />
+            <i className="fi fi-sr-user text-secondary text-size-h3" />
 
             <h4 className="font-primary font-semibold text-size-large text-placeholder">
               Your Cart is Waiting

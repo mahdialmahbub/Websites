@@ -2,14 +2,13 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useMemo } from "react";
-import { CreditCard, User, Calendar, ShieldCheck, Info } from "lucide-react";
 import toast from "react-hot-toast";
 import {
   useRequestAddCardMutation,
   useConfirmAddCardMutation,
   useUpdateCardMutation,
 } from "@/redux";
-import useLockBodyScroll from "../hooks/useLockBodyScroll";
+import useLockBodyScroll from "@/app/hooks/useLockBodyScroll";
 import Button from "./Button";
 import VerificationOTPModal from "./VerificationOTPModal";
 
@@ -131,6 +130,12 @@ const BILLING_FIELDS = [
   ["country", "Country"],
 ];
 
+// Shared classes for the icon+input field pattern used across this form.
+const fieldIconClass =
+  "text-size-h6 text-[#2BE7C4]/70 absolute left-3.5 top-1/2 -translate-y-1/2";
+const fieldInputClass =
+  "pl-10 pr-4 border rounded-xl transition-colors w-full bg-background text-foreground placeholder-placeholder_3 outline-none text-sm py-3 border-secondary/20 hover:border-secondary/50 focus-within:border-secondary/80";
+
 /**
  * Props:
  *   onClose      — closes the modal
@@ -163,7 +168,15 @@ export default function AddCardModal({ onClose, editingCard }) {
   const [confirmAddCard, { isLoading: confirming }] =
     useConfirmAddCardMutation();
   const [updateCard, { isLoading: updating }] = useUpdateCardMutation();
-  
+
+  // Close on Escape, matching every other modal in the app.
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") onClose?.();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
 
   const cardType = useMemo(() => detectCardType(cardDigits), [cardDigits]);
   const cardInfo = CARD_TYPES[cardType];
@@ -333,7 +346,7 @@ export default function AddCardModal({ onClose, editingCard }) {
       <VerificationOTPModal
         title="Confirm this card"
         description="We emailed a verification code to confirm you own this card."
-        length={6} // আপনার actual OTP length যা হয় সেটা বসান
+        length={6}
         onClose={onClose}
         onSubmit={handleVerifyOtp}
         onVerified={onClose}
@@ -344,35 +357,49 @@ export default function AddCardModal({ onClose, editingCard }) {
 
   // ---------- Main form ----------
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 overflow-y-auto ">
-      <div className="w-full rounded-2xl max-w-150 space-y-space-7 p-space-7 bg-background border-2 border-secondary/10 my-8">
-        {/* header */}
-        <div className="flex items-center gap-space-3">
-          <i className="fi fi-rr-credit-card text-secondary/80 text-[24px]"></i>
-          <h2 className="font-semibold text-size-h4 text-placeholder_3">
-            {isEditMode ? "Edit Card information" : "Add Card information"}
-          </h2>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        onClick={(event) => event.stopPropagation()}
+        className="my-8 w-full max-w-150 space-y-space-7 rounded-2xl border-2 border-secondary/10 bg-background p-space-7"
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between gap-space-4">
+          <div className="flex min-w-0 items-center gap-space-3">
+            <i className="fi fi-rr-credit-card shrink-0 text-[24px] text-secondary" />
+            <h2 className="truncate font-semibold text-size-h4 text-placeholder_3">
+              {isEditMode ? "Edit Card Information" : "Add Card Information"}
+            </h2>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close modal"
+            className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-secondary/10 text-secondary transition-colors hover:bg-secondary/20"
+          >
+            <i className="fi fi-rr-cross-small" />
+          </button>
         </div>
 
-        <div className="space-y-space-7 h-75 custom-scrollbar overflow-y-auto">
+        <div className="-mr-1 max-h-[65vh] space-y-space-7 overflow-y-auto pr-1 custom-scrollbar">
           {/* cardholder name */}
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="font-semibold font-primary text-size-large text-foreground px-space-1">
+            <div className="mb-2 flex items-center justify-between">
+              <label className="px-space-1 font-primary text-size-large font-semibold text-foreground">
                 Cardholder Name
               </label>
-              <span className="text-xs font-primary font-semibold text-green">
-                Required
-              </span>
+              <span className="text-xs font-primary font-semibold text-green">Required</span>
             </div>
             <div className="relative">
-              <i className="text-size-h6 text-[#2BE7C4]/70 absolute left-3.5 top-1/2 -translate-y-1/2 fi fi-sr-user" />
+              <i className={`${fieldIconClass} fi fi-sr-user`} />
               <input
                 type="text"
                 value={cardholderName}
                 onChange={(e) => setCardholderName(e.target.value)}
                 placeholder="e.g. John Doe"
-                className="pl-10 pr-4 border rounded-xl transition-colors w-full bg-background text-foreground placeholder-placeholder_3 outline-none text-sm flex items-center gap-2.5 py-3 border-secondary/20 hover:border-secondary/50 focus-within:border-secondary/80"
+                className={fieldInputClass}
               />
             </div>
           </div>
@@ -380,16 +407,14 @@ export default function AddCardModal({ onClose, editingCard }) {
           {/* card number — add mode only, can't be shown/changed for an existing card */}
           {!isEditMode && (
             <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="font-medium font-primary text-size-large text-foreground px-space-1">
+              <div className="mb-2 flex items-center justify-between">
+                <label className="px-space-1 font-primary text-size-large font-medium text-foreground">
                   Card Number
                 </label>
-                <span className="text-xs font-primary font-semibold text-green">
-                  Required
-                </span>
+                <span className="text-xs font-primary font-semibold text-green">Required</span>
               </div>
               <div className="relative">
-                <i className="text-size-h6 text-[#2BE7C4]/70 absolute left-3.5 top-1/2 -translate-y-1/2 fi fi-sr-credit-card" />
+                <i className={`${fieldIconClass} fi fi-sr-credit-card`} />
                 <input
                   type="text"
                   inputMode="numeric"
@@ -397,7 +422,7 @@ export default function AddCardModal({ onClose, editingCard }) {
                   onChange={handleCardNumberChange}
                   maxLength={cardMaxDisplayLength}
                   placeholder="e.g. 1234 5678 9012 3456"
-                  className="pl-10 pr-4 border rounded-xl transition-colors w-full bg-background text-foreground placeholder-placeholder_3 outline-none text-sm flex items-center gap-2.5 py-3 border-secondary/20 hover:border-secondary/50 focus-within:border-secondary/80"
+                  className={`${fieldInputClass} ${cardInfo.name ? "pr-24" : ""}`}
                 />
                 {cardInfo.name && (
                   <div className="absolute right-3.5 top-1/2 -translate-y-1/2">
@@ -411,16 +436,14 @@ export default function AddCardModal({ onClose, editingCard }) {
           {/* expiry + cvv (cvv add-mode only) */}
           <div className={isEditMode ? "" : "grid grid-cols-2 gap-5"}>
             <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="font-medium font-primary text-size-large text-foreground px-space-1">
+              <div className="mb-2 flex items-center justify-between">
+                <label className="px-space-1 font-primary text-size-large font-medium text-foreground">
                   Expiry Date
                 </label>
-                <span className="text-xs font-primary font-semibold text-green">
-                  Required
-                </span>
+                <span className="text-xs font-primary font-semibold text-green">Required</span>
               </div>
               <div className="relative">
-                <i className="text-size-h6 text-[#2BE7C4]/70 absolute left-3.5 top-1/2 -translate-y-1/2 fi fi-sr-credit-card" />
+                <i className={`${fieldIconClass} fi fi-sr-calendar`} />
                 <input
                   type="text"
                   inputMode="numeric"
@@ -428,24 +451,22 @@ export default function AddCardModal({ onClose, editingCard }) {
                   onChange={handleExpiryChange}
                   maxLength={5}
                   placeholder="e.g. 05/26"
-                  className="pl-10 pr-4 border rounded-xl transition-colors w-full bg-background text-foreground placeholder-placeholder_3 outline-none text-sm flex items-center gap-2.5 py-3 border-secondary/20 hover:border-secondary/50 focus-within:border-secondary/80"
+                  className={fieldInputClass}
                 />
               </div>
-              <p className="flex items-center gap-1.5 mt-2 text-xs text-sky-400 px-space-1">
-                <Info className="size-3.5" />
+              <p className="mt-2 flex items-center gap-1.5 px-space-1 text-xs text-sky-400">
+                <i className="fi fi-rr-info" />
                 MM/YY
               </p>
             </div>
 
             {!isEditMode && (
               <div>
-                <div className="flex items-center justify-between mb-2 px-space-1">
-                  <label className="font-medium font-primary text-size-large text-foreground px-space-1">
+                <div className="mb-2 flex items-center justify-between px-space-1">
+                  <label className="px-space-1 font-primary text-size-large font-medium text-foreground">
                     CVV / CVC
                   </label>
-                  <span className="text-xs font-primary font-semibold text-green">
-                    Required
-                  </span>
+                  <span className="text-xs font-primary font-semibold text-green">Required</span>
                 </div>
                 <div
                   className="grid gap-2"
@@ -465,12 +486,12 @@ export default function AddCardModal({ onClose, editingCard }) {
                       onKeyDown={(e) => handleCvvKeyDown(i, e)}
                       onPaste={handleCvvPaste}
                       onFocus={(e) => e.target.select()}
-                      className="border rounded-xl transition-colors w-full bg-background text-foreground placeholder-placeholder_3 outline-none text-sm flex items-center gap-2.5 px-4 py-3 border-secondary/20 hover:border-secondary/50 focus-within:border-secondary/80"
+                      className="w-full rounded-xl border border-secondary/20 bg-background py-3 text-center text-size-large font-semibold text-foreground outline-none transition-colors hover:border-secondary/50 focus-within:border-secondary/80"
                     />
                   ))}
                 </div>
-                <p className="flex items-center gap-1.5 mt-2 text-xs text-sky-400 px-space-1">
-                  <Info className="size-3.5" />
+                <p className="mt-2 flex items-center gap-1.5 px-space-1 text-xs text-sky-400">
+                  <i className="fi fi-rr-info" />
                   {cvvLength}-digit security code
                 </p>
               </div>
@@ -479,8 +500,8 @@ export default function AddCardModal({ onClose, editingCard }) {
 
           {/* billing address */}
           <div>
-            <div className="flex items-center justify-between mb-5">
-              <label className="text-sm font-medium font-primary text-size-large text-foreground px-space-1">
+            <div className="mb-5 flex items-center justify-between">
+              <label className="px-space-1 text-sm font-medium font-primary text-size-large text-foreground">
                 Billing Address
               </label>
               <span className="text-xs font-primary font-semibold text-green">
@@ -494,7 +515,7 @@ export default function AddCardModal({ onClose, editingCard }) {
                   value={billingAddress[key]}
                   onChange={handleBillingChange(key)}
                   placeholder={placeholder}
-                  className="border rounded-xl focus:border-[#1FD8A4]/60 transition-colors w-full bg-background text-foreground placeholder-placeholder_3 outline-none text-sm flex items-center gap-2.5 px-4 py-3 border-secondary/20 hover:border-secondary/50 focus-within:border-secondary/80"
+                  className="w-full rounded-xl border border-secondary/20 bg-background px-4 py-3 text-sm text-foreground placeholder-placeholder_3 outline-none transition-colors hover:border-secondary/50 focus-within:border-secondary/80"
                 />
               ))}
             </div>
@@ -502,14 +523,9 @@ export default function AddCardModal({ onClose, editingCard }) {
         </div>
 
         {/* actions */}
-        <div>
+        <div className="space-y-space-3 border-t border-white/5 pt-space-6">
           <div className="flex gap-3 *:w-full">
-            <Button
-              type="button"
-              onClick={onClose}
-              variant="secondary"
-              color={"#d10000"}
-            >
+            <Button type="button" onClick={onClose} variant="secondary">
               Cancel
             </Button>
 
@@ -528,8 +544,8 @@ export default function AddCardModal({ onClose, editingCard }) {
             </Button>
           </div>
 
-          <div className="mt-2 flex items-center justify-center gap-1.5 text-secondary text-size-large font-semibold">
-            <i className="fi fi-rr-shield-check"></i>
+          <div className="flex items-center justify-center gap-1.5 text-center text-size-large font-semibold text-secondary">
+            <i className="fi fi-rr-shield-check" />
             Your information is secure and we never store your CVV / CVC
           </div>
         </div>

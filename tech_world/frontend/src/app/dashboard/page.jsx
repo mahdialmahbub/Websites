@@ -8,6 +8,7 @@ import ProductsTableSection from "../components/dashboard/products/ProductsTable
 import CustomersTableSection from "../components/dashboard/customers/CustomersTableSection.jsx";
 import MessagesTableSection from "../components/dashboard/messages/MessageTableSection.jsx";
 import { useGetOverviewStatsQuery } from "@/redux/index.js";
+import DeliveryManTableSection from "../components/dashboard/delivery-man/DeliveryManTableSection.jsx";
 
 const page = () => {
   const { data, isLoading } = useGetOverviewStatsQuery();
@@ -46,6 +47,9 @@ const page = () => {
 
         {/* Messages */}
         <MessagesTableSection />
+        
+        {/* Delivery Man */}
+        <DeliveryManTableSection />
       </div>
     </div>
   );

@@ -165,7 +165,7 @@ const Page = () => {
         setAwaitingCardOtp(true);
       } else {
         toast.success("Order placed successfully!");
-        router.push("/my-orders");
+        router.push("/my_orders");
       }
     } catch (err) {
       toast.error(err?.data?.message || "Could not place order.");

@@ -1,25 +1,44 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import toast from "react-hot-toast";
+
 import Tag from "../../Tag";
 import OrderStatusDropdown from "./OrderStatusDropdown";
-import { useState } from "react";
+import EditOrderModal from "./EditOrderModal";
+import ConfirmModal from "../../ConfiremationModal";
 
-// deliveryAddress snapshot → readable string
+import {
+  useGetOrderDetailsAdminQuery,
+  useUpdateOrderStatusAdminMutation,
+  useDeleteOrderAdminMutation,
+} from "@/redux";
+
+// --------------------------------------------------
+// Helpers
+// --------------------------------------------------
+
 const formatAddress = (addr) => {
   if (!addr) return "—";
+
   const parts = [
-    addr.roadNumber  && `Road ${addr.roadNumber}`,
+    addr.roadNumber && `Road ${addr.roadNumber}`,
     addr.area,
     addr.city,
     addr.postCode,
     addr.country,
   ].filter(Boolean);
+
   return parts.join(", ") || "—";
 };
 
 const formatDate = (date) => {
   if (!date) return "—";
+
   return new Date(date).toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "short",
@@ -27,103 +46,400 @@ const formatDate = (date) => {
   });
 };
 
-// components/dashboard/orders/OrderRow.jsx
-const OrderRow = ({ order, isDashboard = true }) => {
-  const [status, setStatus] = useState(order.status);
+// --------------------------------------------------
+// Component
+// --------------------------------------------------
+
+const OrderRow = ({ orderId }) => {
+  const router = useRouter();
+
+  // ------------------------------------------------
+  // Modal states
+  // ------------------------------------------------
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  // Set only when the edit modal is opened via the "Out for Delivery"
+  // status pick — tells the modal which status to open on instead of
+  // whatever the order's current status is. Cleared whenever the modal
+  // closes (cancel or save) so a normal Edit click isn't affected.
+  const [pendingStatus, setPendingStatus] = useState(null);
+
+  // ------------------------------------------------
+  // Local status state
+  // ------------------------------------------------
+
+  const [status, setStatus] = useState("");
+
+  // ------------------------------------------------
+  // Fetch single/full order details
+  //
+  // API only runs when orderId exists.
+  // ------------------------------------------------
+
+  const {
+    data: orderResponse,
+    isLoading: isOrderLoading,
+    isFetching: isOrderFetching,
+    isError: isOrderError,
+  } = useGetOrderDetailsAdminQuery(
+    { orderId },
+    {
+      skip: !orderId,
+    },
+  );
+
+  // ------------------------------------------------
+  // Normalize API response
+  //
+  // Depending on your backend response:
+  //
+  // data.data
+  // OR
+  // data.data.order
+  //
+  // this supports both.
+  // ------------------------------------------------
+
+  const order = orderResponse?.data?.order ?? orderResponse?.data ?? null;
+
+  // ------------------------------------------------
+  // Update order mutation
+  // ------------------------------------------------
+
+  const [updateOrderStatus] = useUpdateOrderStatusAdminMutation();
+
+  // ------------------------------------------------
+  // Delete order mutation
+  // ------------------------------------------------
+
+  const [deleteOrder, { isLoading: deleting }] = useDeleteOrderAdminMutation();
+
+  // ------------------------------------------------
+  // When API order arrives, update local status
+  // ------------------------------------------------
+
+  useEffect(() => {
+    if (order?.status) {
+      setStatus(order.status);
+    }
+  }, [order?.status]);
+
+  // ------------------------------------------------
+  // Status change
+  // ------------------------------------------------
 
   const handleStatusChange = async (newStatus) => {
-    const prevStatus = status;
-    setStatus(newStatus); // optimistic update
+    if (!order?._id) return;
+
+    // "Out for Delivery" needs a delivery man attached — route through the
+    // edit modal instead of firing an instant status-only update, so the
+    // admin is prompted to pick one before it's saved.
+    if (newStatus === "Out for Delivery") {
+      setPendingStatus(newStatus);
+      setShowEditModal(true);
+      return;
+    }
+
+    const previousStatus = status;
+
+    // Optimistic UI
+    setStatus(newStatus);
 
     try {
-      // ✅ Fixed: order.orderId use করা হচ্ছে, আগে product.id ছিল (undefined)
-      await fetch(`/api/orders/${order.orderId}/status`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
-      });
+      await updateOrderStatus({
+        orderId: order._id,
+        status: newStatus,
+      }).unwrap();
     } catch (err) {
-      setStatus(prevStatus); // fail হলে revert
-      console.error("Failed to update status:", err);
+      // Revert if API fails
+      setStatus(previousStatus);
+
+      toast.error(err?.data?.message || "Could not update status.");
     }
   };
 
-  // ✅ items একটা array — প্রথম item নিয়ে বাকিগুলো "+N more" দিয়ে দেখাচ্ছি
+  // ------------------------------------------------
+  // Delete order
+  // ------------------------------------------------
+
+  const handleConfirmDelete = async () => {
+    if (!order?._id) return;
+
+    try {
+      await deleteOrder(order._id).unwrap();
+
+      toast.success("Order deleted");
+
+      setShowDeleteConfirm(false);
+    } catch (err) {
+      toast.error(err?.data?.message || "Could not delete this order.");
+
+      setShowDeleteConfirm(false);
+    }
+  };
+
+  // ------------------------------------------------
+  // Loading
+  // ------------------------------------------------
+
+  if (isOrderLoading || !order) {
+    return (
+      <tr className="border-b border-secondary/5">
+        <td colSpan={10} className="p-space-4 text-center text-placeholder_3">
+          Loading order...
+        </td>
+      </tr>
+    );
+  }
+
+  // ------------------------------------------------
+  // Error
+  // ------------------------------------------------
+
+  if (isOrderError) {
+    return (
+      <tr className="border-b border-secondary/5">
+        <td colSpan={10} className="p-space-4 text-center text-red-400">
+          Failed to load order.
+        </td>
+      </tr>
+    );
+  }
+
+  // ------------------------------------------------
+  // Items
+  // ------------------------------------------------
+
   const firstItem = order.items?.[0];
-  const extraCount = (order.items?.length ?? 1) - 1;
+
+  const extraCount = Math.max((order.items?.length ?? 0) - 1, 0);
+
   const itemLabel = firstItem
     ? extraCount > 0
       ? `${firstItem.productTitle} +${extraCount} more`
       : firstItem.productTitle
     : "—";
 
-  // ✅ সব items এর quantity যোগ করে মোট দেখাচ্ছি
-  const totalQty = order.items?.reduce((sum, item) => sum + (item.quantity ?? 0), 0) ?? 0;
+  // ------------------------------------------------
+  // Total quantity
+  // ------------------------------------------------
+
+  const totalQty =
+    order.items?.reduce((sum, item) => sum + (item.quantity ?? 0), 0) ?? 0;
+
+  // ------------------------------------------------
+  // Render
+  // ------------------------------------------------
 
   return (
-    <tr className="border-b border-secondary/5 last:border-0 odd:bg-primary/5 even:bg-secondary/5 transition-colors hover:odd:bg-primary/10 hover:even:bg-secondary/10 *:first:rounded-l-xl *:last:rounded-r-xl overflow-hidden text-size-h6 *:p-space-3">
+    <>
+      <tr
+        className="
+          border-b border-secondary/5
+          last:border-0
+          odd:bg-primary/5
+          even:bg-secondary/5
+          transition-colors
+          hover:odd:bg-primary/10
+          hover:even:bg-secondary/10
+          *:first:rounded-l-xl
+          *:last:rounded-r-xl
+          overflow-hidden
+          text-size-h6
+          *:p-space-3
+        "
+      >
+        {/* ------------------------------------------
+            Order ID
+        ------------------------------------------ */}
 
-      {/* ✅ order._id → order.orderId (schema এ unique orderId আছে) */}
-      <td className="text-placeholder_3">{order.orderId}</td>
+        <td className="text-placeholder_3">{order.orderId ?? "—"}</td>
 
-      {/* Customer */}
-      <td>
-        <div className="flex items-center gap-space-3">
-          {order.customer?.image?.url && (
-            <Image
-              alt={order.customer.name}
-              src={order.customer.image.url}
-              height={42}
-              width={42}
-              className="rounded-full size-[42px] object-cover"
-            />
-          )}
-          <div className="space-y-0.5">
-            <p className="font-medium text-size-large">{order.customer?.name ?? "—"}</p>
-            <h6 className="font-medium text-size-h6">{order.customer?.phone ?? "—"}</h6>
+        {/* ------------------------------------------
+            Customer
+        ------------------------------------------ */}
+
+        <td>
+          <div className="flex items-center gap-space-3">
+            {order.customer?.image?.url && (
+              <Image
+                alt={order.customer?.name ?? "Customer"}
+                src={order.customer.image.url}
+                height={42}
+                width={42}
+                className="rounded-full size-10.5 object-cover"
+              />
+            )}
+
+            <div className="space-y-0.5">
+              <p className="font-medium text-size-large">
+                {order.customer?.name ?? "—"}
+              </p>
+
+              <h6 className="font-medium text-size-h6">
+                {order.customer?.phone ?? "—"}
+              </h6>
+            </div>
           </div>
-        </div>
-      </td>
+        </td>
 
-      {/* ✅ items array থেকে productTitle নেওয়া হচ্ছে */}
-      <td>{itemLabel}</td>
+        {/* ------------------------------------------
+            Items
+        ------------------------------------------ */}
 
-      {/* Status Dropdown */}
-      <td>
-        <OrderStatusDropdown status={status} onChange={handleStatusChange} />
-      </td>
+        <td>{itemLabel}</td>
 
-      {/* ✅ items array reduce করে total quantity */}
-      <td>
-        <Tag property="filter" text={totalQty} />
-      </td>
+        {/* ------------------------------------------
+            Status
+        ------------------------------------------ */}
 
-      {/* ✅ order.price নেই schema তে → order.total */}
-      <td>${order.total?.toFixed(2) ?? "0.00"}</td>
+        <td>
+          <OrderStatusDropdown
+            status={status || order.status}
+            onChange={handleStatusChange}
+          />
+        </td>
 
-      {/* ✅ order.address নেই → deliveryAddress snapshot format করা হচ্ছে */}
-      <td>{formatAddress(order.deliveryAddress)}</td>
+        {/* ------------------------------------------
+            Quantity
+        ------------------------------------------ */}
 
-      {/* ✅ order.purcheseOn নেই → timestamps এর createdAt */}
-      <td>{formatDate(order.createdAt)}</td>
+        <td>
+          <Tag property="filter" text={totalQty} />
+        </td>
 
-      <td>{order.paymentMethod ?? "—"}</td>
+        {/* ------------------------------------------
+            Total
+        ------------------------------------------ */}
 
-      {/* Actions */}
-      <td>
-        <div className="flex items-center justify-end gap-space-2">
-          <button className="p-space-2 rounded-md bg-red-500/10 text-red-500">
-            <i className="fi fi-rr-trash"></i>
-          </button>
-          <button className="p-space-2 rounded-md bg-green-500/10 text-green-500">
-            <i className="fi fi-rr-edit"></i>
-          </button>
-          <button className="p-space-2 rounded-md bg-secondary/10 text-secondary">
-            <i className="fi fi-rr-arrow-small-right"></i>
-          </button>
-        </div>
-      </td>
-    </tr>
+        <td>
+          ${typeof order.total === "number" ? order.total.toFixed(2) : "0.00"}
+        </td>
+
+        {/* ------------------------------------------
+            Delivery Address
+        ------------------------------------------ */}
+
+        <td>{formatAddress(order.deliveryAddress)}</td>
+
+        {/* ------------------------------------------
+            Created Date
+        ------------------------------------------ */}
+
+        <td>{formatDate(order.createdAt)}</td>
+
+        {/* ------------------------------------------
+            Payment Method
+        ------------------------------------------ */}
+
+        <td>{order.paymentMethod ?? "—"}</td>
+
+        {/* ------------------------------------------
+            Actions
+        ------------------------------------------ */}
+
+        <td>
+          <div className="flex items-center justify-end gap-space-2">
+            {/* Delete */}
+
+            <button
+              type="button"
+              onClick={() => setShowDeleteConfirm(true)}
+              aria-label="Delete order"
+              className="
+                p-space-2
+                rounded-md
+                bg-red-500/10
+                text-red-500
+              "
+            >
+              <i className="fi fi-rr-trash" />
+            </button>
+
+            {/* Edit */}
+
+            <button
+              type="button"
+              onClick={() => setShowEditModal(true)}
+              aria-label="Edit order"
+              className="
+                p-space-2
+                rounded-md
+                bg-green-500/10
+                text-green-500
+              "
+            >
+              <i className="fi fi-rr-edit" />
+            </button>
+
+            {/* Details */}
+
+            <button
+              type="button"
+              onClick={() => router.push(`/dashboard/orders/${order._id}`)}
+              aria-label="View order details"
+              className="
+                p-space-2
+                rounded-md
+                bg-secondary/10
+                text-secondary
+              "
+            >
+              <i className="fi fi-rr-arrow-small-right" />
+            </button>
+          </div>
+        </td>
+      </tr>
+
+      {/* =================================================
+          EDIT MODAL
+      ================================================= */}
+
+      {showEditModal &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <EditOrderModal
+            order={{
+              ...order,
+              // pendingStatus wins when the modal was opened by picking
+              // "Out for Delivery" from the dropdown — otherwise fall back
+              // to whatever the row is already showing.
+              status: pendingStatus || status || order.status,
+            }}
+            onClose={() => {
+              setShowEditModal(false);
+              setPendingStatus(null);
+            }}
+            onUpdated={(newStatus) => {
+              setStatus(newStatus);
+              setPendingStatus(null);
+            }}
+          />,
+          document.body,
+        )}
+
+      {/* =================================================
+          DELETE CONFIRMATION
+      ================================================= */}
+
+      {showDeleteConfirm &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <ConfirmModal
+            title="Delete this order?"
+            message={`This will permanently delete order ${
+              order.orderId
+            }. This can't be undone.`}
+            confirmText="Delete"
+            isLoading={deleting}
+            onConfirm={handleConfirmDelete}
+            onClose={() => setShowDeleteConfirm(false)}
+          />,
+          document.body,
+        )}
+    </>
   );
 };
 

@@ -74,6 +74,7 @@ export const baseApi = createApi({
     "Discount",
     "AdminCustomer",
     "Message",
+    "DeliveryMan",
     "Overview",
     "AdminProfile",
   ],

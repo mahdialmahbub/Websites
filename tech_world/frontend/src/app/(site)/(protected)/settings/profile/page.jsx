@@ -179,7 +179,7 @@ const Page = () => {
               disabled={uploadingImage}
             />
           </div>
-          <div className="space-y-[6px]">
+          <div className="space-y-1.5">
             <h1 className="font-semibold text-[24px]">{profile.name}</h1>
             <p className="font-medium text-placeholder_3 text-size-large">
               Customer since:{" "}

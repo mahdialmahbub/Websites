@@ -5,8 +5,10 @@ import { useState } from "react";
 import Image from "next/image";
 import { useUpdateProductMutation } from "@/redux/api/adminProductApi"; // apnar actual path diye bodle nin
 import ProductStatusToggle from "./ProductStatusToggle";
+import { useRouter } from "next/navigation";
 
 const ProductRow = ({ product, isDashboard = true }) => {
+  const router = useRouter();
   const [status, setStatus] = useState(product.status);
   const [updateProduct, { isLoading }] = useUpdateProductMutation();
 
@@ -63,8 +65,18 @@ const ProductRow = ({ product, isDashboard = true }) => {
       )}
       <td>
         <div className="flex items-center justify-end">
-          <button className="p-space-2 rounded-md bg-secondary/10 text-secondary">
-            <i className="fi fi-rr-arrow-small-right"></i>
+          <button
+            type="button"
+            onClick={() => router.push(`/dashboard/products/${product._id}`)}
+            aria-label="View order details"
+            className="
+                p-space-2
+                rounded-md
+                bg-secondary/10
+                text-secondary
+              "
+          >
+            <i className="fi fi-rr-arrow-small-right" />
           </button>
         </div>
       </td>

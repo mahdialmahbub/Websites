@@ -27,15 +27,17 @@ const Navbar_Searchbar = () => {
 
   const { data: resultsData, isFetching } = useGetProductsQuery(
     { search: debouncedSearch, category: selectedCategory?._id, limit: 6 },
-    { skip: !debouncedSearch }
+    { skip: !debouncedSearch },
   );
   const results = resultsData?.data?.products || [];
 
   // Close both dropdowns on outside click
   useEffect(() => {
     const handleClick = (e) => {
-      if (categoryRef.current && !categoryRef.current.contains(e.target)) setCategoryOpen(false);
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) setResultsOpen(false);
+      if (categoryRef.current && !categoryRef.current.contains(e.target))
+        setCategoryOpen(false);
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target))
+        setResultsOpen(false);
     };
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
@@ -67,7 +69,9 @@ const Navbar_Searchbar = () => {
             onClick={() => setCategoryOpen((prev) => !prev)}
             className="flex items-center justify-center px-3 gap-0.5"
           >
-            <span className="font-primary text-md text-placeholder_2">{selectedCategory?.name || "All"}</span>
+            <span className="font-primary text-md text-placeholder_2">
+              {selectedCategory?.name || "All"}
+            </span>
             <i
               className={`fi fi-rr-caret-down flex items-center justify-center text-size-large transition-transform ${
                 categoryOpen ? "rotate-180" : ""
@@ -91,7 +95,9 @@ const Navbar_Searchbar = () => {
                   key={cat._id}
                   onClick={() => handleSelectCategory(cat)}
                   className={`px-space-3 py-space-2 text-size-large cursor-pointer hover:bg-secondary/10 ${
-                    selectedCategory?._id === cat._id ? "text-secondary" : "text-placeholder_2"
+                    selectedCategory?._id === cat._id
+                      ? "text-secondary"
+                      : "text-placeholder_2"
                   }`}
                 >
                   {cat.name}
@@ -120,10 +126,6 @@ const Navbar_Searchbar = () => {
             className="fi fi-rr-cross-circle flex items-center justify-center text-red text-size-h5 mr-space-[6px] cursor-pointer"
           ></i>
         )}
-
-        <button type="button" onClick={() => setResultsOpen(true)} className="py-space-3 px-space-4 h-full bg-secondary text-background rounded-lg">
-          <i className="fi fi-br-search"></i>
-        </button>
       </div>
 
       {/* results dropdown */}
@@ -132,7 +134,9 @@ const Navbar_Searchbar = () => {
           {isFetching ? (
             <p className="p-space-4 text-sm text-placeholder_2">Searching...</p>
           ) : results.length === 0 ? (
-            <p className="p-space-4 text-sm text-placeholder_2">No products found.</p>
+            <p className="p-space-4 text-sm text-placeholder_2">
+              No products found.
+            </p>
           ) : (
             results.map((product) => (
               <button
@@ -149,13 +153,17 @@ const Navbar_Searchbar = () => {
                   className="w-12 h-12 rounded-lg object-cover shrink-0"
                 />
                 <div className="flex-1 min-w-0">
-                  <p className="truncate text-sm font-medium text-foreground">{product.title}</p>
+                  <p className="truncate text-sm font-medium text-foreground">
+                    {product.title}
+                  </p>
                   <div className="flex items-center gap-1 text-xs text-placeholder_2">
                     <Star size={11} className="fill-secondary text-secondary" />
                     {product.rating?.average || 0}
                   </div>
                 </div>
-                <p className="text-sm font-semibold text-secondary shrink-0">{money(product.startingPrice)}</p>
+                <p className="text-sm font-semibold text-secondary shrink-0">
+                  {money(product.startingPrice)}
+                </p>
               </button>
             ))
           )}

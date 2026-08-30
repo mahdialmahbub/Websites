@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Button from "./Button";
+import useLockBodyScroll from "@/app/hooks/useLockBodyScroll";
 import { useUpdateCartItemMutation } from "@/redux";
 
 /**
@@ -13,6 +14,8 @@ import { useUpdateCartItemMutation } from "@/redux";
  *   onClose()
  */
 export default function EditCartItemModal({ item, onClose }) {
+  useLockBodyScroll();
+
   const [selectedVariantIds, setSelectedVariantIds] = useState(
     item.selectedVariantIds || [],
   );
@@ -22,6 +25,15 @@ export default function EditCartItemModal({ item, onClose }) {
   const [quantity, setQuantity] = useState(item.quantity || 1);
 
   const [updateCartItem, { isLoading }] = useUpdateCartItemMutation();
+
+  // Close on Escape, matching every other modal in the app.
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") onClose?.();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
 
   const variants = item.product?.variants || [];
   const colors = item.product?.colors || [];
@@ -61,21 +73,39 @@ export default function EditCartItemModal({ item, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-      <div className="max-w-150 w-full space-y-space-7 p-space-7 rounded-2xl bg-background border-2 border-secondary/10">
-        <div className="flex items-center gap-space-3 ">
-          <i className="fi fi-rr-edit text-secondary text-[24px]"></i>
-          <h2 className="font-semibold text-size-h4 text-placeholder_3">Edit Cart Item</h2>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        onClick={(event) => event.stopPropagation()}
+        className="my-8 w-full max-w-150 space-y-space-7 rounded-2xl border-2 border-secondary/10 bg-background p-space-7"
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between gap-space-4">
+          <div className="flex min-w-0 items-center gap-space-3">
+            <i className="fi fi-rr-edit shrink-0 text-[24px] text-secondary" />
+            <h2 className="truncate font-semibold text-size-h4 text-placeholder_3">
+              Edit Cart Item
+            </h2>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close modal"
+            className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-secondary/10 text-secondary transition-colors hover:bg-secondary/20"
+          >
+            <i className="fi fi-rr-cross-small" />
+          </button>
         </div>
-        <div className="space-y-space-7 overflow-y-auto h-75 custom-scrollbar pl-[5px]">
-          <p className="font-medium text-size-h6 text-foreground">
-            {item.product?.title}
-          </p>
+
+        <div className="-mr-1 max-h-[65vh] space-y-space-7 overflow-y-auto pr-1 custom-scrollbar">
+          <p className="font-medium text-size-h6 text-foreground">{item.product?.title}</p>
 
           {/* Colors */}
           {colors.length > 0 && (
             <div>
-              <p className="text-sm font-medium mb-3 text-foreground">Color</p>
+              <p className="mb-3 text-sm font-medium text-foreground">Color</p>
               <div className="flex gap-3">
                 {colors.map((c) => (
                   <button
@@ -98,16 +128,14 @@ export default function EditCartItemModal({ item, onClose }) {
           {/* Variants, grouped */}
           {Object.entries(variantGroups).map(([group, groupVariants]) => (
             <div key={group}>
-              <p className="text-sm font-medium mb-3 text-foreground">
-                {group}
-              </p>
-              <div className="flex gap-2 flex-wrap">
+              <p className="mb-3 text-sm font-medium text-foreground">{group}</p>
+              <div className="flex flex-wrap gap-2">
                 {groupVariants.map((v) => (
                   <button
                     key={v._id}
                     type="button"
                     onClick={() => toggleVariant(v._id, group)}
-                    className={`rounded-sm border min-w-25 h-16.25 p-space-3 text-size-h6 font-primary font-semibold transition-colors text-center ${
+                    className={`min-w-25 h-16.25 rounded-sm border p-space-3 text-center font-primary text-size-h6 font-semibold transition-colors ${
                       selectedVariantIds.includes(v._id)
                         ? "border-secondary bg-secondary/5 text-secondary"
                         : "border-white/10 bg-white/5 text-slate-400 hover:bg-white/5"
@@ -117,8 +145,7 @@ export default function EditCartItemModal({ item, onClose }) {
 
                     {v.priceAdjustment !== 0 && (
                       <p className="text-size-medium text-placeholder_2/80">
-                        {v.priceAdjustment !== 0 &&
-                          `(${v.priceAdjustment > 0 ? "+" : ""}$${v.priceAdjustment})`}
+                        {`(${v.priceAdjustment > 0 ? "+" : ""}$${v.priceAdjustment})`}
                       </p>
                     )}
                   </button>
@@ -129,29 +156,27 @@ export default function EditCartItemModal({ item, onClose }) {
 
           {/* Quantity */}
           <div>
-            <p className="text-sm font-medium mb-3 text-foreground">Quantity</p>
+            <p className="mb-3 text-sm font-medium text-foreground">Quantity</p>
             <div className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-3 min-w-42.5 rounded-lg bg-background h-12.5 justify-between outline-2 outline-offset-2 outline-secondary/20 mb-space-3">
+              <div className="mb-space-3 flex h-12.5 min-w-42.5 items-center justify-between gap-3 rounded-lg bg-background outline-2 outline-offset-2 outline-secondary/20">
                 <button
                   type="button"
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                   aria-label="Decrease quantity"
-                  className="text-[43px] text-secondary hover:bg-secondary/10 rounded-full"
+                  className="rounded-full text-[43px] text-secondary hover:bg-secondary/10"
                 >
-                  <i className="fi fi-rr-minus-small"></i>
+                  <i className="fi fi-rr-minus-small" />
                 </button>
 
-                <span className="font-primary font-bold text-size-h6">
-                  {quantity}
-                </span>
+                <span className="font-primary text-size-h6 font-bold">{quantity}</span>
 
                 <button
                   type="button"
                   onClick={() => setQuantity((q) => Math.min(stock, q + 1))}
                   aria-label="Increase quantity"
-                  className="text-[43px] text-secondary hover:bg-secondary/10 rounded-full"
+                  className="rounded-full text-[43px] text-secondary hover:bg-secondary/10"
                 >
-                  <i className="fi fi-rr-plus-small"></i>
+                  <i className="fi fi-rr-plus-small" />
                 </button>
               </div>
 
@@ -162,21 +187,12 @@ export default function EditCartItemModal({ item, onClose }) {
           </div>
         </div>
 
-        <div className="flex gap-space-4 pt-space-2">
-          <Button
-            variant="secondary"
-            type="button"
-            onClick={onClose}
-            className="flex-1 text-red"
-          >
+        {/* Footer */}
+        <div className="flex gap-space-4 border-t border-white/5 pt-space-6 *:w-full">
+          <Button variant="secondary" type="button" onClick={onClose}>
             Cancel
           </Button>
-          <Button
-            type="button"
-            onClick={handleSave}
-            disabled={isLoading}
-            className="flex-1"
-          >
+          <Button type="button" onClick={handleSave} disabled={isLoading}>
             {isLoading ? "Saving..." : "Save"}
           </Button>
         </div>

@@ -8,6 +8,13 @@
   /* Fonts */
   --font-primary: var(--font-poppins);
   --font-secondary: var(--font-roboto);
+
+    --scrollbar-size: 10px;
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: rgba(43, 231, 196, 0.35);
+  --scrollbar-thumb-hover: rgba(43, 231, 196, 0.55);
+  --scrollbar-thumb-active: rgba(43, 231, 196, 0.8);
+
 }
 
 @theme inline {
@@ -168,26 +175,46 @@ i {
 }
 
 /* globals.css e ekbar add korle app-er jekono scrollable element e reuse korte parba */
+
 .custom-scrollbar {
-  scrollbar-width: thin;                                   /* Firefox */
-  scrollbar-color: rgba(43, 231, 196, 0.35) transparent;   /* Firefox: thumb, track */
+  scrollbar-width: thin;                                      /* Firefox */
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scrollbar-gutter: stable;                                   /* avoids layout shift */
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 6px;                                               /* Chrome / Edge / Safari */
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--scrollbar-track);
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(43, 231, 196, 0.35);
+  background-color: var(--scrollbar-thumb);
   border-radius: 9999px;
+  border: 3px solid transparent;               /* creates the floating gap */
+  background-clip: padding-box;
+  transition: background-color 0.2s ease;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(43, 231, 196, 0.6);
+  background-color: var(--scrollbar-thumb-hover);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:active {
+  background-color: var(--scrollbar-thumb-active);
+}
+
+.custom-scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    transition: none;
+  }
 }
 
 @utility scrollbar-hide {
@@ -198,3 +225,4 @@ i {
     display: none;
   }
 }
+

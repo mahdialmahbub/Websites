@@ -1,8 +1,10 @@
 "use client";
 
-import Button from "@/app/components/Button";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Info } from "lucide-react";
 import toast from "react-hot-toast";
+import Button from "./Button";
+import useLockBodyScroll from "@/app/hooks/useLockBodyScroll";
 import { useRequestChangePasswordMutation, useConfirmChangePasswordMutation } from "@/redux";
 
 const OTP_LENGTH = 6;
@@ -16,6 +18,8 @@ const OTP_LENGTH = 6;
  * -----------------------------------------------------------------------
  */
 const ChangePasswordModal = ({ onClose = () => {}, onSuccess = () => {} }) => {
+  useLockBodyScroll();
+
   const [otp, setOtp] = useState(Array(OTP_LENGTH).fill(""));
   const [newPassword, setNewPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -36,6 +40,15 @@ const ChangePasswordModal = ({ onClose = () => {}, onSuccess = () => {} }) => {
       .then(() => toast.success("OTP sent to your email"))
       .catch((err) => setError(err?.data?.message || "Could not send OTP. Please try again."));
   }, [requestChangePassword]);
+
+  // Close on Escape, matching every other modal in the app.
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") onClose?.();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
 
   // ---- OTP box handlers ----
   const handleOtpChange = (index, value) => {
@@ -95,30 +108,38 @@ const ChangePasswordModal = ({ onClose = () => {}, onSuccess = () => {} }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
       <div
-        onClick={(e) => e.stopPropagation()}
-        className="max-w-200 w-full space-y-space-9 p-space-7 rounded-2xl bg-background border-2 border-secondary my-8 relative"
+        onClick={(event) => event.stopPropagation()}
+        className="my-8 w-full max-w-150 space-y-space-7 rounded-2xl border-2 border-secondary/10 bg-background p-space-7"
       >
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Close modal"
-          className="absolute top-space-6 right-space-6 text-placeholder_2 hover:text-foreground transition-colors"
-        >
-          <i className="fi fi-rr-cross-small text-[24px]"></i>
-        </button>
-
-        <div className="flex items-center gap-space-3">
-          <i className="fi fi-sr-password-lock text-secondary text-[32px]"></i>
-          <h2 className="font-semibold text-size-h3">Change Password</h2>
+        {/* Header */}
+        <div className="flex items-center justify-between gap-space-4">
+          <div className="flex min-w-0 items-center gap-space-3">
+            <i className="fi fi-rr-password-lock shrink-0 text-[24px] text-secondary" />
+            <h2 className="truncate font-semibold text-size-h4 text-placeholder_3">
+              Change Password
+            </h2>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close modal"
+            className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-secondary/10 text-secondary transition-colors hover:bg-secondary/20"
+          >
+            <i className="fi fi-rr-cross-small" />
+          </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-space-6">
+        <form onSubmit={handleSubmit} className="space-y-space-7">
+          {/* OTP */}
           <div>
-            <div className="flex items-center justify-between mb-2 px-space-1">
-              <label className="text-[#EAECF2] text-sm font-medium">OTP</label>
-              <span className="text-[#1FD8A4] text-xs font-medium">Required</span>
+            <div className="mb-2 flex items-center justify-between px-space-1">
+              <label className="font-primary text-size-large font-medium text-foreground">OTP</label>
+              <span className="text-xs font-primary font-semibold text-green">Required</span>
             </div>
 
             <div className="grid grid-cols-6 gap-2">
@@ -133,26 +154,28 @@ const ChangePasswordModal = ({ onClose = () => {}, onSuccess = () => {} }) => {
                   onChange={(e) => handleOtpChange(i, e.target.value)}
                   onKeyDown={(e) => handleOtpKeyDown(i, e)}
                   onPaste={handleOtpPaste}
-                  className="w-full bg-[#0B0F1E] h-11 border border-white/10 rounded-xl text-center text-base font-semibold text-[#EAECF2] outline-none focus:border-[#1FD8A4]/60 transition-colors"
+                  onFocus={(e) => e.target.select()}
+                  className="w-full rounded-xl border border-secondary/20 bg-background py-3 text-center text-size-large font-semibold text-foreground outline-none transition-colors hover:border-secondary/50 focus-within:border-secondary/80"
                 />
               ))}
             </div>
 
-            <p className="flex items-center gap-1.5 mt-2 text-xs text-secondary text-size-large">
-              <i className="fi fi-rr-info"></i>
+            <p className="mt-2 flex items-center gap-1.5 px-space-1 text-xs text-sky-400">
+              <Info className="size-3.5" />
               OTP is sent to your email
             </p>
           </div>
 
+          {/* New password */}
           <div>
-            <div className="flex items-center justify-between mb-2 px-space-1">
-              <label htmlFor="newPassword" className="text-[#EAECF2] text-sm font-medium">
+            <div className="mb-2 flex items-center justify-between px-space-1">
+              <label htmlFor="newPassword" className="font-primary text-size-large font-medium text-foreground">
                 New Password
               </label>
-              <span className="text-[#1FD8A4] text-xs font-medium">Required</span>
+              <span className="text-xs font-primary font-semibold text-green">Required</span>
             </div>
-            <div className="flex items-center gap-space-3 p-3.5 rounded-lg bg-[#0C1221] border border-secondary/30">
-              <i className="fi fi-sr-password-lock text-size-h6 text-[#2BE7C4]"></i>
+            <div className="relative">
+              <i className="fi fi-sr-password-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-size-h6 text-[#2BE7C4]/70" />
               <input
                 id="newPassword"
                 name="newPassword"
@@ -160,33 +183,44 @@ const ChangePasswordModal = ({ onClose = () => {}, onSuccess = () => {} }) => {
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="Enter your new password"
-                className="outline-none text-size-large bg-transparent w-full text-[#EAECF2]"
+                className="w-full rounded-xl border border-secondary/20 bg-background py-3 pl-10 pr-11 text-sm text-foreground placeholder-placeholder_3 outline-none transition-colors hover:border-secondary/50 focus-within:border-secondary/80"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
                 aria-label={showPassword ? "Hide password" : "Show password"}
-                className="text-placeholder_2 hover:text-secondary transition-colors"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-placeholder_2 transition-colors hover:text-secondary"
               >
-                <i className={`fi ${showPassword ? "fi-rr-eye-crossed" : "fi-rr-eye"}`}></i>
+                <i className={`fi ${showPassword ? "fi-rr-eye-crossed" : "fi-rr-eye"}`} />
               </button>
             </div>
+            <p className="mt-2 flex items-center gap-1.5 px-space-1 text-xs text-sky-400">
+              <Info className="size-3.5" />
+              At least 8 characters
+            </p>
           </div>
 
           {error && (
             <p className="flex items-center gap-1.5 text-xs text-red">
-              <i className="fi fi-rr-cross-circle"></i>
+              <i className="fi fi-rr-cross-circle" />
               {error}
             </p>
           )}
 
-          <div className="flex items-center justify-end gap-space-4">
-            <Button type="button" variant="text" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={submitting}>
-              {submitting ? "Submitting..." : "Confirm"}
-            </Button>
+          {/* Footer */}
+          <div className="space-y-space-4 border-t border-white/5 pt-space-6">
+            <div className="flex gap-space-4 *:w-full">
+              <Button type="button" variant="secondary" onClick={onClose}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={submitting}>
+                {submitting ? "Submitting..." : "Confirm"}
+              </Button>
+            </div>
+            <div className="flex items-center justify-center gap-1.5 text-center text-size-large font-semibold text-secondary">
+              <i className="fi fi-rr-shield-check" />
+              Your password is encrypted and never shared.
+            </div>
           </div>
         </form>
       </div>

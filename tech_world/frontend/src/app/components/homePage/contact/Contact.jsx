@@ -108,17 +108,16 @@ const Contact = () => {
                   <div className="relative z-10 min-h-full flex flex-col items-start justify-end">
                     <div>
                       <h1 className="font-primary font-medium text-[32px] mb-[8px]">
-                        To get help, Contact us Fluently.
+                        Contact Us
                       </h1>
                       <p className="font-medium text-size-h5 text-placeholder mt-[18px]">
-                        Sign in to your account to explore the latest tech and manage your
-                        orders.
+                        We’re just a message away. Get in touch and we’ll assist you with pleasure
                       </p>
                       <div className="flex items-center gap-space-3 mt-space-6 mb-space-7">
                         {contactInfoData.map((item, i) => (
                           <span
                             key={i}
-                            className="flex items-center p-space-3 gap-2.5 w-[180px] rounded-[8px]"
+                            className="flex items-center p-space-3 gap-2.5 w-[180px] rounded-[8px] cursor-pointer"
                             style={{
                               backgroundColor: item.color,
                             }}
@@ -146,7 +145,7 @@ const Contact = () => {
                       </div>
                       <div className="flex items-center gap-space-2">
                         <i className="fi fi-sr-marker text-secondary text-size-h5"></i>
-                        <p className="font-medium text-[20px] text-placeholder">
+                        <p className="font-medium text-[20px]">
                           245 Market Street, San Francisco, CA 94105, USA.
                         </p>
                       </div>

@@ -19,7 +19,6 @@ const MessagesTableSection = () => {
     page,
     limit: 10,
   });
-console.log(data)
   const messages = data?.data?.messages || [];
   const pagination = data?.data?.pagination;
 

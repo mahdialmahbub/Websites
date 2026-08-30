@@ -6,7 +6,7 @@ import InputField from "./Input";
 import Button from "./Button";
 import toast from "react-hot-toast";
 import { useAddAddressMutation, useUpdateAddressMutation } from "@/redux";
-import useLockBodyScroll from "../hooks/useLockBodyScroll";
+import useLockBodyScroll from "@/app/hooks/useLockBodyScroll";
 
 const emptyForm = {
   apartmentNumber: "",
@@ -28,7 +28,6 @@ const emptyForm = {
  */
 const AddressModal = ({ onClose, editingAddress }) => {
   useLockBodyScroll();
-  use;
   const isEditMode = !!editingAddress;
   const [form, setForm] = useState(editingAddress || emptyForm);
 
@@ -41,6 +40,15 @@ const AddressModal = ({ onClose, editingAddress }) => {
   useEffect(() => {
     setForm(editingAddress || emptyForm);
   }, [editingAddress]);
+
+  // Close on Escape, matching every other modal in the app.
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") onClose?.();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
 
   const handleChange = (field) => (e) =>
     setForm((prev) => ({
@@ -85,20 +93,34 @@ const AddressModal = ({ onClose, editingAddress }) => {
   ];
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 overflow-y-auto">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
       <form
         onSubmit={handleSubmit}
-        className="max-w-150 w-full space-y-space-7 p-space-7 rounded-2xl bg-background border-2 border-secondary/10"
+        onClick={(event) => event.stopPropagation()}
+        className="my-8 w-full max-w-150 space-y-space-7 rounded-2xl border-2 border-secondary/10 bg-background p-space-7"
       >
-        {/* header */}
-        <div className="flex items-center gap-space-3">
-          <i className="fi fi-rr-land-layer-location text-secondary/80 text-[24px]"></i>
-          <h2 className="font-semibold text-size-h4 text-placeholder_3">
-            {isEditMode ? "Edit Address" : "Add Address"}
-          </h2>
+        {/* Header */}
+        <div className="flex items-center justify-between gap-space-4">
+          <div className="flex min-w-0 items-center gap-space-3">
+            <i className="fi fi-rr-land-layer-location shrink-0 text-[24px] text-secondary" />
+            <h2 className="truncate font-semibold text-size-h4 text-placeholder_3">
+              {isEditMode ? "Edit Address" : "Add Address"}
+            </h2>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close modal"
+            className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-secondary/10 text-secondary transition-colors hover:bg-secondary/20"
+          >
+            <i className="fi fi-rr-cross-small" />
+          </button>
         </div>
 
-        <div className="grid grid-cols-2 gap-space-6 overflow-y-auto h-75 custom-scrollbar">
+        <div className="-mr-1 grid max-h-[65vh] grid-cols-2 gap-space-6 overflow-y-auto pr-1 custom-scrollbar">
           {fields.map(([key, label, placeholder]) => (
             <InputField
               key={key}
@@ -110,26 +132,27 @@ const AddressModal = ({ onClose, editingAddress }) => {
           ))}
         </div>
 
-        <div className="text-center">
-          <label className="flex items-center gap-2 text-sm text-slate-400 mb-space-3 max-w-max">
+        {/* Footer */}
+        <div className="space-y-space-4 border-t border-white/5 pt-space-6 text-center">
+          <label className="mb-space-3 flex max-w-max items-center gap-2 text-sm text-slate-400">
             <input
               type="checkbox"
               checked={form.isDefault}
               onChange={handleChange("isDefault")}
-              className="size-[20px]"
+              className="size-[20px] accent-secondary"
             />
             Set as default address
           </label>
           <div className="flex gap-space-4 *:w-full">
-            <Button variant="secondary" type="button" onClick={onClose} color={"#d10000"}>
+            <Button variant="secondary" type="button" onClick={onClose}>
               Cancel
             </Button>
             <Button type="submit" disabled={isLoading}>
               {isLoading ? "Saving..." : "Save"}
             </Button>
           </div>
-          <div className="mt-space-3 flex items-center justify-center gap-1.5 text-secondary text-size-large font-semibold">
-            <i className="fi fi-rr-shield-check"></i>
+          <div className="flex items-center justify-center gap-1.5 text-size-large font-semibold text-secondary">
+            <i className="fi fi-rr-shield-check" />
             Your location information is safe
           </div>
         </div>

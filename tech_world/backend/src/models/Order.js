@@ -1,16 +1,24 @@
 const mongoose = require("mongoose");
-const { ORDER_STATUS, PAYMENT_METHOD, PAYMENT_STATUS } = require("../config/constants");
+const {
+  ORDER_STATUS,
+  PAYMENT_METHOD,
+  PAYMENT_STATUS,
+} = require("../config/constants");
 
 // Snapshot of a variant selection at the time of order (so future product edits
 // never change historical order records)
 const orderVariantSnapshotSchema = new mongoose.Schema(
   { name: String, group: String, priceAdjustment: Number },
-  { _id: false }
+  { _id: false },
 );
 
 const orderItemSchema = new mongoose.Schema(
   {
-    product: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
+    product: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+    },
     productTitle: { type: String, required: true },
     productImage: { type: String },
     brandName: { type: String },
@@ -24,7 +32,7 @@ const orderItemSchema = new mongoose.Schema(
     warrantyMonths: { type: Number, default: 0 },
     supportInfo: { type: mongoose.Schema.Types.Mixed },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const addressSnapshotSchema = new mongoose.Schema(
@@ -38,7 +46,7 @@ const addressSnapshotSchema = new mongoose.Schema(
     postCode: String,
     country: String,
   },
-  { _id: false }
+  { _id: false },
 );
 
 const statusTimelineEntrySchema = new mongoose.Schema(
@@ -46,13 +54,38 @@ const statusTimelineEntrySchema = new mongoose.Schema(
     status: { type: String, enum: ORDER_STATUS, required: true },
     at: { type: Date, default: Date.now },
   },
-  { _id: false }
+  { _id: false },
+);
+
+// Snapshot of the assigned delivery man at assignment time (so future edits to
+// the DeliveryMan record never change historical order records)
+const deliveryManSnapshotSchema = new mongoose.Schema(
+  {
+    name: { type: String },
+    contact: { type: String },
+    courierServiceName: { type: String },
+    email: { type: String },
+    address: { type: String },
+    vehicleType: { type: String },
+    vehicleNumber: { type: String },
+
+    image: {
+      url: { type: String },
+      publicPath: { type: String },
+    },
+  },
+  { _id: false },
 );
 
 const orderSchema = new mongoose.Schema(
   {
     orderId: { type: String, required: true, unique: true },
-    customer: { type: mongoose.Schema.Types.ObjectId, ref: "Customer", required: true, index: true },
+    customer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Customer",
+      required: true,
+      index: true,
+    },
 
     items: { type: [orderItemSchema], validate: (v) => v.length > 0 },
 
@@ -77,9 +110,20 @@ const orderSchema = new mongoose.Schema(
     estimatedDeliveryDate: { type: Date },
     estimatedDeliveryDurationDays: { type: Number },
     trackingId: { type: String },
-    courierName: { type: String },
+
+    deliveryMan: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "DeliveryMan",
+      default: null,
+      index: true,
+    },
+
+    deliveryManDetails: {
+      type: deliveryManSnapshotSchema,
+      default: null,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 orderSchema.index({ status: 1, paymentMethod: 1 });

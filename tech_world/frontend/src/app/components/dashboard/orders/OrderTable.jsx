@@ -26,7 +26,7 @@ console.log(orders)
         </thead>
         <tbody>
           {orders?.map((order) => (
-            <OrderRow key={order._id} order={order} isDashboard={isDashboard} />
+            <OrderRow key={order._id} orderId={order._id} isDashboard={isDashboard} />
           ))}
         </tbody>
       </table>

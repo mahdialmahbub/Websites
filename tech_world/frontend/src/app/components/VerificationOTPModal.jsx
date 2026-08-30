@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Button from "./Button";
+import useLockBodyScroll from "@/app/hooks/useLockBodyScroll";
 
 /**
  * Reusable OTP verification modal — segmented digit boxes with
@@ -34,12 +35,23 @@ export default function VerificationOTPModal({
   const [errorMessage, setErrorMessage] = useState("");
   const otpRefs = useRef([]);
 
+  useLockBodyScroll();
+
   const resolvedDescription =
     description || (email ? `Code sent to ${email}` : "Enter the verification code we sent you.");
 
   useEffect(() => {
     otpRefs.current[0]?.focus();
   }, []);
+
+  // Close on Escape, matching every other modal in the app.
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") onClose?.();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
 
   function focusOtp(index) {
     otpRefs.current[index]?.focus();
@@ -130,20 +142,34 @@ export default function VerificationOTPModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
       <form
         onSubmit={handleSubmit}
-        className="max-w-105 w-full space-y-space-7 p-space-7 rounded-2xl bg-background border-2 border-secondary/10"
+        onClick={(event) => event.stopPropagation()}
+        className="my-8 w-full max-w-105 space-y-space-6 rounded-2xl border-2 border-secondary/10 bg-background p-space-7"
       >
-        <div className="flex items-center gap-space-3">
-          <i className="fi fi-rr-password-lock text-secondary text-size-h3"></i>
-          <h2 className="font-semibold text-size-h4 text-placeholder_3">
-            {title}
-          </h2>
+        {/* Header */}
+        <div className="flex items-center justify-between gap-space-4">
+          <div className="flex min-w-0 items-center gap-space-3">
+            <i className="fi fi-rr-password-lock shrink-0 text-[24px] text-secondary" />
+            <h2 className="truncate font-semibold text-size-h4 text-placeholder_3">{title}</h2>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close modal"
+            className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-secondary/10 text-secondary transition-colors hover:bg-secondary/20"
+          >
+            <i className="fi fi-rr-cross-small" />
+          </button>
         </div>
 
         <p className="text-sm text-placeholder_3">{resolvedDescription}</p>
 
+        {/* OTP boxes */}
         <div
           className="grid gap-2"
           style={{ gridTemplateColumns: `repeat(${length}, minmax(0,1fr))` }}
@@ -160,14 +186,20 @@ export default function VerificationOTPModal({
               onKeyDown={(e) => handleOtpKeyDown(i, e)}
               onPaste={handleOtpPaste}
               onFocus={(e) => e.target.select()}
-              className="border rounded-xl transition-colors w-full bg-background text-foreground text-center text-size-large outline-none py-3 border-secondary/20 hover:border-secondary/50 focus-within:border-secondary/80"
+              className="w-full rounded-xl border border-secondary/20 bg-background py-3 text-center text-size-large font-semibold text-foreground outline-none transition-colors hover:border-secondary/50 focus-within:border-secondary/80"
             />
           ))}
         </div>
 
-        {errorMessage && <p className="text-red-400 text-sm">{errorMessage}</p>}
+        {errorMessage && (
+          <p className="flex items-center gap-1.5 text-xs text-red">
+            <i className="fi fi-rr-cross-circle" />
+            {errorMessage}
+          </p>
+        )}
 
-        <div className="text-center">
+        {/* Footer */}
+        <div className="space-y-space-4 border-t border-white/5 pt-space-6">
           <div className="flex gap-space-4 *:w-full">
             <Button variant="secondary" type="button" onClick={onClose}>
               Cancel
@@ -177,8 +209,8 @@ export default function VerificationOTPModal({
             </Button>
           </div>
           {footerNote && (
-            <div className="mt-space-3 flex items-center gap-1.5 justify-center text-secondary text-[14px] font-semibold">
-              <i className="fi fi-rr-shield-check"></i>
+            <div className="flex items-center justify-center gap-1.5 text-center text-size-large font-semibold text-secondary">
+              <i className="fi fi-rr-shield-check" />
               {footerNote}
             </div>
           )}

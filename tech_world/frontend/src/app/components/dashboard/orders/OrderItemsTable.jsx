@@ -3,7 +3,6 @@
 import OrderItemsRow from "./OrderItemsRow";
 
 const OrdersItemsTable = ({ items }) => {
-  console.log(items)
   return (
     <div className="rounded-2xl border-2 border-secondary/10 px-space-2">
       <table className="w-full text-left border-separate border-spacing-x-0 border-spacing-y-space-3">
@@ -17,8 +16,8 @@ const OrdersItemsTable = ({ items }) => {
           </tr>
         </thead>
         <tbody>
-          {items?.map((item) => (
-            <OrderItemsRow key={item.product} item={item} />
+          {items?.map((item, i) => (
+            <OrderItemsRow key={i} item={item} />
           ))}
         </tbody>
       </table>

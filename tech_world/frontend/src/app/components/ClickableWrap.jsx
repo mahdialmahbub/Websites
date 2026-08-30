@@ -4,7 +4,7 @@ export default function ClickableWrap({ href, children }) {
   if (!href) return children;
 
   return (
-    <Link href={href} className="contents">
+    <Link href={href} scroll={true} className="contents">
       {children}
     </Link>
   );

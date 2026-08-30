@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
-const Order = require("../models/Order");
-const Product = require("../models/Product");
-const Customer = require("../models/Customer");
-const Address = require("../models/Address");
-const Card = require("../models/Card");
+const Order = require("../models/Order.js");
+const Product = require("../models/Product.js");
+const Customer = require("../models/Customer.js");
+const Address = require("../models/Address.js");
+const Card = require("../models/Card.js");
+const DeliveryMan = require("../models/DeliveryMan.js");
 const asyncHandler = require("../utils/asyncHandler");
 const ApiError = require("../utils/ApiError");
 const ApiResponse = require("../utils/ApiResponse");
@@ -22,15 +23,21 @@ const getOverviewStats = asyncHandler(async (req, res) => {
   const startOfToday = new Date();
   startOfToday.setHours(0, 0, 0, 0);
 
-  const [pendingOrdersCount, todaysRevenueAgg, totalProducts, totalCustomers] = await Promise.all([
-    Order.countDocuments({ status: { $nin: ["Delivered", "Canceled"] } }),
-    Order.aggregate([
-      { $match: { createdAt: { $gte: startOfToday }, status: { $ne: "Canceled" } } },
-      { $group: { _id: null, revenue: { $sum: "$total" } } },
-    ]),
-    Product.countDocuments(),
-    Customer.countDocuments(),
-  ]);
+  const [pendingOrdersCount, todaysRevenueAgg, totalProducts, totalCustomers] =
+    await Promise.all([
+      Order.countDocuments({ status: { $nin: ["Delivered", "Canceled"] } }),
+      Order.aggregate([
+        {
+          $match: {
+            createdAt: { $gte: startOfToday },
+            status: { $ne: "Canceled" },
+          },
+        },
+        { $group: { _id: null, revenue: { $sum: "$total" } } },
+      ]),
+      Product.countDocuments(),
+      Customer.countDocuments(),
+    ]);
 
   res.status(200).json(
     new ApiResponse(200, {
@@ -38,7 +45,7 @@ const getOverviewStats = asyncHandler(async (req, res) => {
       todaysRevenue: todaysRevenueAgg[0]?.revenue || 0,
       totalProducts,
       totalCustomers,
-    })
+    }),
   );
 });
 
@@ -46,40 +53,128 @@ const getOverviewStats = asyncHandler(async (req, res) => {
 
 const getOrders = asyncHandler(async (req, res) => {
   const { status, paymentMethod, sortByPrice, search } = req.query;
+
   const { page, limit, skip } = paginate(req.query);
 
   const match = {};
-  if (status) match.status = status;
-  if (paymentMethod) match.paymentMethod = paymentMethod;
+
+  if (status) {
+    match.status = status;
+  }
+
+  if (paymentMethod) {
+    match.paymentMethod = paymentMethod;
+  }
 
   const pipeline = [
     { $match: match },
+
+    // =========================
+    // CUSTOMER LOOKUP
+    // =========================
     {
-      $lookup: { from: "customers", localField: "customer", foreignField: "_id", as: "customer" },
+      $lookup: {
+        from: "customers",
+        localField: "customer",
+        foreignField: "_id",
+        as: "customer",
+      },
     },
-    { $unwind: "$customer" },
+
+    {
+      $unwind: "$customer",
+    },
+
+    // =========================
+    // DELIVERY MAN LOOKUP
+    // =========================
+    {
+      $lookup: {
+        from: "deliverymen",
+        localField: "deliveryMan",
+        foreignField: "_id",
+        as: "deliveryMan",
+      },
+    },
+
+    {
+      $unwind: {
+        path: "$deliveryMan",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
   ];
 
+  // =========================
+  // SEARCH
+  // =========================
   if (search) {
     pipeline.push({
       $match: {
         $or: [
-          { orderId: { $regex: search, $options: "i" } },
-          { "customer.name": { $regex: search, $options: "i" } },
-          { "customer.phone": { $regex: search, $options: "i" } },
-          { "items.productTitle": { $regex: search, $options: "i" } },
+          {
+            orderId: {
+              $regex: search,
+              $options: "i",
+            },
+          },
+          {
+            "customer.name": {
+              $regex: search,
+              $options: "i",
+            },
+          },
+          {
+            "customer.phone": {
+              $regex: search,
+              $options: "i",
+            },
+          },
+          {
+            "items.productTitle": {
+              $regex: search,
+              $options: "i",
+            },
+          },
+          {
+            "deliveryMan.name": {
+              $regex: search,
+              $options: "i",
+            },
+          },
+          {
+            "deliveryMan.contact": {
+              $regex: search,
+              $options: "i",
+            },
+          },
         ],
       },
     });
   }
 
-  pipeline.push({ $sort: sortByPrice === "price_asc" ? { total: 1 } : sortByPrice === "price_desc" ? { total: -1 } : { createdAt: -1 } });
+  // =========================
+  // SORT
+  // =========================
+  pipeline.push({
+    $sort:
+      sortByPrice === "price_asc"
+        ? { total: 1 }
+        : sortByPrice === "price_desc"
+          ? { total: -1 }
+          : { createdAt: -1 },
+  });
 
+  // =========================
+  // GET ORDERS + COUNT
+  // =========================
   const [orders, totalCountResult] = await Promise.all([
     Order.aggregate([
       ...pipeline,
+
       { $skip: skip },
       { $limit: limit },
+
       {
         $project: {
           orderId: 1,
@@ -89,48 +184,437 @@ const getOrders = asyncHandler(async (req, res) => {
           deliveryAddress: 1,
           createdAt: 1,
           items: 1,
+
+          // Current delivery man
+          deliveryMan: {
+            _id: "$deliveryMan._id",
+            name: "$deliveryMan.name",
+            contact: "$deliveryMan.contact",
+            courierServiceName: "$deliveryMan.courierServiceName",
+            email: "$deliveryMan.email",
+            address: "$deliveryMan.address",
+            vehicleType: "$deliveryMan.vehicleType",
+            vehicleNumber: "$deliveryMan.vehicleNumber",
+            image: "$deliveryMan.image",
+            status: "$deliveryMan.status",
+          },
+
+          // Historical snapshot
+          deliveryManDetails: 1,
+
+          // Customer
           "customer.name": 1,
           "customer.image": 1,
           "customer.phone": 1,
         },
       },
     ]),
+
     Order.aggregate([...pipeline, { $count: "total" }]),
   ]);
 
   const total = totalCountResult[0]?.total || 0;
-  res
-    .status(200)
-    .json(new ApiResponse(200, { orders, pagination: { total, page, limit, pages: Math.ceil(total / limit) } }));
+
+  res.status(200).json(
+    new ApiResponse(200, {
+      orders,
+      pagination: {
+        total,
+        page,
+        limit,
+        pages: Math.ceil(total / limit),
+      },
+    }),
+  );
 });
 
 const getOrderDetailsAdmin = asyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.orderId).populate("customer", "name email phone image");
-  if (!order) throw new ApiError(404, "Order not found.");
+  const order = await Order.findById(req.params.orderId)
+    .populate("customer", "name email phone image")
+    .populate(
+      "deliveryMan",
+      "name contact courierServiceName email address vehicleType vehicleNumber image status",
+    );
+
+  if (!order) {
+    throw new ApiError(404, "Order not found.");
+  }
+
   res.status(200).json(new ApiResponse(200, order));
 });
-
 /**
  * PATCH /api/admin/orders/:orderId — advances order status, appends to the timeline,
- * and can set trackingId/courierName (typically set once status reaches "Shipped").
+ * and can set trackingId/estimatedDeliveryDate/deliveryManId (typically set once status
+ * reaches "Shipped").
  */
+
 const updateOrderStatus = asyncHandler(async (req, res) => {
-  const { status, trackingId, courierName, estimatedDeliveryDate } = req.body;
-  const order = await Order.findById(req.params.orderId);
-  if (!order) throw new ApiError(404, "Order not found.");
+  const {
+    status,
+    trackingId,
+    estimatedDeliveryDate,
+    deliveryManId,
+  } = req.body;
 
-  if (status) {
-    if (!ORDER_STATUS.includes(status)) throw new ApiError(400, "Invalid status.");
-    order.status = status;
-    order.statusTimeline.push({ status, at: new Date() });
-    if (status === "Delivered") order.paymentStatus = "Paid";
+  // ============================================
+  // VALIDATE ORDER ID
+  // ============================================
+  if (!mongoose.Types.ObjectId.isValid(req.params.orderId)) {
+    throw new ApiError(400, "Invalid order ID.");
   }
-  if (trackingId !== undefined) order.trackingId = trackingId;
-  if (courierName !== undefined) order.courierName = courierName;
-  if (estimatedDeliveryDate !== undefined) order.estimatedDeliveryDate = estimatedDeliveryDate;
 
-  await order.save();
-  res.status(200).json(new ApiResponse(200, order, "Order updated."));
+  // ============================================
+  // VALIDATE DELIVERY MAN ID
+  // ============================================
+  if (
+    deliveryManId !== undefined &&
+    deliveryManId !== null &&
+    deliveryManId !== "" &&
+    !mongoose.Types.ObjectId.isValid(deliveryManId)
+  ) {
+    throw new ApiError(400, "Invalid delivery man ID.");
+  }
+
+  const session = await mongoose.startSession();
+
+  try {
+    let updatedOrder;
+
+    await session.withTransaction(async () => {
+      // ==========================================
+      // FIND ORDER
+      // ==========================================
+      const order = await Order.findById(
+        req.params.orderId,
+      ).session(session);
+
+      if (!order) {
+        throw new ApiError(404, "Order not found.");
+      }
+
+      // ==========================================
+      // PREVIOUS STATE
+      // ==========================================
+      const previousStatus = order.status;
+
+      const previousDeliveryManId =
+        order.deliveryMan
+          ? order.deliveryMan.toString()
+          : null;
+
+      // ==========================================
+      // CURRENT STATE VARIABLES
+      // ==========================================
+      let nextStatus = previousStatus;
+
+      let nextDeliveryManId =
+        previousDeliveryManId;
+
+      let nextDeliveryMan = null;
+
+      // ==========================================
+      // TERMINAL STATUS HELPER
+      // ==========================================
+      const isTerminalStatus = (value) =>
+        value === "Delivered" ||
+        value === "Cancelled";
+
+      // ==========================================
+      // STATUS VALIDATION
+      // ==========================================
+      if (status !== undefined) {
+        if (!ORDER_STATUS.includes(status)) {
+          throw new ApiError(
+            400,
+            "Invalid order status.",
+          );
+        }
+
+        nextStatus = status;
+      }
+
+      // ==========================================
+      // DELIVERY MAN VALIDATION / FETCH
+      // ==========================================
+      if (deliveryManId !== undefined) {
+        // ------------------------------
+        // UNASSIGN
+        // ------------------------------
+        if (
+          deliveryManId === null ||
+          deliveryManId === ""
+        ) {
+          nextDeliveryManId = null;
+        }
+
+        // ------------------------------
+        // ASSIGN / REASSIGN
+        // ------------------------------
+        else {
+          nextDeliveryMan = await DeliveryMan.findById(
+            deliveryManId,
+          )
+            .session(session)
+            .lean();
+
+          if (!nextDeliveryMan) {
+            throw new ApiError(
+              404,
+              "Delivery man not found.",
+            );
+          }
+
+          nextDeliveryManId =
+            nextDeliveryMan._id.toString();
+        }
+      }
+
+      // ==========================================
+      // PREVIOUS / NEXT "IN HAND" STATE
+      // ==========================================
+      const wasInHand =
+        !!previousDeliveryManId &&
+        !isTerminalStatus(previousStatus);
+
+      const willBeInHand =
+        !!nextDeliveryManId &&
+        !isTerminalStatus(nextStatus);
+
+      // ==========================================
+      // DELIVERY MAN COUNTER CHANGES
+      // ==========================================
+
+      // ------------------------------------------
+      // SAME DELIVERY MAN
+      // ------------------------------------------
+      if (
+        previousDeliveryManId ===
+        nextDeliveryManId
+      ) {
+        // Active -> Terminal
+        if (wasInHand && !willBeInHand) {
+          await DeliveryMan.updateOne(
+            {
+              _id: previousDeliveryManId,
+              ordersInHand: { $gt: 0 },
+            },
+            {
+              $inc: {
+                ordersInHand: -1,
+              },
+            },
+            { session },
+          );
+        }
+
+        // Terminal -> Active
+        else if (!wasInHand && willBeInHand) {
+          await DeliveryMan.updateOne(
+            {
+              _id: nextDeliveryManId,
+            },
+            {
+              $inc: {
+                ordersInHand: 1,
+              },
+            },
+            { session },
+          );
+        }
+      }
+
+      // ------------------------------------------
+      // DELIVERY MAN CHANGED
+      // ------------------------------------------
+      else {
+        // Remove from previous delivery man
+        if (
+          previousDeliveryManId &&
+          wasInHand
+        ) {
+          await DeliveryMan.updateOne(
+            {
+              _id: previousDeliveryManId,
+              ordersInHand: { $gt: 0 },
+            },
+            {
+              $inc: {
+                ordersInHand: -1,
+              },
+            },
+            { session },
+          );
+        }
+
+        // Add to new delivery man
+        if (
+          nextDeliveryManId &&
+          willBeInHand
+        ) {
+          await DeliveryMan.updateOne(
+            {
+              _id: nextDeliveryManId,
+            },
+            {
+              $inc: {
+                ordersInHand: 1,
+              },
+            },
+            { session },
+          );
+        }
+      }
+
+      // ==========================================
+      // TOTAL DELIVERED ORDERS
+      // ==========================================
+      //
+      // Only increment when this order genuinely
+      // transitions into Delivered.
+      //
+      if (
+        previousStatus !== "Delivered" &&
+        nextStatus === "Delivered" &&
+        nextDeliveryManId
+      ) {
+        await DeliveryMan.updateOne(
+          {
+            _id: nextDeliveryManId,
+          },
+          {
+            $inc: {
+              totalDeliveredOrders: 1,
+            },
+          },
+          { session },
+        );
+      }
+
+      // ==========================================
+      // APPLY ORDER STATUS
+      // ==========================================
+      if (status !== undefined) {
+        if (nextStatus !== previousStatus) {
+          order.status = nextStatus;
+
+          order.statusTimeline.push({
+            status: nextStatus,
+            at: new Date(),
+          });
+        }
+
+        // Delivered => Paid
+        if (nextStatus === "Delivered") {
+          order.paymentStatus = "Paid";
+        }
+      }
+
+      // ==========================================
+      // TRACKING ID
+      // ==========================================
+      if (trackingId !== undefined) {
+        order.trackingId = trackingId;
+      }
+
+      // ==========================================
+      // ESTIMATED DELIVERY DATE
+      // ==========================================
+      if (
+        estimatedDeliveryDate !== undefined
+      ) {
+        order.estimatedDeliveryDate =
+          estimatedDeliveryDate || null;
+      }
+
+      // ==========================================
+      // DELIVERY MAN REFERENCE + SNAPSHOT
+      // ==========================================
+      if (deliveryManId !== undefined) {
+        // ------------------------------
+        // UNASSIGN
+        // ------------------------------
+        if (!nextDeliveryManId) {
+          order.deliveryMan = null;
+          order.deliveryManDetails = null;
+        }
+
+        // ------------------------------
+        // ASSIGN / REASSIGN
+        // ------------------------------
+        else {
+          order.deliveryMan =
+            nextDeliveryMan._id;
+
+          order.deliveryManDetails = {
+            name: nextDeliveryMan.name,
+            contact: nextDeliveryMan.contact,
+            courierServiceName:
+              nextDeliveryMan.courierServiceName,
+            email: nextDeliveryMan.email,
+            address: nextDeliveryMan.address,
+            vehicleType:
+              nextDeliveryMan.vehicleType,
+            vehicleNumber:
+              nextDeliveryMan.vehicleNumber,
+
+            image: nextDeliveryMan.image
+              ? {
+                  url: nextDeliveryMan.image.url,
+                  publicPath:
+                    nextDeliveryMan.image.publicPath,
+                }
+              : undefined,
+          };
+        }
+      }
+
+      // ==========================================
+      // SAVE ORDER
+      // ==========================================
+      await order.save({ session });
+
+      // ==========================================
+      // GET UPDATED ORDER
+      // ==========================================
+      updatedOrder = await Order.findById(
+        order._id,
+      )
+        .populate(
+          "customer",
+          "name email phone image",
+        )
+        .populate(
+          "deliveryMan",
+          [
+            "name",
+            "contact",
+            "courierServiceName",
+            "email",
+            "address",
+            "vehicleType",
+            "vehicleNumber",
+            "image",
+            "status",
+            "totalDeliveredOrders",
+            "ordersInHand",
+          ].join(" "),
+        )
+        .session(session);
+    });
+
+    // ============================================
+    // RESPONSE
+    // ============================================
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        updatedOrder,
+        "Order updated successfully.",
+      ),
+    );
+  } finally {
+    await session.endSession();
+  }
 });
 
 const deleteOrderAdmin = asyncHandler(async (req, res) => {
@@ -156,17 +640,29 @@ const getProductsAdmin = asyncHandler(async (req, res) => {
   if (category) filter.category = category;
   if (search) filter.$text = { $search: search };
 
-  const sortMap = { price_asc: { startingPrice: 1 }, price_desc: { startingPrice: -1 }, newest: { createdAt: -1 }, stock: { stock: 1 } };
+  const sortMap = {
+    price_asc: { startingPrice: 1 },
+    price_desc: { startingPrice: -1 },
+    newest: { createdAt: -1 },
+    stock: { stock: 1 },
+  };
   const sort = sortMap[sortBy] || { createdAt: -1 };
 
   const [products, total] = await Promise.all([
-    Product.find(filter).populate("category", "name").sort(sort).skip(skip).limit(limit),
+    Product.find(filter)
+      .populate("category", "name")
+      .sort(sort)
+      .skip(skip)
+      .limit(limit),
     Product.countDocuments(filter),
   ]);
 
-  res
-    .status(200)
-    .json(new ApiResponse(200, { products, pagination: { total, page, limit, pages: Math.ceil(total / limit) } }));
+  res.status(200).json(
+    new ApiResponse(200, {
+      products,
+      pagination: { total, page, limit, pages: Math.ceil(total / limit) },
+    }),
+  );
 });
 
 // ============ 4. Customers ============
@@ -191,7 +687,12 @@ const getCustomersAdmin = asyncHandler(async (req, res) => {
         from: "orders",
         let: { customerId: "$_id" },
         pipeline: [
-          { $match: { $expr: { $eq: ["$customer", "$$customerId"] }, status: { $ne: "Canceled" } } },
+          {
+            $match: {
+              $expr: { $eq: ["$customer", "$$customerId"] },
+              status: { $ne: "Canceled" },
+            },
+          },
           { $sort: { createdAt: -1 } },
         ],
         as: "orders",
@@ -221,15 +722,29 @@ const getCustomersAdmin = asyncHandler(async (req, res) => {
       ...pipeline,
       { $skip: skip },
       { $limit: limit },
-      { $project: { name: 1, email: 1, phone: 1, image: 1, totalSpending: 1, lastOrderDate: 1, paymentMethod: 1, createdAt: 1 } },
+      {
+        $project: {
+          name: 1,
+          email: 1,
+          phone: 1,
+          image: 1,
+          totalSpending: 1,
+          lastOrderDate: 1,
+          paymentMethod: 1,
+          createdAt: 1,
+        },
+      },
     ]),
     Customer.aggregate([...pipeline, { $count: "total" }]),
   ]);
 
   const total = totalCountResult[0]?.total || 0;
-  res
-    .status(200)
-    .json(new ApiResponse(200, { customers, pagination: { total, page, limit, pages: Math.ceil(total / limit) } }));
+  res.status(200).json(
+    new ApiResponse(200, {
+      customers,
+      pagination: { total, page, limit, pages: Math.ceil(total / limit) },
+    }),
+  );
 });
 
 const getCustomerDetailsAdmin = asyncHandler(async (req, res) => {
@@ -240,11 +755,16 @@ const getCustomerDetailsAdmin = asyncHandler(async (req, res) => {
   const [addresses, cards, orders, statsAgg] = await Promise.all([
     Address.find({ customer: customerId }),
     Card.find({ customer: customerId }), // already masked at rest — safe to return as-is
-    Order.find({ customer: customerId }).sort({ createdAt: -1 }).select(
-      "orderId items status total createdAt"
-    ),
+    Order.find({ customer: customerId })
+      .sort({ createdAt: -1 })
+      .select("orderId items status total createdAt"),
     Order.aggregate([
-      { $match: { customer: new mongoose.Types.ObjectId(customerId), status: { $ne: "Canceled" } } },
+      {
+        $match: {
+          customer: new mongoose.Types.ObjectId(customerId),
+          status: { $ne: "Canceled" },
+        },
+      },
       {
         $group: {
           _id: null,
@@ -253,7 +773,10 @@ const getCustomerDetailsAdmin = asyncHandler(async (req, res) => {
         },
       },
     ]),
-    Order.countDocuments({ customer: customerId, status: { $nin: ["Delivered", "Canceled"] } }),
+    Order.countDocuments({
+      customer: customerId,
+      status: { $nin: ["Delivered", "Canceled"] },
+    }),
   ]);
 
   const pendingOrdersCount = await Order.countDocuments({
@@ -273,7 +796,7 @@ const getCustomerDetailsAdmin = asyncHandler(async (req, res) => {
       addresses,
       cards,
       orders,
-    })
+    }),
   );
 });
 

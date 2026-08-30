@@ -143,6 +143,7 @@ const Footer = () => {
             />
             <Button
               type="submit"
+              variant="secondary"
             >
               Subscribe
             </Button>

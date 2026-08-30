@@ -58,7 +58,6 @@ const OrdersTableSection = () => {
   const orders = data?.data?.orders || [];
   const pagination = data?.data?.pagination;
   const totalPages = pagination?.totalPages || 1;
-
   // Reset to page 1 whenever a filter changes — otherwise you can get
   // stuck on page 4 with a filter that only has 1 page of results.
   const handleStatusChange = (value) => {
@@ -130,6 +129,7 @@ const OrdersTableSection = () => {
         </p>
       ) : (
         <OrdersTable orders={orders} />
+        
       )}
 
       {!isLoading && !isError && orders.length > 0 && totalPages > 1 && (

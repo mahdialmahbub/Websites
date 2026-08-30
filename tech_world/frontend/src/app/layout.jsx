@@ -4,6 +4,7 @@ import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/Footer";
 import StoreProvider from "@/lib/StoreProvider";
 import { Toaster } from "react-hot-toast";
+import ScrollManager from "./components/ScrollManager";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -48,6 +49,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className="min-h-screen flex flex-col w-360 mx-auto">
         <StoreProvider>
+          <ScrollManager />
           <Toaster position="top-center" />
           {children}
         </StoreProvider>

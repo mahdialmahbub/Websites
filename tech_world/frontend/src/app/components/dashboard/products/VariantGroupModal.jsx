@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../Button";
+import useLockBodyScroll from "@/app/hooks/useLockBodyScroll";
 
 const GROUP_ICON = {
   RAM: "fi fi-rr-memory-card",
@@ -20,25 +21,26 @@ const PRICE_STEP = 50;
  *   onSave(options)   — called with the full updated list when "Save" is clicked
  *   onClose()
  */
-export default function VariantGroupModal({
-  groupName,
-  initialOptions,
-  onSave,
-  onClose,
-}) {
+export default function VariantGroupModal({ groupName, initialOptions, onSave, onClose }) {
+  useLockBodyScroll();
   const [options, setOptions] = useState(initialOptions);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState(0);
+
+  // Close on Escape, matching every other modal in the app.
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") onClose?.();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
 
   const handleAddOption = () => {
     if (!title.trim()) return;
     setOptions((prev) => [
       ...prev,
-      {
-        id: `${groupName}-${Date.now()}`,
-        name: title.trim(),
-        priceAdjustment: price,
-      },
+      { id: `${groupName}-${Date.now()}`, name: title.trim(), priceAdjustment: price },
     ]);
     setTitle("");
     setPrice(0);
@@ -54,34 +56,45 @@ export default function VariantGroupModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-      <div className="w-full max-w-2xl bg-[#0B1120] border-2 border-secondary rounded-2xl p-space-7 space-y-space-6">
-        <p className="text-xs text-placeholder_2">Add Variant</p>
-
-        <div className="flex items-center gap-space-3">
-          <div className="size-11 rounded-lg border-2 border-secondary flex items-center justify-center text-secondary">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        onClick={(event) => event.stopPropagation()}
+        className="my-8 w-full max-w-150 space-y-space-7 rounded-2xl border-2 border-secondary/10 bg-background p-space-7"
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between gap-space-4">
+          <div className="flex min-w-0 items-center gap-space-3">
             <i
-              className={`${GROUP_ICON[groupName] || "fi fi-rr-settings-sliders"} text-[20px]`}
-            ></i>
+              className={`${GROUP_ICON[groupName] || "fi fi-rr-settings-sliders"} shrink-0 text-[24px] text-secondary`}
+            />
+            <h2 className="truncate font-semibold text-size-h4 text-placeholder_3">
+              Manage {groupName} Options
+            </h2>
           </div>
-          <h2 className="font-semibold text-size-h3">{groupName}</h2>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close modal"
+            className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-secondary/10 text-secondary transition-colors hover:bg-secondary/20"
+          >
+            <i className="fi fi-rr-cross-small" />
+          </button>
         </div>
 
         {/* add-new-option row */}
-        <div className="flex items-end gap-space-4 flex-wrap">
-          <div className="flex-1 min-w-50">
-            <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-medium text-foreground">
-                Title
-              </label>
-              <span className="text-xs text-secondary font-medium">
-                Required
-              </span>
+        <div className="flex flex-wrap items-end gap-space-4">
+          <div className="min-w-50 flex-1">
+            <div className="mb-2 flex items-center justify-between">
+              <label className="text-sm font-medium text-foreground">Title</label>
+              <span className="text-xs font-semibold text-green">Required</span>
             </div>
-            <div className="flex items-center gap-2.5 rounded-xl bg-[#0B0F1E] border border-secondary/30 px-4 py-3">
+            <div className="relative">
               <i
-                className={`${GROUP_ICON[groupName] || "fi fi-rr-tag"} text-secondary`}
-              ></i>
+                className={`${GROUP_ICON[groupName] || "fi fi-rr-tag"} absolute left-3.5 top-1/2 -translate-y-1/2 text-size-h6 text-[#2BE7C4]/70`}
+              />
               <input
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -92,97 +105,75 @@ export default function VariantGroupModal({
                   }
                 }}
                 placeholder="e.g. 32GB"
-                className="w-full bg-transparent outline-none text-sm"
+                className="w-full rounded-xl border border-secondary/20 bg-background py-3 pl-10 pr-4 text-sm text-foreground outline-none transition-colors hover:border-secondary/50 focus-within:border-secondary/80"
               />
             </div>
           </div>
 
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-medium text-foreground">
-                Price
-              </label>
-              <span className="text-xs text-secondary font-medium">
-                Required
-              </span>
+            <div className="mb-2 flex items-center justify-between">
+              <label className="text-sm font-medium text-foreground">Price</label>
+              <span className="text-xs font-semibold text-green">Required</span>
             </div>
-            <div className="flex items-center gap-2 rounded-xl bg-[#0B0F1E] border border-secondary/30 px-3 py-3">
+            <div className="flex items-center gap-2 rounded-xl border border-secondary/20 bg-background px-3 py-3">
               <button
                 type="button"
                 onClick={() => setPrice((p) => Math.max(0, p - PRICE_STEP))}
                 className="text-secondary"
                 aria-label="Decrease price"
               >
-                <i className="fi fi-rr-minus"></i>
+                <i className="fi fi-rr-minus" />
               </button>
-              <span className="w-16 text-center font-semibold tabular-nums">
-                ${price}
-              </span>
+              <span className="w-16 text-center font-semibold tabular-nums">${price}</span>
               <button
                 type="button"
                 onClick={() => setPrice((p) => p + PRICE_STEP)}
                 className="text-secondary"
                 aria-label="Increase price"
               >
-                <i className="fi fi-rr-plus"></i>
+                <i className="fi fi-rr-plus" />
               </button>
             </div>
           </div>
 
-          <Button
-            type="button"
-            onClick={handleAddOption}
-            className="h-11.5"
-            showRightIcon
-            rightIcon="fi fi-rr-plus-small"
-          >
+          <Button type="button" onClick={handleAddOption} className="h-11.5" showRightIcon rightIcon="fi fi-rr-plus-small">
             Add
           </Button>
         </div>
 
         {/* existing options, removable */}
-        <div className="flex flex-wrap gap-3 min-h-16.25">
+        <div className="flex min-h-16.25 flex-wrap gap-3">
           {options.length === 0 ? (
-            <p className="text-sm text-placeholder_2">
-              No options yet — add one above.
-            </p>
+            <p className="text-sm text-placeholder_2">No options yet — add one above.</p>
           ) : (
             options.map((opt) => (
               <div
                 key={opt.id}
-                className="relative rounded-sm border border-secondary/40 bg-secondary/5 min-w-25 h-16.25 flex flex-col items-center justify-center px-space-3"
+                className="min-w-25 h-16.25 relative flex flex-col items-center justify-center rounded-sm border border-secondary/20 bg-secondary/5 px-space-3"
               >
                 <button
                   type="button"
                   onClick={() => handleRemoveOption(opt.id)}
                   aria-label={`Remove ${opt.name}`}
-                  className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white text-size-small"
+                  className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-size-small text-white"
                 >
                   ×
                 </button>
-                <p className="font-semibold text-secondary text-size-h6">
-                  {opt.name}
-                </p>
+                <p className="font-semibold text-secondary text-size-h6">{opt.name}</p>
                 {opt.priceAdjustment > 0 && (
-                  <p className="text-size-medium text-placeholder_2/80">
-                    + ${opt.priceAdjustment}
-                  </p>
+                  <p className="text-size-medium text-placeholder_2/80">+ ${opt.priceAdjustment}</p>
                 )}
               </div>
             ))
           )}
         </div>
 
-        <div className="flex gap-space-4">
-          <Button
-            variant="secondary"
-            type="button"
-            onClick={onClose}
-            className="flex-1 text-red"
-          >
+        {/* Footer */}
+        <div className="flex gap-space-4 border-t border-white/5 pt-space-6 *:w-full">
+          <Button variant="secondary" type="button" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="button" onClick={handleSave} className="flex-1">
+          <Button type="button" onClick={handleSave}>
             Save
           </Button>
         </div>

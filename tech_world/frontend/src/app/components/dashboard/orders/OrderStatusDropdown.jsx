@@ -9,14 +9,14 @@ import { useState, useRef, useEffect } from "react";
 //     যাতে STATUS_CONFIG key এবং STATUS_OPTIONS exact match করে
 // ─────────────────────────────────────────────────────────────────
 const STATUS_CONFIG = {
-  Pending: { color: "#FBBF24", icon: "fi-rr-clock" }, // amber
-  Placed: { color: "#818CF8", icon: "fi-rr-check" }, // indigo
-  Processing: { color: "#C084FC", icon: "fi-rr-settings" }, // purple
-  Packed: { color: "#22D3EE", icon: "fi-rr-box-open" }, // cyan
+  "Pending": { color: "#FBBF24", icon: "fi-rr-clock" }, // amber
+  "Placed": { color: "#818CF8", icon: "fi-rr-check" }, // indigo
+  "Processing": { color: "#C084FC", icon: "fi-rr-settings" }, // purple
+  "Packed": { color: "#22D3EE", icon: "fi-rr-box-open" }, // cyan
   "Out for Delivery": { color: "#FB923C", icon: "fi-rr-truck-side" }, // orange
-  Shipped: { color: "#38BDF8", icon: "fi-rr-shipping-fast" }, // sky
-  Delivered: { color: "#4ADE80", icon: "fi-rr-check-circle" }, // green
-  Canceled: { color: "#F87171", icon: "fi-rr-cross-circle" }, // red
+  "Shipped": { color: "#38BDF8", icon: "fi-rr-shipping-fast" }, // sky
+  "Delivered": { color: "#4ADE80", icon: "fi-rr-check-circle" }, // green
+  "Canceled": { color: "#F87171", icon: "fi-rr-cross-circle" }, // red
 };
 
 const STATUS_OPTIONS = Object.keys(STATUS_CONFIG);
