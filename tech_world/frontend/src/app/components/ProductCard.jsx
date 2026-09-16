@@ -81,8 +81,6 @@ export function ProductCard({
       return <SmallCartCard data={data} actions={actions} />;
     case "pendingOrder":
       return <PendingOrderCard data={data} actions={actions} />;
-    case "reviewCard":
-      return <ReviewCard data={data} actions={actions} />;
     case "primary":
     default:
       return <PrimaryCard data={data} actions={actions} link={link} />;
@@ -365,7 +363,12 @@ function CartCard({ data, actions }) {
 
 /* =====================  3. DELIVERED  ===================== */
 function DeliveredCard({ data, actions }) {
-  const { image, title, requirement, quantity, deliveredDate, total } = data;
+  // FIX: `isReviewed` now comes from `data` (where the page already puts
+  // it via toDeliveredCardData). Previously this destructured a top-level
+  // `isReviewed` prop that ProductCard never actually passed down, so it
+  // was always `undefined` and the Review button showed unconditionally —
+  // even for products the customer had already reviewed.
+  const { image, title, requirement, quantity, deliveredDate, total, isReviewed } = data;
 
   return (
     <div className="flex w-115 items-center gap-3 rounded-xl border border-white/10 bg-[#12141c] p-3">
@@ -394,6 +397,15 @@ function DeliveredCard({ data, actions }) {
         <p className="text-[11px] text-slate-500">Total</p>
         <p className="text-sm font-semibold text-white">{money(total)}</p>
       </div>
+
+      {!isReviewed && (
+        <button
+          onClick={actions.onReview}
+          className="relative shrink-0 rounded-lg bg-linear-to-r from-amber-400 to-yellow-300 px-3 py-1.5 text-xs font-semibold text-slate-900 shadow-[0_0_12px_3px_rgba(250,204,21,0.5)] animate-pulse hover:shadow-[0_0_18px_6px_rgba(250,204,21,0.7)] transition-shadow"
+        >
+          Review
+        </button>
+      )}
 
       <div className="flex items-center gap-1.5">
         <IconButton tone="danger" label="Remove" onClick={actions.onDelete}>
@@ -509,47 +521,6 @@ function PendingOrderCard({ data, actions }) {
           </button>
         </div>
       </div>
-    </div>
-  );
-}
-
-/* =====================  6. REVIEW  ===================== */
-function ReviewCard({ data, actions }) {
-  const { image, title, requirement, quantity, total } = data;
-
-  return (
-    <div className="flex w-115 items-center gap-3 rounded-xl border border-white/10 bg-[#12141c] p-3">
-      <Image
-        width={100}
-        height={100}
-        src={image}
-        alt={title}
-        className="h-16 w-16 shrink-0 rounded-lg object-cover"
-      />
-
-      <div className="min-w-0 flex-1 space-y-0.5">
-        <h4 className="truncate text-sm font-medium text-slate-100">{title}</h4>
-        {requirement && (
-          <p className="truncate text-xs text-slate-500">{requirement}</p>
-        )}
-        <p className="text-xs text-slate-500">
-          Quantity: <span className="text-slate-300">{quantity}</span>
-        </p>
-      </div>
-
-      <div className="shrink-0 text-right">
-        <p className="text-[11px] text-slate-500">Total</p>
-        <p className="text-sm font-semibold text-white">{money(total)}</p>
-      </div>
-
-      <Button
-        variant="secondary"
-        showRightIcon
-        className="w-full"
-        onClick={actions.onReviewProduct}
-      >
-        Review Product
-      </Button>
     </div>
   );
 }

@@ -11,7 +11,12 @@ export const reviewApi = baseApi.injectEndpoints({
     /**
      * fields: { productId, orderId, rating, text, images?: File[] }
      * `orderId` must be an order that actually contains this product — the
-     * backend verifies the purchase before accepting the review.
+     * backend verifies the purchase before accepting the review, and marks
+     * that specific order item as reviewed.
+     *
+     * Invalidates "Order" (not just Review/Product) so `useGetMyDeliveredOrdersQuery`
+     * refetches afterward and the item's `isReviewed` flag — which the
+     * Review button's visibility depends on — comes back updated.
      */
     addReview: builder.mutation({
       query: ({ productId, ...fields }) => ({
@@ -22,6 +27,7 @@ export const reviewApi = baseApi.injectEndpoints({
       invalidatesTags: (result, error, { productId }) => [
         { type: "Review", id: productId },
         { type: "Product", id: productId },
+        "Order",
       ],
     }),
   }),

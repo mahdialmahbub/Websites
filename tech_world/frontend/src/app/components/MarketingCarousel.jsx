@@ -133,7 +133,7 @@ export default function MarketingCarousel() {
 
                     {/* Heading */}
                     <h2
-                      className={`max-w-155 font-bold leading-[1.05] tracking-[-0.03em] text-white transition-all duration-700 text-[48px] text-nowrap ${
+                      className={`max-w-155 font-semibold leading-[1.05] tracking-[-0.03em] text-white transition-all duration-700 text-[48px] text-nowrap font-primary ${
                         isActive
                           ? "translate-y-0 opacity-100"
                           : "translate-y-5 opacity-0"
@@ -163,7 +163,7 @@ export default function MarketingCarousel() {
                     >
                       <Link
                         href={banner.buttonLink}
-                        className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2.5 text-xs font-semibold text-slate-950 transition-all duration-300 hover:-translate-y-0.5 hover:bg-cyan-300 sm:px-5 sm:py-3 sm:text-sm"
+                        className="inline-flex items-center gap-2 rounded-xl bg-secondary/10 px-4 py-2.5 text-xs font-semibold text-secondary transition-all duration-300 hover:-translate-y-0.5 hover:bg-secondary/20 sm:px-5 sm:py-3 sm:text-sm font-primary"
                       >
                         {banner.buttonText}
 

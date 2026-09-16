@@ -31,6 +31,10 @@ const orderItemSchema = new mongoose.Schema(
     guaranteeMonths: { type: Number, default: 0 },
     warrantyMonths: { type: Number, default: 0 },
     supportInfo: { type: mongoose.Schema.Types.Mixed },
+    isReviewed: {
+      type: Boolean,
+      default: false,
+    },
   },
   { _id: false },
 );

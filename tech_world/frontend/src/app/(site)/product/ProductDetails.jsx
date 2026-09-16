@@ -45,6 +45,8 @@ const ProductDetails = ({ productId, isAdmin = false }) => {
     quantity,
   });
 
+  console.log("ProductDetails data:", data); // Debugging line to check the fetched data
+
   const user = useSelector((state) => state.auth.customer); // tomar auth slice onujayi adjust koro
 
   const { product, pricing, relatedProducts } = data?.data || {};

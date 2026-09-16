@@ -6,7 +6,7 @@ const FeatureCard = ({ title, subtitle, icon, color, bgColor }) => {
     <div
       className="
         group relative overflow-hidden isolate
-        border border-black/[0.06] dark:border-white/[0.08]
+        border border-black/[0.06] dark:border-white/5
         bg-white dark:bg-white/[0.03]
         rounded-2xl md:rounded-3xl
         p-[20px] md:p-[28px] xl:p-[32px]

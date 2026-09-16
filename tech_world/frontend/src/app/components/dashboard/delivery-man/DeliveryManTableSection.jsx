@@ -33,7 +33,6 @@ const DeliveryManTableSection = () => {
   const pagination = data?.data?.pagination;
   const totalPages = pagination?.pages || 1;
 
-  console.log(deliveryMen);
   // Reset to page 1 whenever a filter changes — otherwise you can get
   // stuck on page 4 with a filter that only has 1 page of results.
   const handleStatusChange = (value) => {

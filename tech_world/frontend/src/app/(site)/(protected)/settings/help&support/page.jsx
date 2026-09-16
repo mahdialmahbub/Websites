@@ -1,8 +1,12 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+"use client"
+
 import { Faqs } from "@/app/assets/assets";
 import Button from "@/app/components/Button";
 import FaqAccordion from "@/app/components/homePage/FAQ/FaqAccordion";
 import TextareaField from "@/app/components/Textarea";
-import React from "react";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 const StatusDot = ({ colorClass = "bg-red" }) => (
   <span
@@ -53,6 +57,25 @@ const socialLinks = [
 ];
 
 const page = () => {
+
+    const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!message.trim()) {
+      setError("Enter your message");
+      return;
+    }
+
+    // TODO: ekhane actual send logic (API call) lagbe
+    setError("");
+    setMessage("");
+    toast.success("Message sent successfully!");
+  };
+
+
   return (
     <div className="space-y-space-9 w-full">
       {/* contact informations */}
@@ -127,19 +150,29 @@ const page = () => {
             Answers before your need to ask twice
           </h2>
         </div>
-        <form>
-          <TextareaField title="Message" placeholder="White your message" />
-          <div className="*:w-full mt-space-4">
-            <Button type="submit">Send</Button>
-            <div className="flex items-center gap-space-3 text-secondary justify-center mt-space-3">
-              Your information is secure{" "}
-              <span className="size-1.25 bg-placeholder_3 rounded-full"></span>
-              <span className="font-semibold text-size-h6 text-placeholder_3">
-                Response within 2 hours
-              </span>
-            </div>
-          </div>
-        </form>
+        <form onSubmit={handleSubmit}>
+      <TextareaField
+        title="Message"
+        placeholder="Write your message"
+        value={message}
+        onChange={(e) => {
+          setMessage(e.target.value);
+          if (error) setError("");
+        }}
+        showError={!!error}
+        errorMessage={error}
+      />
+      <div className="*:w-full mt-space-4">
+        <Button type="submit">Send</Button>
+        <div className="flex items-center gap-space-3 text-secondary justify-center mt-space-3">
+          Your information is secure{" "}
+          <span className="size-1.25 bg-placeholder_3 rounded-full"></span>
+          <span className="font-semibold text-size-h6 text-placeholder_3">
+            Response within 2 hours
+          </span>
+        </div>
+      </div>
+    </form>
       </div>
     </div>
   );

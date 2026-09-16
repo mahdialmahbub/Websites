@@ -3,7 +3,6 @@
 import Tag from "@/app/components/Tag";
 import DeviceCard from "@/app/components/settings/DeviceCard";
 import StatusDot from "@/app/components/settings/StatusDot";
-import Button from "@/app/components/Button";
 import ChangePasswordModal from "@/app/components/settings/ChangePasswordModal";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
@@ -13,6 +12,7 @@ import {
   useGetMyDevicesQuery,
   useLogoutDeviceMutation,
 } from "@/redux";
+import Button from "@/app/components/Button";
 
 // Backend only tells us a generic label ("Mobile Device" / "Tablet" /
 // "Desktop / Laptop") — map that to the icon DeviceCard expects.

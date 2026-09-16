@@ -1,34 +1,85 @@
 import React from "react";
 
+
 const Button = ({
-  className,
+  className = "",
   varient = "primary",
-  size,
-  fullWidth,
+  size = "md",
+  fullWidth = false,
   type = "button",
   isLoading = false,
   icon = "fi fi-rr-arrow-small-right",
   leftIcon = false,
   rightIcon = false,
-  disabled,
+  disabled = false,
   text,
   ...props
 }) => {
-  return varient == "primary" ? (
+  const isDisabled = disabled || isLoading;
+
+  const content = (
+    <>
+      {isLoading ? (
+        <span
+          aria-hidden="true"
+          className="size-[16px] border-2 border-current border-t-transparent rounded-full animate-spin"
+        />
+      ) : (
+        icon &&
+        leftIcon && (
+          <i aria-hidden="true" className={`text-size-md ${icon}`}></i>
+        )
+      )}
+      <span className="font-primary text-size-sm">{text}</span>
+      {!isLoading && icon && rightIcon && (
+        <i aria-hidden="true" className={`text-size-md ${icon}`}></i>
+      )}
+    </>
+  );
+
+  const baseClasses = `cursor-pointer select-none inline-flex items-center justify-center gap-[6px] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 px-[24px] py-[16px] max-h-[52px] ${
+    fullWidth ? "w-full" : ""
+  } ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${
+    isLoading ? "cursor-wait" : ""
+  }`;
+
+  if (varient === "secondary") {
+    return (
+      <button
+        type={type}
+        disabled={isDisabled}
+        aria-busy={isLoading}
+        className={`${baseClasses} rounded-lg font-semibold border-2 border-primary-500 text-primary-500 hover:bg-primary-500/10 active:bg-primary-500/15 active:scale-[0.98] ${className}`}
+        {...props}
+      >
+        {content}
+      </button>
+    );
+  }
+
+  if (varient === "text") {
+    return (
+      <button
+        type={type}
+        disabled={isDisabled}
+        aria-busy={isLoading}
+        className={`${baseClasses} font-semibold text-primary-900 dark:text-foreground hover:text-primary-500 ${className}`}
+        {...props}
+      >
+        {content}
+      </button>
+    );
+  }
+
+  return (
     <button
-      className={`${className} cursor-pointer p-3.5 text-primary-50 font-bold flex items-center justify-center gap-1.5 shadow-[1_1px_3px_rgba(86, 79, 197, 0.9),-1_-1px_2px_rgba((130, 119, 255, 0.90)),1_-1px_2px_rgba(86, 79, 197, 0.2),-1_1px_2px_rgba(86, 79, 197, 0.2),inset_-1_-1px_2px_rgba(86, 79, 197, 0.5),inset_1_1px_2px_rgba(130, 119, 255, 0.30)] bg-linear-to-br from-[#7168FF] to-[#675EED] hover:shadow-[1_1px_3px_rgba(65, 59, 147, 0.9),-1_-1px_2px_rgba((151, 139, 255, 0.90)),1_-1px_2px_rgba(65, 59, 147, 0.2),-1_1px_2px_rgba(65, 59, 147, 0.2),inset_-1_-1px_2px_rgba(65, 59, 147, 0.5),inset_1_1px_2px_rgba(151, 139, 255, 0.30)] hover:bg-linear-to-br hover:from-[#675EEA] hover:to-[#7168FF] active:bg-primary-500 active:shadow-[1_1px_2px_rgba(130, 119, 255), 0.3),-1_-1px_2px_rgba((86, 79, 197, 0.50)),inset_1_-1px_2px_rgba(86, 79, 197, 0.2),inset_-1_1px_2px_rgba(86, 79, 197, 0.2),inset_-1_-1px_2px_rgba(86, 79, 197, 0.9),inset_1_1px_3px_rgba(86, 79, 197, 0.90)] rounded-lg ${fullWidth && "w-full"} ${disabled && "opacity-50 cursor-not-allowed"}`}
       type={type}
+      disabled={isDisabled}
+      aria-busy={isLoading}
+      className={`${baseClasses} rounded-lg font-bold text-primary-50 bg-linear-to-br from-[#7168FF] to-[#675EED] shadow-[0_8px_20px_-6px_rgba(86,79,197,0.5),inset_0_1px_0_rgba(255,255,255,0.2)] hover:from-[#675EEA] hover:to-[#7168FF] hover:shadow-[0_10px_24px_-6px_rgba(86,79,197,0.6),inset_0_1px_0_rgba(255,255,255,0.25)] active:shadow-[0_4px_12px_-4px_rgba(86,79,197,0.5),inset_0_1px_2px_rgba(0,0,0,0.15)] active:scale-[0.98] ${className}`}
       {...props}
     >
-      {icon && leftIcon && <i className={`text-size-md ${icon} `}></i>}
-      <h4 className="font-bold font-primary text-size-sm">{text}</h4>
-      {icon && rightIcon && <i className={`text-size-md ${icon} `}></i>}
-    </button>
-  ) : (
-    <button className={`flex items-center justify-center gap-space-1 text-primary-900 dark:text-foreground hover:text-primary-500 ${fullWidth && "w-full"} transition-all duration-200`}>
-      {icon && leftIcon && <i className={`text-size-md ${icon} `}></i>}
-      <h4 className="font-semibold font-primary text-size-sm">{text}</h4>
-      {icon && rightIcon && <i className={`text-size-md ${icon} `}></i>}
+      {content}
     </button>
   );
 };

@@ -46,6 +46,7 @@ const Page = () => {
   // ---------- Cart items ----------
   const { data: cartData, isLoading: cartLoading } = useGetMyCartQuery();
   const items = cartData?.data?.items || [];
+  console.log("Cart items:", items); // Debugging line to check the fetched cart items
 
   const [updateCartItem] = useUpdateCartItemMutation();
   const [removeCartItem] = useRemoveCartItemMutation();
@@ -176,7 +177,7 @@ const Page = () => {
     try {
       await verifyPaymentOtp(otp).unwrap();
       toast.success("Payment verified. Order placed!");
-      router.push("/my-orders");
+      router.push("/my_orders");
     } catch (err) {
       toast.error(err?.data?.message || "Invalid OTP.");
     }
@@ -212,223 +213,291 @@ const Page = () => {
         </div>
 
         {/* cart items and checkout */}
-        <div className="flex gap-space-7">
-          {/* products */}
-          <div className="space-y-space-6 w-187.5 *:w-full">
+        <div className="grid grid-cols-1 gap-space-7 lg:grid-cols-[1fr_420px]">
+          {/* ============================= Products ============================= */}
+          <div>
+            <div className="mb-space-5 flex items-center justify-between">
+              <h2 className="font-primary text-size-h5 font-semibold text-foreground md:text-size-h4">
+                Your Cart
+              </h2>
+              {!cartLoading && items.length > 0 && (
+                <span className="text-sm text-placeholder_3">
+                  {items.length} {items.length === 1 ? "item" : "items"}
+                </span>
+              )}
+            </div>
+
             {cartLoading ? (
-              <p className="text-slate-500">Loading your cart...</p>
+              <div className="animate-pulse space-y-space-5">
+                <div className="h-36 rounded-2xl bg-white/5" />
+                <div className="h-36 rounded-2xl bg-white/5" />
+                <div className="h-36 rounded-2xl bg-white/5" />
+              </div>
             ) : items.length === 0 ? (
-              <div className="text-center py-space-10">
-                <p className="text-slate-500 mb-space-4">Your cart is empty.</p>
+              <div className="flex flex-col items-center gap-space-4 rounded-2xl border border-white/5 bg-[#1A1E3D]/30 py-space-11 text-center">
+                <div className="flex size-14 items-center justify-center rounded-2xl bg-secondary/10 text-secondary">
+                  <i className="fi fi-rr-shopping-cart text-2xl" />
+                </div>
+                <div>
+                  <h3 className="font-primary text-size-h5 font-semibold text-foreground">
+                    Your cart is empty
+                  </h3>
+                  <p className="mt-1 text-sm text-placeholder_3">
+                    Browse our products and add something you like.
+                  </p>
+                </div>
                 <Button onClick={() => router.push("/")}>
                   Continue Shopping
                 </Button>
               </div>
             ) : (
-              items.map((item) => (
-                <ProductCard
-                  key={item.cartItemId}
-                  variant="cart"
-                  data={toCartCardData(item)}
-                  actions={{
-                    onQuantityChange: (qty) =>
-                      handleQuantityChange(item.cartItemId, qty),
-                    onDelete: () => handleRemoveItem(item.cartItemId),
-                    onEdit: () => setEditingCartItem(item),
-                    onView: () => router.push(`/product/${item.product._id}`),
-                  }}
-                />
-              ))
+              <div className="space-y-space-6 *:w-full">
+                {items.map((item) => (
+                  <ProductCard
+                    key={item.cartItemId}
+                    variant="cart"
+                    data={toCartCardData(item)}
+                    actions={{
+                      onQuantityChange: (qty) =>
+                        handleQuantityChange(item.cartItemId, qty),
+                      onDelete: () => handleRemoveItem(item.cartItemId),
+                      onEdit: () => setEditingCartItem(item),
+                      onView: () => router.push(`/product/${item.product._id}`),
+                    }}
+                  />
+                ))}
+              </div>
             )}
           </div>
 
-          {/* checkout */}
-          <div className="rounded-xl p-space-6 space-y-[20px] border-3 border-secondary/20 max-w-[40%]">
-            <h2 className="font-medium text-size-h5 text-placeholder_3">
-              Payment Summary
-            </h2>
+          {/* ========================= Checkout summary ========================== */}
+          <div className="lg:sticky lg:top-space-7 lg:self-start">
+            <div className="space-y-space-6 rounded-2xl border-2 border-secondary/10 bg-background p-space-6">
+              <div>
+                <div className="flex items-center gap-space-3">
+                  <i className="fi fi-rr-receipt text-[22px] text-secondary" />
+                  <h2 className="font-medium text-size-h5 text-placeholder_3">
+                    Payment Summary
+                  </h2>
+                </div>
+                {items.length > 0 && (
+                  <p className="mt-1 pl-[34px] text-sm text-placeholder_3">
+                    {items.length} {items.length === 1 ? "item" : "items"} in
+                    your order
+                  </p>
+                )}
+              </div>
 
-            {/* payment method */}
-            <div className="p-space-2">
-              <h5 className="mb-space-5 font-semibold text-size-h6">
-                Payment Method
-              </h5>
-              <div className="space-y-space-5">
-                <div className="flex items-center gap-space-5">
+              {awaitingCardOtp && (
+                <div className="flex items-center gap-space-2 rounded-lg bg-amber-400/10 px-space-4 py-space-3 text-xs font-medium text-amber-400">
+                  <i className="fi fi-rr-lock" />
+                  Payment method and address are locked while you confirm your
+                  OTP.
+                </div>
+              )}
+
+              {/* Payment method */}
+              <div
+                className={`transition-opacity ${awaitingCardOtp ? "pointer-events-none opacity-50" : ""}`}
+              >
+                <h5 className="mb-space-4 flex items-center gap-space-2 font-semibold text-size-h6">
+                  <i className="fi fi-rr-credit-card text-secondary" />
+                  Payment Method
+                </h5>
+
+                <div className="grid grid-cols-2 gap-space-3">
                   <button
                     type="button"
                     onClick={() => setPaymentMethod("Cash on Delivery")}
-                    className={`flex items-center gap-space-2 px-[20px] py-space-4 rounded-lg font-semibold text-size-h6 border-[1.5px] transition-colors ${
+                    aria-pressed={paymentMethod === "Cash on Delivery"}
+                    disabled={awaitingCardOtp}
+                    className={`flex flex-col items-center justify-center gap-space-2 rounded-xl border-2 px-space-3 py-space-4 text-center font-semibold text-size-h6 transition-colors ${
                       paymentMethod === "Cash on Delivery"
-                        ? "border-secondary text-secondary bg-secondary/5"
-                        : "border-white/10 text-placeholder_2"
+                        ? "border-secondary bg-secondary/5 text-secondary"
+                        : "border-white/10 text-placeholder_2 hover:border-white/20"
                     }`}
                   >
-                    <i className="fi fi-rr-money-bill-wave text-[24px]"></i>
+                    <i className="fi fi-rr-money-bill-wave text-[22px]" />
                     Cash on Delivery
                   </button>
                   <button
                     type="button"
                     onClick={() => setPaymentMethod("Credit Card")}
-                    className={`flex items-center gap-space-2 px-[20px] py-space-4 rounded-lg font-semibold text-size-h6 border-[1.5px] transition-colors ${
+                    aria-pressed={paymentMethod === "Credit Card"}
+                    disabled={awaitingCardOtp}
+                    className={`flex flex-col items-center justify-center gap-space-2 rounded-xl border-2 px-space-3 py-space-4 text-center font-semibold text-size-h6 transition-colors ${
                       paymentMethod === "Credit Card"
-                        ? "border-secondary text-secondary bg-secondary/5"
-                        : "border-white/10 text-placeholder_2"
+                        ? "border-secondary bg-secondary/5 text-secondary"
+                        : "border-white/10 text-placeholder_2 hover:border-white/20"
                     }`}
                   >
-                    <i className="fi fi-rr-credit-card text-[24px]"></i>
+                    <i className="fi fi-rr-credit-card text-[22px]" />
                     Credit Card
                   </button>
                 </div>
 
                 {paymentMethod === "Credit Card" && (
-                  <div>
-                    {/* cards */}
-                    <div className="space-y-space-3 mb-space-5">
-                      {cards.map((card) => (
-                        <SavedCard
-                          key={card._id}
-                          card={card}
-                          selected={selectedCardId === card._id}
-                          onSelect={() => setSelectedCardId(card._id)}
-                          onDelete={() => handleDeleteCard(card._id)}
-                          onEdit={() => openEditCard(card)}
-                        />
-                      ))}
-                    </div>
+                  <div className="mt-space-5 space-y-space-3">
+                    {cards.map((card) => (
+                      <SavedCard
+                        key={card._id}
+                        card={card}
+                        selected={selectedCardId === card._id}
+                        onSelect={() => setSelectedCardId(card._id)}
+                        onDelete={() => handleDeleteCard(card._id)}
+                        onEdit={() => openEditCard(card)}
+                      />
+                    ))}
 
                     <button
                       type="button"
                       onClick={openAddCard}
-                      className="px-space-4 py-space-3 flex items-center justify-center gap-space-2 rounded-lg bg-secondary/5 text-secondary border-[1.5px] border-dashed w-full border-secondary font-primary text-size-h6 font-medium hover:bg-secondary/15"
+                      disabled={awaitingCardOtp}
+                      className="flex w-full items-center justify-center gap-space-2 rounded-lg border-2 border-dashed border-secondary bg-secondary/5 px-space-4 py-space-3 font-primary text-size-h6 font-medium text-secondary hover:bg-secondary/15"
                     >
-                      <i className="fi fi-br-plus text-size-large"></i>
+                      <i className="fi fi-br-plus text-size-large" />
                       Add Card
                     </button>
                   </div>
                 )}
               </div>
-            </div>
 
-            <div className="h-px bg-linear-to-r from-placeholder_2/0 via-placeholder_2 to-placeholder_2/0 opacity-60"></div>
+              <div className="h-px bg-linear-to-r from-placeholder_2/0 via-placeholder_2 to-placeholder_2/0 opacity-60" />
 
-            {/* Address */}
-            <div className="p-space-2">
-              <h5 className="mb-space-5 font-semibold text-size-h6">Address</h5>
-              <div className="space-y-space-3 mb-space-5">
-                {addresses.map((address) => (
-                  <SavedAddress
-                    key={address._id}
-                    address={address}
-                    selected={selectedAddressId === address._id}
-                    onSelect={() => setSelectedAddressId(address._id)}
-                    onDelete={() => handleDeleteAddress(address._id)}
-                    onEdit={() => openEditAddress(address)}
-                  />
-                ))}
-              </div>
-              <button
-                type="button"
-                onClick={openAddAddress}
-                className="px-space-4 py-space-3 flex items-center justify-center gap-space-2 rounded-lg bg-secondary/5 text-secondary border-[1.5px] border-dashed w-full border-secondary font-primary text-size-h6 font-medium hover:bg-secondary/15"
+              {/* Address */}
+              <div
+                className={`transition-opacity ${awaitingCardOtp ? "pointer-events-none opacity-50" : ""}`}
               >
-                <i className="fi fi-br-plus text-size-large"></i>
-                Add Address
-              </button>
-            </div>
+                <h5 className="mb-space-4 flex items-center gap-space-2 font-semibold text-size-h6">
+                  <i className="fi fi-rr-marker text-secondary" />
+                  Delivery Address
+                </h5>
+                <div className="mb-space-4 space-y-space-3">
+                  {addresses.map((address) => (
+                    <SavedAddress
+                      key={address._id}
+                      address={address}
+                      selected={selectedAddressId === address._id}
+                      onSelect={() => setSelectedAddressId(address._id)}
+                      onDelete={() => handleDeleteAddress(address._id)}
+                      onEdit={() => openEditAddress(address)}
+                    />
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={openAddAddress}
+                  disabled={awaitingCardOtp}
+                  className="flex w-full items-center justify-center gap-space-2 rounded-lg border-2 border-dashed border-secondary bg-secondary/5 px-space-4 py-space-3 font-primary text-size-h6 font-medium text-secondary hover:bg-secondary/15"
+                >
+                  <i className="fi fi-br-plus text-size-large" />
+                  Add Address
+                </button>
+              </div>
 
-            <div className="h-px bg-linear-to-r from-placeholder_2/0 via-placeholder_2 to-placeholder_2/0 opacity-60"></div>
+              <div className="h-px bg-linear-to-r from-placeholder_2/0 via-placeholder_2 to-placeholder_2/0 opacity-60" />
 
-            {/* price */}
-            <div className="space-y-space-5 p-space-2 rounded-[10px]">
-              <div className="flex items-center justify-between text-[#CBD5F5]">
-                <p className="font-medium text-size-h4">Subtotal</p>
-                <h4 className="font-primary font-semibold text-size-h4">
-                  {money(pricing.subtotal)}
-                </h4>
-              </div>
-              <div className="flex items-center justify-between text-[#CBD5F5]">
-                <p className="font-medium text-size-h4">Discount</p>
-                <h4 className="font-primary font-semibold text-size-h4">
-                  -{money(pricing.discount)}
-                </h4>
-              </div>
-              <div className="flex items-center justify-between text-[#CBD5F5]">
-                <p className="font-medium text-size-h4">Shipping Charge</p>
-                <h4 className="font-primary font-semibold text-size-h4">
-                  {money(pricing.shippingCharge)}
-                </h4>
-              </div>
-              <div className="flex items-center justify-between text-[#CBD5F5]">
-                <p className="font-medium text-size-h4">VAT</p>
-                <h4 className="font-primary font-semibold text-size-h4">
-                  {money(pricing.vat)}
-                </h4>
-              </div>
-              <div className="flex items-center justify-between py-space-2 border-t-2 border-placeholder_3/30">
-                <p className="font-medium text-size-h3 text-[#CBD5F5]">Total</p>
-                <h4 className="font-primary font-semibold text-size-h3 text-secondary">
-                  {money(pricing.total)}
-                </h4>
-              </div>
-            </div>
-
-            {/* button / OTP step */}
-            <div className="space-y-space-7">
-              {awaitingCardOtp ? (
-                <div className="space-y-space-3">
-                  <p className="text-sm text-placeholder_2">
-                    Enter the OTP sent to your phone to confirm payment.
+              {/* Price */}
+              <div className="space-y-space-4">
+                <div className="flex items-center justify-between text-[#CBD5F5]">
+                  <p className="text-sm font-medium">Subtotal</p>
+                  <p className="font-primary text-sm font-semibold">
+                    {money(pricing.subtotal)}
                   </p>
-                  <input
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    placeholder="Enter OTP"
-                    className="w-full rounded-lg border border-white/10 bg-[#0d0f16] px-3 py-2 text-sm"
-                  />
+                </div>
+                <div className="flex items-center justify-between text-[#CBD5F5]">
+                  <p className="text-sm font-medium">Discount</p>
+                  <p className="font-primary text-sm font-semibold">
+                    -{money(pricing.discount)}
+                  </p>
+                </div>
+                <div className="flex items-center justify-between text-[#CBD5F5]">
+                  <p className="text-sm font-medium">Shipping Charge</p>
+                  <p className="font-primary text-sm font-semibold">
+                    {money(pricing.shippingCharge)}
+                  </p>
+                </div>
+                <div className="flex items-center justify-between text-[#CBD5F5]">
+                  <p className="text-sm font-medium">VAT</p>
+                  <p className="font-primary text-sm font-semibold">
+                    {money(pricing.vat)}
+                  </p>
+                </div>
+                <div className="flex items-center justify-between border-t-2 border-placeholder_3/30 pt-space-4">
+                  <p className="text-size-h5 font-medium text-[#CBD5F5]">
+                    Total
+                  </p>
+                  <p className="font-primary text-size-h5 font-semibold text-secondary">
+                    {money(pricing.total)}
+                  </p>
+                </div>
+              </div>
+
+              {/* Buy button / OTP step */}
+              <div className="space-y-space-6">
+                {awaitingCardOtp ? (
+                  <div className="space-y-space-3 rounded-xl border border-secondary/20 bg-secondary/5 p-space-4">
+                    <p className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
+                      <i className="fi fi-rr-shield-check text-secondary" />
+                      Confirm your payment
+                    </p>
+                    <p className="text-sm text-placeholder_2">
+                      Enter the OTP sent to your phone to confirm payment.
+                    </p>
+                    <input
+                      value={otp}
+                      onChange={(e) =>
+                        setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))
+                      }
+                      placeholder="••••••"
+                      inputMode="numeric"
+                      maxLength={6}
+                      className="w-full rounded-xl border border-secondary/20 bg-background px-4 py-3 text-center text-size-large font-semibold tracking-[0.5em] text-foreground outline-none transition-colors focus:border-secondary/80"
+                    />
+                    <Button
+                      className="w-full"
+                      onClick={handleVerifyOtp}
+                      disabled={verifyingOtp || otp.length < 6}
+                    >
+                      {verifyingOtp ? "Verifying..." : "Verify & Confirm Order"}
+                    </Button>
+                  </div>
+                ) : (
                   <Button
                     className="w-full"
-                    onClick={handleVerifyOtp}
-                    disabled={verifyingOtp}
+                    onClick={handlePlaceOrder}
+                    disabled={placingOrder || items.length === 0}
                   >
-                    {verifyingOtp ? "Verifying..." : "Verify & Confirm Order"}
+                    {placingOrder ? "Placing Order..." : "Buy Now"}
                   </Button>
-                </div>
-              ) : (
-                <Button
-                  className="w-full"
-                  onClick={handlePlaceOrder}
-                  disabled={placingOrder}
-                >
-                  {placingOrder ? "Placing Order..." : "Buy Now"}
-                </Button>
-              )}
+                )}
 
-              <div className="flex gap-space-2 *:flex *:flex-col *:items-center *:gap-2.5 *:flex-1">
-                <div>
-                  <div className="size-12.5 bg-secondary/10 rounded-full flex items-center justify-center">
-                    <i className="fi fi-rr-shield-check text-secondary text-[24px]"></i>
+                <div className="grid grid-cols-2 gap-space-4">
+                  <div className="flex flex-col items-center gap-2.5 text-center">
+                    <div className="flex size-12.5 items-center justify-center rounded-full bg-secondary/10">
+                      <i className="fi fi-rr-shield-check text-[22px] text-secondary" />
+                    </div>
+                    <div>
+                      <h5 className="mb-0.5 font-semibold text-size-h6">
+                        Secure Payment
+                      </h5>
+                      <p className="text-xs text-placeholder_3">
+                        256-bit encrypted checkout
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h5 className="font-semibold text-size-h6 mb-0.5">
-                      Secure Payment
-                    </h5>
-                    <p className="text-size-large text-placeholder">
-                      for heavy materials
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <div className="size-12.5 bg-secondary/10 rounded-full flex items-center justify-center">
-                    <i className="fi fi-rr-wrench-alt text-secondary text-[24px]"></i>
-                  </div>
-                  <div>
-                    <h5 className="font-semibold text-size-h6 mb-0.5">
-                      Reliable Support
-                    </h5>
-                    <p className="text-size-large text-placeholder">
-                      for heavy materials
-                    </p>
+                  <div className="flex flex-col items-center gap-2.5 text-center">
+                    <div className="flex size-12.5 items-center justify-center rounded-full bg-secondary/10">
+                      <i className="fi fi-rr-headset text-[22px] text-secondary" />
+                    </div>
+                    <div>
+                      <h5 className="mb-0.5 font-semibold text-size-h6">
+                        Reliable Support
+                      </h5>
+                      <p className="text-xs text-placeholder_3">
+                        Here if anything goes wrong
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>

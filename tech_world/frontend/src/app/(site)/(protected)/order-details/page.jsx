@@ -478,7 +478,6 @@ const Page = () => {
   );
 
   const order = data?.data;
-  console.log(order);
 
   const [cancelOrder, { isLoading: canceling }] = useCancelOrderMutation();
   const [downloadInvoice, { isLoading: downloading }] =
@@ -661,7 +660,7 @@ const Page = () => {
         <Breadcrumb
           items={[
             { label: "Home", href: "/" },
-            { label: "My orders", href: "/my-orders" },
+            { label: "My orders", href: "/my_orders" },
             { label: order.orderId },
           ]}
         />
@@ -763,7 +762,7 @@ const Page = () => {
         </div>
 
         {/* ================= Order Info + Price ================= */}
-        <div className="mt-space-10 grid grid-cols-1 gap-space-6 lg:grid-cols-[1.15fr_0.85fr]">
+        <div className="mt-space-10 ">
           <Card>
             <SectionHeading title="Order Information" />
             <div className="grid grid-cols-1 gap-space-6 sm:grid-cols-2">
@@ -817,7 +816,7 @@ const Page = () => {
             </div>
           </Card>
 
-          <Card className="space-y-space-4">
+          <Card className="space-y-space-4 mt-space-6">
             <SectionHeading title="Price Details" />
             <PriceRow label="Subtotal" value={money(order.subtotal)} />
             <PriceRow label="Discount" value={`-${money(order.discount)}`} />
@@ -879,17 +878,17 @@ const Page = () => {
 
             <div className="grid grid-cols-1 gap-space-5 sm:grid-cols-3">
               <Boxes
-                icon={firstItemSupport.tested?.icon || "fi fi-rr-shield-check"}
+                icon={"fi fi-rr-shield-check"}
                 title={firstItemSupport.tested?.title || "Quality Tested"}
                 subtitle={firstItemSupport.tested?.subtitle || ""}
               />
               <Boxes
-                icon={firstItemSupport.guarantee?.icon || "fi fi-rr-wrench-alt"}
+                icon={"fi fi-rr-wrench-alt"}
                 title={firstItemSupport.guarantee?.title || "Guarantee"}
                 subtitle={firstItemSupport.guarantee?.subtitle || ""}
               />
               <Boxes
-                icon={firstItemSupport.replacement?.icon || "fi fi-rr-replace"}
+                icon={"fi fi-rr-replace"}
                 title={firstItemSupport.replacement?.title || "Replacement"}
                 subtitle={firstItemSupport.replacement?.subtitle || ""}
               />

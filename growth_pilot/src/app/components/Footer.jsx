@@ -269,7 +269,7 @@ const Footer = () => {
             alt="GrowthPilot"
             width={120}
             height={50}
-            className="hidden size-16 md:size-20 object-contain dark:block cursor-pointer"
+            className="hidden h-11 object-contain dark:block cursor-pointer"
           /></Reveal>
         </div>
 

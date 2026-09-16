@@ -108,11 +108,11 @@ const Pricing = () => {
           aria-checked={isYearly}
           aria-label="Toggle annual billing"
           onClick={() => setIsYearly((prev) => !prev)}
-          className="relative w-[48px] h-[26px] rounded-full bg-accent3 shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent3 focus-visible:ring-offset-2"
+          className="relative w-[48px] h-6.5 rounded-full border border-secondary2/20 shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary2 focus-visible:ring-offset-2"
         >
           <span
-            className={`absolute top-[3px] left-[3px] size-[20px] rounded-full bg-white shadow-sm transition-transform duration-200 ${
-              isYearly ? "translate-x-[22px]" : "translate-x-0"
+            className={`absolute top-0.75 left-0.75 size-[20px] rounded-full bg-secondary2 shadow-sm transition-transform duration-200 ${
+              isYearly ? "translate-x-5.5" : "translate-x-0"
             }`}
           />
         </button>
@@ -125,7 +125,7 @@ const Pricing = () => {
         >
           Annually
         </span>
-        <span className="text-medium font-semibold text-nowrap text-accent3 dark:text-white bg-accent3-bg dark:bg-white/10 px-[10px] py-[4px] rounded-full">
+        <span className="text-medium font-semibold text-nowrap text-secondary2 dark:text-white bg-secondary2-bg dark:bg-white/10 px-2.5 py-[4px] rounded-full">
           Save 20%
         </span>
       </Reveal>
@@ -138,16 +138,16 @@ const Pricing = () => {
             delay={!plan.highlighted && 0.5}
             duration={plan.highlighted ? 2.5 : 2}
             key={plan.id}
-            className={`relative flex flex-col w-full md:flex-1 rounded-[32px] p-[24px] md:p-[32px] gap-[20px] bg-white dark:bg-black transition-shadow duration-300 ${
+            className={`relative flex flex-col w-full md:flex-1 rounded-4xl p-[24px] md:p-[32px] gap-[20px] bg-white dark:bg-black transition-shadow duration-300 ${
               plan.highlighted
-                ? "border-2 border-accent3 shadow-[0_16px_40px_-16px] shadow-accent3/50"
+                ? "border-2 border-secondary2 shadow-[0_16px_40px_-16px] shadow-secondary2/50"
                 : "border border-black/10 dark:border-white/15"
             }`}
           >
             {plan.highlighted && (
               <PlanTag
                 tagName="Most Popular"
-                className="absolute -top-[14px] left-1/2 -translate-x-1/2 z-10 bg-accent3"
+                className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10 bg-secondary2"
               />
             )}
 
@@ -168,7 +168,7 @@ const Pricing = () => {
 
             {/* Price */}
             <div className="flex flex-col gap-[4px] text-left">
-              <div className="flex items-end gap-[6px]">
+              <div className="flex items-end gap-1.5">
                 <h2 className="text-h3 xl:text-h2 font-semibold text-black dark:text-white leading-none">
                   ${isYearly ? plan.yearlyPrice : plan.monthlyPrice}
                 </h2>
@@ -186,9 +186,9 @@ const Pricing = () => {
             {/* Features */}
             <ul className="flex flex-col gap-[12px] text-left">
               {plan.features.map((feature, i) => (
-                <li key={i} className="flex items-start gap-[10px]">
+                <li key={i} className="flex items-start gap-2.5">
                   <span
-                    className={`flex items-center justify-center shrink-0 size-[20px] rounded-full mt-[2px] ${plan.accentBg} dark:bg-white/10 ${plan.accentText}`}
+                    className={`flex items-center justify-center shrink-0 size-[20px] rounded-full mt-0.5 ${plan.accentBg} dark:bg-white/10 ${plan.accentText}`}
                   >
                     <svg
                       viewBox="0 0 20 20"

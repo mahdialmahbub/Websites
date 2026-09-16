@@ -49,10 +49,10 @@ const NavLink = ({
             ? `
               text-secondary2
 
-              bg-gradient-to-r
-              from-secondary2/[0.10]
-              via-secondary2/[0.06]
-              to-secondary/[0.06]
+              bg-linear-to-r
+              from-secondary2/10
+              via-secondary2/6
+              to-secondary/6
 
               ring-1
               ring-inset
@@ -60,9 +60,9 @@ const NavLink = ({
 
               shadow-[0_4px_18px_rgba(0,0,0,0.04)]
 
-              dark:from-secondary2/[0.14]
-              dark:via-secondary2/[0.08]
-              dark:to-secondary/[0.08]
+              dark:from-secondary2/14
+              dark:via-secondary2/8
+              dark:to-secondary/8
 
               dark:ring-secondary2/20
               dark:shadow-[0_4px_18px_rgba(0,0,0,0.20)]

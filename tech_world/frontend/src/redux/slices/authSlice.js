@@ -36,6 +36,9 @@ const authSlice = createSlice({
     setPendingTwoFactorEmail(state, action) {
       state.pendingTwoFactorEmail = action.payload;
     },
+    clearPendingTwoFactorEmail: (state) => {
+      state.pendingTwoFactorEmail = null;
+    },
     clearAuth(state) {
       state.customer = null;
       state.admin = null;
@@ -45,7 +48,13 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCustomerSession, setAdminSession, setPendingTwoFactorEmail, clearAuth } = authSlice.actions;
+export const {
+  setCustomerSession,
+  setAdminSession,
+  setPendingTwoFactorEmail,
+  clearPendingTwoFactorEmail,
+  clearAuth,
+} = authSlice.actions;
 export default authSlice.reducer;
 
 // Selectors
@@ -53,4 +62,5 @@ export const selectCurrentCustomer = (state) => state.auth.customer;
 export const selectCurrentAdmin = (state) => state.auth.admin;
 export const selectIsAuthenticated = (state) => !!state.auth.customer;
 export const selectIsAdminAuthenticated = (state) => !!state.auth.admin;
-export const selectPendingTwoFactorEmail = (state) => state.auth.pendingTwoFactorEmail;
+export const selectPendingTwoFactorEmail = (state) =>
+  state.auth.pendingTwoFactorEmail;

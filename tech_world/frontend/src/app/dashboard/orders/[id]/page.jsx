@@ -144,7 +144,6 @@ const Page = () => {
     { skip: !id }, // ← এটা add করো
   );
   const order = data?.data;
-  console.log(order);
   const [status, setStatus] = useState(order?.status);
 
   // ✅ Fix: Check isLoading FIRST, before accessing data

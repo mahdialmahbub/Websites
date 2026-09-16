@@ -39,8 +39,20 @@ const calculatePrice = (product, selectedVariantIds = [], quantity = 1) => {
 };
 
 // Resolves the default-selected variant IDs for a fresh Product Details page load
+// pricingService.js
 const getDefaultVariantIds = (product) => {
-  return product.variants.filter((v) => v.isDefault).map((v) => String(v._id));
+  if (!product?.variants?.length) return [];
+
+  const groups = {};
+  for (const v of product.variants) {
+    const key = v.group || "ungrouped";
+    (groups[key] ||= []).push(v);
+  }
+
+  return Object.values(groups).map((options) => {
+    const chosen = options.find((o) => o.isDefault) || options[0]; // fallback if admin forgot to flag one
+    return chosen._id.toString();
+  });
 };
 
 module.exports = { calculatePrice, getDefaultVariantIds };

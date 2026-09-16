@@ -5,7 +5,7 @@ const OrderStatusCard = ({
   isActive = false,
 }) => {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center flex-1 text-center">
       <div
         className={`
           size-15.5
@@ -18,7 +18,7 @@ const OrderStatusCard = ({
           ${
             isActive
               ? "bg-secondary/10 text-secondary"
-              : "bg-placeholder/10 text-placeholder"
+              : "bg-placeholder/10 text-placeholder/20"
           }
         `}
       >
@@ -33,7 +33,7 @@ const OrderStatusCard = ({
           ${
             isActive
               ? "text-secondary"
-              : "text-placeholder_2"
+              : "text-placeholder_2/50"
           }
         `}
       >
@@ -41,7 +41,7 @@ const OrderStatusCard = ({
       </h3>
 
       {isActive && (
-        <time className="font-medium text-size-large text-placeholder_2">
+        <time className="font-medium text-size-large text-placeholder_2 ">
           {date}
         </time>
       )}

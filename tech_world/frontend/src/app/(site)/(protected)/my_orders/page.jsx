@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import React, { useState, useMemo } from "react";
@@ -13,6 +14,7 @@ import {
   useDeleteOrderMutation,
 } from "@/redux";
 import toast from "react-hot-toast";
+import ReviewModal from "@/app/components/ReviewModal";
 
 // ---------- Order -> ProductCard data shape helpers ----------
 // One card per ORDER (an order can contain multiple items — the first
@@ -44,19 +46,31 @@ const toPendingCardData = (order) => ({
     : undefined,
 });
 
-const toDeliveredCardData = (order) => {
+const toDeliveredCardData = (order, reviewedItems) => {
   const deliveredEntry = order.statusTimeline?.find(
     (t) => t.status === "Delivered",
   );
+
+  const productId = order.items[0]?.product;
+  const reviewKey = `${order._id}_${productId}`;
+
   return {
     image: order.items[0]?.productImage,
     title: summarizeTitle(order),
     requirement: summarizeVariants(order),
     quantity: totalQuantity(order),
+
     deliveredDate: new Date(
       deliveredEntry?.at || order.updatedAt,
     ).toLocaleDateString(),
+
     total: order.total,
+    productId,
+    orderId: order._id,
+
+    // server value + local success state
+    isReviewed:
+      Boolean(order.items[0]?.isReviewed) || Boolean(reviewedItems[reviewKey]),
   };
 };
 
@@ -116,6 +130,9 @@ const Page = () => {
 
   const [cancelTargetId, setCancelTargetId] = useState(null); // order._id being confirmed for cancel
   const [deliveredSearch, setDeliveredSearch] = useState("");
+  // { productId, orderId } of the item currently being reviewed, or null
+  const [reviewTarget, setReviewTarget] = useState(null);
+  const [reviewedItems, setReviewedItems] = useState({});
 
   const goToDetails = (orderId) =>
     router.push(`/order-details?orderId=${orderId}`);
@@ -217,17 +234,28 @@ const Page = () => {
           </p>
         ) : (
           <div className="flex gap-space-6 flex-wrap *:w-full">
-            {filteredDeliveredOrders.map((order) => (
-              <ProductCard
-                key={order._id}
-                variant="delivered"
-                data={toDeliveredCardData(order)}
-                actions={{
-                  onDelete: () => handleDeleteDelivered(order._id),
-                  onView: () => goToDetails(order._id),
-                }}
-              />
-            ))}
+            {filteredDeliveredOrders.map((order) => {
+              const cardData = toDeliveredCardData(order, reviewedItems);
+
+              return (
+                <ProductCard
+                  key={order._id}
+                  variant="delivered"
+                  data={cardData}
+                  actions={{
+                    onDelete: () => handleDeleteDelivered(order._id),
+
+                    onView: () => goToDetails(order._id),
+
+                    onReview: () =>
+                      setReviewTarget({
+                        productId: cardData.productId,
+                        orderId: cardData.orderId,
+                      }),
+                  }}
+                />
+              );
+            })}
           </div>
         )}
       </div>
@@ -237,6 +265,24 @@ const Page = () => {
           isLoading={canceling}
           onConfirm={handleConfirmCancel}
           onClose={() => setCancelTargetId(null)}
+        />
+      )}
+
+      {reviewTarget && (
+        <ReviewModal
+          productId={reviewTarget.productId}
+          orderId={reviewTarget.orderId}
+          onClose={() => setReviewTarget(null)}
+          onSuccess={() => {
+            const key = `${reviewTarget.orderId}_${reviewTarget.productId}`;
+
+            setReviewedItems((prev) => ({
+              ...prev,
+              [key]: true,
+            }));
+
+            setReviewTarget(null);
+          }}
         />
       )}
     </section>

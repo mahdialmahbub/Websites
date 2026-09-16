@@ -280,16 +280,20 @@ const Page = () => {
             </div>
             <div className="rounded-xl p-space-3 bg-[#1A1E3D]/50">
               <div className="space-y-space-3 mb-space-5">
-                {cards.map((card) => (
-                  <SavedCard
-                    key={card._id}
-                    card={card}
-                    selected={selectedCardId === card._id}
-                    onSelect={() => setSelectedCardId(card._id)}
-                    onDelete={() => handleDeleteCard(card._id)}
-                    onEdit={() => openEditCard(card)}
-                  />
-                ))}
+                {cards.length > 0 ? (
+                  cards.map((card) => (
+                    <SavedCard
+                      key={card._id}
+                      card={card}
+                      selected={selectedCardId === card._id}
+                      onSelect={() => setSelectedCardId(card._id)}
+                      onDelete={() => handleDeleteCard(card._id)}
+                      onEdit={() => openEditCard(card)}
+                    />
+                  ))
+                ) : (
+                  <div className="text-center text-placeholder_3">No payment method added yet</div>
+                )}
               </div>
 
               <button
@@ -313,16 +317,20 @@ const Page = () => {
             </div>
             <div className="rounded-xl p-space-3 bg-[#1A1E3D]/50">
               <div className="space-y-space-3 mb-space-5">
-                {addresses.map((address) => (
-                  <SavedAddress
-                    key={address._id}
-                    address={address}
-                    selected={selectedAddressId === address._id}
-                    onSelect={() => setSelectedAddressId(address._id)}
-                    onDelete={() => handleDeleteAddress(address._id)}
-                    onEdit={() => openEditAddress(address)}
-                  />
-                ))}
+                {addresses.length > 0 ? (
+                  addresses.map((address) => (
+                    <SavedAddress
+                      key={address._id}
+                      address={address}
+                      selected={selectedAddressId === address._id}
+                      onSelect={() => setSelectedAddressId(address._id)}
+                      onDelete={() => handleDeleteAddress(address._id)}
+                      onEdit={() => openEditAddress(address)}
+                    />
+                  ))
+                ) : (
+                  <div className="text-center text-placeholder_3">No address added yet</div>
+                )}
               </div>
               <button
                 type="button"

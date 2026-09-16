@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Info } from "lucide-react";
 import toast from "react-hot-toast";
-import Button from "./Button";
 import useLockBodyScroll from "@/app/hooks/useLockBodyScroll";
 import { useRequestChangePasswordMutation, useConfirmChangePasswordMutation } from "@/redux";
+import Button from "../Button";
 
 const OTP_LENGTH = 6;
 

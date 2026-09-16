@@ -25,6 +25,7 @@ module.exports = {
     "CHANGE_PASSWORD",
     "ADD_CARD",
     "PAYMENT_VERIFICATION",
+    "FORGOT_PASSWORD",
   ],
 
   GENDER: ["Male", "Female", "Other"],

@@ -257,11 +257,8 @@ const OrderRow = ({ orderId }) => {
 
         <td className="text-placeholder_3">{order.orderId ?? "—"}</td>
 
-        {/* ------------------------------------------
-            Customer
-        ------------------------------------------ */}
-
-        <td>
+        {/* Customer */}
+        <td className="w-[220px]">
           <div className="flex items-center gap-space-3">
             {order.customer?.image?.url && (
               <Image
@@ -269,27 +266,23 @@ const OrderRow = ({ orderId }) => {
                 src={order.customer.image.url}
                 height={42}
                 width={42}
-                className="rounded-full size-10.5 object-cover"
+                className="rounded-full size-10.5 object-cover shrink-0"
               />
             )}
 
-            <div className="space-y-0.5">
-              <p className="font-medium text-size-large">
+            <div className="space-y-0.5 min-w-0">
+              <p className="font-medium text-size-large truncate">
                 {order.customer?.name ?? "—"}
               </p>
-
-              <h6 className="font-medium text-size-h6">
+              <h6 className="font-medium text-size-h6 truncate">
                 {order.customer?.phone ?? "—"}
               </h6>
             </div>
           </div>
         </td>
 
-        {/* ------------------------------------------
-            Items
-        ------------------------------------------ */}
-
-        <td>{itemLabel}</td>
+        {/* Items */}
+        <td className="w-[180px] truncate">{itemLabel}</td>
 
         {/* ------------------------------------------
             Status
@@ -318,23 +311,23 @@ const OrderRow = ({ orderId }) => {
           ${typeof order.total === "number" ? order.total.toFixed(2) : "0.00"}
         </td>
 
-        {/* ------------------------------------------
-            Delivery Address
-        ------------------------------------------ */}
+        {/* Delivery Address */}
+        <td
+          className="w-[240px] truncate"
+          title={formatAddress(order.deliveryAddress)}
+        >
+          {formatAddress(order.deliveryAddress)}
+        </td>
 
-        <td>{formatAddress(order.deliveryAddress)}</td>
+        {/* Created Date */}
+        <td className="w-[130px] whitespace-nowrap">
+          {formatDate(order.createdAt)}
+        </td>
 
-        {/* ------------------------------------------
-            Created Date
-        ------------------------------------------ */}
-
-        <td>{formatDate(order.createdAt)}</td>
-
-        {/* ------------------------------------------
-            Payment Method
-        ------------------------------------------ */}
-
-        <td>{order.paymentMethod ?? "—"}</td>
+        {/* Payment Method */}
+        <td className="w-[130px] whitespace-nowrap">
+          {order.paymentMethod ?? "—"}
+        </td>
 
         {/* ------------------------------------------
             Actions

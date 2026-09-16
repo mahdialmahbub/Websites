@@ -4,11 +4,14 @@ import React from "react";
 import Button from "../components/Button";
 import Image from "next/image";
 import { assets } from "../assets/assets";
-import Link from "next/link";
-import { motion } from "framer-motion";
 import FadeLeft from "../components/motions/FadeLeft";
 import FadeRight from "../components/motions/FadeRight";
 import FadeUp from "../components/motions/FadeUp";
+import ServiceCard from "../components/about/ServiceCard";
+import TechStack from "../components/about/TechStack";
+import ContactCTA from "../components/about/CTA";
+import IntroVideoButton from "../components/IntroVideoButton";
+import StatsSection from "../components/StateSection";
 
 const page = () => {
   const aboutMeLabel = [
@@ -19,34 +22,42 @@ const page = () => {
 
   const aboutMeContent = [
     {
-      image:
-        "https://images.unsplash.com/photos/3d-abstract-shapes-and-emojis-on-purple-background-zrOBY-0hF-g",
+      icon: "fi fi-rr-website-design",
       title: "UI UX design",
-      subtitle:
-        "I'm a UI/UX and Product Designer who creates user-centered websites that balance great design with real business goals.",
+      process: ["Research", "Wareframe", "Prototype"],
+
       descripiton:
-        "Beyond design, I also build responsive frontends using React, Next.js, and Redux, ensuring every detail is implemented as intended. By handling both design and development, I streamline the process, reduce communication gaps, and deliver a smoother experience from concept to launch.",
+        "I chose UI/UX design because I enjoy understanding how people think, what they need, and what makes a digital experience feel simple and intuitive. It gives me the freedom to turn ideas and problems into meaningful experiences that people enjoy using.",
+      tags: ["Figma", "User Research", "Wireframing", "Design Systems"],
+      btnText: "How I Design",
     },
     {
-      image:
-        "https://images.unsplash.com/photos/silver-imac-turned-on-inside-room-DtDlVpy-vvQ",
-      title: "MERN stact website development",
-      subtitle:
-        "I'm a UI/UX and Product Designer who creates user-centered websites that balance great design with real business goals.",
+      icon: "fi fi-rr-code-window",
+      title: "MERN Stack Development",
+      process: ["React", "Node", "MongoDB"],
       descripiton:
-        "Beyond design, I also build responsive frontends using React, Next.js, and Redux, ensuring every detail is implemented as intended. By handling both design and development, I streamline the process, reduce communication gaps, and deliver a smoother experience from concept to launch.",
+        "I chose MERN development because I wanted to go beyond designing interfaces and actually bring those ideas to life. Building with JavaScript across the stack lets me turn thoughtful designs into fast, functional, and scalable products.",
+      tags: ["React", "Next.js", "Redux", "Node.js", "MongoDB"],
+      btnText: "How I Build",
     },
   ];
 
   return (
-    <section className="min-w-full ">
-      <div className="overflow-hidden w-full bg-foreground dark:bg-background flex items-center gap-space-6 rounded-xl p-space-7 relative">
+    <section className="min-w-full space-y-space-12">
+      <div className="overflow-hidden w-full bg-foreground dark:bg-background flex items-center gap-space-8 rounded-xl p-space-7 relative">
         {/* Background Pattern */}
         <Image
           alt="background pattern"
           src="/Background_patterns.png"
           fill
-          className="object-cover z-0 top-0 opacity-8"
+          className="pointer-events-none
+      absolute
+      inset-0
+      -z-20
+      object-cover
+      opacity-[0.035]
+      dark:opacity-[0.045]
+"
         />
         {/* content */}
         <div className="w-full">
@@ -95,7 +106,7 @@ const page = () => {
             </FadeLeft>
           </div>
           <FadeLeft delay={0.3} className="flex items-center gap-space-4">
-            <Button varient="text" text={"Intro Video"} />
+            <IntroVideoButton />
             <Button
               text={"Download Resume"}
               rightIcon
@@ -119,57 +130,62 @@ const page = () => {
             />
           </div>
         </FadeRight>
+
+        {/* scroll */}
+        <div className="absolute bottom-space-7 left-[50%] right-[50%] opacity-20">
+          <div className="flex flex-col items-center font-bold font-primary gap-space-1 text-secondary-200 animate-pulse">
+            <div className="w-2 h-6 bg-secondary-500 rounded-full"></div>
+            Scroll
+          </div>
+        </div>
       </div>
-      <FadeLeft
-        delay={0.4}
-        as="h2"
-        className="font-primary font-semibold text-size-lg mt-space-7 mb-space-7 "
-      >
-        Why I choose these professions
-      </FadeLeft>
-      <div className="space-y-space-6">
-        {aboutMeContent.map((item, i) => (
-          <FadeUp key={i}>
-            <div className="bg-secondary-50 dark:bg-background flex items-center gap-space-6 p-space-7 rounded-xl border border-secondary-500/20 dark:border-secondary-500/10">
-              <Image
-                width={250}
-                height={250}
-                src={assets.backgroundImage}
-                alt="image"
-                className="object-cover h-full rounded-xl"
+
+      <StatsSection />
+
+      <div className="space-y-space-7">
+        <div
+          className="
+            mb-12
+            flex
+            flex-col
+            gap-6
+            lg:mb-14
+            lg:flex-row
+            lg:items-end
+            lg:justify-between
+          "
+        >
+          {/* Heading */}
+          <FadeLeft
+            as="h2"
+            className="
+                mt-3
+                text-size-xl
+                font-semibold
+                leading-tight
+                tracking-[-0.035em]
+              "
+          >
+            Why I chose <span className="text-slate-500">these paths</span>
+          </FadeLeft>
+        </div>
+        <div className="space-x-space-6 flex ">
+          {aboutMeContent.map((item, i) => (
+            <FadeUp key={i} delay={i * 0.2} className="">
+              <ServiceCard
+                description={item.descripiton}
+                process={item.process}
+                title={item.title}
+                buttonText={item.btnText}
+                icon={item.icon}
+                tags={item.tags}
               />
-              <div>
-                <FadeUp
-                  as="h3"
-                  delay={0.1}
-                  className="font-primary font-semibold text-size-md mb-space-5"
-                >
-                  {item.title}
-                </FadeUp>
-                <FadeUp
-                  as="h4"
-                  delay={0.2}
-                  className="font-medium text-size-sm mb-2.5"
-                >
-                  {item.subtitle}
-                </FadeUp>
-                <FadeUp
-                  as="p"
-                  delay={0.3}
-                  className="font-medium text-size-sm text-placeholder mb-space-5"
-                >
-                  {item.descripiton}
-                </FadeUp>
-                <FadeUp delay={0.35}>
-                  <Link href={"/workflow"}>
-                    <Button varient="text" text={"View Workflow"} rightIcon />
-                  </Link>
-                </FadeUp>
-              </div>
-            </div>
-          </FadeUp>
-        ))}
+            </FadeUp>
+          ))}
+        </div>
       </div>
+      <TechStack />
+      <ContactCTA />
     </section>
   );
 };

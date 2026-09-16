@@ -45,7 +45,7 @@ const ProjectCard = ({ project, onSelect, index = 0 }) => {
         {hasInPageSelect ? (
           <h2
             onClick={onSelect}
-            className="font-semibold text-size-md cursor-pointer hover:text-primary-500 transition-colors transition-all duration-200"
+            className="font-semibold text-size-md cursor-pointer hover:text-primary-500 transition-colors duration-200"
           >
             {title}
           </h2>
@@ -63,19 +63,39 @@ const ProjectCard = ({ project, onSelect, index = 0 }) => {
           ))}
         </div>
 
-        <div className="flex *:flex-1">
-          <Button text={"Preview"} fullWidth={true} varient="text" />
+        <div className="flex w-full">
+  <div className="flex-1">
+    <Button
+      text="Preview"
+      varient="text"
+      className="block w-full"
+    />
+  </div>
 
-          {hasInPageSelect ? (
-            <div onClick={onSelect} className="flex-1 cursor-pointer">
-              <Button text={"Details"} fullWidth={true} varient="text" />
-            </div>
-          ) : (
-            <Link href={detailsHref} className="flex-1 cursor-pointer">
-              <Button text={"Details"} fullWidth={true} varient="text" />
-            </Link>
-          )}
-        </div>
+  {hasInPageSelect ? (
+    <div
+      onClick={onSelect}
+      className="flex flex-1"
+    >
+      <Button
+        text="Details"
+        varient="text"
+        className="block w-full"
+      />
+    </div>
+  ) : (
+    <Link
+      href={detailsHref}
+      className="flex flex-1"
+    >
+      <Button
+        text="Details"
+        varient="text"
+        className="block w-full"
+      />
+    </Link>
+  )}
+</div>
       </div>
     </div>
   );

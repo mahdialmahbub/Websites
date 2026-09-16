@@ -1,0 +1,356 @@
+@import "tailwindcss";
+
+
+/* ==========================================================================
+   01. THEME
+   ========================================================================== */
+
+@theme {
+
+  /* ------------------------------------------------------------------------
+     COLORS
+  ------------------------------------------------------------------------ */
+
+  --color-background: #FFFDFC;
+
+  /* ------------------------------------------------------------------------
+     FONTS
+  ------------------------------------------------------------------------ */
+
+  --font-primary: var(--font-poppins);
+  --font-secondary: var(--font-roboto);
+
+
+  /* ------------------------------------------------------------------------
+     SPACING
+  ------------------------------------------------------------------------ */
+
+  --spacing-space-0: 0px;
+  --spacing-space-1: 4px;
+  --spacing-space-2: 8px;
+  --spacing-space-3: 12px;
+  --spacing-space-4: 16px;
+  --spacing-space-5: 20px;
+  --spacing-space-6: 24px;
+  --spacing-space-7: 32px;
+  --spacing-space-8: 40px;
+  --spacing-space-9: 48px;
+  --spacing-space-10: 64px;
+  --spacing-space-11: 80px;
+  --spacing-space-12: 96px;
+  --spacing-space-13: 128px;
+  --spacing-space-14: 160px;
+
+
+  /* ------------------------------------------------------------------------
+     SHADOWS
+  ------------------------------------------------------------------------ */
+
+  --shadow-subtle: 0 1px 2px 0 rgb(16 24 40 / 0.05);
+  --shadow-sm-1: 0 1px 3px 0 rgb(16 24 40 / 0.10);
+  --shadow-sm-2: 0 1px 4px 0 rgb(16 24 40 / 0.06);
+  --shadow-md: 0 4px 8px 0 rgb(16 24 40 / 0.10);
+  --shadow-lg: 0 12px 16px 0 rgb(16 24 40 / 0.12);
+  --shadow-xl: 0 20px 24px 0 rgb(16 24 40 / 0.14);
+  --shadow-modal: 0 24px 48px 0 rgb(16 24 40 / 0.20);
+
+
+  /* ------------------------------------------------------------------------
+     Z-INDEX
+  ------------------------------------------------------------------------ */
+
+  --z-base: 0;
+  --z-sticky: 10;
+  --z-header: 100;
+  --z-dropdown: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-tooltip: 600;
+
+
+  /* ------------------------------------------------------------------------
+     BORDER RADIUS
+  ------------------------------------------------------------------------ */
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+
+  --radius-pill: 9999px;
+  --radius-circle: 50%;
+
+
+  /* ========================================================================
+     TYPOGRAPHY
+  ======================================================================== */
+
+  /* ------------------------------------------------------------------------
+     Font Sizes
+     Generates: text-display, text-h1, text-h2, ...
+  ------------------------------------------------------------------------ */
+
+  --text-display: clamp(2.25rem, 1.6rem + 3vw, 4rem);
+  --text-h1: clamp(1.875rem, 1.3rem + 2.4vw, 3rem);
+  --text-h2: clamp(1.625rem, 1.3rem + 1.4vw, 2.25rem);
+  --text-h3: clamp(1.375rem, 1.22rem + 0.66vw, 1.75rem);
+  --text-h4: clamp(1.125rem, 1.02rem + 0.44vw, 1.375rem);
+  --text-h5: clamp(1rem, 0.95rem + 0.22vw, 1.125rem);
+  --text-h6: clamp(0.875rem, 0.82rem + 0.22vw, 1rem);
+  --text-lead: clamp(1.125rem, 1.07rem + 0.22vw, 1.25rem);
+
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  --text-caption: 0.8125rem;
+
+
+  /* ------------------------------------------------------------------------
+     Font Weights
+     Generates: font-display, font-h1, font-h2, ...
+  ------------------------------------------------------------------------ */
+
+  --font-weight-display: 700;
+  --font-weight-h1: 700;
+  --font-weight-h2: 600;
+  --font-weight-h3: 600;
+  --font-weight-h4: 600;
+  --font-weight-h5: 600;
+  --font-weight-h6: 600;
+
+  --font-weight-lead: 400;
+  --font-weight-body: 400;
+  --font-weight-small: 400;
+  --font-weight-caption: 400;
+
+
+  /* ------------------------------------------------------------------------
+     Line Heights
+     Generates: leading-display, leading-h1, leading-h2, ...
+  ------------------------------------------------------------------------ */
+
+  --leading-display: 1.1;
+  --leading-h1: 1.15;
+  --leading-h2: 1.2;
+  --leading-h3: 1.25;
+  --leading-h4: 1.3;
+  --leading-h5: 1.4;
+  --leading-h6: 1.4;
+
+  --leading-lead: 1.6;
+  --leading-body: 1.6;
+  --leading-small: 1.5;
+  --leading-caption: 1.4;
+
+
+  /* ========================================================================
+     COLOR PALETTE
+  ======================================================================== */
+
+  /* Green */
+  --color-green-50: #E6F5F0;
+  --color-green-100: #B2DED1;
+  --color-green-200: #8CCFBA;
+  --color-green-300: #58B99B;
+  --color-green-400: #37AB87;
+  --color-green-500: #059669;
+  --color-green-600: #058960;
+  --color-green-700: #046B4B;
+  --color-green-800: #03533A;
+  --color-green-900: #023F2C;
+
+
+  /* Blue */
+  --color-blue-50: #E6F3F9;
+  --color-blue-100: #B1D9EE;
+  --color-blue-200: #8BC6E5;
+  --color-blue-300: #55ADD9;
+  --color-blue-400: #359DD2;
+  --color-blue-500: #0284C7;
+  --color-blue-600: #0278B5;
+  --color-blue-700: #015E8D;
+  --color-blue-800: #01496D;
+  --color-blue-900: #013754;
+
+
+  /* Orange */
+  --color-orange-50: #FBF1E6;
+  --color-orange-100: #F3D5B2;
+  --color-orange-200: #EEC08C;
+  --color-orange-300: #E6A458;
+  --color-orange-400: #E19238;
+  --color-orange-500: #D97706;
+  --color-orange-600: #C56C05;
+  --color-orange-700: #9A5404;
+  --color-orange-800: #774103;
+  --color-orange-900: #5B3203;
+
+
+  /* Violet */
+  --color-violet-50: #F4EBFD;
+  --color-violet-100: #DEC0F8;
+  --color-violet-200: #CDA1F5;
+  --color-violet-300: #B776F1;
+  --color-violet-400: #A95CEE;
+  --color-violet-500: #9333EA;
+  --color-violet-600: #862ED5;
+  --color-violet-700: #6824A6;
+  --color-violet-800: #511C81;
+  --color-violet-900: #3E1562;
+
+
+  /* Red */
+  --color-red-50: #FCE9E9;
+  --color-red-100: #F4BCBC;
+  --color-red-200: #EF9B9B;
+  --color-red-300: #E86E6E;
+  --color-red-400: #E35151;
+  --color-red-500: #DC2626;
+  --color-red-600: #C82323;
+  --color-red-700: #9C1B1B;
+  --color-red-800: #791515;
+  --color-red-900: #5C1010;
+
+
+  /* Neutral / Ink */
+  --color-ink-50: #F8FAFC;
+  --color-ink-100: #F1F5F9;
+  --color-ink-200: #E2E8F0;
+  --color-ink-300: #CBD5E1;
+  --color-ink-400: #94A3B8;
+  --color-ink-500: #64748B;
+  --color-ink-600: #475569;
+  --color-ink-700: #334155;
+  --color-ink-800: #1E293B;
+  --color-ink-900: #0F172A;
+  --color-ink-950: #020617;
+
+
+  /* Primary / Purple */
+  --color-p50: #EDEDFC;
+  --color-p75: #B7B3F4;
+  --color-p100: #9994F0;
+  --color-p200: #6D65E9;
+  --color-p300: #4F46E5;
+  --color-p400: #3731A0;
+  --color-p500: #302B8C;
+}
+
+
+/* ==========================================================================
+   02. BASE
+   ========================================================================== */
+
+@layer base {
+
+  html {
+    font-size: 100%;
+  }
+
+  body {
+    @apply bg-background text-ink-950;
+
+    font-family:
+      var(--font-secondary),
+      Arial,
+      Helvetica,
+      sans-serif;
+  }
+
+  h1 {
+    @apply text-h1 font-h1 leading-h1;
+  }
+
+  h2 {
+    @apply text-h2 font-h2 leading-h2;
+  }
+
+  h3 {
+    @apply text-h3 font-h3 leading-h3;
+  }
+
+  h4 {
+    @apply text-h4 font-h4 leading-h4;
+  }
+
+  h5 {
+    @apply text-h5 font-h5 leading-h5;
+  }
+
+  h6 {
+    @apply text-h6 font-h6 leading-h6;
+  }
+
+  p {
+    @apply text-body font-body leading-body;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
+
+
+/* ==========================================================================
+   03. CUSTOM UTILITIES
+   ========================================================================== */
+
+/*
+   Typography-এর জন্য আলাদা .text-h1 / .text-h2 CSS লেখার আর দরকার নেই।
+   @theme থেকে এগুলো automatically তৈরি হবে।
+
+   Example:
+
+   className="text-h1"
+   className="text-display"
+   className="text-body"
+   className="text-caption"
+
+   Responsive:
+
+   className="text-h2 md:text-h1"
+
+   Font weight:
+
+   className="font-h1"
+   className="font-h2"
+
+   Line height:
+
+   className="leading-h1"
+   className="leading-body"
+*/
+
+
+/* ==========================================================================
+   04. KEYFRAMES
+   ========================================================================== */
+
+/*
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+*/
+
+
+/* ==========================================================================
+   05. OPTIONAL CUSTOM UTILITIES
+   ========================================================================== */
+
+/*
+@utility glass {
+  background: rgb(255 255 255 / 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgb(255 255 255 / 0.2);
+}
+*/

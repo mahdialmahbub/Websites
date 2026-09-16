@@ -40,7 +40,7 @@ const Navbar = () => {
         {/* Dark Button */}
         <DarkToggleBTN />
         <Link href={buttonHref}>
-          <Button text={buttonText} />
+          <Button varient="secondary" text={buttonText} />
         </Link>
       </div>
     </div>

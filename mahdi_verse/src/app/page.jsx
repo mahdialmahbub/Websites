@@ -6,6 +6,7 @@ import CountUp from "react-countup";
 import CountUpNumber from "./components/home/CountUpNumber";
 import Link from "next/link";
 import FadeUp from "./components/motions/FadeUp";
+import DevCaseStudyPage from "./components/DevCaseStudyPage";
 
 const page = () => {
   const count = [
@@ -27,15 +28,15 @@ const page = () => {
   ];
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col items-center justify-center">
       {/* image */}
       <FadeUp delay={0}>
-        <div className="px-2.5 flex flex-col items-center justify-center relative gap-[50px]">
+        <div className="px-2.5 flex flex-col items-center justify-center relative gap-12.5">
           <div className="relative">
             <Image
               alt="myImage"
               src={assets.profile}
-              className="rounded-full w-[150px] h-auto"
+              className="rounded-full w-37.5 h-auto"
             />
 
             {/* Node js - top left */}
@@ -131,7 +132,7 @@ const page = () => {
                 Modern Web Interfaces
               </span>
             </FadeUp>
-            <FadeUp as="p" delay={0.2} className="font-medium text-size-base text-foreground/60 w-[700px]">
+            <FadeUp as="p" delay={0.2} className="font-medium text-size-base text-foreground/60 w-175">
               I’m Mahdi — a UI/UX Designer and Next.js Frontend Developer
               focused on creating aesthetic, user-centered, and high-performance
               digital experiences that feel smooth, modern, and impactful.
@@ -149,9 +150,9 @@ const page = () => {
           {count.map((item, i) => (
             <div
               key={i}
-              className="flex flex-col items-center justify-center gap-space-2 px-space-6 w-[240px]"
+              className="flex flex-col items-center justify-center gap-space-2 px-space-6 w-60"
             >
-              <div>
+              {/* <div>
                 <div className="flex items-center gap-space-3 text-secondary-700">
                   <i className={`text-[26px] ${item.icon}`}></i>
                   <CountUpNumber key={i} number={item.number} />
@@ -159,11 +160,12 @@ const page = () => {
                 <h4 className="font-semibold text-size-base text-placeholder dark:text-placeholder_2 mt-space-1">
                   {item.label}
                 </h4>
-              </div>
+              </div> */}
             </div>
           ))}
         </FadeUp>
       </div>
+      <DevCaseStudyPage />
     </div>
   );
 };
