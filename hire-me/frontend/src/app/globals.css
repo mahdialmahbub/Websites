@@ -1,0 +1,315 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   01. THEME
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Fonts
+   `inline` লাগবে, কারণ --font-poppins / --font-roboto next/font থেকে আসে
+   (html/body element-এ set হয়), :root-এ না।
+   -------------------------------------------------------------------------- */
+@theme inline {
+  --font-primary: var(--font-poppins);
+  --font-secondary: var(--font-roboto);
+}
+
+@theme {
+  /* ------------------------------------------------------------------------
+     COLORS
+  ------------------------------------------------------------------------ */
+  --color-background: #fffdfc;
+
+  /* ------------------------------------------------------------------------
+     SPACING
+     Usage: p-space-4, gap-space-6, mt-space-10 ...
+  ------------------------------------------------------------------------ */
+  --spacing-space-0: 0px;
+  --spacing-space-1: 4px;
+  --spacing-space-2: 8px;
+  --spacing-space-3: 12px;
+  --spacing-space-4: 16px;
+  --spacing-space-5: 20px;
+  --spacing-space-6: 24px;
+  --spacing-space-7: 32px;
+  --spacing-space-8: 40px;
+  --spacing-space-9: 48px;
+  --spacing-space-10: 64px;
+  --spacing-space-11: 80px;
+  --spacing-space-12: 96px;
+  --spacing-space-13: 128px;
+  --spacing-space-14: 160px;
+
+  /* ------------------------------------------------------------------------
+     SHADOWS
+  ------------------------------------------------------------------------ */
+  --shadow-subtle: 0 1px 2px 0 rgb(16 24 40 / 0.05);
+  --shadow-sm-1: 0 1px 3px 0 rgb(16 24 40 / 0.1);
+  --shadow-sm-2: 0 1px 4px 0 rgb(16 24 40 / 0.06);
+  --shadow-md: 0 4px 8px 0 rgb(16 24 40 / 0.1);
+  --shadow-md: 0 12px 16px 0 rgb(16 24 40 / 0.12);
+  --shadow-xl: 0 20px 24px 0 rgb(16 24 40 / 0.14);
+  --shadow-modal: 0 24px 48px 0 rgb(16 24 40 / 0.2);
+
+  /* ------------------------------------------------------------------------
+     Z-INDEX
+     (Tailwind v4-এ z-index theme namespace নেই, তাই নিচে @utility দিয়ে
+     z-header, z-modal ... বানানো হয়েছে)
+  ------------------------------------------------------------------------ */
+  --z-base: 0;
+  --z-sticky: 10;
+  --z-header: 100;
+  --z-dropdown: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-tooltip: 600;
+
+  /* ------------------------------------------------------------------------
+     BORDER RADIUS
+  ------------------------------------------------------------------------ */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-md: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-pill: 9999px;
+  --radius-circle: 50%;
+
+  /* ========================================================================
+     TYPOGRAPHY
+  ======================================================================== */
+
+  /* Font sizes → text-display, text-h1, text-h2 ... */
+  --text-display: clamp(2.25rem, 1.6rem + 3vw, 4rem);
+  --text-h1: clamp(1.875rem, 1.3rem + 2.4vw, 3rem);
+  --text-h2: clamp(1.625rem, 1.3rem + 1.4vw, 2.25rem);
+  --text-h3: clamp(1.375rem, 1.22rem + 0.66vw, 1.75rem);
+  --text-h4: clamp(1.125rem, 1.02rem + 0.44vw, 1.375rem);
+  --text-h5: clamp(1rem, 0.95rem + 0.22vw, 1.125rem);
+  --text-h6: clamp(0.875rem, 0.82rem + 0.22vw, 1rem);
+  --text-lead: clamp(1.125rem, 1.07rem + 0.22vw, 1.25rem);
+
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  --text-caption: 0.8125rem;
+
+  /* Font weights → font-display, font-h1, font-h2 ... */
+  --font-weight-display: 700;
+  --font-weight-h1: 700;
+  --font-weight-h2: 600;
+  --font-weight-h3: 600;
+  --font-weight-h4: 600;
+  --font-weight-h5: 600;
+  --font-weight-h6: 600;
+
+  --font-weight-lead: 400;
+  --font-weight-body: 400;
+  --font-weight-small: 400;
+  --font-weight-caption: 400;
+
+  /* Line heights → leading-display, leading-h1, leading-h2 ... */
+  --leading-display: 1.1;
+  --leading-h1: 1.15;
+  --leading-h2: 1.2;
+  --leading-h3: 1.25;
+  --leading-h4: 1.3;
+  --leading-h5: 1.4;
+  --leading-h6: 1.4;
+
+  --leading-lead: 1.6;
+  --leading-body: 1.6;
+  --leading-small: 1.5;
+  --leading-caption: 1.4;
+
+  /* ========================================================================
+     COLOR PALETTE
+  ======================================================================== */
+
+  /* Green */
+  --color-green-50: #e6f5f0;
+  --color-green-100: #b2ded1;
+  --color-green-200: #8ccfba;
+  --color-green-300: #58b99b;
+  --color-green-400: #37ab87;
+  --color-green-500: #059669;
+  --color-green-600: #058960;
+  --color-green-700: #046b4b;
+  --color-green-800: #03533a;
+  --color-green-900: #023f2c;
+
+  /* Blue */
+  --color-blue-50: #e6f3f9;
+  --color-blue-100: #b1d9ee;
+  --color-blue-200: #8bc6e5;
+  --color-blue-300: #55add9;
+  --color-blue-400: #359dd2;
+  --color-blue-500: #0284c7;
+  --color-blue-600: #0278b5;
+  --color-blue-700: #015e8d;
+  --color-blue-800: #01496d;
+  --color-blue-900: #013754;
+
+  /* Orange */
+  --color-orange-50: #fbf1e6;
+  --color-orange-100: #f3d5b2;
+  --color-orange-200: #eec08c;
+  --color-orange-300: #e6a458;
+  --color-orange-400: #e19238;
+  --color-orange-500: #d97706;
+  --color-orange-600: #c56c05;
+  --color-orange-700: #9a5404;
+  --color-orange-800: #774103;
+  --color-orange-900: #5b3203;
+
+  /* Violet */
+  --color-violet-50: #f4ebfd;
+  --color-violet-100: #dec0f8;
+  --color-violet-200: #cda1f5;
+  --color-violet-300: #b776f1;
+  --color-violet-400: #a95cee;
+  --color-violet-500: #9333ea;
+  --color-violet-600: #862ed5;
+  --color-violet-700: #6824a6;
+  --color-violet-800: #511c81;
+  --color-violet-900: #3e1562;
+
+  /* Red */
+  --color-red-50: #fce9e9;
+  --color-red-100: #f4bcbc;
+  --color-red-200: #ef9b9b;
+  --color-red-300: #e86e6e;
+  --color-red-400: #e35151;
+  --color-red-500: #dc2626;
+  --color-red-600: #c82323;
+  --color-red-700: #9c1b1b;
+  --color-red-800: #791515;
+  --color-red-900: #5c1010;
+
+  /* Neutral / Ink */
+  --color-neutral-50: #f8fafc;
+  --color-neutral-100: #f1f5f9;
+  --color-neutral-200: #e2e8f0;
+  --color-neutral-300: #cbd5e1;
+  --color-neutral-400: #94a3b8;
+  --color-neutral-500: #64748b;
+  --color-neutral-600: #475569;
+  --color-neutral-700: #334155;
+  --color-neutral-800: #1e293b;
+  --color-neutral-900: #0f172a;
+  --color-neutral-950: #020617;
+
+  /* Primary / Purple */
+  --color-primary-50: #ededfc;
+  --color-primary-75: #b7b3f4;
+  --color-primary-100: #9994f0;
+  --color-primary-200: #6d65e9;
+  --color-primary-300: #4f46e5;
+  --color-primary-400: #3731a0;
+  --color-primary-500: #302b8c;
+}
+
+/* ==========================================================================
+   02. BASE
+   ========================================================================== */
+
+@layer base {
+  html {
+    font-size: 100%;
+  }
+
+  body {
+    @apply bg-background text-neutral-950;
+    font-family: var(--font-secondary), Arial, Helvetica, sans-serif;
+    min-width: 320px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  /* Icon font (<i>) center করার জন্য */
+  i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   03. CUSTOM UTILITIES
+   ========================================================================== */
+
+/* Z-index utilities: z-base, z-sticky, z-header, z-modal ... */
+@utility z-base {
+  z-index: var(--z-base);
+}
+
+@utility z-sticky {
+  z-index: var(--z-sticky);
+}
+
+@utility z-header {
+  z-index: var(--z-header);
+}
+
+@utility z-dropdown {
+  z-index: var(--z-dropdown);
+}
+
+@utility z-overlay {
+  z-index: var(--z-overlay);
+}
+
+@utility z-modal {
+  z-index: var(--z-modal);
+}
+
+@utility z-toast {
+  z-index: var(--z-toast);
+}
+
+@utility z-tooltip {
+  z-index: var(--z-tooltip);
+}
+
+/*
+   Typography-এর জন্য আলাদা .text-h1 / .text-h2 CSS লেখার দরকার নেই,
+   @theme থেকে automatically তৈরি হবে।
+
+   className="text-h1"          → font size
+   className="font-h1"          → font weight
+   className="leading-h1"       → line height
+   className="text-h2 md:text-h1"  → responsive
+*/
+
+/* ==========================================================================
+   04. KEYFRAMES
+   ========================================================================== */
+
+/*
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: tranneutralY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: tranneutralY(0);
+  }
+}
+*/
+
+/* ==========================================================================
+   05. OPTIONAL CUSTOM UTILITIES
+   ========================================================================== */
+
+/*
+@utility glass {
+  background: rgb(255 255 255 / 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgb(255 255 255 / 0.2);
+}
+*/
