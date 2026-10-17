@@ -300,7 +300,7 @@ const FieldDropdown = ({
 
   return (
     <div
-      className={`rounded-xl border bg-white transition-colors duration-200 ${
+      className={`rounded-xl max-sm:rounded-md border bg-white transition-colors duration-200 ${
         isOpen
           ? "border-violet-500/25"
           : "border-neutral-500/10 hover:border-violet-500/25"
@@ -320,7 +320,7 @@ const FieldDropdown = ({
 
         <span className="min-w-0 flex-1">
           <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
-            <span className="font-primary text-[16px] font-medium wrap-break-word sm:text-[18px]">
+            <span className="font-primary text-body font-medium font-primary wrap-break-word sm:text-[18px]">
               {title}
             </span>
             {badge && (

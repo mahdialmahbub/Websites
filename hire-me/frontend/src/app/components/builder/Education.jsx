@@ -7,7 +7,7 @@ import { Textarea } from "../Textarea";
 
 const Education = () => {
   return (
-    <div className="p-[clamp(0.8125rem,calc(0.282vw+0.746rem),1rem)] rounded-[8px] space-y-space-7 shadow-[0_1px_4px_rgba(2,6,23,0.10),0_-1px_4px_rgba(2,6,23,0.06)]">
+    <div className="p-[clamp(0.8125rem,calc(0.282vw+0.746rem),1rem)] rounded-lg space-y-space-7 shadow-[0_1px_4px_rgba(2,6,23,0.10),0_-1px_4px_rgba(2,6,23,0.06)]">
       <FieldCardHeader />
 
       <div className="space-y-space-8">
@@ -40,7 +40,7 @@ const Education = () => {
           />
         </div>
         <Input label="GPA / CGPA" placeholder="3.75 / 4.00" />
-        <div className="flex flex-col items-end gap-space-2">
+        <div className="flex flex-col items-end gap-space-2 mb-2">
           <Textarea
             label="Description"
             placeholder={
@@ -48,11 +48,11 @@ const Education = () => {
             }
           />
           <Button
-            varient="text"
-            className="content-end"
+            variant="text"
+            className="text-orange-500 hover:text-orange-600"
             icon="fi fi-rr-magic-wand"
           >
-            AI Enhance
+            Improve with AI
           </Button>
         </div>
       </div>

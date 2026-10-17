@@ -41,24 +41,82 @@ const FinalPreviewModal = () => {
         <div className="flex items-center p-space-2 rounded-lg gap-space-2 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.10),shadow-[0_1px_4px_rgba(0,0,0,0.06)]] mb-space-6 max-w-max">
           <div className="flex items-center gap-2.5 px-space-2 max-w-[300px]">
             <i className={`${icons.link} text-[14px] text-neutral-500`}></i>
-            <Link className="text-neutral-500/50 line-clamp-1 w-full" href={"/"}>https://yourresume.com/resume/muraffffffffffffd-naser</Link>
+            <Link
+              className="text-neutral-500/50 line-clamp-1 w-full"
+              href={"/"}
+            >
+              https://yourresume.com/resume/muraffffffffffffd-naser
+            </Link>
           </div>
           <Button icon={icons.copy} variant="secondary">
             Copy
           </Button>
         </div>
         <div className="flex flex-wrap items-center gap-[clamp(0.75rem,calc(1.455vw+0.409rem),1.5rem)] mb-[clamp(1.5rem,calc(1.939vw+1.045rem),2.5rem)]">
-          <Button variant="secondary" className="bg-violet-500/5 hover:bg-violet-500/10 text-violet-500" ><Image alt="" src={icons.facebook_violet} />Facehook</Button>
+          <Button
+            variant="secondary"
+            className="bg-violet-500/5 hover:bg-violet-500/10 text-violet-500"
+          >
+            <Image
+              alt="Facebook Link"
+              src={icons.facebook_violet}
+              width={22}
+              height={22}
+              className="size-[clamp(1.125rem,calc(0.485vw+1.011rem),1.375rem)]"
+            />
+            Facehook
+          </Button>
+          <Button
+            variant="secondary"
+            className="bg-violet-500/5 hover:bg-violet-500/10 text-violet-500"
+          >
+            <Image
+              alt="Facebook Link"
+              src={icons.linkedin_violet}
+              width={22}
+              height={22}
+              className="size-[clamp(1.125rem,calc(0.485vw+1.011rem),1.375rem)]"
+            />
+            LinkedIn
+          </Button>
+          <Button
+            variant="secondary"
+            className="bg-violet-500/5 hover:bg-violet-500/10 text-violet-500"
+          >
+            <Image
+              alt="Facebook Link"
+              src={icons.instagram_violet}
+              width={22}
+              height={22}
+              className="size-[clamp(1.125rem,calc(0.485vw+1.011rem),1.375rem)]"
+            />
+            Instagram
+          </Button>
+          <Button
+            variant="secondary"
+            className="bg-violet-500/5 hover:bg-violet-500/10 text-violet-500"
+          >
+            <Image
+              alt="Facebook Link"
+              src={icons.twitter_violet}
+              width={22}
+              height={22}
+              className="size-[clamp(1.125rem,calc(0.485vw+1.011rem),1.375rem)]"
+            />
+            Twitter
+          </Button>
+          
         </div>
-        <div className="flex items-center rounded-[12px] bg-green-500/5 gap-space-4 p-space-4">
-        <div >
-          <h2 className="text-small font-medium text-green-500 mb-1.5">
-            Your information is safe and secure
-          </h2>
-          <p className="text-[12px] text-green-300">
-            Your personal information is protected with care. We keep your data private and never share it.
-          </p>
-        </div>
+        <div className="flex items-center rounded-md bg-green-500/5 gap-space-4 p-space-4">
+          <div>
+            <h2 className="text-small font-medium text-green-500 mb-1.5">
+              Your information is safe and secure
+            </h2>
+            <p className="text-[12px] text-green-300">
+              Your personal information is protected with care. We keep your
+              data private and never share it.
+            </p>
+          </div>
         </div>
       </section>
     </div>

@@ -46,12 +46,23 @@ const BASE = [
   "whitespace-nowrap border border-transparent font-medium outline-none",
   "transition-[color,background-color,border-color,box-shadow] duration-150 motion-reduce:transition-none",
   "focus-visible:ring-[3px] focus-visible:ring-indigo-300",
-  // Press korle round ripple. Color ashe text color (currentColor) theke,
+
+  // ---- Ripple (press korle round circle) ----
+  // Circle er color ashe text color (currentColor) theke,
   // tai text color change korle ripple-o auto match kore.
-  "after:pointer-events-none after:absolute after:left-1/2 after:top-1/2 after:-z-10 after:aspect-square after:h-full",
-  "after:-translate-x-1/2 after:-translate-y-1/2 after:scale-50 after:rounded-full after:bg-current after:opacity-0",
-  "after:transition after:duration-150 motion-reduce:after:transition-none",
-  "active:after:scale-100",
+  "after:pointer-events-none after:absolute after:-z-10 after:rounded-full after:bg-current after:opacity-0",
+  // Circle er size fixed 44px. Center = click point: `--rx`, `--ry` JS (placeRipple) set kore.
+  // Fallback = button er center (JS chalar age ba SSR e).
+  "after:left-[var(--rx,50%)] after:top-[var(--ry,50%)] after:h-[44px] after:w-[44px]",
+  // Shuru te 0 size, tarpor press e 1 (expand hoy).
+  "after:[transform:translate(-50%,-50%)_scale(0)]",
+  // Charle (release): opacity fade out hoy, ar scale 0 te reset hoy fade shesh howar PORE
+  // (delay 300ms) — tai fade er somoy circle chhoto hoye jay na.
+  "after:[transition:opacity_300ms_ease-out,transform_0s_linear_300ms]",
+  // Press korle: smooth ease-out e boro hoy.
+  "active:after:[transform:translate(-50%,-50%)_scale(1)]",
+  "active:after:[transition:opacity_100ms_ease-out,transform_400ms_cubic-bezier(0.22,1,0.36,1)]",
+  "motion-reduce:after:[transition:none] motion-reduce:active:after:[transition:none]",
   // Disabled / loading e ripple dekhabe na
   "disabled:after:hidden",
 ].join(" ");
@@ -90,6 +101,24 @@ const SPINNER = (
 );
 
 /* -------------------------------------------------------------------------- */
+/*  Ripple origin                                                             */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Button er upor `--rx`, `--ry` (circle er center) set kore.
+ * CSS e `after:` circle ei variable gula porhe. State/re-render lage na, tai fast.
+ * (x, y) = button er padding box er bhitore point, px e.
+ *
+ * @param {HTMLElement} el
+ * @param {number} x
+ * @param {number} y
+ */
+function placeRipple(el, x, y) {
+  el.style.setProperty("--rx", `${x}px`);
+  el.style.setProperty("--ry", `${y}px`);
+}
+
+/* -------------------------------------------------------------------------- */
 /*  Component                                                                 */
 /* -------------------------------------------------------------------------- */
 
@@ -107,6 +136,8 @@ export const Button = React.forwardRef(
       type = "button",
       className,
       children,
+      onPointerDown,
+      onKeyDown,
       ...rest
     },
     ref,
@@ -130,6 +161,30 @@ export const Button = React.forwardRef(
       typeof icon === "string" ? <i className={icon} aria-hidden="true" /> : icon;
     const glyph = loading ? SPINNER : iconNode;
 
+    // Mouse / touch / pen: jekhane press korbe shekhan theke ripple shuru.
+    // Parent er `onPointerDown` o call hoy (alada destructure kora, nahole `...rest` e overwrite hoto).
+    function handlePointerDown(event) {
+      onPointerDown?.(event);
+      const el = event.currentTarget;
+      const rect = el.getBoundingClientRect();
+      // clientLeft/clientTop = border er width. Circle padding box er sapekkhe boshe, tai minus.
+      placeRipple(
+        el,
+        event.clientX - rect.left - el.clientLeft,
+        event.clientY - rect.top - el.clientTop,
+      );
+    }
+
+    // Keyboard (Space/Enter) e cursor nai, tai center theke.
+    // Na dile ager click er jaygay theke ripple ashto.
+    function handleKeyDown(event) {
+      onKeyDown?.(event);
+      if ((event.key === " " || event.key === "Enter") && !event.repeat) {
+        const el = event.currentTarget;
+        placeRipple(el, el.clientWidth / 2, el.clientHeight / 2);
+      }
+    }
+
     return (
       <button
         ref={ref}
@@ -143,6 +198,8 @@ export const Button = React.forwardRef(
           loading ? "cursor-progress" : disabled && "cursor-not-allowed",
           className, // sobar shesh e, tai sobar upore jite
         )}
+        onPointerDown={handlePointerDown}
+        onKeyDown={handleKeyDown}
         {...rest}
       >
         {iconPosition === "left" && glyph}

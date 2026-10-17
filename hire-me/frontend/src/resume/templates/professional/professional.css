@@ -1,0 +1,61 @@
+/*
+ * "Professional" template - two columns: coloured sidebar (left) + main column (right).
+ * RULES FOR EVERY TEMPLATE CSS:
+ *   - colours ONLY from the theme variables (var(--resume-...)), never #hex / rgb()
+ *   - class names start with the template prefix (rbp-) so templates never clash
+ *   - blocks use PADDING for spacing (no outer margin), the engine measures their height
+ */
+
+.rbp-page {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  font-family: var(--resume-font);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--resume-text);
+  background: var(--resume-paper);
+}
+
+/* ───────── sidebar (same background on EVERY page) ───────── */
+.rbp-sidebar {
+  flex: 0 0 250px;
+  box-sizing: border-box;
+  padding: 40px 24px 32px;
+  background: var(--resume-accent);
+  color: var(--resume-accent-contrast);
+}
+.rbp-photo { display: block; width: 130px; height: 130px; margin: 0 auto; padding: 0; border-radius: 50%; object-fit: cover; border: 3px solid var(--resume-accent-contrast); }
+.rbp-side-heading { margin: 0; padding: 22px 0 5px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; border-bottom: 1px solid var(--resume-accent-contrast); }
+.rbp-side-list { margin: 0; padding: 8px 0 0; list-style: none; }
+.rbp-side-list li { padding: 2px 0; overflow-wrap: anywhere; }
+.rbp-side-label { display: block; font-size: 10px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.08em; }
+.rbp-side-link { color: inherit; text-decoration: none; }
+.rbp-chips { display: flex; flex-wrap: wrap; gap: 5px; padding: 8px 0 0; }
+.rbp-chip { padding: 2px 8px; border: 1px solid var(--resume-accent-contrast); border-radius: 999px; font-size: 11px; }
+
+/* ───────── main column ───────── */
+.rbp-main { display: flex; flex: 1; flex-direction: column; min-width: 0; }
+.rbp-running-header { flex: none; padding: 24px 40px 0; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--resume-muted); }
+.rbp-main-body { flex: 1; min-height: 0; box-sizing: border-box; padding: 40px 40px 0; }
+.rbp-footer { flex: none; display: flex; justify-content: space-between; margin: 0 40px; padding: 10px 0 18px; border-top: 1px solid var(--resume-border); font-size: 10px; color: var(--resume-muted); }
+
+.rbp-name { margin: 0; padding: 0; font-size: 30px; font-weight: 800; line-height: 1.1; }
+.rbp-title { margin: 0; padding: 6px 0 0; font-size: 15px; font-weight: 600; color: var(--resume-accent); }
+
+.rbp-heading { margin: 0; padding: 18px 0 5px; font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--resume-accent); border-bottom: 2px solid var(--resume-accent); }
+.rbp-paragraph { margin: 0; padding: 8px 0 0; color: var(--resume-text); }
+
+.rbp-entry-head { padding: 10px 0 0; }
+.rbp-entry-row { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.rbp-entry-title { font-weight: 700; font-size: 13px; }
+.rbp-entry-date { flex: none; font-size: 11px; color: var(--resume-muted); }
+.rbp-entry-sub { color: var(--resume-muted); }
+.rbp-bullets { margin: 0; padding: 3px 0 0 16px; }
+.rbp-bullets li { padding-left: 2px; }
+.rbp-bullets li::marker { color: var(--resume-accent); }
+.rbp-tech { margin: 0; padding: 3px 0 0; font-size: 11px; color: var(--resume-muted); }
+.rbp-link { color: var(--resume-accent); text-decoration: none; }
+.rbp-ref { padding: 8px 0 0; }
+.rbp-ref strong { display: block; }

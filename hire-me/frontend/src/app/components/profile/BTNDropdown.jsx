@@ -54,7 +54,7 @@ const BTNDropdown = ({ onLogout, onDeleteAccount }) => {
       {isOpen && (
         <div
           role="menu"
-          className="absolute right-0 top-full z-20 mt-2 w-56 overflow-hidden rounded-xl border border-neutral-500/10 bg-white p-1.5 shadow-[0_12px_32px_rgba(16,24,40,0.12)]"
+          className="absolute right-0 top-full z-20 mt-2 w-56 overflow-hidden rounded-md border border-neutral-500/10 bg-white p-2.5 shadow-[0_12px_32px_rgba(16,24,40,0.12)] space-y-1.5"
         >
           <button
             type="button"
@@ -62,11 +62,9 @@ const BTNDropdown = ({ onLogout, onDeleteAccount }) => {
             onClick={run(onLogout)}
             className="flex min-h-11 w-full items-center gap-2.5 rounded-lg px-3 text-left text-small sm:text-body font-medium text-neutral-700 transition-colors hover:bg-neutral-500/5 focus-visible:bg-neutral-500/5 focus-visible:outline-none"
           >
-            <ProfileIcon name="logout" size="1.1em" />
+            <i className="fi fi-rr-user-logout text-[22px]"></i>
             Log out
           </button>
-
-          <div className="my-1 h-px bg-neutral-500/10" aria-hidden="true" />
 
           <button
             type="button"
@@ -74,7 +72,7 @@ const BTNDropdown = ({ onLogout, onDeleteAccount }) => {
             onClick={run(onDeleteAccount)}
             className="flex min-h-11 w-full items-center gap-2.5 rounded-lg px-3 text-left text-small sm:text-body font-medium text-red-500 transition-colors hover:bg-red-500/5 focus-visible:bg-red-500/5 focus-visible:outline-none"
           >
-            <ProfileIcon name="trash" size="1.1em" />
+            <i className="fi fi-rr-trash text-[22px]"></i>
             Delete account
           </button>
         </div>

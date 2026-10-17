@@ -35,7 +35,7 @@ export const ProfileNav = ({
     onKeyDown={onKeyDown}
     className={[
       // layout
-      "relative flex min-h-11 items-center justify-center whitespace-nowrap rounded-t-md",
+      "relative flex min-h-11 min-w-[100px] shrink-0 items-center justify-center whitespace-nowrap rounded-t-md",
       "px-[clamp(0.75rem,calc(0.751vw+0.574rem),1.25rem)] py-space-2",
       // type
       "text-small sm:text-body transition-colors duration-200",
@@ -101,14 +101,14 @@ const ProfileNavbar = ({
     <div
       role="tablist"
       aria-label={label}
-      className="flex items-stretch gap-1 overflow-x-auto shadow-[inset_0_-1px_0_rgba(115,115,115,0.15)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="flex items-stretch gap-1 overflow-x-auto shadow-[inset_0_-1px_0_rgba(115,115,115,0.15)] scrollbar-none [&::-webkit-scrollbar]:hidden"
     >
       {items.map((item, index) => (
         <ProfileNav
           key={item.key}
           id={`${idPrefix}-tab-${item.key}`}
           panelId={`${idPrefix}-panel-${item.key}`}
-          text={item.label}
+          text={item.text}
           isActive={item.key === activeKey}
           onClick={onChange ? () => onChange(item.key) : undefined}
           onKeyDown={(event) => handleKeyDown(event, index)}

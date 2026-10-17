@@ -49,7 +49,7 @@ const DEFAULT_WHAT_IMPROVED = [
  */
 const WhatImproved = ({ title }) => {
   return (
-    <div className="p-space-3 bg-green-500/10 rounded-[clamp(0.5rem,calc(0.376vw+0.412rem),0.75rem)] hover:before:absolute hover:before:left-0 hover:before:top-0 hover:before:h-full hover:before:w-0.5 hover:before:-translate-x-full hover:before:bg-green-500 text-[clamp(0.75rem,calc(0.188vw+0.706rem),0.875rem)] font-semibold font-primary flex items-center gap-space-2 mt-[clamp(0.75rem,calc(0.188vw+0.706rem),0.875rem)]">
+    <div className="p-space-3 bg-green-500/5 rounded-[clamp(0.5rem,calc(0.376vw+0.412rem),0.75rem)] hover:before:absolute hover:before:left-0 hover:before:top-0 hover:before:h-full hover:before:w-0.5 hover:before:-translate-x-full hover:before:bg-green-500 text-[clamp(0.75rem,calc(0.188vw+0.706rem),0.875rem)] font-semibold font-primary flex items-center gap-space-2 mt-[clamp(0.75rem,calc(0.188vw+0.706rem),0.875rem)]">
       <div className="flex items-center justify-center max-sm:hidden size-9.5 text-body bg-green-500/5 border border-green-500/5 rounded-lg text-green-500/60">
         <i className="fi fi-rr-memo-circle-check"></i>
       </div>

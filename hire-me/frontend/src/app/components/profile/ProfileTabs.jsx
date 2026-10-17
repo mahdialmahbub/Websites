@@ -25,7 +25,7 @@ import ProfileNavbar from "./ProfileNav";
  */
 
 /** @param {ProfileTabsProps} props */
-const ProfileTabs = ({ tabs = [], defaultTab }) => {
+const ProfileTabs = ({ tabs = [], defaultTab, user }) => {
   const idPrefix = useId();
   const [activeKey, setActiveKey] = useState(defaultTab ?? tabs[0]?.key);
 

@@ -29,12 +29,12 @@ export const SectionCard = ({
   <section
     className={`rounded-xl border border-neutral-500/10 bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05)] ${className}`}
   >
-    <header className="flex items-start justify-between gap-4 border-b border-neutral-500/10 px-[clamp(0.75rem,calc(1.127vw+0.486rem),1.5rem)] py-4">
+    <header className="flex items-start justify-between gap-4 border-b border-neutral-500/10 px-[clamp(0.75rem,calc(1.127vw+0.486rem),1.5rem)] py-[clamp(0.75rem,calc(1.127vw+0.486rem),1.5rem)]">
       <div className="min-w-0">
         <h2 className="flex items-center gap-2 font-primary text-[18px] font-semibold">
           {title}
           {count > 0 && (
-            <span className="rounded-full bg-neutral-500/10 px-2 py-0.5 text-caption font-medium leading-none text-neutral-500">
+            <span className="rounded-full bg-neutral-500/10 size-7 text-caption font-medium leading-none text-neutral-500 flex items-center justify-center">
               {count}
             </span>
           )}

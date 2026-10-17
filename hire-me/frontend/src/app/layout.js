@@ -2,6 +2,8 @@ import { Poppins, Roboto } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/navBar/Navbar";
 import Footer from "./components/footer/Footer";
+import StoreProvider from "@/store/StoreProvider";
+import BuilderSync from "@/store/builder/BuilderSync";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -58,9 +60,12 @@ export default function RootLayout({ children }) {
       </head>
 
       <body className="min-h-full flex flex-col">
-        <Navbar />
-        {children}
-        <Footer />
+        <StoreProvider>
+          <Navbar />
+          <BuilderSync />
+          {children}
+          <Footer />
+        </StoreProvider>
       </body>
     </html>
   );

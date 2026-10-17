@@ -6,9 +6,10 @@ import Image from "next/image";
 import Suggestion from "./Suggestion";
 import CircularScore from "./CircularScore";
 import BreakdownProgress from "./BreakdownProgress";
+import BuilderPreview from "./BuilderPreview";
 
 const PreviewandScore = ({ suggestions = [{ f: "f" }] }) => {
-  const [isScore, setIsScore] = useState(true);
+  const [isScore, setIsScore] = useState(false);
 
   return (
     <section className="flex flex-col gap-space-3 items-end w-full">
@@ -74,12 +75,7 @@ const PreviewandScore = ({ suggestions = [{ f: "f" }] }) => {
           </div>
         </div>
       ) : (
-        <Image
-          alt="resume image"
-          src={"/resumePreview.jpg"}
-          height={732}
-          width={518}
-        />
+        <BuilderPreview/>
       )}
     </section>
   );

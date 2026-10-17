@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Button } from "../Button";
 import Link from "next/link";
 import NavLink from "./NavLink";
+import LoginBTN from "./LoginBTN";
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -39,9 +40,7 @@ const MobileMenu = () => {
           </ul>
 
           {/* login Button */}
-          <Button variant="secondary">
-            <Link href="/login">Login</Link>
-          </Button>
+          <LoginBTN/>
         </div>
       )}
     </>

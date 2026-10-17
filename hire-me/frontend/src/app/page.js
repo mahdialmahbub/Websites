@@ -6,6 +6,7 @@ import Testimonial from './components/home/Testimonial'
 import ATSScore from './components/home/ATSScore'
 import Contact from './components/home/Contact'
 import FinalCTA from './components/home/FinalCTA'
+import FAQ from './components/home/FAQ'
 
 const page = () => {
   return (
@@ -16,6 +17,7 @@ const page = () => {
       <Templetes/>
       <Testimonial />
       <Contact />
+      <FAQ />
       <FinalCTA />
     </main>
   )

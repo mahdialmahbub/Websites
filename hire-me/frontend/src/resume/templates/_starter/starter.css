@@ -1,0 +1,19 @@
+/*
+ * STARTER template (single column). Copy this folder to start a new template.
+ * Colours: ONLY var(--resume-...) from resume/theme/palette.js. Class prefix: rbs- (use your own prefix).
+ * Blocks use padding for spacing, never outer margin.
+ */
+.rbs-page { display: flex; flex-direction: column; width: 100%; height: 100%; box-sizing: border-box; font-family: var(--resume-font); font-size: 12.5px; line-height: 1.45; color: var(--resume-text); background: var(--resume-paper); }
+.rbs-topbar { flex: none; height: 14px; background: var(--resume-accent); } /* repeats on every page */
+.rbs-body { flex: 1; min-height: 0; box-sizing: border-box; padding: 34px 48px 0; } /* <- data-column="main" */
+.rbs-footer { flex: none; display: flex; justify-content: space-between; margin: 0 48px; padding: 10px 0 18px; border-top: 1px solid var(--resume-border); font-size: 10px; color: var(--resume-muted); }
+
+.rbs-name { margin: 0; padding: 0; font-size: 28px; font-weight: 800; }
+.rbs-title { margin: 0; padding: 4px 0 0; font-size: 14px; color: var(--resume-accent); font-weight: 600; }
+.rbs-contact { margin: 0; padding: 6px 0 0; color: var(--resume-muted); }
+.rbs-heading { margin: 0; padding: 16px 0 4px; font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--resume-accent); border-bottom: 1px solid var(--resume-border); }
+.rbs-text { margin: 0; padding: 6px 0 0; }
+.rbs-row { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0 0; font-weight: 700; }
+.rbs-muted { font-weight: 400; color: var(--resume-muted); }
+.rbs-bullets { margin: 0; padding: 3px 0 0 16px; }
+.rbs-bullets li::marker { color: var(--resume-accent); }

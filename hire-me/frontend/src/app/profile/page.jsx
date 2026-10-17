@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import { Button } from "../components/Button";
 import { icons } from "../../../assets/iconCollection";
 import BTNDropdown from "../components/profile/BTNDropdown";
@@ -13,7 +16,6 @@ import {
 } from "../components/profile/ProfileBlocks";
 import {
   profile,
-  personalInformation,
   professionalSummary,
   workExperience,
   education,
@@ -23,12 +25,20 @@ import {
   references,
 } from "../../../assets/profileData";
 import ProfileTabs from "../components/profile/ProfileTabs";
-import FinalPreviewModal from "../components/builder/FinalPreviewModal";
+import Avatar from "../components/navBar/Avatar";
+import { OTP_LENGTH, ROUTES, useCountdown, withEmail } from "@/app/lib/auth";
+import { useForgotPasswordMutation, useGetMeQuery } from "@/store/api/authApi";
+
+const PROFILE_PATH = "/profile";
+
+const containerClass =
+  "relative mx-auto w-full max-w-300 px-[clamp(1rem,calc(5.258vw+0.268rem),5rem)]";
 
 /* -------------------------------------------------------------------------- */
-/*  Small helper: ekta section er item list + shesh e "Add" button             */
+/*  Small helpers                                                              */
 /* -------------------------------------------------------------------------- */
 
+/** A section's items followed by its "Add" button. */
 const FieldList = ({ field, items, addTitle }) => (
   <div className="space-y-3">
     {items.map((item) => (
@@ -38,57 +48,204 @@ const FieldList = ({ field, items, addTitle }) => (
   </div>
 );
 
+const getContactItems = (user) => [
+  {
+    label: "Email",
+    value: user.email,
+    icon: "mail",
+    href: `mailto:${user.email}`,
+  },
+  // TODO: everything below is placeholder data. Replace with real user fields.
+  {
+    label: "Phone number",
+    value: "+880 17359 99190",
+    icon: "phone",
+    href: "tel:+8801735999190",
+  },
+  {
+    label: "Location",
+    value: "Mouchak, Kaliakoir, Gazipur",
+    icon: "mapPin",
+  },
+  {
+    label: "Personal website",
+    value: "https://mahdi.com",
+    icon: "globe",
+    href: "https://mahdi.com",
+    external: true,
+  },
+  {
+    label: "LinkedIn",
+    value: "https://mahdi.com",
+    icon: "linkedin",
+    href: "https://mahdi.com",
+    external: true,
+  },
+  {
+    label: "GitHub",
+    value: "https://mahdi.com",
+    icon: "github",
+    href: "https://mahdi.com",
+    external: true,
+  },
+];
+
 /* -------------------------------------------------------------------------- */
-/*  Tab 1 — Personal information                                               */
+/*  Page states: loading / error / success notice                              */
 /* -------------------------------------------------------------------------- */
 
-const PersonalInformation = () => (
-  <div className="grid items-start gap-6 lg:grid-cols-3">
-    <SectionCard
-      title="Contact details"
-      description="How people can reach you."
-      className="lg:col-span-2"
+const ProfileSkeleton = () => (
+  <div aria-busy="true" aria-label="Loading profile" className="animate-pulse">
+    <div className="h-36 w-full bg-neutral-200 sm:h-52" />
+    <div className={containerClass}>
+      <div className="-mt-14 flex flex-col items-center gap-4 sm:-mt-16 md:flex-row md:items-end md:gap-6">
+        <div className="size-28 shrink-0 rounded-2xl bg-neutral-300 ring-4 ring-neutral-50 sm:size-36" />
+        <div className="flex flex-col items-center gap-2 md:items-start md:pb-2">
+          <div className="h-7 w-48 rounded bg-neutral-200" />
+          <div className="h-4 w-32 rounded bg-neutral-200" />
+        </div>
+      </div>
+      <div className="mt-8 h-64 rounded-xl bg-neutral-200/70" />
+    </div>
+  </div>
+);
+
+const ErrorState = ({ message, onRetry }) => (
+  <div className={`${containerClass} pt-16`}>
+    <div
+      role="alert"
+      className="mx-auto flex max-w-md flex-col items-center gap-4 rounded-xl bg-white p-8 text-center shadow-sm ring-1 ring-neutral-500/10"
     >
-      <dl className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
-        {personalInformation.map((item) => (
-          <InfoItem key={item.label} {...item} />
-        ))}
-      </dl>
-    </SectionCard>
+      <p className="text-body text-red-500">{message}</p>
+      <Button type="button" onClick={onRetry}>
+        Try again
+      </Button>
+    </div>
+  </div>
+);
 
-    <SectionCard title="Security" description="Keep your account protected.">
-      {/* Password kokhono real value hishebe dekhano hoy na — shudhu masked */}
-      <div className="flex items-center justify-between gap-3 rounded-lg bg-neutral-500/5 p-3">
+const SuccessNotice = ({ children, onDismiss }) => (
+  <div
+    role="status"
+    className="flex items-start justify-between gap-3 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-small font-medium text-green-700 sm:text-body"
+  >
+    <span>{children}</span>
+    <button
+      type="button"
+      onClick={onDismiss}
+      aria-label="Dismiss message"
+      className="shrink-0 leading-none text-green-700/70 hover:text-green-700"
+    >
+      ✕
+    </button>
+  </div>
+);
+
+/* -------------------------------------------------------------------------- */
+/*  Tab 1: Personal information                                                */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Change password = send a reset code to the logged-in user's email, then open
+ * the OTP page. The flow comes back here afterwards (?next=/profile).
+ */
+const SecurityCard = ({ email }) => {
+  const router = useRouter();
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const [error, setError] = useState("");
+  const [cooldown, setCooldown] = useCountdown();
+
+  const isBusy = isLoading || isRedirecting || cooldown > 0;
+
+  const handleChangePassword = async () => {
+    if (isBusy) return;
+    setError("");
+
+    try {
+      await forgotPassword({ email }).unwrap();
+      setIsRedirecting(true);
+      router.push(
+        `${withEmail(ROUTES.verifyResetOtp, email)}&next=${encodeURIComponent(PROFILE_PATH)}`,
+      );
+    } catch (err) {
+      if (err.retryAfterSeconds) setCooldown(err.retryAfterSeconds);
+      setError(
+        err.message ?? "Could not send the verification code. Please try again.",
+      );
+    }
+  };
+
+  const label =
+    isLoading || isRedirecting
+      ? "Sending code..."
+      : cooldown > 0
+        ? `Try again in ${cooldown}s`
+        : "Change password";
+
+  return (
+    <SectionCard title="Password" description="Keep your account protected." className="max-w-[426px] max-h-max">
+      {/* The password is never shown as a real value, only masked */}
+      <div className="flex items-center justify-between gap-3 rounded-lg bg-neutral-500/5 p-3 max-sm:flex-col max-sm:items-start">
         <div className="flex min-w-0 items-center gap-3">
           <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-white text-[18px] text-violet-500/80">
             <ProfileIcon name="lock" />
           </span>
           <div className="min-w-0">
-            <p className="text-caption sm:text-small text-neutral-400">
+            <p className="text-caption text-neutral-400 sm:text-small">
               Password
             </p>
             <p className="text-body font-medium tracking-widest">••••••••</p>
           </div>
         </div>
-        <Link
-          href="/forgot-password"
-          className="shrink-0 rounded-md px-2 py-1 text-small sm:text-body font-medium text-red-500 transition-colors hover:bg-red-500/5 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40"
+
+        <button
+          type="button"
+          onClick={handleChangePassword}
+          disabled={isBusy}
+          className="inline-flex min-h-11 shrink-0 items-center rounded-md px-2 py-1 text-small font-medium text-red-500 transition-colors hover:bg-red-500/5 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          Change password
-        </Link>
+          {label}
+        </button>
       </div>
+
+      {error ? (
+        <p role="alert" className="mt-3 text-small text-red-500">
+          {error}
+        </p>
+      ) : (
+        <p className="mt-3 text-caption text-neutral-400 sm:text-small">
+          We’ll email a {OTP_LENGTH}-digit code to{" "}
+          <span className="font-medium break-all text-neutral-500">{email}</span>{" "}
+          to confirm it’s you.
+        </p>
+      )}
     </SectionCard>
+  );
+};
+
+const PersonalInformation = ({ user }) => (
+  <div className="flex max-lg:flex-col gap-6 max-h-max">
+    <SectionCard title="Contact details" description="How people can reach you.">
+      <dl className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
+        {getContactItems(user).map((item) => (
+          <InfoItem key={item.label} {...item} />
+        ))}
+      </dl>
+    </SectionCard>
+
+    <SecurityCard email={user.email} />
   </div>
 );
 
 /* -------------------------------------------------------------------------- */
-/*  Tab 2 — Professional information                                           */
+/*  Tab 2: Professional information                                            */
 /* -------------------------------------------------------------------------- */
 
 const ProfessionalInformation = () => (
   <div className="space-y-6">
     <SectionCard title="Professional summary">
-      <p className="max-w-3xl text-small sm:text-body leading-relaxed text-neutral-700">
+      <p className="max-w-3xl text-small leading-relaxed text-neutral-700 sm:text-body">
         {professionalSummary}
       </p>
     </SectionCard>
@@ -130,25 +287,26 @@ const ProfessionalInformation = () => (
 );
 
 /* -------------------------------------------------------------------------- */
-/*  Page                                                                       */
+/*  Loaded profile: cover + header + tabs                                      */
 /* -------------------------------------------------------------------------- */
 
-const tabs = [
-  {
-    key: "personal",
-    label: "Personal information",
-    content: <PersonalInformation />,
-  },
-  {
-    key: "professional",
-    label: "Professional information",
-    content: <ProfessionalInformation />,
-  },
-];
+const ProfileView = ({ user, notice }) => {
+  // Built here (not at module level) because the tabs need the loaded user.
+  const tabs = [
+    {
+      key: "personal",
+      label: "Personal information",
+      content: <PersonalInformation user={user} />,
+    },
+    {
+      key: "professional",
+      label: "Professional information",
+      content: <ProfessionalInformation />,
+    },
+  ];
 
-const ProfilePage = () => {
   return (
-    <main className="min-h-screen min-w-[320px] bg-neutral-50 pb-[clamp(2rem,calc(6.009vw+0.592rem),6rem)]">
+    <>
       {/* cover */}
       <div className="relative h-36 w-full overflow-hidden sm:h-52">
         <Image
@@ -165,31 +323,28 @@ const ProfilePage = () => {
         />
       </div>
 
-      <FinalPreviewModal />
-
-      <div className="mx-auto w-full max-w-300 px-[clamp(1rem,calc(5.258vw+0.268rem),5rem)]">
+      <div className={containerClass}>
         {/* header: avatar + name + actions */}
         <header className="-mt-14 flex flex-col items-center gap-4 text-center sm:-mt-16 md:flex-row md:items-end md:gap-6 md:text-left">
           <div className="shrink-0 rounded-2xl bg-white p-1.5 shadow-[0_8px_24px_rgba(16,24,40,0.10)] ring-1 ring-neutral-500/10">
-            <Image
-              src={profile.avatar}
-              alt={`${profile.name} profile photo`}
+            <Avatar
+              user={user}
+              alt={`${user.name} profile photo`}
               width={144}
               height={144}
-              priority
               sizes="(max-width: 640px) 112px, 144px"
               className="size-28 rounded-xl object-cover sm:size-36"
+              priority={true}
             />
           </div>
 
           <div className="flex min-w-0 flex-1 flex-col items-center gap-1 md:items-start md:pb-2">
-            <h1 className="font-primary text-[22px] font-semibold leading-tight wrap-break-word sm:text-[28px]">
-              {profile.name}
+            <h1 className="font-primary text-[22px] leading-tight font-semibold wrap-break-word sm:text-[28px]">
+              {user.name}
             </h1>
-            <p className="text-body text-neutral-500">{profile.title}</p>
-            <p className="flex items-center gap-1.5 text-small text-neutral-400">
-              <ProfileIcon name="mapPin" size={14} />
-              {profile.location}
+            {/* real user data wins; profile.title is only a placeholder */}
+            <p className="text-body text-neutral-500">
+              {user.title || profile.title}
             </p>
           </div>
 
@@ -197,7 +352,7 @@ const ProfilePage = () => {
             <Button
               variant="secondary"
               icon={icons.edit}
-              className="bg-violet-50 text-violet-500 border-violet-100 hover:bg-violet-100"
+              className="border-violet-100 bg-violet-50 text-violet-500 hover:bg-violet-100"
             >
               Edit information
             </Button>
@@ -205,13 +360,82 @@ const ProfilePage = () => {
           </div>
         </header>
 
+        {notice && <div className="mt-6">{notice}</div>}
+
         {/* tabs */}
         <div className="mt-[clamp(1.5rem,calc(1.878vw+1.06rem),2.5rem)]">
-          <ProfileTabs tabs={tabs} />
+          <ProfileTabs tabs={tabs} user={user} />
         </div>
       </div>
+    </>
+  );
+};
+
+/* -------------------------------------------------------------------------- */
+/*  Page                                                                       */
+/* -------------------------------------------------------------------------- */
+
+const ProfileContent = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { data: user, isLoading, isError, error, refetch } = useGetMeQuery();
+  const [showUpdated, setShowUpdated] = useState(false);
+
+  const isLoggedOut =
+    isError && (error?.status === 401 || error?.code === "UNAUTHENTICATED");
+
+  // Not logged in -> login, then come back here
+  useEffect(() => {
+    if (isLoggedOut) {
+      router.replace(`/login?next=${encodeURIComponent(PROFILE_PATH)}`);
+    }
+  }, [isLoggedOut, router]);
+
+  // Coming back from the change-password flow: show a message once, then clean the URL
+  useEffect(() => {
+    if (searchParams.get("passwordUpdated") === "1") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setShowUpdated(true);
+      router.replace(PROFILE_PATH, { scroll: false });
+    }
+  }, [searchParams, router]);
+
+  // if (condition) {
+    
+  // }
+
+  return (
+    <main className="min-h-screen min-w-[320px] bg-neutral-50 pb-[clamp(2rem,calc(6.009vw+0.592rem),6rem)]">
+      {(isLoading || isLoggedOut) && <ProfileSkeleton />}
+
+      {isError && !isLoggedOut && (
+        <ErrorState
+          message={error?.message ?? "Could not load your profile."}
+          onRetry={() => refetch()}
+        />
+      )}
+
+      {user && (
+        <ProfileView
+          user={user}
+          notice={
+            showUpdated && (
+              <SuccessNotice onDismiss={() => setShowUpdated(false)}>
+                Your password has been updated.
+              </SuccessNotice>
+            )
+          }
+        />
+      )}
     </main>
   );
 };
+
+const ProfilePage = () => (
+  // useSearchParams needs a Suspense boundary in the App Router
+  <Suspense fallback={<ProfileSkeleton />}>
+    <ProfileContent />
+  </Suspense>
+);
 
 export default ProfilePage;

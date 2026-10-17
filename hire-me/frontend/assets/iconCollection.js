@@ -69,4 +69,9 @@ export const icons = {
   fileDownload: "fi fi-rr-file-download",
   preview: "fi fi-rr-overview",
   information: "fi fi-rr-info",
+  templete: "fi fi-rr-table-layout",
+  color: "fi fi-rr-palette",
+  reset: "fi fi-rr-rotate-right",
+  left: "fi fi-rr-arrow-small-left",
+  right: "fi fi-rr-arrow-small-right",
 };

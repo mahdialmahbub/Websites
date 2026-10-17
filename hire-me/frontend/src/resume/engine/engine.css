@@ -1,0 +1,43 @@
+/*
+ * Page engine styles. ONE rendering path for the live preview, the PDF (browser print) and the shared page,
+ * so they all show the same pages and the same page breaks.
+ * A4 = 794 x 1123 CSS px (210 x 297 mm at 96 dpi).
+ */
+
+.rb-document { display: flex; flex-direction: column; width: 794px; }
+
+.rb-page-frame {
+  position: relative;
+  box-sizing: border-box;
+  flex: none;
+  width: 794px;
+  height: 1123px;
+  overflow: hidden; /* anything the packer could not place is cut by the page edge, never spills onto the next page */
+  background: var(--resume-paper);
+}
+.rb-document[data-mode='screen'] .rb-page-frame { box-shadow: var(--resume-shadow); }
+
+/* the smallest piece the packer moves around; flow-root keeps child margins inside the measured height */
+.rb-block { display: flow-root; }
+
+/* hidden copy of the resume used ONLY to measure block heights and column capacities */
+.rb-measure { position: absolute; left: -100000px; top: 0; width: 794px; visibility: hidden; pointer-events: none; }
+.rb-measure-content { height: auto !important; overflow: visible !important; }
+.rb-measure-content [data-column] { height: auto !important; overflow: visible !important; } /* never touch flex / width: widths must equal the real pages */
+
+/* ───────── printing / "Save as PDF" ───────── */
+@page { size: A4; margin: 0; }
+
+/* the print copy lives off-screen until the browser prints */
+.rb-print-root { position: fixed; left: -100000px; top: 0; visibility: hidden; }
+
+@media print {
+  html, body { margin: 0 !important; padding: 0 !important; background: none !important; }
+  body > *:not(.rb-print-root) { display: none !important; }
+  .rb-print-root { position: static !important; visibility: visible !important; }
+  .rb-print-root .rb-measure { display: none !important; }
+  .rb-print-root .rb-document { width: 210mm; }
+  .rb-print-root .rb-page-frame { width: 210mm; height: 297mm; break-after: page; page-break-after: always; box-shadow: none; }
+  .rb-print-root .rb-page-frame:last-child { break-after: auto; page-break-after: auto; }
+  .rb-print-root, .rb-print-root * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

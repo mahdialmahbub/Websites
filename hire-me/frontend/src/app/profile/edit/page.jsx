@@ -28,8 +28,7 @@ const navItems = [
   { key: "Reference", text: "Reference" },
 ];
 
-const pageGap =
-  "gap-[clamp(0.75rem,calc(0.751vw+0.574rem),1.25rem)]";
+const pageGap = "gap-[clamp(0.75rem,calc(0.751vw+0.574rem),1.25rem)]";
 
 const Page = () => {
   const [active, setActive] = useState(navItems[0].key);
@@ -66,10 +65,6 @@ const Page = () => {
             w-full
             space-y-space-8
             rounded-lg
-            border
-            border-neutral-500/20
-            px-space-3
-            py-space-4
           "
         >
           <Input
@@ -99,7 +94,6 @@ const Page = () => {
           activeKey={active}
           onChange={setActive}
         />
-        
       </div>
 
       {/* Personal Information */}
@@ -151,8 +145,7 @@ const Page = () => {
             : "hidden"
         }
       >
-        
-        <div className="flex flex-col items-end gap-space-2">
+        <div className="flex flex-col items-end gap-space-2 mb-2">
           <Textarea
             label="Summary"
             placeholder="Write a professional summary highlighting your experience, key skills, and career goals..."
@@ -160,10 +153,10 @@ const Page = () => {
 
           <Button
             variant="text"
-            className="self-end"
+            className="text-orange-500 hover:text-orange-600"
             icon="fi fi-rr-magic-wand"
           >
-            AI Enhance
+            Improve with AI
           </Button>
         </div>
 
@@ -178,9 +171,8 @@ const Page = () => {
           "
         >
           <p className="leading-[clamp(1.25rem,calc(0.188vw+1.206rem),1.375rem)]">
-            Tip: Highlight your experience, strongest skills, and what you
-            can bring to the role. Keep it clear, specific, and relevant
-            to the job.
+            Tip: Highlight your experience, strongest skills, and what you can
+            bring to the role. Keep it clear, specific, and relevant to the job.
           </p>
         </div>
       </section>
@@ -201,9 +193,7 @@ const Page = () => {
 
       <section
         className={
-          active === "Education"
-            ? `flex flex-col mb-0 ${pageGap}`
-            : "hidden"
+          active === "Education" ? `flex flex-col mb-0 ${pageGap}` : "hidden"
         }
       >
         <Education />
@@ -213,9 +203,7 @@ const Page = () => {
 
       <section
         className={
-          active === "Skill"
-            ? `flex flex-col mb-0 ${pageGap}`
-            : "hidden"
+          active === "Skill" ? `flex flex-col mb-0 ${pageGap}` : "hidden"
         }
       >
         <Skill />
@@ -225,9 +213,7 @@ const Page = () => {
 
       <section
         className={
-          active === "Project"
-            ? `flex flex-col mb-0 ${pageGap}`
-            : "hidden"
+          active === "Project" ? `flex flex-col mb-0 ${pageGap}` : "hidden"
         }
       >
         <Project />
@@ -237,9 +223,7 @@ const Page = () => {
 
       <section
         className={
-          active === "Language"
-            ? `flex flex-col mb-0 ${pageGap}`
-            : "hidden"
+          active === "Language" ? `flex flex-col mb-0 ${pageGap}` : "hidden"
         }
       >
         <Language />
@@ -249,9 +233,7 @@ const Page = () => {
 
       <section
         className={
-          active === "Reference"
-            ? `flex flex-col mb-0 ${pageGap}`
-            : "hidden"
+          active === "Reference" ? `flex flex-col mb-0 ${pageGap}` : "hidden"
         }
       >
         <Reference />

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { icons } from "../../../../assets/iconCollection";
+import Image from "next/image";
 
 // Reuse the detector instead of loading the model for every image.
 let faceDetectorPromise = null;
@@ -279,7 +280,7 @@ export default function ImageUpload({
         }}
         className={[
           "group relative flex w-full shrink-0",
-          "h-[clamp(8.875rem,calc(3.568vw_+_8.039rem),11.25rem)]",
+          "h-[clamp(8.875rem,calc(3.568vw+8.039rem),11.25rem)]",
           "cursor-pointer select-none items-center justify-center",
           "overflow-hidden rounded-md border font-primary",
           "transition-colors duration-150",
@@ -335,10 +336,12 @@ export default function ImageUpload({
         {current === "uploaded" && preview && (
           <>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={preview}
               alt="Uploaded profile photo"
               draggable={false}
+              width={e.currentTarget.naturalWidth}
+              height={e.currentTarget.naturalHeight}
               onLoad={(e) => {
                 setImageSize({
                   width: e.currentTarget.naturalWidth,

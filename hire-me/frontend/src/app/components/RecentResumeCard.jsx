@@ -5,7 +5,6 @@ import { Button } from "./Button";
 /* -------------------------------------------------------------------------- */
 /*  Style constants (responsive values, reused/long Tailwind classes)         */
 /* -------------------------------------------------------------------------- */
-const CARD_WIDTH = "w-[clamp(16.875rem,calc(4.848vw+15.739rem),19.375rem)]";
 const CARD_SHADOW = "shadow-[0_-1px_10px_rgba(0,0,0,0.20)]";
 const PANEL_PADDING = "p-[clamp(0.75rem,calc(0.485vw+0.636rem),1rem)]";
 const TITLE_SIZE = "text-[clamp(1rem,calc(0.242vw+0.943rem),1.125rem)]";
@@ -36,7 +35,7 @@ const RecentResumeCard = ({
 }) => {
   return (
     <article
-      className={`group relative aspect-210/297 overflow-hidden rounded-md border border-violet-500/5 ${CARD_WIDTH} ${CARD_SHADOW}`}
+      className={`group relative aspect-210/297 overflow-hidden rounded-md border border-violet-500/5 w-[clamp(13rem,calc(4.848vw+15.739rem),17rem)] ${CARD_SHADOW}`}
     >
       {/* Thumbnail */}
       <Image
@@ -52,7 +51,7 @@ const RecentResumeCard = ({
         <span
           className={`mx-auto text-center font-bold tracking-wide text-neutral-50 ${OVERLAY_LABEL_OFFSET}`}
         >
-          <i className={`${icons.preview} text-2xl`} />
+          <i className={`${icons.preview} text-2xl mb-1.5`} />
           View Preview
         </span>
       </div>

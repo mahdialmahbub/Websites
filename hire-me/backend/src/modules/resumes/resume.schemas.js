@@ -1,0 +1,188 @@
+import { z } from 'zod';
+
+const OBJECT_ID = /^[a-f\d]{24}$/i;
+export const resumeIdParams = z.object({ id: z.string().regex(OBJECT_ID, 'Invalid resume id') });
+
+// Strips invisible control characters (keeps tab and new lines) from pasted text.
+// eslint-disable-next-line no-control-regex
+const CONTROL_CHARS = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g;
+const clean = (value) => value.replace(CONTROL_CHARS, '');
+
+const text = (max) => z.string().trim().max(max, `Maximum ${max} characters`).transform(clean);
+/** Optional text inside a section: missing -> "" */
+const field = (max) => text(max).default('');
+
+const isHttpUrl = (value) => {
+  try {
+    const { protocol } = new URL(value);
+    return protocol === 'http:' || protocol === 'https:';
+  } catch {
+    return false;
+  }
+};
+
+// "linkedin.com/in/me" -> "https://linkedin.com/in/me"; javascript:, data: ... are rejected.
+const urlField = z
+  .string()
+  .trim()
+  .max(300, 'Maximum 300 characters')
+  .transform((value) => (value === '' || /^https?:\/\//i.test(value) ? value : `https://${value}`))
+  .refine((value) => value === '' || isHttpUrl(value), 'Enter a valid link, e.g. https://example.com')
+  .default('');
+
+const emailField = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .max(254, 'Email is too long')
+  .refine((value) => value === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), 'Enter a valid email address')
+  .default('');
+
+const phoneField = z
+  .string()
+  .trim()
+  .max(30, 'Maximum 30 characters')
+  .refine((value) => /^[+\d\s().-]*$/.test(value), 'Enter a valid phone number')
+  .default('');
+
+const isRealDate = (value) => {
+  const match = /^(\d{4})-(\d{2})(?:-(\d{2}))?$/.exec(value);
+  if (!match) return false;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = match[3] ? Number(match[3]) : 1;
+  if (year < 1900 || year > 2100) return false;
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
+};
+
+const dateField = z
+  .string()
+  .trim()
+  .refine((value) => value === '' || isRealDate(value), 'Use the YYYY-MM-DD format')
+  .default('');
+
+const itemId = z.string().trim().max(64).regex(/^[\w-]*$/, 'Invalid id').optional();
+
+const rangeIsValid = (item) => !item.startDate || !item.endDate || item.endDate >= item.startDate;
+const rangeIssue = { message: 'End date cannot be before start date', path: ['endDate'] };
+
+const uniqueList = (list) => {
+  const seen = new Set();
+  return list.filter((entry) => {
+    const key = entry.toLowerCase();
+    if (!entry || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
+
+const tagList = (maxItems, maxLength) =>
+  z
+    .array(z.string().trim().max(maxLength, `Maximum ${maxLength} characters`).transform(clean))
+    .max(maxItems, `Maximum ${maxItems} items`)
+    .transform(uniqueList);
+
+// ───────── sections ─────────
+const personalInformation = z.object({
+  photo: z
+    .object({ url: z.string().trim().max(600), publicId: z.string().trim().max(300) })
+    .nullable()
+    .default(null),
+  fullName: field(100),
+  email: emailField,
+  phone: phoneField,
+  location: field(120),
+  professionalTitle: field(120),
+  linkedin: urlField,
+  website: urlField,
+});
+
+const experienceItem = z
+  .object({
+    id: itemId,
+    companyName: field(120),
+    jobTitle: field(120),
+    employeeType: field(40),
+    location: field(120),
+    startDate: dateField,
+    endDate: dateField,
+    currentlyWorking: z.boolean().default(false),
+    jobDescription: field(2000),
+  })
+  .refine(rangeIsValid, rangeIssue)
+  .transform((item) => (item.currentlyWorking ? { ...item, endDate: '' } : item));
+
+const educationItem = z
+  .object({
+    id: itemId,
+    institutionName: field(150),
+    degree: field(150),
+    fieldOfStudy: field(150),
+    startDate: dateField,
+    endDate: dateField,
+    currentlyStudying: z.boolean().default(false),
+    gpa: field(20),
+    description: field(1500),
+  })
+  .refine(rangeIsValid, rangeIssue)
+  .transform((item) => (item.currentlyStudying ? { ...item, endDate: '' } : item));
+
+const projectItem = z.object({
+  id: itemId,
+  projectName: field(120),
+  projectType: field(60),
+  role: field(100),
+  keyResponsibilities: field(1500),
+  keyAchievements: field(500),
+  technologies: tagList(30, 40).default([]),
+  projectUrl: urlField,
+  projectDescription: field(1500),
+});
+
+const languageItem = z.object({ id: itemId, name: field(50), level: field(30) });
+
+const referenceItem = z.object({
+  id: itemId,
+  name: field(100),
+  jobTitle: field(100),
+  company: field(120),
+  relationship: field(60),
+  email: emailField,
+  phone: phoneField,
+});
+
+const design = z.object({
+  templateId: z.string().trim().regex(/^[\w-]{1,50}$/, 'Invalid template id').optional(),
+  color: z.string().trim().regex(/^#[0-9a-fA-F]{6}$/, 'Use a hex color like #1a2b3c').optional(),
+  font: z.string().trim().regex(/^[\w\s-]{1,50}$/, 'Invalid font name').optional(),
+});
+
+const titleField = z.string().trim().min(1, 'Title is required').max(100, 'Maximum 100 characters').transform(clean);
+
+// ───────── request bodies ─────────
+export const createResumeBody = z.object({
+  title: titleField.optional(),
+  design: design.optional(),
+});
+
+/**
+ * Autosave body: send ONLY the sections that changed.
+ * A section you send replaces the stored section completely (arrays included),
+ * except `design`, which is merged key by key.
+ * Do not use .partial() here: defaults inside optional fields would wipe sections that were not sent.
+ */
+export const updateResumeBody = z.object({
+  title: titleField.optional(),
+  design: design.optional(),
+  personalInformation: personalInformation.optional(),
+  professionalSummary: text(2000).optional(),
+  workExperience: z.array(experienceItem).max(30, 'Maximum 30 entries').optional(),
+  education: z.array(educationItem).max(20, 'Maximum 20 entries').optional(),
+  projects: z.array(projectItem).max(30, 'Maximum 30 entries').optional(),
+  skills: tagList(50, 50).optional(),
+  languages: z.array(languageItem).max(15, 'Maximum 15 entries').optional(),
+  references: z.array(referenceItem).max(10, 'Maximum 10 entries').optional(),
+  targetJob: z.object({ title: field(120), description: field(5000) }).optional(),
+  revision: z.number().int().min(0).optional(),
+});

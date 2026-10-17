@@ -2,6 +2,8 @@ import React from "react";
 import ResumeBTN from "../components/ResumeBTN";
 import { Button } from "../components/Button";
 import FilterToggle from "../components/home/FilterToggle";
+import RecentResumeCard from "../components/RecentResumeCard";
+import TempleteCard from "../components/TempleteCard";
 
 const page = () => {
   return (
@@ -10,7 +12,7 @@ const page = () => {
       <div className="">
         <div className="flex items-center max-sm:flex-col gap-space-7 max-sm:items-start mb-space-7">
           <div className="w-full">
-            <h1 className="text-[clamp(1.625rem,calc(0.939vw+1.405rem),2.25rem)] mb-space-3">
+            <h1 className="text-[clamp(1.625rem,calc(0.939vw+1.405rem),2.25rem)] mb-space-3 font-semibold font-primary">
               Your Resume
             </h1>
             <p className="leading-[24px] text-neutral-500">
@@ -22,6 +24,7 @@ const page = () => {
         </div>
         <div className="flex items-center gap-[clamp(1.25rem,calc(1.127vw+0.986rem),2rem)]">
           {/* my resumes */}
+          <RecentResumeCard />
         </div>
         
       </div>
@@ -33,7 +36,9 @@ const page = () => {
         </div>
 
         {/*  */}
-        <div className="flex items-center gap-[clamp(2rem,calc(3.005vw+1.296rem),4rem)] mt-[clamp(2.25rem,calc(0.376vw+2.162rem),2.5rem)] mb-[clamp(2rem,calc(1.127vw+1.736rem),2.75rem)]"></div>
+        <div className="flex items-center gap-[clamp(2rem,calc(3.005vw+1.296rem),4rem)] mt-[clamp(2.25rem,calc(0.376vw+2.162rem),2.5rem)] mb-[clamp(2rem,calc(1.127vw+1.736rem),2.75rem)]">
+          <TempleteCard />
+        </div>
 
         {/* Buttons */}
         <div className="flex items-center gap-space-0 max-sm:w-full max-sm:justify-between sm:gap-13">
