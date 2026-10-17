@@ -8,7 +8,8 @@
 //   photoshop
 // }
 
-import { tools } from "@/app/assets/assets";
+import { tools } from "@/src/app/assets/assets";
+
 
 export const projectsData = [
   {

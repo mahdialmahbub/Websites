@@ -46,7 +46,7 @@ const page = () => {
           />
         </FadeRight>
       </div>
-      <div className="h-space-1 w-full rounded-full opacity-20 bg-placeholder mt-space-7 mb-space-7"></div>
+      <div className="h-0.5 w-full rounded-full opacity-5 bg-placeholder mt-space-7 mb-space-7"></div>
       <div className="flex flex-col gap-space-6 ">
         {filteredWorkflows.map((item) => (
           <FadeUp key={item.id}>
@@ -79,7 +79,7 @@ const page = () => {
               <div className="grid grid-cols-3 space-y-space-7 space-x-space-6">
                 {item.points.map((item) => (
                   <div key={item.id} className="flex gap-space-2">
-                    <div className="min-w-[24px] min-h-[24px] max-w-[24px] max-h-[24px] flex items-center justify-center rounded-md bg-secondary-900/10 dark:bg-secondary-600/10 ">
+                    <div className="min-w-[24px] min-h-[24px] max-w-[24px] max-h-[24px] flex items-center justify-center rounded-md bg-secondary-900/5 dark:bg-secondary-600/5 ">
                       <p className="text-size-xs font-semibold font-primary text-secondary-900 dark:text-secondary-300">
                         {item.number}
                       </p>

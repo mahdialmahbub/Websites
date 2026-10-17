@@ -143,7 +143,7 @@ const page = () => {
             href={"/about"}
             className="animate-fade-up [animation-delay:360ms]"
           >
-            <Button text={"About me"} />
+            <Button text={"About me"} rightIcon icon="fi fi-rr-arrow-small-right" />
           </Link></FadeUp>
         </div>
         <FadeUp delay={0.4} className="flex items-center gap-space-7 *:animate-fade-up [animation-delay:480ms]">
@@ -152,20 +152,10 @@ const page = () => {
               key={i}
               className="flex flex-col items-center justify-center gap-space-2 px-space-6 w-60"
             >
-              {/* <div>
-                <div className="flex items-center gap-space-3 text-secondary-700">
-                  <i className={`text-[26px] ${item.icon}`}></i>
-                  <CountUpNumber key={i} number={item.number} />
-                </div>
-                <h4 className="font-semibold text-size-base text-placeholder dark:text-placeholder_2 mt-space-1">
-                  {item.label}
-                </h4>
-              </div> */}
             </div>
           ))}
         </FadeUp>
       </div>
-      <DevCaseStudyPage />
     </div>
   );
 };

@@ -45,7 +45,7 @@ const StatsSection = () => {
       },
       {
         threshold: 0.35,
-      }
+      },
     );
 
     observer.observe(section);
@@ -58,10 +58,9 @@ const StatsSection = () => {
       <FadeUp
         className="
           grid
-          grid-cols-2
           overflow-hidden
           rounded-3xl
-          sm:grid-cols-4 divide-x  divide-secondary-200/70 dark:divide-white/7
+          grid-cols-4 divide-x  divide-secondary-200/70 dark:divide-white/7
         "
       >
         {stats.map((stat, index) => (
@@ -106,7 +105,6 @@ const StatsSection = () => {
             <div
               className="
                 font-primary
-                text-[36px]
                 font-bold
                 leading-none
                 tracking-[-0.045em]
@@ -114,7 +112,7 @@ const StatsSection = () => {
 
                 dark:text-white
 
-                sm:text-size-3xl
+                text-size-3xl
               "
             >
               {isVisible ? (
@@ -146,8 +144,8 @@ const StatsSection = () => {
                 font-primary
                 text-size-sm
                 font-medium
-                text-slate-500
-                dark:text-slate-500
+                text-placeholder
+                dark:text-placeholder_2
               "
             >
               {stat.label}

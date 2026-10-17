@@ -9,8 +9,8 @@ import FadeLeft from "../motions/FadeLeft";
 import SwitchBTN from "../SwitchBTN";
 import ProjectCard from "../ProjectCard";
 import ProjectCardSkeleton from "../ProjectCardSkeleton";
+import ProjectDetailsPage from "../../projects/[slug]/page";
 import ProjectDetailsSkeleton from "./ProjectDetailsSkeleton";
-import ProjectDetailsPage from "@/app/projects/[slug]/page";
 
 // category text compare korar jonno normalize helper
 // "UI/UX Design" ar "UI UX Design" duitake same dhore neyar jonno

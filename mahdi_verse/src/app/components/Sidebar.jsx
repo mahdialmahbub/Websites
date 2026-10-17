@@ -85,11 +85,11 @@ const Sidebar = () => {
         relative flex h-full flex-col items-center justify-between
         rounded-2xl
         bg-secondary-50
-        p-space-4
+        p-space-8
         dark:bg-background
         transition-[width] duration-500 ${EASE}
         will-change-[width]
-        ${isExpanded ? "w-64" : "w-20"}
+        ${isExpanded ? "w-64" : "w-32.5"}
       `}
     >
       {/* ========================================
@@ -244,7 +244,7 @@ const Sidebar = () => {
                     text-size-md
                     font-medium
                     transition-all
-                    duration-400
+                    duration-400 font-primary
                     ${EASE}
                     ${
                       isExpanded

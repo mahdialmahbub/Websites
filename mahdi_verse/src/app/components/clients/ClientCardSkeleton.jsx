@@ -8,7 +8,7 @@ const Bone = ({ className = "" }) => (
 
 const ClientCardSkeleton = () => {
   return (
-    <div className="p-space-3 rounded-xl card-shadow flex items-center gap-space-3 max-w-85 border-2 border-transparent bg-[#E9F7F8] dark:bg-secondary-500/5">
+    <div className="p-space-3 rounded-xl clientCard-shadow flex items-center gap-space-3 max-w-85 border-2 border-transparent bg-[#E9F7F8] dark:bg-secondary-500/5">
       <Bone className="w-15 h-17.75 rounded-lg shrink-0" />
 
       <div className="flex-1 space-y-space-2">

@@ -1,7 +1,7 @@
-import { assets } from "@/app/assets/assets";
 import Image from "next/image";
 import React from "react";
 import Chips from "../Chips";
+import { assets } from "../../assets/assets";
 
 const ClientCard = ({ client, onSelect, isSelected }) => {
   const { name, country, shortIntro, image } = client || {
@@ -14,7 +14,7 @@ const ClientCard = ({ client, onSelect, isSelected }) => {
   return (
     <div
       onClick={onSelect}
-      className={`animate-fade-up p-space-3 rounded-xl card-shadow hover:bg-secondary-50 dark:hover:bg-secondary-500/5 flex items-center gap-space-3 max-w-85 cursor-pointer border-2 transition-colors ${
+      className={`animate-fade-up p-space-3 rounded-xl clientCard-shadow hover:bg-secondary-50 dark:hover:bg-secondary-500/5 flex items-center gap-space-3 max-w-85 cursor-pointer border-2 transition-colors ${
         isSelected
           ? "border-secondary-500/30 bg-secondary-50 dark:bg-secondary-500/5 dark:border-secondary-500/30"
           : "border-transparent bg-[#E9F7F8] dark:bg-secondary-500/5 hover:border-secondary-500 dark:hover:border-secondary-500/10"

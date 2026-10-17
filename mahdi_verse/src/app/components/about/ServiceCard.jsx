@@ -150,7 +150,7 @@ const ServiceCard = ({
                 tracking-[-0.02em]
 
                 text-foreground
-                dark:text-frontend
+                dark:text-foreground
               "
             >
               {title}
@@ -206,7 +206,6 @@ const ServiceCard = ({
           className="
             mt-7
             max-w-155
-            font-primary
             text-size-sm
             leading-7
 

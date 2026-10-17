@@ -30,14 +30,14 @@ const Button = ({
           <i aria-hidden="true" className={`text-size-md ${icon}`}></i>
         )
       )}
-      <span className="font-primary text-size-sm">{text}</span>
+      <span className="font-primary text-size-base ">{text}</span>
       {!isLoading && icon && rightIcon && (
-        <i aria-hidden="true" className={`text-size-md ${icon}`}></i>
+        <i aria-hidden="true" className={`text-size-md group-hover:translate-x-1.5 transition-all duration-200 ${icon}`}></i>
       )}
     </>
   );
 
-  const baseClasses = `cursor-pointer select-none inline-flex items-center justify-center gap-[6px] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 px-[24px] py-[16px] max-h-[52px] ${
+  const baseClasses = `cursor-pointer select-none inline-flex items-center justify-center gap-[6px] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 px-[24px] py-[16px] max-h-[48px] group ${
     fullWidth ? "w-full" : ""
   } ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${
     isLoading ? "cursor-wait" : ""
