@@ -21,22 +21,31 @@ const page = () => {
   const aboutMeContent = [
     {
       icon: "fi fi-rr-website-design",
-      title: "UI UX design",
-      process: ["Research", "Wareframe", "Prototype"],
+      title: "UI/UX Design",
+      process: ["Research", "Wireframe", "Prototype"],
 
-      descripiton:
+      description:
         "I chose UI/UX design because I enjoy understanding how people think, what they need, and what makes a digital experience feel simple and intuitive. It gives me the freedom to turn ideas and problems into meaningful experiences that people enjoy using.",
+
       tags: ["Figma", "User Research", "Wireframing", "Design Systems"],
+
       btnText: "How I Design",
+
+      workflowHref: "/workflow?workflow=ui-ux-design",
     },
     {
       icon: "fi fi-rr-code-window",
       title: "MERN Stack Development",
       process: ["React", "Node", "MongoDB"],
-      descripiton:
+
+      description:
         "I chose MERN development because I wanted to go beyond designing interfaces and actually bring those ideas to life. Building with JavaScript across the stack lets me turn thoughtful designs into fast, functional, and scalable products.",
+
       tags: ["React", "Next.js", "Redux", "Node.js", "MongoDB"],
+
       btnText: "How I Build",
+
+      workflowHref: "/workflow?workflow=web-development",
     },
   ];
 
@@ -68,14 +77,14 @@ const page = () => {
             </FadeLeft>
             <FadeLeft
               as="h1"
-              className="font-primary font-semibold text-size-2xl mb-space-5 text-background dark:text-foreground"
+              className="font-primary font-semibold text-size-2xl mb-space-4 text-background dark:text-foreground"
             >
               Designing Experiences, Building Websites
             </FadeLeft>
             <FadeLeft
               as="p"
               delay={0.1}
-              className="font-medium text-size-md text-placeholder"
+              className=" text-size-md text-placeholder max-w-162.5"
             >
               I&apos;m a UI/UX and Product Designer who creates user-centered
               websites that balance great design with real business goals.
@@ -96,7 +105,7 @@ const page = () => {
                     height={22}
                     src={assets.CheckBox}
                   />
-                  <p className="font-medium text-size-md text-placeholder">
+                  <p className="text-size-md text-placeholder">
                     {item}
                   </p>
                 </FadeLeft>
@@ -107,7 +116,7 @@ const page = () => {
             <IntroVideoButton />
             <Button
               text={"Download Resume"}
-              rightIcon
+              leftIcon
               icon="fi fi-sr-file-download"
             />
           </FadeLeft>
@@ -164,19 +173,20 @@ const page = () => {
                 tracking-[-0.035em]
               "
           >
-            Why I chose <span className="text-slate-500">these paths</span>
+            Why I chose these paths
           </FadeLeft>
         </div>
         <div className="space-x-space-6 flex ">
           {aboutMeContent.map((item, i) => (
             <FadeUp key={i} delay={i * 0.2} className="">
               <ServiceCard
-                description={item.descripiton}
+                description={item.description}
                 process={item.process}
                 title={item.title}
                 buttonText={item.btnText}
                 icon={item.icon}
                 tags={item.tags}
+                href={item.workflowHref}
               />
             </FadeUp>
           ))}

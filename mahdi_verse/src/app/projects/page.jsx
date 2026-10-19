@@ -1,36 +1,44 @@
 import Link from "next/link";
-import projectsData from "../../../public/projects/projects";
+import projectsData from "../assets/projects/projects";
 import FadeRight from "../components/motions/FadeRight";
 import FadeLeft from "../components/motions/FadeLeft";
 import SwitchBTN from "../components/SwitchBTN";
 import ProjectCard from "../components/ProjectCard";
 import ProjectDetails from "../components/project/ProjectDetails";
 import ScrollToDetails from "../components/ScrollToDetails";
+import {
+  VIEW_META,
+  matchesCategory,
+  withProjectMeta,
+} from "../utils/projectViews";
+
+const ICON = "fi fi-rr-browser";
+
+// VIEW_META theke auto toiri hobe, tai label kokhono mismatch hobe na
+const categories = [
+  { label: "All", icon: ICON },
+  ...Object.values(VIEW_META).map(({ category }) => ({
+    label: category,
+    icon: ICON,
+  })),
+];
 
 const normalize = (str = "") => str.toLowerCase().replace(/[^a-z0-9]/g, "");
-
-const categories = [
-  { label: "All", icon: "fi fi-rr-browser" },
-  { label: "UI UX Design", icon: "fi fi-rr-browser" },
-  { label: "Web Development", icon: "fi fi-rr-browser" },
-];
 
 export default async function Page({ searchParams }) {
   const params = await searchParams;
   const activeCategory = params?.category || "All";
-  const projectIdFromUrl = params?.project || null;
+  const projectSlugFromUrl = params?.project || null;
 
-  const filteredProjects =
-    activeCategory === "All"
-      ? projectsData
-      : projectsData.filter((project) =>
-          project.tags.some(
-            (tag) => normalize(tag) === normalize(activeCategory),
-          ),
-        );
+  const projects = projectsData.map(withProjectMeta);
+
+  const filteredProjects = projects.filter((project) =>
+    matchesCategory(project, activeCategory),
+  );
 
   const selectedProject =
-    projectsData.find((p) => String(p.id) === String(projectIdFromUrl)) || null;
+    projectsData.find((p) => String(p.slug) === String(projectSlugFromUrl)) ||
+    null;
 
   return (
     <section className="min-w-full space-y-space-7">
@@ -57,13 +65,13 @@ export default async function Page({ searchParams }) {
         </div>
 
         {filteredProjects.length > 0 ? (
-          <div className="flex gap-space-6">
+          <div className="flex gap-6 overflow-x-auto p-1">
             {filteredProjects.map((project, index) => (
               <ProjectCard
                 key={project.id}
                 project={project}
                 index={index}
-                selectHref={`?category=${encodeURIComponent(activeCategory)}&project=${project.id}`}
+                selectHref={`?category=${encodeURIComponent(activeCategory)}&project=${project.slug}`}
               />
             ))}
           </div>
@@ -74,14 +82,13 @@ export default async function Page({ searchParams }) {
         )}
       </div>
 
-      <div className="w-full h-0.5 rounded-full opacity-20 bg-placeholder"></div>
+      <div className="w-full h-0.5 rounded-full opacity-5 bg-placeholder"></div>
 
       <div id="project-details">
         {selectedProject ? (
           <>
-            {/* key dewar karone project change hole abar scroll korbe */}
             <ScrollToDetails
-              key={selectedProject.id}
+              key={selectedProject.slug}
               targetId="project-details"
             />
             <ProjectDetails project={selectedProject} />

@@ -82,14 +82,14 @@ const Sidebar = () => {
   return (
     <nav
       className={`
-        relative flex h-full flex-col items-center justify-between
+        relative flex max-h-full overflow-hidden flex-col items-center justify-between
         rounded-2xl
         bg-secondary-50
-        p-space-8
+        p-space-5
         dark:bg-background
         transition-[width] duration-500 ${EASE}
         will-change-[width]
-        ${isExpanded ? "w-64" : "w-32.5"}
+        ${isExpanded ? "w-58" : "w-22"}
       `}
     >
       {/* ========================================
@@ -219,12 +219,6 @@ const Sidebar = () => {
                     justify-center
                     transition-transform
                     duration-300
-                    ${EASE}
-                    ${
-                      isActive
-                        ? "scale-105"
-                        : "group-hover:translate-x-0.5 group-hover:scale-105"
-                    }
                   `}
                 >
                   <i

@@ -9,7 +9,7 @@ export default function HomePageChecker({ children }) {
 
   return (
     <div
-      className={`mx-auto flex justify-center min-w-full max-w-[2000px] flex-1 ${
+      className={`mx-auto flex justify-center w-full max-w-[2000px] flex-1 ${
         isHomePage ? "" : "overflow-y-auto"
       }`}
     >

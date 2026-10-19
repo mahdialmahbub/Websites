@@ -132,7 +132,7 @@ const page = () => {
                 Modern Web Interfaces
               </span>
             </FadeUp>
-            <FadeUp as="p" delay={0.2} className="font-medium text-size-base text-foreground/60 w-175">
+            <FadeUp as="p" delay={0.2} className=" text-size-base text-placeholder_2 dark:text-placeholder w-175">
               I’m Mahdi — a UI/UX Designer and Next.js Frontend Developer
               focused on creating aesthetic, user-centered, and high-performance
               digital experiences that feel smooth, modern, and impactful.

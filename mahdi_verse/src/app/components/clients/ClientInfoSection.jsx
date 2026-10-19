@@ -4,9 +4,10 @@ import ProjectCard from "../ProjectCard";
 import StarRating from "../project/StarRating";
 import Chips from "../Chips";
 import Image from "next/image";
-import { getClientProjects } from "../../../../public/clients/clients";
+import { getClientProjects } from "../../assets/clients/clients";
 import ProjectCardSkeleton from "../ProjectCardSkeleton";
 import { useEffect, useState } from "react";
+import ScrollToDetails from "../ScrollToDetails";
 
 const SKELETON_DELAY = 700;
 
@@ -34,7 +35,7 @@ export default function ClientInfoSection({ client, allProjects = [] }) {
             alt={client.name}
             width={210}
             height={150}
-            className="object-contain rounded-2xl h-37.5 object-top"
+            className="object-cover rounded-2xl h-37.5"
           />
 
           <div className="">
@@ -69,7 +70,14 @@ export default function ClientInfoSection({ client, allProjects = [] }) {
       ) : clientProjects.length > 0 ? (
         <div className="flex gap-space-6">
           {clientProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <>
+              <ScrollToDetails
+                key={project.id}
+                targetId="project-details"
+              />
+
+              <ProjectCard key={project.id} project={project} />
+            </>
           ))}
         </div>
       ) : (

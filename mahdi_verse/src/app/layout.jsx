@@ -7,6 +7,8 @@ import HomePageChecker from "./components/HomePageChecker";
 import { Toaster } from "react-hot-toast";
 import { THEME_COOKIE } from "../lib/theme";
 
+export const revalidate = 86400;
+
 const sora = Sora({
   variable: "--font-sora",
   subsets: ["latin"],
@@ -25,8 +27,7 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-
-    const saved = (await cookies()).get(THEME_COOKIE)?.value;
+  const saved = (await cookies()).get(THEME_COOKIE)?.value;
   // Shudhu valid explicit choice hole attribute boshbe, noile system CSS handle korbe
   const theme = saved === "light" || saved === "dark" ? saved : undefined;
 
@@ -62,10 +63,10 @@ export default async function RootLayout({ children }) {
           href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css"
         ></link>
       </head>
-      <body className="h-dvh bg-background dark:bg-linear-to-br dark:from-secondary-500/5 dark:to-primary-500/2">
-        <div className="flex h-full w-full gap-9 p-space-7">
+      <body className="h-dvh bg-background dark:bg-linear-to-br dark:from-secondary-500/5 dark:to-primary-500/2 w-screen">
+        <div className="flex h-full gap-6 p-space-4">
           <Sidebar />
-          <div className="w-full flex flex-col">
+          <div className="flex-1 min-w-0 flex flex-col">
             <Navbar />
             <HomePageChecker>{children}</HomePageChecker>
           </div>

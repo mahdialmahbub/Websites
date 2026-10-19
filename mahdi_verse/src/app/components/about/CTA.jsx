@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
 import Button from "../Button";
@@ -26,12 +24,11 @@ const contactLinks = [
 
 const ContactCTA = () => {
   return (
-    <section className="relative w-full overflow-hidden">
+    <FadeUp as="section" className="relative w-full overflow-hidden">
       <div className="relative mx-auto flex min-h-50 w-full items-center justify-center">
         <div className="relative z-10 flex max-w-162.5 flex-col items-center text-center">
           {/* Heading */}
-          <FadeUp
-            as="h2"
+          <h2
             className="
               mt-4
               text-3xl
@@ -41,14 +38,13 @@ const ContactCTA = () => {
             "
           >
             Have a project in mind?
-          </FadeUp>
+          </h2>
 
           {/* Subtitle */}
-          <FadeUp
-            as="p"
-            delay={0.1}
+          <p
             className="
-              mt-4
+              mb-6
+              mt-2
               max-w-125
               text-sm
               leading-6
@@ -58,20 +54,15 @@ const ContactCTA = () => {
           >
             Tell me what you&apos;re building — I&apos;ll get back to you within
             a day.
-          </FadeUp>
+          </p>
 
           {/* CTA */}
-          <FadeUp delay={0.2} className="mt-space-6">
-            <Link href={"/contact"}>
-              <Button text={"Let's talk about it"} />
-            </Link>
-          </FadeUp>
+          <Link href={"/contact"}>
+            <Button text={"Let's talk about it"} />
+          </Link>
 
           {/* Contact links */}
-          <FadeUp
-            delay={0.3} distance={0.1}
-            className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-3"
-          >
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-x-7 gap-y-3">
             {contactLinks.map((item) => (
               <Link
                 key={item.label}
@@ -107,10 +98,10 @@ const ContactCTA = () => {
                 {item.label}
               </Link>
             ))}
-          </FadeUp>
+          </div>
         </div>
       </div>
-    </section>
+    </FadeUp>
   );
 };
 

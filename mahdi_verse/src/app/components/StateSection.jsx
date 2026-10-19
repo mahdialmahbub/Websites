@@ -1,72 +1,28 @@
-"use client";
+// components/StatsSection.jsx
+// "use client" nai -> eta Server Component. Data server e fetch hoy.
 
-import React, { useEffect, useRef, useState } from "react";
-import CountUp from "react-countup";
-import FadeUp from "./motions/FadeUp";
+import React from "react";
+import FadeUp from "./motions/FadeUp"; // FadeUp er file e "use client" thaka lagbe
+import StatCounter from "./StatCounter";
+import { getStats } from "../assets/stats";
 
-const stats = [
-  {
-    number: 40,
-    suffix: "+",
-    label: "Projects delivered",
-  },
-  {
-    number: 5,
-    suffix: "+",
-    label: "Years of experience",
-  },
-  {
-    number: 18,
-    suffix: "+",
-    label: "Clients worldwide",
-  },
-  {
-    number: 98,
-    suffix: "%",
-    label: "Client satisfaction",
-  },
-];
-
-const StatsSection = () => {
-  const sectionRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-
-    if (!section) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      {
-        threshold: 0.35,
-      },
-    );
-
-    observer.observe(section);
-
-    return () => observer.disconnect();
-  }, []);
+const StatsSection = async () => {
+  const stats = await getStats();
 
   return (
-    <section ref={sectionRef} className="w-full -mt-space-8 mb-space-8">
+    <section className="w-full -mt-space-8 mb-space-8">
       <FadeUp
         className="
           grid
           overflow-hidden
           rounded-3xl
-          grid-cols-4 divide-x  divide-secondary-200/70 dark:divide-white/7
+          grid-cols-4 divide-x divide-secondary-200/70 dark:divide-white/7
         "
       >
-        {stats.map((stat, index) => (
+        {stats.map((stat) => (
           <div
             key={stat.label}
-            className={`
+            className="
               group
               relative
               flex
@@ -79,11 +35,9 @@ const StatsSection = () => {
               text-center
               transition-all
               duration-300
-
               hover:bg-cyan-500/2.5
               dark:hover:bg-white/2
-
-            `}
+            "
           >
             {/* Top accent */}
             <span
@@ -101,41 +55,8 @@ const StatsSection = () => {
               "
             />
 
-            {/* Counter */}
-            <div
-              className="
-                font-primary
-                font-bold
-                leading-none
-                tracking-[-0.045em]
-                text-secondary-900
-
-                dark:text-white
-
-                text-size-3xl
-              "
-            >
-              {isVisible ? (
-                <CountUp
-                  start={0}
-                  end={stat.number}
-                  duration={2}
-                  useEasing
-                  easingFn={(t, b, c, d) => {
-                    const progress = t / d;
-                    const eased = 1 - Math.pow(1 - progress, 3);
-
-                    return b + c * eased;
-                  }}
-                />
-              ) : (
-                0
-              )}
-
-              <span className="text-cyan-500 dark:text-cyan-400">
-                {stat.suffix}
-              </span>
-            </div>
+            {/* Counter (client) */}
+            <StatCounter end={stat.number} suffix={stat.suffix} />
 
             {/* Label */}
             <p

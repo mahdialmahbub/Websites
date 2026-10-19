@@ -49,7 +49,7 @@ const Button = ({
         type={type}
         disabled={isDisabled}
         aria-busy={isLoading}
-        className={`${baseClasses} rounded-lg font-semibold border-2 border-primary-500 text-primary-500 hover:bg-primary-500/10 active:bg-primary-500/15 active:scale-[0.98] ${className}`}
+        className={`${baseClasses} rounded-lg font-semibold border-2 border-primary-500/10 bg-primary-500/5 text-primary-500 hover:bg-primary-500/10 active:bg-primary-500/15 active:scale-[0.98] ${className}`}
         {...props}
       >
         {content}

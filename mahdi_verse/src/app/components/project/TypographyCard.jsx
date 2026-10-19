@@ -23,6 +23,7 @@ const getWeightValue = (label) => WEIGHT_MAP[label.trim().toLowerCase()] ?? 400;
 
 const UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").join(" ");
 const LOWER = "abcdefghijklmnopqrstuvwxyz".split("").join(" ");
+const NUMBER = "1234567890".split("").join(" ");
 
 export default function TypographyCard({
   fontName = "Roboto",
@@ -62,9 +63,10 @@ export default function TypographyCard({
       </div>
 
       {/* A-Z / a-z sample in the loaded font */}
-      <div style={{ fontFamily: fontStack, fontWeight: 700 }} className="mt-space-4 tracking-wide max-w-50">
-        <p className="text-size-xs_2 mb-space-1">{UPPER}</p>
+      <div style={{ fontFamily: fontStack, fontWeight: 700 }} className="mt-space-5 tracking-wide max-w-50 space-y-space-1">
+        <p className="text-size-xs_2 ">{UPPER}</p>
         <p className="text-size-xs_2 ">{LOWER}</p>
+        <p className="text-size-xs_2 ">{NUMBER}</p>
       </div>
 
       {/* Weights, each pill rendered in its own actual weight */}

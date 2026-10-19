@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ProjectDetails from "../../components/project/ProjectDetails";
 import BackButton from "../../components/project/BackButton";
-import projectsData from "../../../../public/projects/projects";
+import projectsData from "../../assets/projects/projects";
 import slugify from "../../utils/slugify";
 
 // build time e shob project page static generate hobe (bonus, SSR er shathe ekdom kaj kore)

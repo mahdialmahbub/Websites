@@ -3,35 +3,41 @@ import SwitchBTN from "../components/SwitchBTN";
 import ClientCard from "../components/clients/ClientCard";
 import ClientInfoSection from "../components/clients/ClientInfoSection";
 import ScrollToDetails from "../components/ScrollToDetails";
-import clientsData, { getClientProjects } from "../../../public/clients/clients";
-import projectsData from "../../../public/projects/projects";
+import clientsData, { getClientProjects } from "../assets/clients/clients";
+import projectsData from "../assets/projects/projects";
+// path ta tomar helper file onujayi thik kore nio
+import { VIEW_META, matchesCategory } from "../utils/projectViews";
 
-const normalize = (str = "") => str.toLowerCase().replace(/[^a-z0-9]/g, "");
+const ICON = "fi fi-rr-browser";
 
+// VIEW_META theke auto toiri hobe, tai projects page er shathe label kokhono mismatch hobe na
 const categories = [
-  { label: "All", icon: "fi fi-rr-browser" },
-  { label: "UI UX Design", icon: "fi fi-rr-browser" },
-  { label: "Web Development", icon: "fi fi-rr-browser" },
+  { label: "All", icon: ICON },
+  ...Object.values(VIEW_META).map(({ category }) => ({
+    label: category,
+    icon: ICON,
+  })),
 ];
 
 export default async function Page({ searchParams }) {
-  // Next.js 15+ e searchParams ekta Promise, tai await lagbe
   const params = await searchParams;
   const activeCategory = params?.category || "All";
-  const selectedClientId = params?.client || null;
+  const selectedClientSlug = params?.client || null;
 
+  // All e shob client (project na thakleo). Onno category te client er je kono ekta project e oi view thakle dekhabe.
   const filteredClients =
     activeCategory === "All"
       ? clientsData
       : clientsData.filter((client) =>
-          getClientProjects(client.id, projectsData).some(
-            (p) => normalize(p.category) === normalize(activeCategory),
+          getClientProjects(client.id, projectsData).some((project) =>
+            matchesCategory(project, activeCategory),
           ),
         );
 
   const selectedClient =
-    filteredClients.find((c) => String(c.id) === String(selectedClientId)) ||
-    null;
+    filteredClients.find(
+      (c) => String(c.slug) === String(selectedClientSlug),
+    ) || null;
 
   return (
     <section className="min-w-full space-y-space-7">
@@ -64,16 +70,17 @@ export default async function Page({ searchParams }) {
         </div>
 
         {filteredClients.length > 0 ? (
-          <div className="flex gap-space-6">
+          <div className="flex items-stretch gap-space-6 overflow-x-auto p-1">
             {filteredClients.map((client) => (
               <Link
                 key={client.id}
-                href={`?category=${encodeURIComponent(activeCategory)}&client=${client.id}`}
+                href={`?category=${encodeURIComponent(activeCategory)}&client=${client.slug}`}
                 scroll={false}
+                className="block shrink-0 *:h-full "
               >
                 <ClientCard
                   client={client}
-                  isSelected={selectedClient?.id === client.id}
+                  isSelected={selectedClient?.slug === client.slug}
                 />
               </Link>
             ))}
@@ -85,17 +92,23 @@ export default async function Page({ searchParams }) {
         )}
       </div>
 
-      <div className="w-full h-0.5 rounded-full opacity-20 bg-placeholder"></div>
+      <div className="w-full h-0.5 rounded-full opacity-5 bg-placeholder"></div>
 
       <div id="client-details">
         {selectedClient ? (
           <>
-            <ScrollToDetails />
-            <ClientInfoSection client={selectedClient} allProjects={projectsData} />
+            <ScrollToDetails
+              key={selectedClient.id}
+              targetId="client-details"
+            />
+            <ClientInfoSection
+              client={selectedClient}
+              allProjects={projectsData}
+            />
           </>
         ) : (
           <div className="bg-secondary-50 dark:bgba rounded-2xl min-h-70 flex items-center justify-center dark:bg-background">
-            <p className="font-medium text-size-base text-placeholder_2 dark:text-placeholder/80">
+            <p className=" text-size-base text-placeholder_2 dark:text-placeholder/80">
               Select a client to see details
             </p>
           </div>

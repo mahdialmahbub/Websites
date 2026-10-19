@@ -1,29 +1,84 @@
-import Image from 'next/image'
-import React from 'react'
-import StarRating from './StarRating'
+import Image from "next/image";
+import StarRating from "./StarRating";
 
-const FeedbackCard = ({client}) => {
-
-    const {image, name, position, feedback} = client
+const FeedbackCard = ({ client, feedback }) => {
+  const { image, name, position } = client ?? {};
+  const { comment, rating } = feedback ?? {};
 
   return (
-    <div className='p-space-6 border-2 border-secondary-500/30 dark:border-secondary-500/20 rounded-2xl space-y-space-6 w-[70%]'>
-        <p className='font-medium leading-4.5 text-size-base'>{feedback.comment}</p>
-        <div className='border-t-2 border-placeholder/20 pt-space-4 flex items-center justify-between'>
-        <div className='flex items-center gap-space-3'>
-            {/* image */}
-            <Image alt='client' src={image} width={42} height={42} className='rounded-full object-cover' />
-            <div className=''>
-                <div className='flex items-center gap-0.5 cursor-pointer group'>
-                    <h4 className='font-primary font-semibold text-size-xs_2 '>{name}</h4>
-                    <i className="fi fi-rr-arrow-small-right text-size-md transition-all duration-200 group-hover:translate-x-1"></i>
-                </div>
-                <p className='font-medium text-[11px] opacity-70'>{position}</p>
-            </div>
-        </div><StarRating size={18} rating={feedback.rating} />
-        </div>
-    </div>
-  )
-}
+    <figure
+      className="
+        w-full rounded-2xl
+        border-2 border-secondary-500/30
+        dark:border-secondary-500/20
+        p-space-6 space-y-space-5
+      "
+    >
+      {/* Feedback Comment */}
+      <blockquote className="text-size-base">{comment}</blockquote>
 
-export default FeedbackCard
+      {/* Client Information & Rating */}
+      <figcaption
+        className="
+          flex flex-wrap items-center justify-between
+          gap-space-3
+          border-t-2 border-placeholder/20
+          pt-space-4
+        "
+      >
+        {/* Client Profile */}
+        <div className="flex items-center gap-space-3">
+          {image && (
+            <Image
+              src={image}
+              alt={`${name || "Client"} profile photo`}
+              width={40}
+              height={40}
+              className="size-10 rounded-full object-cover"
+            />
+          )}
+
+          <div>
+            <div className="flex items-center gap-space-2">
+              <h4 className="text-size-sm font-semibold">{name}</h4>
+
+              <i
+                aria-hidden="true"
+                className="
+                  fi fi-rr-arrow-small-right
+                  text-size-md
+                  transition-transform duration-200
+                "
+              />
+            </div>
+
+            {position && (
+              <p
+                className="
+                  text-xs
+                  text-placeholder_2
+                  dark:text-placeholder/80
+                "
+              >
+                {position}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Star Rating */}
+        {rating != null && (
+          <div
+            className="flex items-center gap-space-2 text-size-sm font-medium"
+            role="img"
+            aria-label={`Rated ${rating} out of 5`}
+          >
+            <StarRating size={18} rating={rating} />
+          </div>
+        )}
+      </figcaption>
+    </figure>
+  );
+};
+
+export default FeedbackCard;

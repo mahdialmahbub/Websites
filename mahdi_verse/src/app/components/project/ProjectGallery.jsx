@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 
-const ProjectGallery = ({ images }) => {
+const ProjectGallery = ({ images = [] }) => {
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   const isOpen = selectedIndex !== null;
@@ -41,21 +41,57 @@ const ProjectGallery = ({ images }) => {
   return (
     <>
       {/* Grid gallery */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-space-7">
+      {/* Bento Grid Gallery */}
+      <div
+        className="
+    grid grid-cols-2 gap-space-7
+    auto-rows-[160px]
+    sm:auto-rows-[200px]
+    md:grid-cols-3 md:auto-rows-[220px]
+    xl:auto-rows-[260px]
+  "
+      >
         {images.map((item, i) => (
           <button
-            key={i}
+            key={`${item.src}-${i}`}
+            type="button"
             onClick={() => setSelectedIndex(i)}
-            className="relative group overflow-hidden rounded-2xl aspect-4/3 cursor-pointer"
+            className={`
+        relative group overflow-hidden rounded-2xl cursor-pointer
+        ${i === 0 && images.length > 2 ? "col-span-2 md:row-span-2" : ""}
+      `}
+            aria-label={`View image: ${item.alt}`}
           >
             <Image
               alt={item.alt}
               src={item.src}
               fill
-              className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
+              sizes={
+                i === 0
+                  ? "(min-width: 768px) 66vw, 100vw"
+                  : "(min-width: 768px) 33vw, 50vw"
+              }
+              className="
+          object-cover transition-transform duration-300
+          ease-in-out group-hover:scale-105
+        "
             />
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 ease-in-out flex items-center justify-center">
-              <i className="fi fi-rr-expand text-white text-size-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"></i>
+
+            <div
+              className="
+          absolute inset-0 flex items-center justify-center
+          bg-black/0 transition-colors duration-300
+          group-hover:bg-black/30
+        "
+            >
+              <i
+                aria-hidden="true"
+                className="
+            fi fi-rr-expand text-white text-size-xl
+            opacity-0 transition-opacity duration-300
+            group-hover:opacity-100
+          "
+              />
             </div>
           </button>
         ))}

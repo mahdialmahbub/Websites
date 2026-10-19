@@ -1,7 +1,7 @@
-import { assets } from "@/app/assets/assets";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { assets } from "../../assets/assets";
 
 export default function ScrollThanksBanner({
   backgroundImage = assets.backgroundImage,

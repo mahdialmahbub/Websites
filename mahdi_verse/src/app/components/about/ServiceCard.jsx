@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const ServiceCard = ({
@@ -7,17 +8,18 @@ const ServiceCard = ({
   description = "I design user-centered products — research, wireframes, and polished prototypes — that balance a delightful experience with the business goals behind it.",
   tags = ["Figma", "Wireframing", "Prototyping", "Design Systems"],
   buttonText = "View Workflow",
+  href = "/workflow?workflow=ui-ux-design",
 }) => {
   return (
     <article
       className="
-        group relative w-full overflow-hidden rounded-3xl
+        group relative w-full overflow-hidden rounded-3xl h-full
 
         /* =========================
            LIGHT MODE
         ========================== */
         border border-[#D6EEF0]
-        bg-[#FFFFFF]
+        bg-secondary-50/50
 
         /* =========================
            DARK MODE
@@ -86,14 +88,15 @@ const ServiceCard = ({
         "
       />
 
-      <div className="relative z-10 p-7 sm:p-8">
+      <div className="relative z-10 p-7 sm:p-8 flex flex-col justify-between h-full">
         {/* =====================================
             HEADER
         ====================================== */}
-        <div className="flex items-center gap-4">
-          {/* Icon */}
-          <div
-            className="
+        <div>
+          <div className="flex items-center gap-4">
+            {/* Icon */}
+            <div
+              className="
               relative
               flex size-14 shrink-0
               items-center justify-center
@@ -120,10 +123,10 @@ const ServiceCard = ({
               dark:group-hover:bg-cyan-400/10
               dark:group-hover:shadow-[0_0_25px_rgba(34,211,238,0.10)]
             "
-          >
-            {/* Icon glow */}
-            <span
-              className="
+            >
+              {/* Icon glow */}
+              <span
+                className="
                 pointer-events-none
                 absolute
                 inset-0
@@ -134,15 +137,15 @@ const ServiceCard = ({
                 duration-300
                 group-hover:opacity-100
               "
-            />
+              />
 
-            <i className={`${icon} relative z-10 text-[23px]`} />
-          </div>
+              <i className={`${icon} relative z-10 text-[23px]`} />
+            </div>
 
-          {/* Title + Process */}
-          <div className="min-w-0">
-            <h3
-              className="
+            {/* Title + Process */}
+            <div className="min-w-0">
+              <h3
+                className="
                 font-primary
                 text-size-lg
                 font-semibold
@@ -152,16 +155,16 @@ const ServiceCard = ({
                 text-foreground
                 dark:text-foreground
               "
-            >
-              {title}
-            </h3>
+              >
+                {title}
+              </h3>
 
-            {/* Process */}
-            <div className="mt-2 flex flex-wrap items-center gap-1.5">
-              {process.map((item, index) => (
-                <React.Fragment key={item}>
-                  <span
-                    className="
+              {/* Process */}
+              <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                {process.map((item, index) => (
+                  <React.Fragment key={item}>
+                    <span
+                      className="
                       font-mono
                       text-size-xs_2
                       font-medium
@@ -171,13 +174,13 @@ const ServiceCard = ({
                       text-cyan-700
                       dark:text-cyan-400/80
                     "
-                  >
-                    {item}
-                  </span>
+                    >
+                      {item}
+                    </span>
 
-                  {index < process.length - 1 && (
-                    <i
-                      className="
+                    {index < process.length - 1 && (
+                      <i
+                        className="
                         fi fi-rr-arrow-small-right
                         flex
                         text-[13px]
@@ -191,19 +194,19 @@ const ServiceCard = ({
                         group-hover:text-cyan-600
                         dark:group-hover:text-cyan-400
                       "
-                    />
-                  )}
-                </React.Fragment>
-              ))}
+                      />
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* =====================================
+          {/* =====================================
             DESCRIPTION
         ====================================== */}
-        <p
-          className="
+          <p
+            className="
             mt-7
             max-w-155
             text-size-sm
@@ -212,18 +215,19 @@ const ServiceCard = ({
             text-slate-600
             dark:text-slate-400
           "
-        >
-          {description}
-        </p>
-
+          >
+            {description}
+          </p>
+        </div>
         {/* =====================================
             TAGS
         ====================================== */}
-        <div className="mt-6 flex flex-wrap gap-2">
-          {tags.map((tag) => (
-            <span
-              key={tag}
-              className="
+        <div>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="
                 rounded-lg
 
                 border border-cyan-100
@@ -258,87 +262,89 @@ const ServiceCard = ({
                 dark:hover:bg-cyan-400/[0.035]
                 dark:hover:text-slate-200
               "
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
 
-        {/* =====================================
-            CTA
-        ====================================== */}
-        <button
-          className="
-            mt-7
-            inline-flex
-            items-center
-            gap-2.5
-
-            font-primary
-            text-size-sm
-            font-semibold
-
-            text-slate-800
-            dark:text-foreground
-
-            transition-all
-            duration-300
-
-            group-hover:gap-3.5
-          "
-        >
-          <span
+          {/* CTA */}
+          <Link
+            href={href}
+            aria-label={`View ${title} workflow`}
             className="
-              opacity-80
-              transition-opacity
-              duration-300
-              group-hover:opacity-100
-              dark:opacity-40
-              dark:group-hover:opacity-100
-            "
+    mt-7
+    inline-flex
+    items-center
+    gap-2.5
+
+    font-primary
+    text-size-sm
+    font-semibold
+
+    text-slate-800
+    dark:text-foreground
+
+    transition-all
+    duration-300
+
+    group-hover:gap-3.5
+  "
           >
-            {buttonText}
-          </span>
-
-          <span
-            className="
-              flex
-              size-7
-              items-center
-              justify-center
-              rounded-full
-
-              border border-cyan-200
-              bg-cyan-50
-              text-cyan-700
-
-              transition-all
-              duration-300
-
-              group-hover:border-cyan-300
-              group-hover:bg-cyan-100
-              group-hover:shadow-[0_5px_15px_rgba(6,182,212,0.12)]
-
-              dark:border-white/10
-              dark:bg-white/[0.035]
-              dark:text-cyan-400
-
-              dark:group-hover:border-cyan-400/20
-              dark:group-hover:bg-cyan-400/8
-              dark:group-hover:shadow-none
-            "
-          >
-            <i
+            <span
               className="
-                fi fi-rr-arrow-small-right
-                text-[13px]
-                transition-transform
-                duration-300
-                group-hover:translate-x-0.5
-              "
-            />
-          </span>
-        </button>
+      opacity-80
+      transition-opacity
+      duration-300
+      group-hover:opacity-100
+      dark:opacity-40
+      dark:group-hover:opacity-100
+    "
+            >
+              {buttonText}
+            </span>
+
+            <span
+              className="
+      flex
+      size-7
+      items-center
+      justify-center
+      rounded-full
+
+      border border-cyan-200
+      bg-cyan-50
+      text-cyan-700
+
+      transition-all
+      duration-300
+
+      group-hover:border-cyan-300
+      group-hover:bg-cyan-100
+      group-hover:shadow-[0_5px_15px_rgba(6,182,212,0.12)]
+
+      dark:border-white/10
+      dark:bg-white/[0.035]
+      dark:text-cyan-400
+
+      dark:group-hover:border-cyan-400/20
+      dark:group-hover:bg-cyan-400/8
+      dark:group-hover:shadow-none
+    "
+            >
+              <i
+                aria-hidden="true"
+                className="
+        fi fi-rr-arrow-small-right
+        text-[13px]
+        transition-transform
+        duration-300
+        group-hover:translate-x-0.5
+      "
+              />
+            </span>
+          </Link>
+        </div>
       </div>
     </article>
   );
