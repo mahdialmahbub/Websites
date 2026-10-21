@@ -6,23 +6,29 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seo:audit": "node --env-file=.env.local scripts/seo-audit.mjs",
+    "check:links": "node --env-file=.env.local scripts/check-links.mjs",
+    "check:orphans": "node --env-file=.env.local scripts/check-orphans.mjs"
   },
   "dependencies": {
     "framer-motion": "^13.1.0",
     "lenis": "^1.3.26",
     "lucide-react": "^1.34.0",
+    "mongodb": "^7.7.0",
     "next": "16.2.12",
     "react": "19.2.4",
     "react-countup": "^6.5.3",
     "react-dom": "19.2.4",
-    "react-hot-toast": "^2.6.0"
+    "react-hot-toast": "^2.6.0",
+    "sanitize-html": "^2.18.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
+    "node-html-parser": "^9.0.5",
     "tailwindcss": "^4"
   }
 }

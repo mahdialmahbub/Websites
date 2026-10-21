@@ -3,6 +3,7 @@ import Dribbble from "./Dribbble.svg";
 import Facebook from "./Facebook.svg";
 import Whats_App from "./Whats_App.svg";
 import Linkedin from "./Linkedin.svg";
+import Github from "./Github.svg";
 import Twitter from "./Twitter.svg";
 import Gmail from "./Gmail.svg";
 import logo from "./logo.png";
@@ -25,43 +26,6 @@ import figma1 from "./Figma1.svg";
 import illustrator from "./illustrator.svg";
 import photoshop from "./photoshop.svg";
 
-// SCROLL iCONS
-import Accenture_D from "./scrollIcons/Accenture_D.png";
-import Allianz_D from "./scrollIcons/Allianz_D.png";
-import AT_T_D from "./scrollIcons/AT_T_D.png";
-import ICBC_D from "./scrollIcons/ICBC_D.png";
-import JP_Morgan_D from "./scrollIcons/JP_Morgan_D.png";
-import Vuitton_D from "./scrollIcons/Louis_Vuitton_D.png";
-import Lowes_D from "./scrollIcons/Lowes_D.png";
-import Ping_An_D from "./scrollIcons/Ping_An_D.png";
-import SK_Group_D from "./scrollIcons/SK_Group_D.png";
-import Sumitomo_Corporation_D from "./scrollIcons/Sumitomo_Corporation_D.png";
-import Verizon_D from "./scrollIcons/Verizon_D.png";
-import Vodafone_D from "./scrollIcons/Vodafone_D.png";
-import Volkswagen_D from "./scrollIcons/Volkswagen_D.png";
-import Walgreens_D from "./scrollIcons/Walgreens_D.png";
-import Walmart_D from "./scrollIcons/Walmart_D.png";
-import Wells_Fargo_D from "./scrollIcons/Wells_Fargo_D.png";
-import xfinity_D from "./scrollIcons/xfinity_D.png";
-// light
-import Accenture_L from "./scrollIcons/Accenture_L.png";
-import Allianz_L from "./scrollIcons/Allianz_L.png";
-import AT_T_L from "./scrollIcons/AT_T_L.png";
-import ICBC_L from "./scrollIcons/ICBC_L.png";
-import JP_Morgan_L from "./scrollIcons/JP_Morgan_L.png";
-import Vuitton_L from "./scrollIcons/Louis_Vuitton_L.png";
-import Lowes_L from "./scrollIcons/Lowes_L.png";
-import Ping_An_L from "./scrollIcons/Ping_An_L.png";
-import SK_Group_L from "./scrollIcons/SK_Group_L.png";
-import Sumitomo_Corporation_L from "./scrollIcons/Sumitomo_Corporation_L.png";
-import Verizon_L from "./scrollIcons/Verizon_L.png";
-import Vodafone_L from "./scrollIcons/Vodafone_L.png";
-import Volkswagen_L from "./scrollIcons/Volkswagen_L.png";
-import Walgreens_L from "./scrollIcons/Walgreens_L.png";
-import Walmart_L from "./scrollIcons/Walmart_L.png";
-import Wells_Fargo_L from "./scrollIcons/Wells_Fargo_L.png";
-import xfinity_L from "./scrollIcons/xfinity_L.png";
-
 export const assets = {
   logo,
   logo_2,
@@ -83,7 +47,7 @@ export const tools = {
   figma1,
   illustrator,
   photoshop,
-}
+};
 
 export const socialAssets = {
   Behance,
@@ -91,6 +55,7 @@ export const socialAssets = {
   Gmail,
   Facebook,
   Linkedin,
+  Github,
   Twitter,
   Whats_App,
 };
@@ -888,92 +853,58 @@ export const contactPageInfo = {
     "Get access to a team of dedicated product specialists.",
   ],
   contact: [
-    { icon: "fi fi-sr-envelope", value: "mahdi@example.com" },
-    { icon: "fi fi-sr-phone-flip", value: "+880 17359 99190" },
-    { icon: "fi fi-sr-marker", value: "Dhaka, Bangladesh." },
+    { icon: "fi fi-rr-envelope", value: "mahdiallmahbub@gmail.com" },
+    { icon: "fi fi-rr-phone-flip", value: "+880 17359 99190" },
+    { icon: "fi fi-rr-marker", value: "Dhaka, Bangladesh." },
   ],
-  infiniteScrollIcon: {
-    dark: [
-      Accenture_D,
-      Allianz_D,
-      AT_T_D,
-      ICBC_D,
-      JP_Morgan_D,
-      Vuitton_D,
-      Lowes_D,
-      Ping_An_D,
-      SK_Group_D,
-      Sumitomo_Corporation_D,
-      Verizon_D,
-      Vodafone_D,
-      Volkswagen_D,
-      Walgreens_D,
-      Walmart_D,
-      Wells_Fargo_D,
-      xfinity_D,
-    ],
-    light: [
-      Accenture_L,
-      Allianz_L,
-      AT_T_L,
-      ICBC_L,
-      JP_Morgan_L,
-      Vuitton_L,
-      Lowes_L,
-      Ping_An_L,
-      SK_Group_L,
-      Sumitomo_Corporation_L,
-      Verizon_L,
-      Vodafone_L,
-      Volkswagen_L,
-      Walgreens_L,
-      Walmart_L,
-      Wells_Fargo_L,
-      xfinity_L,
-    ],
-  },
   socialLinks: [
     {
       icon: Gmail,
       title: "Gmail",
-      userName: "mahdi@gmail.com",
+      userName: "mahdiallmahbub@gmail.com",
       color: "#FFFFFF",
       blackText: true,
     },
     {
       icon: Whats_App,
       title: "Whats App",
-      userName: "https://www.whatsapp.com/",
+      userName: "https://wa.me/8801735999190",
       color: "#39AE41",
     },
     {
       icon: Linkedin,
-      title: "Linkedin",
-      userName: "https://www.linkedin.com/",
+      title: "LinkedIn",
+      userName: "https://www.linkedin.com/in/mahdi-al-mahbub",
       color: "#0073B1",
+    },
+    {
+      icon: Github,
+      title: "GitHub",
+      userName: "https://github.com/mahdialmahbub",
+      color: "#000000",
     },
     {
       icon: Facebook,
       title: "Facebook",
-      userName: "https://www.facebook.com/",
+      userName: "https://www.facebook.com/mahdi.al.mahbub.webexpert",
       color: "#0165E1",
     },
     {
       icon: Twitter,
-      title: "Twitter",
-      userName: "https://www.twitter.com/",
+      title: "X",
+      userName: "https://x.com/mahdialmahabub",
       color: "#000000",
     },
     {
       icon: Behance,
       title: "Behance",
-      userName: "https://www.behance.com/",
+      userName: "https://www.behance.net/mahdialmahbub",
       color: "#1769FF",
     },
     {
       icon: Dribbble,
       title: "Dribbble",
-      userName: "https://www.dribbble.com/",
+      userName: "https://www.dribbble.com/mahdialmahbub",
       color: "#E94C88",
     },
   ],

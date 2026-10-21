@@ -116,7 +116,7 @@ const TechStack = () => {
             "
           >
             {techStack.map((tech, i) => (
-              <FadeUp as="span" delay={i * 0.2}
+              <FadeUp as="span" delay={i * 0.1}
                 key={tech.name}
                 className="
                   group/item

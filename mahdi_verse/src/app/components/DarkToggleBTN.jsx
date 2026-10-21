@@ -1,16 +1,14 @@
-import { setTheme } from "../actions";
+"use client";
+
+import { applyTheme } from "@/src/lib/applyTheme";
 
 const DarkToggleBTN = () => {
   return (
-    <form
-      action={setTheme}
-      className="flex items-center gap-space-1 justify-center p-space-1 rounded-md bg-secondary-50 border border-secondary-900/10 max-w-max dark:bg-secondary-900/20 dark:border-primary-900/30"
-    >
-      {/* Light button: light mode e active, dark mode e inactive */}
+    <div className="flex items-center gap-space-1 justify-center p-space-1 rounded-md bg-secondary-50 border border-secondary-900/10 max-w-max dark:bg-secondary-900/20 dark:border-primary-900/30">
+      {/* Light button: active in light mode, inactive in dark mode */}
       <button
-        type="submit"
-        name="theme"
-        value="light"
+        type="button"
+        onClick={() => applyTheme("light")}
         aria-label="Light mode"
         className="w-[32px] h-[32px] rounded-sm flex items-center justify-center bg-secondary-500 dark:bg-transparent dark:hover:bg-secondary-500/10"
       >
@@ -22,11 +20,10 @@ const DarkToggleBTN = () => {
         </span>
       </button>
 
-      {/* Dark button: dark mode e active, light mode e inactive */}
+      {/* Dark button: active in dark mode, inactive in light mode */}
       <button
-        type="submit"
-        name="theme"
-        value="dark"
+        type="button"
+        onClick={() => applyTheme("dark")}
         aria-label="Dark mode"
         className="w-[32px] h-[32px] rounded-sm flex items-center justify-center hover:bg-secondary-500/10 dark:bg-secondary-500 dark:hover:bg-secondary-500"
       >
@@ -37,7 +34,7 @@ const DarkToggleBTN = () => {
           <i className="fi fi-sr-moon-stars text-secondary-50"></i>
         </span>
       </button>
-    </form>
+    </div>
   );
 };
 

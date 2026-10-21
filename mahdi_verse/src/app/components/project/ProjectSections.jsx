@@ -10,13 +10,28 @@ import ScrollThanksBanner from "./ScrollThanksBanner";
 import FeedbackCard from "./FeedbackCard";
 import ProjectGallery from "./ProjectGallery";
 
-// "Have a project idea?" button er link. apnar contact page er route diye din
-const CONTACT_HREF = "/contact";
+// NOTE: path-ta tomar folder structure onujayi mile nio
+import FadeUp from "../motions/FadeUp";
+import FadeLeft from "../motions/FadeLeft";
+import FadeRight from "../motions/FadeRight";
 
-const card = "rounded-2xl bg-secondary-50 dark:bg-secondary-500/5";
-const chip =
-  "rounded-full bg-secondary-500/10 px-space-3 py-1 text-xs font-medium text-secondary-500";
 const subHeading = "font-primary text-[20px] font-semibold";
+
+/* ------------------------------------------------------------------ */
+/* Motion settings                                                     */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Pura page-er animation ekhan theke tune kora jay.
+ * Default (28px / 0.7s) theke ektu chhoto + druto — jate subtle lage.
+ */
+const REVEAL = { distance: 20, duration: 0.6 };
+
+/**
+ * Grid item gulor jonno halka stagger (max 0.14s), jate boring o na lage,
+ * abar ekshathe "pop" korei na ashe.
+ */
+const stagger = (index, step = 0.07) => (index % 3) * step;
 
 /**
  * @typedef {{ icon: string, title: string, subtitle: string, duration: string }} JourneyStep
@@ -29,6 +44,7 @@ const TONES = {
     box: "bg-[#E30000]/5",
     border: "border-[#E30000]/10",
     iconColor: "text-[#E30000]",
+    text: "text-[#E30000]",
     dotCover: "bg-[#E30000]/10",
     dot: "bg-[#E30000]",
     icon: "fi fi-rr-problem-solving",
@@ -37,6 +53,7 @@ const TONES = {
     box: "bg-[#00E300]/5",
     border: "border-[#00E300]/10",
     iconColor: "text-[#00E300]",
+    text: "text-[#00E300]",
     dotCover: "bg-[#00E300]/10",
     dot: "bg-[#00E300]",
     icon: "fi fi-rr-lightbulb-on",
@@ -45,6 +62,7 @@ const TONES = {
     box: "bg-[#22D3EE]/5",
     border: "border-[#22D3EE]/10",
     iconColor: "text-[#22D3EE]",
+    text: "text-[#22D3EE]",
     dotCover: "bg-[#22D3EE]/10",
     dot: "bg-[#22D3EE]",
     icon: "fi fi-rr-interactive",
@@ -53,6 +71,7 @@ const TONES = {
     box: "bg-[#6C63FF]/5",
     border: "border-[#6C63FF]/10",
     iconColor: "text-[#6C63FF]",
+    text: "text-[#6C63FF]",
     dotCover: "bg-[#6C63FF]/10",
     dot: "bg-[#6C63FF]",
     icon: "fi fi-rr-lesson",
@@ -67,17 +86,6 @@ const METHOD_COLORS = {
   DELETE: "text-red-400",
 };
 
-// hex dekhe bujhe nei background halka na dark, jate upor-er text porar moto thake (6 digit hex dhore)
-const isLight = (hex = "#000000") => {
-  const n = parseInt(hex.replace("#", ""), 16);
-  const r = (n >> 16) & 255;
-  const g = (n >> 8) & 255;
-  const b = n & 255;
-  return (r * 299 + g * 587 + b * 114) / 1000 > 150;
-};
-
-const isExternal = (href = "") => /^https?:\/\//.test(href);
-
 /* ------------------------------------------------------------------ */
 /* Small building blocks                                               */
 /* ------------------------------------------------------------------ */
@@ -89,7 +97,7 @@ export function SectionIntro({ label, children }) {
       <h4 className="font-primary text-size-lg font-semibold">{label}</h4>
       {children && (
         <p
-          className={`max-w-3xl text-size-base text-placeholder_2 dark:text-placeholder/80 leading-6.25`}
+          className={`w-175 text-size-base text-placeholder_2 dark:text-placeholder/80 leading-6.25`}
         >
           {children}
         </p>
@@ -106,22 +114,26 @@ export function SectionIntro({ label, children }) {
  *   items?: string[],
  *   tone?: "danger" | "success" | "info" | "brand",
  *   icon?: string,
+ *   delay?: number,
  * }} props
  */
-export function ListPanel({ title, items = [], tone = "info", icon }) {
+export function ListPanel({ title, items = [], tone = "info", icon, delay = 0 }) {
   if (!items.length) return null;
   const t = TONES[tone];
 
   return (
-    <section
+    <FadeUp
+      as="section"
+      {...REVEAL}
+      delay={delay}
       className={`relative overflow-hidden rounded-2xl p-space-6 ${t.box} border ${t.border} shadow-[0_1px_4px_rgba(16,24,40,0.10),0_1px_4px_rgba(248,250,252,1)] dark:shadow-none`}
     >
       <h3 className={`mb-space-4 ${subHeading} ${t.text}`}>{title}</h3>
-      <ul className="space-y-space-2 pr-space-10">
+      <ul className="space-y-2.5 max-w-175">
         {items.map((item) => (
-          <li key={item} className={`flex items-start gap-2.5 text-size-base`}>
+          <li key={item} className={`flex items-start gap-2.5 text-size-base max-w-[700px]`}>
             <span
-              className={`size-3 mt-1 ${t.dotCover} rounded-full flex items-center justify-center`}
+              className={`size-3 mt-1.25 ${t.dotCover} rounded-full flex items-center justify-center`}
               aria-hidden="true"
             >
               <span
@@ -135,9 +147,9 @@ export function ListPanel({ title, items = [], tone = "info", icon }) {
       </ul>
       <i
         aria-hidden="true"
-        className={`${icon ?? t.icon} pointer-events-none absolute right-0 bottom-0 text-[100px] opacity-15 ${t.iconColor}`}
+        className={`${icon ?? t.icon} pointer-events-none absolute right-0 bottom-0 text-[100px] opacity-10 ${t.iconColor}`}
       />
-    </section>
+    </FadeUp>
   );
 }
 
@@ -153,9 +165,9 @@ function Terminal({ title, className = "", children }) {
           <span className="block size-3 rounded-full bg-amber-400" />
           <span className="block size-3 rounded-full bg-emerald-400" />
         </span>
-        <span className="font-mono text-xs text-slate-400">{title}</span>
+        <span className="font-mono text-size-sm text-slate-400">{title}</span>
       </div>
-      <div className="p-space-5">{children}</div>
+      <div className="p-space-5 text-size-sm">{children}</div>
     </div>
   );
 }
@@ -166,6 +178,9 @@ function Terminal({ title, className = "", children }) {
 
 /**
  * Top tag bar + switch button + title + description + CTA + image gallery.
+ *
+ * Text bam dik theke (FadeRight), gallery dan dik theke (FadeLeft) eshe
+ * majhkhane milbe — pair kora layout-e ei combo-ta best.
  *
  * @param {{
  *   project: import("../../utils/projectViews").Project,
@@ -187,13 +202,13 @@ export function ProjectHero({ project, view, data, switchTo }) {
       : [{ label: "Case Study", href: data.caseStudyLink }];
 
   return (
-    <header className="flex items-center gap-[18px] ">
-      <div className="w-full">
+    <header className="flex items-center gap-4.5 ">
+      <FadeRight {...REVEAL} className="w-full">
         <h2 className="font-primary text-size-2xl font-semibold">
           {project.title}
         </h2>
         {description && (
-          <p className="max-w-xl text-size-base text-placeholder_2 dark:text-placeholder/80 font-medium mt-space-3">
+          <p className="max-w-xl text-size-base text-placeholder_2 dark:text-placeholder/80 mt-space-3">
             {description}
           </p>
         )}
@@ -202,7 +217,7 @@ export function ProjectHero({ project, view, data, switchTo }) {
             <Chips varient="small" key={i} text={item} />
           ))}
         </ul>
-        <div className="flex flex-wrap gap-space-2 mt-space-7">
+        <div className="flex flex-wrap gap-space-2 mt-space-6">
           {ctas
             .filter((cta) => cta.href)
             .map((cta) => (
@@ -218,10 +233,10 @@ export function ProjectHero({ project, view, data, switchTo }) {
             />
           )}
         </div>
-      </div>
-      <div className="mr-space-3">
+      </FadeRight>
+      <FadeLeft {...REVEAL} delay={0.12} className="mr-space-3">
         <ProjectImageGallery images={project.finalDesign?.images} />
-      </div>
+      </FadeLeft>
     </header>
   );
 }
@@ -235,21 +250,26 @@ export function ProjectOverview({ overview }) {
   if (!overview) return null;
 
   return (
-    <section className="space-y-space-2">
+    <FadeUp as="section" {...REVEAL} className="space-y-space-2">
       <h3 className={subHeading}>{overview.title ?? "Project Overview"}</h3>
       <p className="max-w-4xl text-size-base text-placeholder_2 dark:text-placeholder/80 leading-6.25">
         {overview.description}
       </p>
-    </section>
+    </FadeUp>
   );
 }
 
 /** @param {{ problems?: string[], solutions?: string[] }} props */
 export function ProblemsSolutions({ problems, solutions }) {
   return (
-    <div className="space-y-space-6">
+    <div className="gap-space-6 flex flex-col xl:flex-row *:flex-1">
       <ListPanel title="Problems" items={problems} tone="danger" />
-      <ListPanel title="Solutions" items={solutions} tone="success" />
+      <ListPanel
+        title="Solutions"
+        items={solutions}
+        tone="success"
+        delay={0.1}
+      />
     </div>
   );
 }
@@ -266,11 +286,16 @@ export function JourneySection({
 
   return (
     <section className="space-y-space-7">
-      <SectionIntro label={label}>{intro}</SectionIntro>
-      <ol className="grid gap-space-6 grid-cols-3 p-space-5">
-        {steps.map((step) => (
-          <li
+      <FadeUp {...REVEAL}>
+        <SectionIntro label={label}>{intro}</SectionIntro>
+      </FadeUp>
+      <ol className="grid gap-space-6 grid-cols-2 xl:grid-cols-3">
+        {steps.map((step, index) => (
+          <FadeUp
+            as="li"
             key={step.title}
+            {...REVEAL}
+            delay={stagger(index)}
             className={`p-space-4 rounded-xl border border-primary-500/10 flex flex-col justify-between bg-primary-500/5`}
           >
             <div>
@@ -291,7 +316,7 @@ export function JourneySection({
               </p>
             </div>
             <Chips varient={"small"} text={step.duration} fullWidth />
-          </li>
+          </FadeUp>
         ))}
       </ol>
     </section>
@@ -315,12 +340,15 @@ export function FinalDesignSection({ title, finalDesign, showTools = false }) {
   return (
     <section className="space-y-space-6">
       {/* Section Intro + Tools */}
-      <div className="flex flex-wrap items-start justify-between gap-space-6">
+      <FadeUp
+        {...REVEAL}
+        className="flex items-start justify-between gap-space-8"
+      >
         <SectionIntro label="Final Design">{description}</SectionIntro>
 
         {showTools && tools.length > 0 && (
-          <div className="space-y-space-2">
-            <p className="text-size-sm font-semibold">Tools used</p>
+          <div className="space-y-space-3 flex-1">
+            <p className="text-size-base font-semibold">Tools used</p>
 
             <ul className="flex flex-wrap gap-space-3">
               {tools
@@ -330,18 +358,22 @@ export function FinalDesignSection({ title, finalDesign, showTools = false }) {
                     <Image
                       src={tool.logo}
                       alt={`${tool.name} logo`}
-                      width={28}
-                      height={28}
+                      width={32}
+                      height={32}
                     />
                   </li>
                 ))}
             </ul>
           </div>
         )}
-      </div>
+      </FadeUp>
 
-      {/* Interactive Project Gallery */}
-      {galleryImages.length > 0 && <ProjectGallery images={galleryImages} />}
+      {/* Interactive Project Gallery — boro element, tai amount kom */}
+      {galleryImages.length > 0 && (
+        <FadeUp {...REVEAL} delay={0.1} amount={0.1}>
+          <ProjectGallery images={galleryImages} />
+        </FadeUp>
+      )}
     </section>
   );
 }
@@ -364,21 +396,21 @@ export function FeedbackSection({ intro, client }) {
 
   return (
     <section className="space-y-space-7 pb-space-5">
-      <SectionIntro label="Feedback">{intro}</SectionIntro>
+      <FadeUp {...REVEAL}>
+        <SectionIntro label="Feedback">{intro}</SectionIntro>
+      </FadeUp>
 
       <div className="mx-auto max-w-3xl space-y-space-3">
         {feedback.map((item, index) => (
-          <FeedbackCard
-            key={item.id ?? `${item.comment}-${index}`}
-            client={client}
-            feedback={item}
-          />
+          <FadeUp key={item.id ?? `${item.comment}-${index}`} {...REVEAL}>
+            <FeedbackCard client={client} feedback={item} />
+          </FadeUp>
         ))}
       </div>
     </section>
   );
 }
-/** Sobar shesh e "Thank you for scrolling" box. */
+/** Sobar shesh e "Thank you for scrolling" box. (ScrollThanksBanner nijer animation handle kore, tai ekhane wrap kora hoyni) */
 export function ProjectCTA() {
   return (
     <section>
@@ -394,14 +426,14 @@ export function ProjectCTA() {
 /** @param {{ label?: string, colors: NamedColor[] }} props */
 function SwatchRow({ label, colors }) {
   return (
-    <div className="space-y-space-3">
+    <FadeUp {...REVEAL} className="space-y-space-3">
       {label && <h4 className={subHeading}>{label}</h4>}
 
       <ul className="flex *:flex-1 rounded-full">
         {colors.map(({ name, code }, index) => (
           <li key={name} className="space-y-space-2 text-center">
             <span
-              className={`flex h-[74px] items-center justify-center border border-black/10 ${
+              className={`flex h-18.5 items-center justify-center border border-black/10 ${
                 index === 0
                   ? "rounded-l-full"
                   : index === colors.length - 1
@@ -417,7 +449,7 @@ function SwatchRow({ label, colors }) {
           </li>
         ))}
       </ul>
-    </div>
+    </FadeUp>
   );
 }
 
@@ -435,11 +467,19 @@ export function ColorsSection({ colors }) {
 
   return (
     <section className="space-y-space-10">
-      <SectionIntro label="Colors">{description}</SectionIntro>
+      <FadeUp {...REVEAL}>
+        <SectionIntro label="Colors">{description}</SectionIntro>
+      </FadeUp>
 
       <div className="flex flex-wrap justify-center gap-space-10">
-        {Object.entries(shades).map(([name, list]) => (
-          <figure key={name} className="flex flex-col items-center gap-7.5">
+        {Object.entries(shades).map(([name, list], index) => (
+          <FadeUp
+            as="figure"
+            key={name}
+            {...REVEAL}
+            delay={stagger(index)}
+            className="flex flex-col items-center gap-7.5"
+          >
             <ul className="flex">
               {list.map((hex) => (
                 <li
@@ -453,7 +493,7 @@ export function ColorsSection({ colors }) {
             <figcaption className="text-xs font-medium capitalize">
               <Chips text={name} varient={"small"} />
             </figcaption>
-          </figure>
+          </FadeUp>
         ))}
       </div>
 
@@ -473,7 +513,12 @@ export function SpacingSection({ spacing }) {
   if (!spacing?.scale?.length) return null;
 
   return (
-    <section className="space-y-space-7">
+    <FadeUp
+      as="section"
+      {...REVEAL}
+      amount={0.15}
+      className="space-y-space-7"
+    >
       <SectionIntro label="Spacing">{spacing.description}</SectionIntro>
       <ul className="grid gap-x-space-10 gap-y-space-3 sm:grid-cols-2 lg:grid-cols-3">
         {spacing.scale.map(({ name, value }) => (
@@ -493,7 +538,7 @@ export function SpacingSection({ spacing }) {
           </li>
         ))}
       </ul>
-    </section>
+    </FadeUp>
   );
 }
 
@@ -508,8 +553,17 @@ export function TypographySection({ intro, fonts = [] }) {
 
   return (
     <section className="space-y-space-7">
-      <SectionIntro label="Typography">{intro}</SectionIntro>
-      <ul className="grid gap-space-6 md:grid-cols-2">
+      <FadeUp {...REVEAL}>
+        <SectionIntro label="Typography">{intro}</SectionIntro>
+      </FadeUp>
+      {/* TypographyCard nijei <li> render kore, tai card-e na diye pura grid-ta ek shathe animate kora hoyeche */}
+      <FadeUp
+        as="ul"
+        {...REVEAL}
+        delay={0.08}
+        amount={0.15}
+        className="grid gap-space-6 md:grid-cols-2"
+      >
         {fonts.map(({ fontName, usedFor, weights = [] }) => {
           const fontFamily = `"${fontName}", sans-serif`;
           return (
@@ -521,7 +575,7 @@ export function TypographySection({ intro, fonts = [] }) {
             />
           );
         })}
-      </ul>
+      </FadeUp>
     </section>
   );
 }
@@ -539,12 +593,16 @@ export function StackSection({ intro, stack = [] }) {
 
   return (
     <section className="space-y-space-7">
-      <SectionIntro label="Stack">{intro}</SectionIntro>
+      <FadeUp {...REVEAL}>
+        <SectionIntro label="Stack">{intro}</SectionIntro>
+      </FadeUp>
 
       <div className="grid gap-7 grid-cols-2">
-        {stack.map(({ title, items }) => (
-          <div
+        {stack.map(({ title, items }, index) => (
+          <FadeUp
             key={title}
+            {...REVEAL}
+            delay={stagger(index)}
             className="
               w-full rounded-2xl
               border-2 border-secondary-500
@@ -571,7 +629,7 @@ export function StackSection({ intro, stack = [] }) {
                 </li>
               ))}
             </ul>
-          </div>
+          </FadeUp>
         ))}
       </div>
     </section>
@@ -587,10 +645,15 @@ export function ApiRoutesSection({ intro, routes = [] }) {
   if (!routes.length) return null;
 
   return (
-    <section className="space-y-space-8">
+    <FadeUp
+      as="section"
+      {...REVEAL}
+      amount={0.15}
+      className="space-y-space-8"
+    >
       <SectionIntro label="API Routes">{intro}</SectionIntro>
       <Terminal title="api / routes">
-        <ul className="space-y-space-3 font-mono text-xs">
+        <ul className="space-y-space-3 font-mono">
           {routes.map(({ method, path, note }) => (
             <li
               key={`${method}-${path}`}
@@ -607,7 +670,7 @@ export function ApiRoutesSection({ intro, routes = [] }) {
           ))}
         </ul>
       </Terminal>
-    </section>
+    </FadeUp>
   );
 }
 
@@ -622,21 +685,25 @@ export function DataModelSection({ intro, collections = [] }) {
 
   return (
     <section className="space-y-space-8">
-      <SectionIntro label="Data model">{intro}</SectionIntro>
+      <FadeUp {...REVEAL}>
+        <SectionIntro label="Data model">{intro}</SectionIntro>
+      </FadeUp>
       <div className="grid gap-space-6 sm:grid-cols-2">
-        {collections.map(({ name, fields = [] }) => (
-          <Terminal key={name} title={name}>
-            <ul className="flex flex-wrap gap-space-3">
-              {fields.map((field) => (
-                <li
-                  key={field}
-                  className="rounded-full bg-white/10 px-space-3 py-1 font-mono text-xs"
-                >
-                  {field}
-                </li>
-              ))}
-            </ul>
-          </Terminal>
+        {collections.map(({ name, fields = [] }, index) => (
+          <FadeUp key={name} {...REVEAL} delay={stagger(index)}>
+            <Terminal title={name} className="h-full">
+              <ul className="flex flex-wrap gap-space-3">
+                {fields.map((field) => (
+                  <li
+                    key={field}
+                    className="rounded-full bg-white/10 px-space-3 py-1 font-mono text-xs"
+                  >
+                    {field}
+                  </li>
+                ))}
+              </ul>
+            </Terminal>
+          </FadeUp>
         ))}
       </div>
     </section>

@@ -63,8 +63,9 @@ const StatsSection = async () => {
               className="
                 mt-3
                 font-primary
-                text-size-sm
+                text-size-base
                 font-medium
+                
                 text-placeholder
                 dark:text-placeholder_2
               "

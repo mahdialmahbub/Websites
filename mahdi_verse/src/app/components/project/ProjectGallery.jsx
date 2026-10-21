@@ -45,10 +45,10 @@ const ProjectGallery = ({ images = [] }) => {
       <div
         className="
     grid grid-cols-2 gap-space-7
-    auto-rows-[160px]
-    sm:auto-rows-[200px]
-    md:grid-cols-3 md:auto-rows-[220px]
-    xl:auto-rows-[260px]
+    auto-rows-40
+    sm:auto-rows-50
+    md:grid-cols-3 md:auto-rows-55
+    xl:auto-rows-65
   "
       >
         {images.map((item, i) => (

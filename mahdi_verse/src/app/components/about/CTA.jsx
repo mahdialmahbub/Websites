@@ -45,11 +45,10 @@ const ContactCTA = () => {
             className="
               mb-6
               mt-2
-              max-w-125
-              text-sm
+              text-base
               leading-6
-              text-slate-500
-              sm:text-[15px]
+              text-placeholder/90
+              dark:text-placeholder_2/90
             "
           >
             Tell me what you&apos;re building — I&apos;ll get back to you within
@@ -62,43 +61,6 @@ const ContactCTA = () => {
           </Link>
 
           {/* Contact links */}
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-x-7 gap-y-3">
-            {contactLinks.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                target={item.href.startsWith("http") ? "_blank" : undefined}
-                rel={
-                  item.href.startsWith("http")
-                    ? "noopener noreferrer"
-                    : undefined
-                }
-                className="
-                  relative
-                  text-size-xs_2
-                  font-medium
-                  text-slate-500
-
-                  transition-colors
-                  duration-200
-
-                  hover:text-cyan-400
-
-                  after:absolute
-                  after:-bottom-1
-                  after:left-0
-                  after:h-px
-                  after:w-0
-                  after:bg-cyan-400
-                  after:transition-all
-                  after:duration-300
-                  hover:after:w-full
-                "
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
         </div>
       </div>
     </FadeUp>

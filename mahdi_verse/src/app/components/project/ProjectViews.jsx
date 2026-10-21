@@ -29,15 +29,20 @@ import {
  */
 export function DesignView({ project, data, switchTo }) {
   return (
-    <div className="space-y-space-11 p-space-6 bg-secondary-50 dark:bg-background rounded-2xl">
+    <div className="space-y-space-12 p-space-6 bg-secondary-50 dark:bg-background rounded-2xl">
       <ProjectHero
         project={project}
         view="design"
         data={data}
         switchTo={switchTo}
       />
-      <ProjectOverview overview={data.overview} />
-      <ProblemsSolutions problems={data.problems} solutions={data.solutions} />
+      <div className="space-y-space-8">
+        <ProjectOverview overview={data.overview} />
+        <ProblemsSolutions
+          problems={data.problems}
+          solutions={data.solutions}
+        />
+      </div>
       <JourneySection intro={data.journeyIntro} steps={data.journey} />
       <ListPanel
         title="Interactive Features"

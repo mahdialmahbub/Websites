@@ -4,6 +4,9 @@ import FadeUp from "../components/motions/FadeUp";
 import FadeLeft from "../components/motions/FadeLeft";
 import FadeRight from "../components/motions/FadeRight";
 import WorkflowCard from "../components/workFlow/WorkflowCard";
+import JsonLd from "../components/JsonLd";
+import { buildMetadata } from "../utils/buildMetadata";
+import { workflowPageSchema } from "../utils/schema";
 
 // URL: ?workflow=ui-ux-design  ba  ?workflow=web-development
 // Notun workflow lagle shudhu ekhane ekta entry add korlei switch button o ashe jabe
@@ -13,15 +16,15 @@ const WORKFLOWS = {
     icon: "fi fi-rr-website-design",
     title: "My UI/UX Design Process",
     description:
-      "I'm a UI/UX and Product Designer who creates user-centered websites that balance great design with real business goals.",
+      "From research and wireframes to polished prototypes, every design decision is made around your users.",
     steps: UIUXWorkflow,
   },
-  "web-development": {
-    label: "Web Development",
+  development: {
+    label: "Development",
     icon: "fi fi-rr-code-window",
-    title: "My Web Development Process",
+    title: "My Development Process",
     description:
-      "I build fast, scalable full-stack websites with the MERN stack, taking every project from database design to a polished, deployed product.",
+      "From planning and architecture to deployment, a structured process for building fast, scalable MERN applications.",
     steps: MERNStackWorkflow,
   },
 };
@@ -36,7 +39,9 @@ const getActiveKey = (value) =>
 export async function generateMetadata({ searchParams }) {
   const { workflow } = await searchParams;
   const { title, description } = WORKFLOWS[getActiveKey(workflow)];
-  return { title, description };
+
+  // Canonical is always /workflow (buildMetadata removes the query string)
+  return buildMetadata({ title, description, path: "/workflow" });
 }
 
 /** @param {{ searchParams: Promise<{ workflow?: string }> }} props */
@@ -44,58 +49,68 @@ export default async function Page({ searchParams }) {
   const { workflow } = await searchParams;
   const activeKey = getActiveKey(workflow);
   const active = WORKFLOWS[activeKey];
+  const steps = active.steps ?? [];
 
   return (
-    <section>
-      <div className="flex items-center justify-between gap-space-4">
-        <div>
-          <FadeLeft>
-            <h1 className="font-primary text-size-xl font-semibold">
-              {active.title}
-            </h1>
-          </FadeLeft>
-          <FadeLeft delay={0.1}>
-            <p className="font-medium text-size-base text-placeholder_2 dark:text-placeholder mt-space-2">
-              {active.description}
-            </p>
-          </FadeLeft>
+    <>
+      {/* Only the process that is visible on the page goes into the schema */}
+      <JsonLd
+        data={workflowPageSchema([
+          { name: active.title, description: active.description, steps },
+        ])}
+      />
+
+      <section>
+        <div className="flex items-center justify-between gap-space-4">
+          <div>
+            <FadeLeft>
+              <h1 className="font-primary text-size-xl font-semibold">
+                {active.title}
+              </h1>
+            </FadeLeft>
+            <FadeLeft delay={0.1}>
+              <p className="text-size-base text-placeholder_2 dark:text-placeholder mt-space-2">
+                {active.description}
+              </p>
+            </FadeLeft>
+          </div>
+
+          {/* workflow switch: Link based, tai page server e render hoy */}
+          <FadeRight
+            delay={0.1}
+            className="p-space-3 bg-secondary-50 flex gap-space-3 dark:bg-secondary-500/10 rounded-lg *:w-40"
+          >
+            {Object.entries(WORKFLOWS).map(([key, { label, icon }]) => (
+              <SwitchBTN
+                key={key}
+                text={label}
+                icon={icon}
+                href={`?workflow=${key}`}
+                isActive={key === activeKey}
+              />
+            ))}
+          </FadeRight>
         </div>
 
-        {/* workflow switch: Link based, tai page server e render hoy */}
-        <FadeRight
-          delay={0.1}
-          className="p-space-3 bg-secondary-50 flex flex-col gap-space-3 dark:bg-secondary-500/10 rounded-lg"
-        >
-          {Object.entries(WORKFLOWS).map(([key, { label, icon }]) => (
-            <SwitchBTN
-              key={key}
-              text={label}
-              icon={icon}
-              href={`?workflow=${key}`}
-              isActive={key === activeKey}
-            />
+        <div className="h-0.5 w-full rounded-full opacity-5 bg-placeholder mt-space-7 mb-space-7"></div>
+
+        <div className="flex flex-col gap-space-6">
+          {steps.map((item, index) => (
+            // key te workflow er nam dewa hoyeche, jate switch korle entrance animation abar cholay
+            <FadeUp key={`${activeKey}-${item.id ?? index}`}>
+              <WorkflowCard
+                phaseNumber={item.phaseNumber}
+                phaseLabel={item.phaseLabel}
+                icon={item.icon}
+                title={item.title}
+                tagline={item.tagline}
+                description={item.description}
+                points={item.points ?? []}
+              />
+            </FadeUp>
           ))}
-        </FadeRight>
-      </div>
-
-      <div className="h-0.5 w-full rounded-full opacity-5 bg-placeholder mt-space-7 mb-space-7"></div>
-
-      <div className="flex flex-col gap-space-6">
-        {(active.steps ?? []).map((item) => (
-          // key te workflow er nam dewa hoyeche, jate switch korle entrance animation abar cholay
-          <FadeUp key={`${activeKey}-${item.id}`}>
-            <WorkflowCard
-              phaseNumber={item.phaseNumber}
-              phaseLabel={item.phaseLabel}
-              icon={item.icon}
-              title={item.title}
-              tagline={item.tagline}
-              description={item.description}
-              points={item.points ?? []}
-            />
-          </FadeUp>
-        ))}
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 }

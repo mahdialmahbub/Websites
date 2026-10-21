@@ -43,15 +43,105 @@ const photoshop = { name: "Photoshop", logo: tools.photoshop };
 
 // ---------- Shared 9-step color ramps (light -> dark) ----------
 const palette = {
-  orange: ["#FFF7ED", "#FFEDD5", "#FED7AA", "#FDBA74", "#FB923C", "#F97316", "#EA580C", "#C2410C", "#7C2D12"],
-  slate: ["#F8FAFC", "#F1F5F9", "#E2E8F0", "#CBD5E1", "#94A3B8", "#64748B", "#475569", "#334155", "#0F172A"],
-  amber: ["#FFFBEB", "#FEF3C7", "#FDE68A", "#FCD34D", "#FBBF24", "#F59E0B", "#D97706", "#B45309", "#78350F"],
-  stone: ["#FAFAF9", "#F5F5F4", "#E7E5E4", "#D6D3D1", "#A8A29E", "#78716C", "#57534E", "#44403C", "#1C1917"],
-  blue: ["#EFF6FF", "#DBEAFE", "#BFDBFE", "#93C5FD", "#60A5FA", "#3B82F6", "#2563EB", "#1D4ED8", "#1E3A8A"],
-  violet: ["#F5F3FF", "#EDE9FE", "#DDD6FE", "#C4B5FD", "#A78BFA", "#8B5CF6", "#7C3AED", "#6D28D9", "#4C1D95"],
-  emerald: ["#ECFDF5", "#D1FAE5", "#A7F3D0", "#6EE7B7", "#34D399", "#10B981", "#059669", "#047857", "#064E3B"],
-  sky: ["#F0F9FF", "#E0F2FE", "#BAE6FD", "#7DD3FC", "#38BDF8", "#0EA5E9", "#0284C7", "#0369A1", "#0C4A6E"],
-  green: ["#F0FDF4", "#DCFCE7", "#BBF7D0", "#86EFAC", "#4ADE80", "#22C55E", "#16A34A", "#15803D", "#14532D"],
+  orange: [
+    "#FFF7ED",
+    "#FFEDD5",
+    "#FED7AA",
+    "#FDBA74",
+    "#FB923C",
+    "#F97316",
+    "#EA580C",
+    "#C2410C",
+    "#7C2D12",
+  ],
+  slate: [
+    "#F8FAFC",
+    "#F1F5F9",
+    "#E2E8F0",
+    "#CBD5E1",
+    "#94A3B8",
+    "#64748B",
+    "#475569",
+    "#334155",
+    "#0F172A",
+  ],
+  amber: [
+    "#FFFBEB",
+    "#FEF3C7",
+    "#FDE68A",
+    "#FCD34D",
+    "#FBBF24",
+    "#F59E0B",
+    "#D97706",
+    "#B45309",
+    "#78350F",
+  ],
+  stone: [
+    "#FAFAF9",
+    "#F5F5F4",
+    "#E7E5E4",
+    "#D6D3D1",
+    "#A8A29E",
+    "#78716C",
+    "#57534E",
+    "#44403C",
+    "#1C1917",
+  ],
+  blue: [
+    "#EFF6FF",
+    "#DBEAFE",
+    "#BFDBFE",
+    "#93C5FD",
+    "#60A5FA",
+    "#3B82F6",
+    "#2563EB",
+    "#1D4ED8",
+    "#1E3A8A",
+  ],
+  violet: [
+    "#F5F3FF",
+    "#EDE9FE",
+    "#DDD6FE",
+    "#C4B5FD",
+    "#A78BFA",
+    "#8B5CF6",
+    "#7C3AED",
+    "#6D28D9",
+    "#4C1D95",
+  ],
+  emerald: [
+    "#ECFDF5",
+    "#D1FAE5",
+    "#A7F3D0",
+    "#6EE7B7",
+    "#34D399",
+    "#10B981",
+    "#059669",
+    "#047857",
+    "#064E3B",
+  ],
+  sky: [
+    "#F0F9FF",
+    "#E0F2FE",
+    "#BAE6FD",
+    "#7DD3FC",
+    "#38BDF8",
+    "#0EA5E9",
+    "#0284C7",
+    "#0369A1",
+    "#0C4A6E",
+  ],
+  green: [
+    "#F0FDF4",
+    "#DCFCE7",
+    "#BBF7D0",
+    "#86EFAC",
+    "#4ADE80",
+    "#22C55E",
+    "#16A34A",
+    "#15803D",
+    "#14532D",
+  ],
 };
 
 // ---------- Shared 4/8pt spacing scale (p1 chara baki design view gulo use kore) ----------
@@ -355,7 +445,14 @@ const rawProjects = [
         { title: "Database", items: ["MongoDB", "Mongoose"] },
         {
           title: "Tools & Services",
-          items: ["Stripe", "Cloudinary", "Postman", "Docker", "Vercel", "Render"],
+          items: [
+            "Stripe",
+            "Cloudinary",
+            "Postman",
+            "Docker",
+            "Vercel",
+            "Render",
+          ],
         },
       ],
 
@@ -458,7 +555,13 @@ const rawProjects = [
         },
         {
           name: "Order",
-          fields: ["user", "items[]", "shippingAddress", "status", "stripeSessionId"],
+          fields: [
+            "user",
+            "items[]",
+            "shippingAddress",
+            "status",
+            "stripeSessionId",
+          ],
         },
         {
           name: "Review",
@@ -501,7 +604,10 @@ const rawProjects = [
       description:
         "A motivating, easy-to-scan mobile interface that brings workout planning, progress tracking and daily goals together in one calm yet energetic experience.",
       tools: [figma, illustrator],
-      coverImage: { src: pic("fitpulse-1"), alt: "FitPulse app home screen preview" },
+      coverImage: {
+        src: pic("fitpulse-1"),
+        alt: "FitPulse app home screen preview",
+      },
       images: shots("fitpulse", [
         "FitPulse app home screen preview",
         "Goal-based onboarding screens",
@@ -626,8 +732,16 @@ const rawProjects = [
       typographyIntro:
         "Rounded, friendly headings paired with a clean body font to keep numbers and instructions easy to read at a glance.",
       typography: [
-        { fontName: "Poppins", usedFor: "Title", weights: ["Medium", "Semi Bold", "Bold"] },
-        { fontName: "Inter", usedFor: "Body", weights: ["Regular", "Medium", "Semi Bold"] },
+        {
+          fontName: "Poppins",
+          usedFor: "Title",
+          weights: ["Medium", "Semi Bold", "Bold"],
+        },
+        {
+          fontName: "Inter",
+          usedFor: "Body",
+          weights: ["Regular", "Medium", "Semi Bold"],
+        },
       ],
 
       learningsTitle: "What I learned from this project",
@@ -653,7 +767,10 @@ const rawProjects = [
       description:
         "The deployed platform: a clean patient booking flow, a live queue display, and a staff dashboard built for busy hospital front desks.",
       tools: [],
-      coverImage: { src: pic("mediqueue-1"), alt: "MediQueue booking dashboard preview" },
+      coverImage: {
+        src: pic("mediqueue-1"),
+        alt: "MediQueue booking dashboard preview",
+      },
       images: shots("mediqueue", [
         "MediQueue booking dashboard preview",
         "Doctor directory and search page",
@@ -711,7 +828,13 @@ const rawProjects = [
       stack: [
         {
           title: "Frontend",
-          items: ["Next.js", "React", "Tailwind CSS", "Zustand", "React Hook Form"],
+          items: [
+            "Next.js",
+            "React",
+            "Tailwind CSS",
+            "Zustand",
+            "React Hook Form",
+          ],
         },
         {
           title: "Backend",
@@ -783,11 +906,31 @@ const rawProjects = [
       apiIntro:
         "Resource-based REST endpoints plus a WebSocket channel for queue updates, protected by role checks.",
       apiRoutes: [
-        { method: "POST", path: "/api/auth/login", note: "Verify credentials and issue a JWT" },
-        { method: "GET", path: "/api/doctors", note: "List doctors with department and availability filters" },
-        { method: "POST", path: "/api/appointments", note: "Reserve a slot and start the payment session" },
-        { method: "PATCH", path: "/api/queue/:id/next", note: "Staff only: call the next patient and broadcast the update" },
-        { method: "GET", path: "/api/reports/daily", note: "Admin only: appointments, wait times and revenue for the day" },
+        {
+          method: "POST",
+          path: "/api/auth/login",
+          note: "Verify credentials and issue a JWT",
+        },
+        {
+          method: "GET",
+          path: "/api/doctors",
+          note: "List doctors with department and availability filters",
+        },
+        {
+          method: "POST",
+          path: "/api/appointments",
+          note: "Reserve a slot and start the payment session",
+        },
+        {
+          method: "PATCH",
+          path: "/api/queue/:id/next",
+          note: "Staff only: call the next patient and broadcast the update",
+        },
+        {
+          method: "GET",
+          path: "/api/reports/daily",
+          note: "Admin only: appointments, wait times and revenue for the day",
+        },
       ],
 
       dataModelIntro:
@@ -795,8 +938,14 @@ const rawProjects = [
       dataModel: [
         { name: "User", fields: ["name", "phone", "passwordHash", "role"] },
         { name: "Doctor", fields: ["user", "department", "schedule[]", "fee"] },
-        { name: "Appointment", fields: ["patient", "doctor", "slotTime", "status", "paymentRef"] },
-        { name: "QueueEntry", fields: ["appointment", "token", "position", "calledAt"] },
+        {
+          name: "Appointment",
+          fields: ["patient", "doctor", "slotTime", "status", "paymentRef"],
+        },
+        {
+          name: "QueueEntry",
+          fields: ["appointment", "token", "position", "calledAt"],
+        },
       ],
 
       performance: [
@@ -834,7 +983,10 @@ const rawProjects = [
       description:
         "A warm, editorial storefront that guides customers from discovering beans to managing recurring deliveries with almost no friction.",
       tools: [figma, photoshop],
-      coverImage: { src: pic("brewnest-1"), alt: "BrewNest storefront homepage preview" },
+      coverImage: {
+        src: pic("brewnest-1"),
+        alt: "BrewNest storefront homepage preview",
+      },
       images: shots("brewnest", [
         "BrewNest storefront homepage preview",
         "Coffee taste quiz screens",
@@ -959,8 +1111,16 @@ const rawProjects = [
       typographyIntro:
         "An elegant serif for headlines gives the brand character, while a clean sans-serif keeps product details and checkout easy to read.",
       typography: [
-        { fontName: "Playfair Display", usedFor: "Title", weights: ["Regular", "Medium", "Semi Bold", "Bold"] },
-        { fontName: "DM Sans", usedFor: "Body", weights: ["Regular", "Medium", "Bold"] },
+        {
+          fontName: "Playfair Display",
+          usedFor: "Title",
+          weights: ["Regular", "Medium", "Semi Bold", "Bold"],
+        },
+        {
+          fontName: "DM Sans",
+          usedFor: "Body",
+          weights: ["Regular", "Medium", "Bold"],
+        },
       ],
 
       learningsTitle: "What I learned from this project",
@@ -1002,16 +1162,35 @@ const rawProjects = [
       stack: [
         {
           title: "Frontend",
-          items: ["Next.js", "React", "Tailwind CSS", "Framer Motion", "React Hook Form"],
+          items: [
+            "Next.js",
+            "React",
+            "Tailwind CSS",
+            "Framer Motion",
+            "React Hook Form",
+          ],
         },
         {
           title: "Backend",
-          items: ["Node.js", "Express.js", "JWT", "Stripe Webhooks", "Nodemailer"],
+          items: [
+            "Node.js",
+            "Express.js",
+            "JWT",
+            "Stripe Webhooks",
+            "Nodemailer",
+          ],
         },
         { title: "Database", items: ["MongoDB", "Mongoose"] },
         {
           title: "Tools & Services",
-          items: ["Stripe Billing", "Cloudinary", "Postman", "Docker", "Vercel", "Render"],
+          items: [
+            "Stripe Billing",
+            "Cloudinary",
+            "Postman",
+            "Docker",
+            "Vercel",
+            "Render",
+          ],
         },
       ],
 
@@ -1074,20 +1253,65 @@ const rawProjects = [
       apiIntro:
         "REST endpoints grouped by resource, with Stripe webhooks keeping subscription state in sync.",
       apiRoutes: [
-        { method: "GET", path: "/api/products", note: "List beans with roast, origin and availability filters" },
-        { method: "POST", path: "/api/subscriptions", note: "Create a subscription and open a Stripe session" },
-        { method: "PATCH", path: "/api/subscriptions/:id", note: "Pause, skip or swap beans for the next delivery" },
-        { method: "POST", path: "/api/webhooks/stripe", note: "Handle renewals, failed payments and cancellations" },
-        { method: "POST", path: "/api/admin/drops", note: "Admin only: schedule a limited product drop" },
+        {
+          method: "GET",
+          path: "/api/products",
+          note: "List beans with roast, origin and availability filters",
+        },
+        {
+          method: "POST",
+          path: "/api/subscriptions",
+          note: "Create a subscription and open a Stripe session",
+        },
+        {
+          method: "PATCH",
+          path: "/api/subscriptions/:id",
+          note: "Pause, skip or swap beans for the next delivery",
+        },
+        {
+          method: "POST",
+          path: "/api/webhooks/stripe",
+          note: "Handle renewals, failed payments and cancellations",
+        },
+        {
+          method: "POST",
+          path: "/api/admin/drops",
+          note: "Admin only: schedule a limited product drop",
+        },
       ],
 
       dataModelIntro:
         "Four core collections. Subscription state mirrors Stripe, so the webhook is the single source of truth for billing.",
       dataModel: [
-        { name: "User", fields: ["name", "email", "passwordHash", "role", "address"] },
-        { name: "Product", fields: ["title", "roast", "origin", "price", "stock", "images[]"] },
-        { name: "Subscription", fields: ["user", "product", "interval", "nextDelivery", "status", "stripeSubId"] },
-        { name: "Order", fields: ["user", "items[]", "shippingAddress", "status", "stripeSessionId"] },
+        {
+          name: "User",
+          fields: ["name", "email", "passwordHash", "role", "address"],
+        },
+        {
+          name: "Product",
+          fields: ["title", "roast", "origin", "price", "stock", "images[]"],
+        },
+        {
+          name: "Subscription",
+          fields: [
+            "user",
+            "product",
+            "interval",
+            "nextDelivery",
+            "status",
+            "stripeSubId",
+          ],
+        },
+        {
+          name: "Order",
+          fields: [
+            "user",
+            "items[]",
+            "shippingAddress",
+            "status",
+            "stripeSessionId",
+          ],
+        },
       ],
 
       performance: [
@@ -1126,7 +1350,10 @@ const rawProjects = [
       description:
         "A focused, distraction-free learning interface that keeps lessons, progress and next steps clear on every device.",
       tools: [figma, illustrator],
-      coverImage: { src: pic("learnloop-1"), alt: "LearnLoop course dashboard preview" },
+      coverImage: {
+        src: pic("learnloop-1"),
+        alt: "LearnLoop course dashboard preview",
+      },
       images: shots("learnloop", [
         "LearnLoop course dashboard preview",
         "Course catalog and search page",
@@ -1251,8 +1478,16 @@ const rawProjects = [
       typographyIntro:
         "A modern geometric headline font with a highly readable body font for long lessons and quiz questions.",
       typography: [
-        { fontName: "Plus Jakarta Sans", usedFor: "Title", weights: ["Medium", "Semi Bold", "Bold"] },
-        { fontName: "Inter", usedFor: "Body", weights: ["Regular", "Medium", "Semi Bold"] },
+        {
+          fontName: "Plus Jakarta Sans",
+          usedFor: "Title",
+          weights: ["Medium", "Semi Bold", "Bold"],
+        },
+        {
+          fontName: "Inter",
+          usedFor: "Body",
+          weights: ["Regular", "Medium", "Semi Bold"],
+        },
       ],
 
       learningsTitle: "What I learned from this project",
@@ -1294,7 +1529,13 @@ const rawProjects = [
       stack: [
         {
           title: "Frontend",
-          items: ["React", "Redux Toolkit", "Tailwind CSS", "React Router", "Video.js"],
+          items: [
+            "React",
+            "Redux Toolkit",
+            "Tailwind CSS",
+            "React Router",
+            "Video.js",
+          ],
         },
         {
           title: "Backend",
@@ -1303,7 +1544,14 @@ const rawProjects = [
         { title: "Database", items: ["MongoDB", "Mongoose", "Redis"] },
         {
           title: "Tools & Services",
-          items: ["SSLCommerz", "AWS S3", "Postman", "Docker", "Vercel", "Render"],
+          items: [
+            "SSLCommerz",
+            "AWS S3",
+            "Postman",
+            "Docker",
+            "Vercel",
+            "Render",
+          ],
         },
       ],
 
@@ -1366,20 +1614,49 @@ const rawProjects = [
       apiIntro:
         "REST endpoints for courses, enrollments and progress, with instructor and student roles checked at the route level.",
       apiRoutes: [
-        { method: "POST", path: "/api/auth/login", note: "Verify credentials and issue access tokens" },
-        { method: "GET", path: "/api/courses", note: "List courses with category, level and price filters" },
-        { method: "POST", path: "/api/courses/:id/enroll", note: "Create an enrollment and start the payment session" },
-        { method: "PUT", path: "/api/lessons/:id/progress", note: "Save the learner's playback position and completion" },
-        { method: "POST", path: "/api/quizzes/:id/submit", note: "Grade answers and update course completion" },
+        {
+          method: "POST",
+          path: "/api/auth/login",
+          note: "Verify credentials and issue access tokens",
+        },
+        {
+          method: "GET",
+          path: "/api/courses",
+          note: "List courses with category, level and price filters",
+        },
+        {
+          method: "POST",
+          path: "/api/courses/:id/enroll",
+          note: "Create an enrollment and start the payment session",
+        },
+        {
+          method: "PUT",
+          path: "/api/lessons/:id/progress",
+          note: "Save the learner's playback position and completion",
+        },
+        {
+          method: "POST",
+          path: "/api/quizzes/:id/submit",
+          note: "Grade answers and update course completion",
+        },
       ],
 
       dataModelIntro:
         "Four core collections. Sections and lessons are embedded in Course because they are always loaded with it.",
       dataModel: [
         { name: "User", fields: ["name", "email", "passwordHash", "role"] },
-        { name: "Course", fields: ["title", "instructor", "price", "sections[]", "level"] },
-        { name: "Enrollment", fields: ["user", "course", "progress", "completedAt", "paymentRef"] },
-        { name: "Quiz", fields: ["course", "questions[]", "passMark", "attempts[]"] },
+        {
+          name: "Course",
+          fields: ["title", "instructor", "price", "sections[]", "level"],
+        },
+        {
+          name: "Enrollment",
+          fields: ["user", "course", "progress", "completedAt", "paymentRef"],
+        },
+        {
+          name: "Quiz",
+          fields: ["course", "questions[]", "passMark", "attempts[]"],
+        },
       ],
 
       performance: [
@@ -1417,7 +1694,10 @@ const rawProjects = [
       description:
         "A trustworthy, data-clear dashboard that makes complex personal finance simple enough to understand in seconds.",
       tools: [figma, illustrator],
-      coverImage: { src: pic("finsage-1"), alt: "FinSage dashboard overview preview" },
+      coverImage: {
+        src: pic("finsage-1"),
+        alt: "FinSage dashboard overview preview",
+      },
       images: shots("finsage", [
         "FinSage dashboard overview preview",
         "Financial health score breakdown",
@@ -1542,8 +1822,16 @@ const rawProjects = [
       typographyIntro:
         "A confident geometric headline font combined with a neutral body font that keeps figures and tables easy to scan.",
       typography: [
-        { fontName: "Manrope", usedFor: "Title", weights: ["Medium", "Semi Bold", "Bold"] },
-        { fontName: "Inter", usedFor: "Body", weights: ["Regular", "Medium", "Semi Bold"] },
+        {
+          fontName: "Manrope",
+          usedFor: "Title",
+          weights: ["Medium", "Semi Bold", "Bold"],
+        },
+        {
+          fontName: "Inter",
+          usedFor: "Body",
+          weights: ["Regular", "Medium", "Semi Bold"],
+        },
       ],
 
       learningsTitle: "What I learned from this project",
@@ -1569,7 +1857,10 @@ const rawProjects = [
       description:
         "The deployed system: an online booking widget for guests and a real-time operations dashboard for floor, kitchen and owners.",
       tools: [],
-      coverImage: { src: pic("tabletalk-1"), alt: "TableTalk reservation dashboard preview" },
+      coverImage: {
+        src: pic("tabletalk-1"),
+        alt: "TableTalk reservation dashboard preview",
+      },
       images: shots("tabletalk", [
         "TableTalk reservation dashboard preview",
         "Online table booking widget",
@@ -1627,7 +1918,13 @@ const rawProjects = [
       stack: [
         {
           title: "Frontend",
-          items: ["React", "Redux Toolkit", "Tailwind CSS", "TanStack Query", "React Hook Form"],
+          items: [
+            "React",
+            "Redux Toolkit",
+            "Tailwind CSS",
+            "TanStack Query",
+            "React Hook Form",
+          ],
         },
         {
           title: "Backend",
@@ -1699,20 +1996,59 @@ const rawProjects = [
       apiIntro:
         "REST endpoints for reservations and orders, plus WebSocket events for floor and kitchen screens.",
       apiRoutes: [
-        { method: "POST", path: "/api/auth/login", note: "Verify staff credentials and issue tokens" },
-        { method: "GET", path: "/api/branches/:id/availability", note: "Return open tables for a date, time and party size" },
-        { method: "POST", path: "/api/reservations", note: "Create a reservation and an optional deposit session" },
-        { method: "POST", path: "/api/orders", note: "Send a new order to the kitchen display" },
-        { method: "GET", path: "/api/reports/summary", note: "Owner only: revenue, covers and peak hours by branch" },
+        {
+          method: "POST",
+          path: "/api/auth/login",
+          note: "Verify staff credentials and issue tokens",
+        },
+        {
+          method: "GET",
+          path: "/api/branches/:id/availability",
+          note: "Return open tables for a date, time and party size",
+        },
+        {
+          method: "POST",
+          path: "/api/reservations",
+          note: "Create a reservation and an optional deposit session",
+        },
+        {
+          method: "POST",
+          path: "/api/orders",
+          note: "Send a new order to the kitchen display",
+        },
+        {
+          method: "GET",
+          path: "/api/reports/summary",
+          note: "Owner only: revenue, covers and peak hours by branch",
+        },
       ],
 
       dataModelIntro:
         "Four core tables, with reservations and orders always scoped to a branch to keep multi-branch data cleanly separated.",
       dataModel: [
-        { name: "Branch", fields: ["name", "address", "openingHours", "tables[]"] },
-        { name: "Reservation", fields: ["branch", "table", "guestName", "partySize", "time", "depositStatus"] },
-        { name: "Order", fields: ["branch", "table", "items[]", "status", "total"] },
-        { name: "Staff", fields: ["name", "email", "passwordHash", "role", "branch"] },
+        {
+          name: "Branch",
+          fields: ["name", "address", "openingHours", "tables[]"],
+        },
+        {
+          name: "Reservation",
+          fields: [
+            "branch",
+            "table",
+            "guestName",
+            "partySize",
+            "time",
+            "depositStatus",
+          ],
+        },
+        {
+          name: "Order",
+          fields: ["branch", "table", "items[]", "status", "total"],
+        },
+        {
+          name: "Staff",
+          fields: ["name", "email", "passwordHash", "role", "branch"],
+        },
       ],
 
       performance: [
@@ -1750,7 +2086,10 @@ const rawProjects = [
       description:
         "A bright, welcoming interface that turns scattered trip details into one clear, shareable itinerary available even offline.",
       tools: [figma, photoshop],
-      coverImage: { src: pic("wanderway-1"), alt: "WanderWay trip timeline preview" },
+      coverImage: {
+        src: pic("wanderway-1"),
+        alt: "WanderWay trip timeline preview",
+      },
       images: shots("wanderway", [
         "WanderWay trip timeline preview",
         "Destination discovery screen",
@@ -1875,8 +2214,16 @@ const rawProjects = [
       typographyIntro:
         "Rounded, approachable headings paired with a friendly body font to keep itineraries easy to read on the go.",
       typography: [
-        { fontName: "Outfit", usedFor: "Title", weights: ["Medium", "Semi Bold", "Bold"] },
-        { fontName: "Nunito Sans", usedFor: "Body", weights: ["Regular", "SemiBold", "Bold"] },
+        {
+          fontName: "Outfit",
+          usedFor: "Title",
+          weights: ["Medium", "Semi Bold", "Bold"],
+        },
+        {
+          fontName: "Nunito Sans",
+          usedFor: "Body",
+          weights: ["Regular", "SemiBold", "Bold"],
+        },
       ],
 
       learningsTitle: "What I learned from this project",
@@ -1902,7 +2249,10 @@ const rawProjects = [
       description:
         "The deployed platform: a live dispatch map for operations teams and a simple tracking page for customers.",
       tools: [],
-      coverImage: { src: pic("logitrack-1"), alt: "LogiTrack live dispatch map preview" },
+      coverImage: {
+        src: pic("logitrack-1"),
+        alt: "LogiTrack live dispatch map preview",
+      },
       images: shots("logitrack", [
         "LogiTrack live dispatch map preview",
         "Delivery list and assignment board",
@@ -1960,7 +2310,13 @@ const rawProjects = [
       stack: [
         {
           title: "Frontend",
-          items: ["React", "Redux Toolkit", "Tailwind CSS", "Leaflet", "Recharts"],
+          items: [
+            "React",
+            "Redux Toolkit",
+            "Tailwind CSS",
+            "Leaflet",
+            "Recharts",
+          ],
         },
         {
           title: "Backend",
@@ -1969,7 +2325,13 @@ const rawProjects = [
         { title: "Database", items: ["MongoDB", "Mongoose", "Redis"] },
         {
           title: "Tools & Services",
-          items: ["OpenStreetMap", "Postman", "Docker", "GitHub Actions", "AWS EC2"],
+          items: [
+            "OpenStreetMap",
+            "Postman",
+            "Docker",
+            "GitHub Actions",
+            "AWS EC2",
+          ],
         },
       ],
 
@@ -2032,20 +2394,57 @@ const rawProjects = [
       apiIntro:
         "REST endpoints for deliveries and tracking, with a WebSocket channel for live location events.",
       apiRoutes: [
-        { method: "POST", path: "/api/auth/login", note: "Verify credentials and issue access tokens" },
-        { method: "GET", path: "/api/deliveries", note: "List deliveries with status, zone and date filters" },
-        { method: "POST", path: "/api/deliveries", note: "Create a delivery and queue it for assignment" },
-        { method: "PATCH", path: "/api/deliveries/:id/assign", note: "Dispatcher only: assign or reassign a driver" },
-        { method: "GET", path: "/api/track/:code", note: "Public: return delivery status, ETA and driver position" },
+        {
+          method: "POST",
+          path: "/api/auth/login",
+          note: "Verify credentials and issue access tokens",
+        },
+        {
+          method: "GET",
+          path: "/api/deliveries",
+          note: "List deliveries with status, zone and date filters",
+        },
+        {
+          method: "POST",
+          path: "/api/deliveries",
+          note: "Create a delivery and queue it for assignment",
+        },
+        {
+          method: "PATCH",
+          path: "/api/deliveries/:id/assign",
+          note: "Dispatcher only: assign or reassign a driver",
+        },
+        {
+          method: "GET",
+          path: "/api/track/:code",
+          note: "Public: return delivery status, ETA and driver position",
+        },
       ],
 
       dataModelIntro:
         "Four core collections. Location logs are stored separately so the high-volume GPS data never slows down delivery queries.",
       dataModel: [
         { name: "User", fields: ["name", "email", "passwordHash", "role"] },
-        { name: "Driver", fields: ["user", "vehicle", "zone", "status", "lastLocation"] },
-        { name: "Delivery", fields: ["customer", "driver", "pickup", "dropoff", "status", "eta", "trackingCode"] },
-        { name: "LocationLog", fields: ["driver", "coords", "speed", "recordedAt"] },
+        {
+          name: "Driver",
+          fields: ["user", "vehicle", "zone", "status", "lastLocation"],
+        },
+        {
+          name: "Delivery",
+          fields: [
+            "customer",
+            "driver",
+            "pickup",
+            "dropoff",
+            "status",
+            "eta",
+            "trackingCode",
+          ],
+        },
+        {
+          name: "LocationLog",
+          fields: ["driver", "coords", "speed", "recordedAt"],
+        },
       ],
 
       performance: [
@@ -2083,7 +2482,10 @@ const rawProjects = [
       description:
         "A vibrant, trust-focused marketplace interface that keeps every seller's store consistent while making shopping and checkout effortless.",
       tools: [figma, illustrator, photoshop],
-      coverImage: { src: pic("kartbd-1"), alt: "KartBD marketplace homepage preview" },
+      coverImage: {
+        src: pic("kartbd-1"),
+        alt: "KartBD marketplace homepage preview",
+      },
       images: shots("kartbd", [
         "KartBD marketplace homepage preview",
         "Seller store template page",
@@ -2208,8 +2610,16 @@ const rawProjects = [
       typographyIntro:
         "A friendly, bold headline font paired with a reliable body font that stays readable across product grids, forms and dashboards.",
       typography: [
-        { fontName: "Poppins", usedFor: "Title", weights: ["Medium", "Semi Bold", "Bold"] },
-        { fontName: "Roboto", usedFor: "Body", weights: ["Regular", "Medium", "Bold"] },
+        {
+          fontName: "Poppins",
+          usedFor: "Title",
+          weights: ["Medium", "Semi Bold", "Bold"],
+        },
+        {
+          fontName: "Roboto",
+          usedFor: "Body",
+          weights: ["Regular", "Medium", "Bold"],
+        },
       ],
 
       learningsTitle: "What I learned from this project",
@@ -2251,7 +2661,13 @@ const rawProjects = [
       stack: [
         {
           title: "Frontend",
-          items: ["React", "Redux Toolkit", "Tailwind CSS", "React Router", "React Hook Form"],
+          items: [
+            "React",
+            "Redux Toolkit",
+            "Tailwind CSS",
+            "React Router",
+            "React Hook Form",
+          ],
         },
         {
           title: "Backend",
@@ -2260,7 +2676,14 @@ const rawProjects = [
         { title: "Database", items: ["MongoDB", "Mongoose", "Redis"] },
         {
           title: "Tools & Services",
-          items: ["SSLCommerz", "Cloudinary", "Postman", "Docker", "Vercel", "Render"],
+          items: [
+            "SSLCommerz",
+            "Cloudinary",
+            "Postman",
+            "Docker",
+            "Vercel",
+            "Render",
+          ],
         },
       ],
 
@@ -2323,20 +2746,64 @@ const rawProjects = [
       apiIntro:
         "REST endpoints grouped by resource, with shopper, vendor and admin permissions enforced at the route level.",
       apiRoutes: [
-        { method: "POST", path: "/api/auth/register", note: "Create a shopper or seller account" },
-        { method: "GET", path: "/api/products?q=", note: "Search products in Bangla or English with filters" },
-        { method: "POST", path: "/api/orders", note: "Split the cart into per-seller sub-orders and start payment" },
-        { method: "PATCH", path: "/api/vendor/orders/:id", note: "Vendor only: update fulfillment status for their sub-order" },
-        { method: "POST", path: "/api/payments/ipn", note: "Verify the gateway callback and confirm the payment" },
+        {
+          method: "POST",
+          path: "/api/auth/register",
+          note: "Create a shopper or seller account",
+        },
+        {
+          method: "GET",
+          path: "/api/products?q=",
+          note: "Search products in Bangla or English with filters",
+        },
+        {
+          method: "POST",
+          path: "/api/orders",
+          note: "Split the cart into per-seller sub-orders and start payment",
+        },
+        {
+          method: "PATCH",
+          path: "/api/vendor/orders/:id",
+          note: "Vendor only: update fulfillment status for their sub-order",
+        },
+        {
+          method: "POST",
+          path: "/api/payments/ipn",
+          note: "Verify the gateway callback and confirm the payment",
+        },
       ],
 
       dataModelIntro:
         "Four core collections. Sub-orders live inside Order so a shopper sees one purchase while each seller sees only their share.",
       dataModel: [
-        { name: "User", fields: ["name", "email", "passwordHash", "role", "addresses[]"] },
-        { name: "Vendor", fields: ["owner", "storeName", "commissionRate", "payoutBalance", "verified"] },
-        { name: "Product", fields: ["vendor", "title", "titleBn", "price", "stock", "images[]"] },
-        { name: "Order", fields: ["buyer", "subOrders[]", "paymentStatus", "paymentMethod", "total"] },
+        {
+          name: "User",
+          fields: ["name", "email", "passwordHash", "role", "addresses[]"],
+        },
+        {
+          name: "Vendor",
+          fields: [
+            "owner",
+            "storeName",
+            "commissionRate",
+            "payoutBalance",
+            "verified",
+          ],
+        },
+        {
+          name: "Product",
+          fields: ["vendor", "title", "titleBn", "price", "stock", "images[]"],
+        },
+        {
+          name: "Order",
+          fields: [
+            "buyer",
+            "subOrders[]",
+            "paymentStatus",
+            "paymentMethod",
+            "total",
+          ],
+        },
       ],
 
       performance: [

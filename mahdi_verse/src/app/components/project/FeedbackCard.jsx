@@ -15,7 +15,7 @@ const FeedbackCard = ({ client, feedback }) => {
       "
     >
       {/* Feedback Comment */}
-      <blockquote className="text-size-base">{comment}</blockquote>
+      <blockquote className="text-size-md">{comment}</blockquote>
 
       {/* Client Information & Rating */}
       <figcaption

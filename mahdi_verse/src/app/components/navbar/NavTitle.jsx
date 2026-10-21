@@ -25,9 +25,9 @@ const NavbarTitle = () => {
     : (pageTitles[pathname] ?? "");
 
   return (
-    <h4 className="font-primary text-size-xl font-semibold opacity-50 text-secondary-900/70 dark:text-secondary-200/50">
+    <h2 className="font-primary text-size-xl font-semibold opacity-50 text-secondary-900/70 dark:text-secondary-200/50">
       {title}
-    </h4>
+    </h2>
   );
 };
 

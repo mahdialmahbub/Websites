@@ -151,7 +151,6 @@ const ServiceCard = ({
                 font-semibold
                 leading-tight
                 tracking-[-0.02em]
-
                 text-foreground
                 dark:text-foreground
               "
@@ -211,9 +210,10 @@ const ServiceCard = ({
             max-w-155
             text-size-sm
             leading-7
+            tracking-wide
 
             text-slate-600
-            dark:text-slate-400
+            dark:text-slate-300
           "
           >
             {description}
@@ -224,44 +224,25 @@ const ServiceCard = ({
         ====================================== */}
         <div>
           <div className="mt-6 flex flex-wrap gap-2">
-            {tags.map((tag) => (
+            {tags.map((tag, i) => (
               <span
                 key={tag}
+                style={{ animationDelay: `${i * 120}ms` }}
                 className="
-                rounded-lg
+        rounded-lg border border-cyan-100 bg-white/80
+        px-3 py-1.5
+        font-primary text-[11px] font-medium tracking-wide text-slate-600
+        shadow-[0_2px_8px_rgba(15,118,110,0.04)]
+        transition-all duration-300
 
-                border border-cyan-100
-                bg-white/80
+        group-hover:animate-tag-wave
+        motion-reduce:group-hover:animate-none
 
-                px-3
-                py-1.5
+        hover:border-cyan-200 hover:bg-cyan-50 hover:text-cyan-700
 
-                font-primary
-                text-[11px]
-                font-medium
-                tracking-wide
-
-                text-slate-600
-
-                shadow-[0_2px_8px_rgba(15,118,110,0.04)]
-
-                transition-all
-                duration-300
-
-                hover:-translate-y-0.5
-                hover:border-cyan-200
-                hover:bg-cyan-50
-                hover:text-cyan-700
-
-                dark:border-white/8
-                dark:bg-white/2.5
-                dark:text-slate-300
-                dark:shadow-none
-
-                dark:hover:border-cyan-400/15
-                dark:hover:bg-cyan-400/[0.035]
-                dark:hover:text-slate-200
-              "
+        dark:border-white/8 dark:bg-white/2.5 dark:text-slate-300 dark:shadow-none
+        dark:hover:border-cyan-400/15 dark:hover:bg-cyan-400/[0.035] dark:hover:text-slate-200
+      "
               >
                 {tag}
               </span>
@@ -311,6 +292,7 @@ const ServiceCard = ({
       items-center
       justify-center
       rounded-full
+      group
 
       border border-cyan-200
       bg-cyan-50

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, Eye } from "lucide-react";
@@ -7,12 +7,30 @@ import Image from "next/image";
 // Demo data — shape matches the `images` array from projectsData.js
 // ({ src, alt }). Swap this for projectsData[0].images in real use.
 const DEMO_IMAGES = [
-  { src: "https://picsum.photos/seed/landingui/900/620", alt: "UI Kit Landing Page" },
-  { src: "https://picsum.photos/seed/metaversepromo/900/620", alt: "Metaverse promo video preview" },
-  { src: "https://picsum.photos/seed/wireframegrid/900/620", alt: "Wireframe grid layout" },
-  { src: "https://picsum.photos/seed/appuikit/900/620", alt: "Purple app UI kit" },
-  { src: "https://picsum.photos/seed/appuikit/900/620", alt: "Purple app UI kit" },
-  { src: "https://picsum.photos/seed/appuikit/900/620", alt: "Purple app UI kit" },
+  {
+    src: "https://picsum.photos/seed/landingui/900/620",
+    alt: "UI Kit Landing Page",
+  },
+  {
+    src: "https://picsum.photos/seed/metaversepromo/900/620",
+    alt: "Metaverse promo video preview",
+  },
+  {
+    src: "https://picsum.photos/seed/wireframegrid/900/620",
+    alt: "Wireframe grid layout",
+  },
+  {
+    src: "https://picsum.photos/seed/appuikit/900/620",
+    alt: "Purple app UI kit",
+  },
+  {
+    src: "https://picsum.photos/seed/appuikit/900/620",
+    alt: "Purple app UI kit",
+  },
+  {
+    src: "https://picsum.photos/seed/appuikit/900/620",
+    alt: "Purple app UI kit",
+  },
 ];
 
 const THUMB_SLOT = 124; // 112px thumb (w-28) + 12px gap (gap-3)
@@ -40,7 +58,10 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
   }, [updateEdges, images]);
 
   const scrollBy = (dir) => {
-    trackRef.current?.scrollBy({ left: dir * THUMB_SLOT * 2, behavior: "smooth" });
+    trackRef.current?.scrollBy({
+      left: dir * THUMB_SLOT * 2,
+      behavior: "smooth",
+    });
   };
 
   const select = (i) => {
@@ -48,13 +69,20 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
     const el = trackRef.current;
     if (!el) return;
     const target = i * THUMB_SLOT;
-    if (target < el.scrollLeft || target + 112 > el.scrollLeft + el.clientWidth) {
-      el.scrollTo({ left: target - el.clientWidth / 2 + 56, behavior: "smooth" });
+    if (
+      target < el.scrollLeft ||
+      target + 112 > el.scrollLeft + el.clientWidth
+    ) {
+      el.scrollTo({
+        left: target - el.clientWidth / 2 + 56,
+        behavior: "smooth",
+      });
     }
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "ArrowRight") select(Math.min(selected + 1, images.length - 1));
+    if (e.key === "ArrowRight")
+      select(Math.min(selected + 1, images.length - 1));
     if (e.key === "ArrowLeft") select(Math.max(selected - 1, 0));
   };
 
@@ -83,13 +111,14 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
             width={900}
             height={620}
             className="preview-fade w-full h-full object-cover"
+            priority={selected[0]}
           />
           <div className="absolute" />
 
           <span className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-secondary-50/90 backdrop-blur px-3 py-1 text-xs font-semibold tracking-wide text-secondary-800 shadow-[0px_0px_5px_rgba(34,211,238,0.5)]">
-            {String(selected + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
+            {String(selected + 1).padStart(2, "0")} /{" "}
+            {String(images.length).padStart(2, "0")}
           </span>
-
         </div>
 
         {/* Thumbnail rail */}

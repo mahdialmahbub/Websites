@@ -11,6 +11,31 @@ import {
   matchesCategory,
   withProjectMeta,
 } from "../utils/projectViews";
+import { buildMetadata } from "../utils/buildMetadata";
+import JsonLd from "../components/JsonLd";
+import { projectsPageSchema } from "../utils/schema";
+
+export async function generateMetadata({ searchParams }) {
+  const { project: slug } = await searchParams;
+  const selected = projectsData.find((p) => p.slug === slug);
+
+  // /projects?project=slug e jodi oi project er detail dekhay,
+  // tahole canonical oi project er nijer page e jabe (duplicate hobe na)
+  if (selected) {
+    return buildMetadata({
+      title: selected.title,
+      description: selected.description,
+      path: `/projects/${selected.slug}`,
+    });
+  }
+
+  return buildMetadata({
+    title: "Projects",
+    description:
+      "Explore my UI/UX design and MERN stack development projects. See real-world apps built with MongoDB, Express, React, and Node.js, from design to deployment.",
+    path: "/projects",
+  });
+}
 
 const ICON = "fi fi-rr-browser";
 
@@ -41,66 +66,92 @@ export default async function Page({ searchParams }) {
     null;
 
   return (
-    <section className="min-w-full space-y-space-7">
-      <div className="flex flex-col">
-        <div className="flex items-center justify-between mb-space-7">
-          <FadeLeft className="font-primary text-size-xl font-semibold">
-            All Projects
-          </FadeLeft>
-          <FadeRight className="flex items-center gap-space-3 p-space-3 rounded-lg bg-secondary-50 *:w-50 dark:bg-secondary-500/5">
-            {categories.map((cat) => (
-              <Link
-                key={cat.label}
-                href={`?category=${encodeURIComponent(cat.label)}`}
-                scroll={false}
-              >
-                <SwitchBTN
-                  icon={cat.icon}
-                  text={cat.label}
-                  isActive={activeCategory === cat.label}
+    <>
+      <JsonLd data={projectsPageSchema(projectsData)} />
+      <section className="min-w-full space-y-space-7">
+        <div className="flex flex-col w-full">
+          <div className="flex items-center justify-between mb-space-7 gap-space-4">
+            <div>
+              <FadeLeft>
+                <h1 className="font-primary text-size-xl font-semibold">
+                  All Projects
+                </h1>
+              </FadeLeft>
+              <FadeLeft delay={0.1}>
+                <p className="text-size-base text-placeholder_2 dark:text-placeholder mt-space-2">
+                  Real projects built to solve real problems, from the first
+                  idea to the final launch
+                </p>
+              </FadeLeft>
+            </div>
+            <FadeRight className="flex items-center gap-space-3 p-space-3 rounded-lg bg-secondary-50 *:w-40 dark:bg-secondary-500/5">
+              {categories.map((cat) => (
+                <Link
+                  key={cat.label}
+                  href={`?category=${encodeURIComponent(cat.label)}`}
+                  scroll={false}
+                >
+                  <SwitchBTN
+                    icon={cat.icon}
+                    text={cat.label}
+                    isActive={activeCategory === cat.label}
+                  />
+                </Link>
+              ))}
+            </FadeRight>
+          </div>
+
+          {filteredProjects.length > 0 && (
+            <div className="flex gap-space-6 overflow-x-auto p-1">
+              {filteredProjects.map((project, index) => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  index={index}
+                  selectHref={`?category=${encodeURIComponent(activeCategory)}&project=${project.slug}`}
                 />
-              </Link>
-            ))}
-          </FadeRight>
+              ))}
+            </div>
+          )}
         </div>
 
+        {/* project thakle divider + details dekhabe, na thakle "coming soon" (clients page er moto) */}
         {filteredProjects.length > 0 ? (
-          <div className="flex gap-6 overflow-x-auto p-1">
-            {filteredProjects.map((project, index) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                index={index}
-                selectHref={`?category=${encodeURIComponent(activeCategory)}&project=${project.slug}`}
-              />
-            ))}
-          </div>
-        ) : (
-          <p className="font-medium text-size-base text-placeholder_2 py-space-6">
-            No projects found in this category.
-          </p>
-        )}
-      </div>
-
-      <div className="w-full h-0.5 rounded-full opacity-5 bg-placeholder"></div>
-
-      <div id="project-details">
-        {selectedProject ? (
           <>
-            <ScrollToDetails
-              key={selectedProject.slug}
-              targetId="project-details"
-            />
-            <ProjectDetails project={selectedProject} />
+            <div className="w-full h-0.5 rounded-full opacity-5 bg-placeholder"></div>
+
+            <div id="project-details">
+              {selectedProject ? (
+                <>
+                  <ScrollToDetails
+                    key={selectedProject.slug}
+                    targetId="project-details"
+                  />
+                  <ProjectDetails project={selectedProject} />
+                </>
+              ) : (
+                <div className="bg-secondary-50 dark:bg-background rounded-2xl min-h-25 flex items-center justify-center">
+                  <p className="font-primary text-size-md font-medium tracking-wide text-placeholder_2/80 dark:text-placeholder/80">
+                    Select a project to see details
+                  </p>
+                </div>
+              )}
+            </div>
           </>
         ) : (
-          <div className="bg-secondary-50 dark:bg-background rounded-2xl min-h-25 flex items-center justify-center">
-            <p className="font-primary font-semibold text-size-sm text-placeholder_2 dark:text-placeholder/80">
-              Select a project to see details
+          <div className="bg-secondary-50 dark:bg-background rounded-2xl min-h-70 flex items-center justify-center flex-col text-placeholder_2 dark:text-placeholder">
+            <i className="fi fi-rr-layout-fluid text-7xl opacity-50"></i>
+            <h2 className="font-primary text-size-md font-medium tracking-wide mt-space-4">
+              Projects coming soon
+            </h2>
+            <p className="mt-1.5 text-center text-placeholder_2/80 dark:text-placeholder/60">
+              I’m currently building out my project showcase, and your idea
+              could be the first one featured here. Let’s work together to
+              create something great.
             </p>
           </div>
         )}
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

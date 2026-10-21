@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -75,12 +75,46 @@ const social = [
 
 const EASE = "ease-[cubic-bezier(0.22,1,0.36,1)]";
 
+// Mouse sidebar er upor theke soranor koto ms por collapse hobe
+const COLLAPSE_DELAY = 200;
+
 const Sidebar = () => {
   const pathname = usePathname();
   const [isExpanded, setIsExpanded] = useState(false);
+  const collapseTimer = useRef(null);
+
+  const clearCollapseTimer = useCallback(() => {
+    if (collapseTimer.current) {
+      clearTimeout(collapseTimer.current);
+      collapseTimer.current = null;
+    }
+  }, []);
+
+  const expand = useCallback(() => {
+    clearCollapseTimer();
+    setIsExpanded(true);
+  }, [clearCollapseTimer]);
+
+  const scheduleCollapse = useCallback(() => {
+    clearCollapseTimer();
+    collapseTimer.current = setTimeout(() => {
+      setIsExpanded(false);
+      collapseTimer.current = null;
+    }, COLLAPSE_DELAY);
+  }, [clearCollapseTimer]);
+
+  // Component unmount hole pending timer cleanup
+  useEffect(() => clearCollapseTimer, [clearCollapseTimer]);
 
   return (
     <nav
+      onMouseEnter={expand}
+      onMouseLeave={scheduleCollapse}
+      onFocus={expand}
+      onBlur={(e) => {
+        // Focus sidebar er bhitore thakle collapse korbe na
+        if (!e.currentTarget.contains(e.relatedTarget)) scheduleCollapse();
+      }}
       className={`
         relative flex max-h-full overflow-hidden flex-col items-center justify-between
         rounded-2xl
@@ -92,43 +126,6 @@ const Sidebar = () => {
         ${isExpanded ? "w-58" : "w-22"}
       `}
     >
-      {/* ========================================
-          TOGGLE BUTTON
-      ======================================== */}
-      <button
-        type="button"
-        onClick={() => setIsExpanded((prev) => !prev)}
-        aria-label={isExpanded ? "Collapse sidebar" : "Expand sidebar"}
-        className={`
-          absolute
-          -right-3
-          top-8
-          z-30
-          flex
-          size-7
-          items-center
-          justify-center
-          rounded-full
-          border
-          border-secondary-200
-          bg-background
-          text-secondary-500
-          shadow-sm
-          transition-all
-          duration-300
-          ${EASE}
-          hover:scale-110
-          hover:text-secondary-800
-          active:scale-95
-          dark:border-secondary-800
-          dark:text-secondary-400
-          dark:hover:text-secondary-100
-          ${isExpanded ? "rotate-180" : "rotate-0"}
-        `}
-      >
-        <i className="fi fi-rr-angle-small-right text-sm" />
-      </button>
-
       {/* ========================================
           TOP SECTION
       ======================================== */}
@@ -224,6 +221,8 @@ const Sidebar = () => {
                   <i
                     className={`
                       text-[19px]
+                      transition-all
+                      duration-300
                       ${isActive ? item.fillIcon : item.icon}
                     `}
                   />
@@ -238,7 +237,7 @@ const Sidebar = () => {
                     text-size-md
                     font-medium
                     transition-all
-                    duration-400 font-primary
+                    duration-400 font-primary -ml-1
                     ${EASE}
                     ${
                       isExpanded
@@ -252,36 +251,6 @@ const Sidebar = () => {
                       ? `${index * 35 + 50}ms`
                       : "0ms",
                   }}
-                >
-                  {item.label}
-                </span>
-
-                {/* Tooltip when collapsed */}
-                <span
-                  className={`
-                    pointer-events-none
-                    absolute
-                    left-[calc(100%+12px)]
-                    z-50
-                    hidden
-                    whitespace-nowrap
-                    rounded-lg
-                    bg-secondary-900
-                    px-3
-                    py-2
-                    text-xs
-                    
-                    text-white
-                    opacity-0
-                    shadow-lg
-                    transition-opacity
-                    duration-200
-                    group-hover:opacity-100
-                    group-hover:delay-200
-                    dark:bg-secondary-100
-                    dark:text-secondary-900
-                    group-hover:inline-block
-                  `}
                 >
                   {item.label}
                 </span>
@@ -308,7 +277,6 @@ const Sidebar = () => {
         `}
       >
         <div className="">
-          {/* Social heading */}
           <div className="grid grid-cols-4 gap-2">
             {social.map((item) => (
               <Link

@@ -14,15 +14,12 @@ const WorkflowCard = ({
       className="
         relative w-full overflow-hidden rounded-3xl
 
-        /* Light */
         border border-[#D6EEF0]
         bg-secondary-50/50
 
-        /* Dark */
         dark:border-white/[0.07]
         dark:bg-[#0B1117]
 
-        /* Shudhu border color transition, kono move/scale nai */
         transition-colors duration-300
         hover:border-cyan-300
         dark:hover:border-cyan-400/25
@@ -60,7 +57,7 @@ const WorkflowCard = ({
           leading-none
           text-cyan-500/[0.07]
           sm:block
-          dark:text-cyan-400/[0.05]
+          dark:text-cyan-400/5
         "
       >
         {phaseNumber}
@@ -141,11 +138,13 @@ const WorkflowCard = ({
         <p
           className="
             mt-2
-            max-w-[650px]
+            max-w-162.5
             text-size-sm
             leading-6
-            text-slate-600
-            dark:text-slate-400
+            tracking-wide
+
+            text-slate-600/90
+            dark:text-slate-300/80
           "
         >
           {description}
@@ -200,8 +199,9 @@ const WorkflowCard = ({
                   className="
                     text-size-sm
                     leading-6
-                    text-slate-600
-                    dark:text-slate-400
+                    tracking-wide
+                  text-slate-600/90
+                  dark:text-slate-300/90
                   "
                 >
                   {point.description}

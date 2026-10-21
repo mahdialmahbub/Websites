@@ -1,14 +1,8 @@
 "use client";
 
+import { BUDGET_OPTIONS } from "@/src/lib/budgetOptions";
 import { useRef, useState } from "react";
-
-const DEFAULT_OPTIONS = [
-  "Less than $5K",
-  "$5K - $10K",
-  "$10K - $20K",
-  "$20K - $50K",
-  "More than $50K",
-];
+import FadeUp from "../motions/FadeUp";
 
 // Only the shadows live here. Everything else is inline Tailwind.
 const SHADOW_STYLES = `
@@ -44,23 +38,35 @@ const SHADOW_STYLES = `
 const BASE_CLASSES =
   "rounded-sm px-3 py-2 text-sm font-semibold transition-[box-shadow,background-color,color] duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6f5bed] dark:focus-visible:outline-none dark:!shadow-none";
 
-const SELECTED_CLASSES =
-  "budget-pill--selected bg-[#6f5bed] text-[#f5f4ff]";
+const SELECTED_CLASSES = "budget-pill--selected bg-[#6f5bed] text-[#f5f4ff]";
 
 const UNSELECTED_CLASSES =
-  "budget-pill--unselected cursor-pointer bg-gradient-to-br from-[#fcfbff] to-[#e4e3f2] text-primary-900 hover:bg-none hover:bg-[#f5f4ff] dark:bg-none dark:bg-[rgba(108,99,255,0.05)] dark:text-primary-100 dark:hover:bg-[rgba(108,99,255,0.2)]";
+  "budget-pill--unselected cursor-pointer bg-gradient-to-br from-[#fcfbff] to-[#e4e3f2] text-primary-900/70 hover:bg-none hover:bg-[#f5f4ff] dark:bg-none dark:bg-[rgba(108,99,255,0.05)] dark:text-primary-100/70 dark:hover:bg-[rgba(108,99,255,0.2)]";
 
+/**
+ * Props:
+ * - name:       hidden input er name (form submit e ei key diye value jabe). Default "budget"
+ * - value:      dile controlled mode (parent state control kore, form reset e kaje lage)
+ * - defaultValue: uncontrolled mode e initial value
+ * - onChange:   option select hole call hobe
+ * - labelledBy: visible label er id (aria-labelledby). Na dile `label` prop use hobe
+ */
 export default function BudgetSelector({
   label = "Budget",
-  options = DEFAULT_OPTIONS,
+  labelledBy,
+  name = "budget",
+  options = BUDGET_OPTIONS,
+  value,
   defaultValue = options[0],
   onChange,
 }) {
-  const [selected, setSelected] = useState(defaultValue);
+  const isControlled = value !== undefined;
+  const [internalValue, setInternalValue] = useState(defaultValue);
+  const selected = isControlled ? value : internalValue;
   const buttonRefs = useRef([]);
 
   const handleSelect = (option) => {
-    setSelected(option);
+    if (!isControlled) setInternalValue(option);
     onChange?.(option);
   };
 
@@ -89,31 +95,37 @@ export default function BudgetSelector({
     <div className="w-full max-w-xl mt-space-2">
       <style>{SHADOW_STYLES}</style>
 
+      {/* Buttons form data te jay na, tai selected value ekhane hidden input e thake */}
+      <input type="hidden" name={name} value={selected} />
+
       <div
         role="radiogroup"
-        aria-label={label}
+        aria-label={labelledBy ? undefined : label}
+        aria-labelledby={labelledBy}
         className="flex flex-wrap gap-4"
       >
         {options.map((option, index) => {
           const isSelected = option === selected;
           return (
-            <button
-              key={option}
-              ref={(el) => {
-                buttonRefs.current[index] = el;
-              }}
-              type="button"
-              role="radio"
-              aria-checked={isSelected}
-              tabIndex={isSelected ? 0 : -1}
-              onClick={() => handleSelect(option)}
-              onKeyDown={(e) => handleKeyDown(e, index)}
-              className={`${BASE_CLASSES} ${
-                isSelected ? SELECTED_CLASSES : UNSELECTED_CLASSES
-              }`}
-            >
-              {option}
-            </button>
+            <FadeUp key={index} delay={index * 0.1}>
+              <button
+                key={option}
+                ref={(el) => {
+                  buttonRefs.current[index] = el;
+                }}
+                type="button"
+                role="radio"
+                aria-checked={isSelected}
+                tabIndex={isSelected ? 0 : -1}
+                onClick={() => handleSelect(option)}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                className={`${BASE_CLASSES} ${
+                  isSelected ? SELECTED_CLASSES : UNSELECTED_CLASSES
+                }`}
+              >
+                {option}
+              </button>
+            </FadeUp>
           );
         })}
       </div>

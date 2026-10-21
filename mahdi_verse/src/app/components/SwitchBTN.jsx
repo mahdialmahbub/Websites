@@ -27,7 +27,7 @@ const SwitchBTN = ({
 }) => {
   const className = `p-1.5 rounded-md cursor-pointer ${
     isActive ? "switch-btn--active" : "switch-btn--inactive"
-  } flex items-center gap-space-1 transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-500`;
+  } flex items-center gap-1.5 transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-500`;
 
   const content = (
     <>

@@ -145,6 +145,14 @@
   --animate-fade-left: fade-left 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
   --animate-shimmer: shimmer 1.6s ease-in-out infinite;
 
+  --animate-tag-wave: tag-wave 1s ease-in-out;
+
+  @keyframes tag-wave {
+    0%, 100% { transform: translateY(0); }
+    35%      { transform: translateY(-7px); }
+    70%      { transform: translateY(2px); }
+  }
+
   @keyframes fade-up {
     from {
       opacity: 0;
@@ -207,6 +215,10 @@ body {
   -ms-overflow-style: none; /* IE / old Edge */
 }
 
+p {
+  max-width: 700px;
+}
+
 /* Hide scrollbar: Chrome, Safari, Edge, Opera */
 ::-webkit-scrollbar {
   display: none;
@@ -223,10 +235,15 @@ button {
 input,
 textarea {
   @apply outline-none bg-white border border-placeholder/50 w-full rounded-xl px-space-4 py-3.5;
-  @apply text-size-sm font-medium placeholder:text-placeholder placeholder:font-medium placeholder:text-size-sm;
+  @apply text-size-sm font-medium placeholder:text-placeholder dark:placeholder:text-placeholder_2 placeholder:font-medium placeholder:text-size-sm;
   @apply dark:bg-primary-900/20 dark:border-placeholder/10;
 }
 
+textarea {
+  field-sizing: content;
+  min-height: 100px;
+  resize: none;
+}
 
 /* ==========================================================================
    6. Components

@@ -19,7 +19,7 @@ export const VIEW_META = {
   // switchLabel = onno view te jawar button er text
   // category    = /projects page er filter button er label (page.jsx er categories er shathe mil thakte hobe)
   design: { switchLabel: "Design", category: "UI UX Design" },
-  development: { switchLabel: "Development", category: "Web Development" },
+  development: { switchLabel: "Development", category: "Development" },
 };
 
 
@@ -50,7 +50,7 @@ export const getDefaultView = (project, preferred) => {
 };
 
 /**
- * Category filter: design wala project "UI UX Design" e, development wala "Web Development" e dekhabe.
+ * Category filter: design wala project "UI UX Design" e, development wala "Development" e dekhabe.
  * Dui view thakle duitai te dekhabe.
  * @param {Project} project
  * @param {string} category

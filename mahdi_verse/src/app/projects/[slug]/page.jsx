@@ -3,6 +3,24 @@ import ProjectDetails from "../../components/project/ProjectDetails";
 import BackButton from "../../components/project/BackButton";
 import projectsData from "../../assets/projects/projects";
 import slugify from "../../utils/slugify";
+import { buildMetadata } from "../../utils/buildMetadata";
+import JsonLd from "../../components/JsonLd";
+import { projectSchema } from "../../utils/schema";
+
+
+export async function generateMetadata({ params }) {
+  const { slug } = await params
+  const project = projectsData.find((p) => p.slug === slug)
+
+  if (!project) return {}
+
+  return buildMetadata({
+    title: project.title,
+    description: project.description,
+    path: `/projects/${slug}`,
+    image: false, // ager baniye deya opengraph-image.jsx automatic use hobe
+  })
+}
 
 // build time e shob project page static generate hobe (bonus, SSR er shathe ekdom kaj kore)
 export function generateStaticParams() {
@@ -18,6 +36,8 @@ export default async function ProjectDetailsPage({ params }) {
   );
 
   return (
+    <>
+      <JsonLd data={projectSchema(project)} />
     <section className="min-w-full space-y-space-7">
       <BackButton />
       {project ? (
@@ -36,5 +56,6 @@ export default async function ProjectDetailsPage({ params }) {
         </div>
       )}
     </section>
+    </>
   );
 }
