@@ -1,18 +1,34 @@
-import { randomUUID } from 'node:crypto';
-import { env } from '../../config/env.js';
 import { ApiError } from '../../lib/ApiError.js';
-import { deleteImage, isOwnedImageUrl, isOwnedPublicId } from '../../lib/images.js';
+import { clearGuestCookie } from '../../lib/guest.js';
 import { logger } from '../../lib/logger.js';
+import { assertTemplateAvailable } from '../catalog/catalog.service.js';
+import { Template } from '../catalog/template.model.js';
+import { pickSections } from '../content/content.js';
+import { prepareSections, releasePhotoIfUnused } from '../content/content.photos.js';
+import { getProfileContent, mergeIntoProfile } from '../profile/profile.service.js';
 import { Resume } from './resume.model.js';
+import { checkReadyToGenerate } from './resume.rules.js';
+import { enableShare, shareUrl } from './share.service.js';
 
-const ARRAY_SECTIONS = ['workExperience', 'education', 'projects', 'languages', 'references'];
+/*
+ * Every function here receives `owner` (see middleware/resolveOwner.js): a logged-in user or a guest.
+ * The owner always comes from the session / cookie, so one person can never touch another one's resume.
+ */
 
 const notFound = () => new ApiError(404, 'RESUME_NOT_FOUND', 'Resume not found');
 
-/** Mongo document -> API shape ({ _id, __v, user } are internal). */
-const serialize = ({ _id, __v, user, ...rest }) => ({ id: String(_id), ...rest });
+/** Mongo document -> API shape ({ _id, __v, user, guestId, sourceDraftId } are internal). */
+const serialize = ({ _id, __v, user, guestId, sourceDraftId, share, ...rest }) => ({
+  id: String(_id),
+  ...rest,
+  share: {
+    enabled: Boolean(share?.enabled),
+    url: share?.enabled && share.slug ? shareUrl(share.slug) : null,
+    hideContact: share?.hideContact !== false,
+  },
+});
 
-/** 0-100, shown on the dashboard. Weights: personal 20, summary 15, experience 25, education 15, skills 15, projects 10. */
+/** 0-100 "how filled in is it". Weights: personal 20, summary 15, experience 25, education 15, skills 15, projects 10. */
 export function calcCompletion(resume) {
   const personal = resume.personalInformation ?? {};
   const personalFields = [personal.fullName, personal.email, personal.phone, personal.location, personal.professionalTitle];
@@ -28,103 +44,135 @@ export function calcCompletion(resume) {
   return Math.round(parts.reduce((sum, [weight, filled]) => sum + weight * filled, 0));
 }
 
-async function assertUnderLimit(userId) {
-  const count = await Resume.countDocuments({ user: userId });
-  if (count >= env.MAX_RESUMES_PER_USER) {
-    throw new ApiError(403, 'RESUME_LIMIT_REACHED', `You can keep up to ${env.MAX_RESUMES_PER_USER} resumes. Delete one to create another.`);
-  }
+const present = (doc) => ({ ...serialize(doc), completion: calcCompletion(doc) });
+
+/** A new resume of a logged-in user starts from the profile; name and e-mail fall back to the account. */
+async function prefillFromProfile(user) {
+  const profile = await getProfileContent(user._id);
+  const personalInformation = { ...(profile.personalInformation ?? {}) };
+  personalInformation.fullName ||= user.name;
+  personalInformation.email ||= user.email;
+  return prepareSections(String(user._id), { ...profile, personalInformation });
 }
 
-/** A Cloudinary photo may be shared by duplicated resumes, so it is only deleted when nothing references it. */
-export async function releasePhotoIfUnused(publicId) {
-  if (!publicId) return;
-  try {
-    const stillUsed = await Resume.exists({ 'personalInformation.photo.publicId': publicId });
-    if (!stillUsed) await deleteImage(publicId);
-  } catch (err) {
-    logger.warn('[resume] photo cleanup failed:', err.message);
-  }
+/** My resumes page: newest first, paginated, with the template's name. */
+export async function listResumes(owner, { page, limit }) {
+  const [total, docs] = await Promise.all([
+    Resume.countDocuments(owner.filter),
+    Resume.find(owner.filter)
+      .sort({ updatedAt: -1, _id: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .lean(),
+  ]);
+
+  const slugs = [...new Set(docs.map((doc) => doc.design?.templateId).filter(Boolean))];
+  const templates = slugs.length ? await Template.find({ slug: { $in: slugs } }).select('slug name').lean() : [];
+  const nameBySlug = new Map(templates.map((template) => [template.slug, template.name]));
+
+  return {
+    resumes: docs.map((doc) => ({
+      id: String(doc._id),
+      title: doc.title,
+      design: doc.design,
+      templateName: nameBySlug.get(doc.design?.templateId) ?? null,
+      fullName: doc.personalInformation?.fullName ?? '',
+      professionalTitle: doc.personalInformation?.professionalTitle ?? '',
+      photoUrl: doc.personalInformation?.photo?.url ?? null,
+      completion: calcCompletion(doc),
+      atsScore: doc.atsScore ?? null,
+      status: doc.status,
+      shared: Boolean(doc.share?.enabled),
+      shareUrl: doc.share?.enabled && doc.share.slug ? shareUrl(doc.share.slug) : null,
+      revision: doc.revision,
+      createdAt: doc.createdAt,
+      updatedAt: doc.updatedAt,
+    })),
+    pagination: { page, limit, total, totalPages: Math.max(Math.ceil(total / limit), 1) },
+  };
 }
 
-/** The client may only attach photos it uploaded itself (folder is derived from the user id). */
-function normalizePhoto(userId, photo) {
-  if (!photo) return null;
-  if (!isOwnedPublicId(userId, photo.publicId) || !isOwnedImageUrl(photo.url, photo.publicId)) {
-    throw new ApiError(400, 'INVALID_PHOTO', 'This photo cannot be used. Please upload it again.');
-  }
-  return { url: photo.url, publicId: photo.publicId };
-}
-
-export async function listResumes(userId) {
-  const docs = await Resume.find({ user: userId }).sort({ updatedAt: -1 }).lean();
-  return docs.map((doc) => ({
-    id: String(doc._id),
-    title: doc.title,
-    design: doc.design,
-    fullName: doc.personalInformation?.fullName ?? '',
-    professionalTitle: doc.personalInformation?.professionalTitle ?? '',
-    photoUrl: doc.personalInformation?.photo?.url ?? null,
-    completion: calcCompletion(doc),
-    revision: doc.revision,
-    createdAt: doc.createdAt,
-    updatedAt: doc.updatedAt,
-  }));
-}
-
-export async function getResume(userId, id) {
-  const doc = await Resume.findOne({ _id: id, user: userId }).lean();
+export async function getResume(owner, id) {
+  const doc = await Resume.findOne({ _id: id, ...owner.filter }).lean();
   if (!doc) throw notFound();
-  return { ...serialize(doc), completion: calcCompletion(doc) };
+  return present(doc);
 }
 
-export async function createResume(user, { title, design }) {
-  await assertUnderLimit(user._id);
+/**
+ * Creates a resume. There is NO limit and NO "one per template" rule: every call makes a new resume.
+ * (The builder calls this on the first save, never just because the page was opened.)
+ *
+ *  - logged-in user, no content  -> pre-filled from the profile
+ *  - content sent                -> created from it (a browser draft); the profile is topped up where it is empty
+ *  - guest                       -> blank unless content is sent (the browser fills it from its saved data)
+ *
+ * `clientDraftId` (users only) makes the call safe to repeat.
+ */
+export async function createResume(owner, input) {
+  const { title, design, clientDraftId, targetJob, ...rest } = input;
+  const provided = pickSections(rest);
+  const hasContent = Object.keys(provided).length > 0;
+  const draftId = owner.kind === 'user' ? clientDraftId : undefined;
 
-  const doc = await Resume.create({
-    user: user._id,
-    title: title ?? 'Untitled Resume',
-    design: design ?? {},
-    // Saves the user two fields on their first resume.
-    personalInformation: { fullName: user.name, email: user.email },
-  });
+  await assertTemplateAvailable(design?.templateId);
 
-  const resume = doc.toObject();
-  return { ...serialize(resume), completion: calcCompletion(resume) };
+  const findExisting = async () => {
+    if (!draftId) return null;
+    const doc = await Resume.findOne({ ...owner.filter, sourceDraftId: draftId }).lean();
+    return doc ? { resume: present(doc), profile: { updatedSections: [] }, existing: true } : null;
+  };
+
+  const already = await findExisting();
+  if (already) return already;
+
+  let sections;
+  if (hasContent) sections = prepareSections(owner.key, provided);
+  else if (owner.kind === 'user') sections = await prefillFromProfile(owner.user);
+  else sections = {};
+
+  let doc;
+  try {
+    doc = await Resume.create({
+      ...owner.create,
+      title: title ?? 'Untitled Resume',
+      design: design ?? {},
+      ...sections,
+      ...(targetJob && { targetJob }),
+      ...(draftId && { sourceDraftId: draftId }),
+    });
+  } catch (err) {
+    if (err?.code === 11000) {
+      const raced = await findExisting(); // two identical requests raced - hand back the winner
+      if (raced) return raced;
+    }
+    throw err;
+  }
+
+  const updatedSections =
+    hasContent && owner.kind === 'user' ? await mergeIntoProfile(owner.userId, sections, 'fill') : [];
+  return { resume: present(doc.toObject()), profile: { updatedSections }, existing: false };
 }
 
 /**
  * Autosave. Returns only { revision, updatedAt } - the client already has the data it just sent.
  * Pass `revision` to make the save conditional: if another tab saved first you get 409 REVISION_CONFLICT.
+ * It always UPDATES the same resume, so the share link never changes.
  */
-export async function updateResume(userId, id, patch) {
-  const { revision, ...fields } = patch;
-  const $set = {};
+export async function updateResume(owner, id, patch) {
+  const { revision, design, title, targetJob, ...rest } = patch;
 
-  for (const [key, value] of Object.entries(fields)) {
-    if (value === undefined) continue;
-    if (key === 'design') {
-      for (const [designKey, designValue] of Object.entries(value)) {
-        if (designValue !== undefined) $set[`design.${designKey}`] = designValue;
-      }
-    } else {
-      $set[key] = value;
-    }
+  const $set = prepareSections(owner.key, pickSections(rest));
+  if (title !== undefined) $set.title = title;
+  if (targetJob !== undefined) $set.targetJob = targetJob;
+  if (design) {
+    if (design.templateId) await assertTemplateAvailable(design.templateId);
+    for (const [key, value] of Object.entries(design)) if (value !== undefined) $set[`design.${key}`] = value;
   }
   if (Object.keys($set).length === 0) {
     throw new ApiError(400, 'NOTHING_TO_UPDATE', 'Send at least one field to update');
   }
 
-  for (const section of ARRAY_SECTIONS) {
-    if ($set[section]) $set[section] = $set[section].map((item) => ({ ...item, id: item.id || randomUUID() }));
-  }
-  if ($set.personalInformation) {
-    $set.personalInformation = {
-      ...$set.personalInformation,
-      photo: normalizePhoto(String(userId), $set.personalInformation.photo),
-    };
-  }
-
-  const filter = { _id: id, user: userId };
+  const filter = { _id: id, ...owner.filter };
   if (revision !== undefined) filter.revision = revision;
 
   const before = await Resume.findOneAndUpdate(
@@ -134,7 +182,7 @@ export async function updateResume(userId, id, patch) {
   ).lean();
 
   if (!before) {
-    const exists = await Resume.exists({ _id: id, user: userId });
+    const exists = await Resume.exists({ _id: id, ...owner.filter });
     throw exists
       ? new ApiError(409, 'REVISION_CONFLICT', 'This resume was changed in another tab or device. Reload to get the latest version.')
       : notFound();
@@ -149,20 +197,91 @@ export async function updateResume(userId, id, patch) {
   return { revision: (before.revision ?? 0) + 1, updatedAt: new Date().toISOString() };
 }
 
-export async function duplicateResume(user, id) {
-  const original = await Resume.findOne({ _id: id, user: user._id }).lean();
-  if (!original) throw notFound();
-  await assertUnderLimit(user._id);
-
-  const { _id, __v, createdAt, updatedAt, revision, ...data } = original;
-  const doc = await Resume.create({ ...data, title: `${original.title} (copy)`.slice(0, 100), revision: 0 });
-
-  const copy = doc.toObject();
-  return { ...serialize(copy), completion: calcCompletion(copy) };
+/** "Update my profile from this resume": the resume's non-empty sections win, empty ones never wipe the profile. */
+export async function syncProfileFromResume(owner, id) {
+  const doc = await Resume.findOne({ _id: id, ...owner.filter }).lean();
+  if (!doc) throw notFound();
+  return { updatedSections: await mergeIntoProfile(owner.userId, pickSections(doc), 'overwrite') };
 }
 
-export async function deleteResume(userId, id) {
-  const removed = await Resume.findOneAndDelete({ _id: id, user: userId }).lean();
+export async function duplicateResume(owner, id) {
+  const original = await Resume.findOne({ _id: id, ...owner.filter }).lean();
+  if (!original) throw notFound();
+
+  // The copy is private (no share link), starts as a draft and is not tied to a browser draft.
+  const { _id, __v, createdAt, updatedAt, revision, share, sourceDraftId, status, generatedAt, ...data } = original;
+  const doc = await Resume.create({ ...data, title: `${original.title} (copy)`.slice(0, 100), revision: 0 });
+  return present(doc.toObject());
+}
+
+export async function deleteResume(owner, id) {
+  const removed = await Resume.findOneAndDelete({ _id: id, ...owner.filter }).lean();
   if (!removed) throw notFound();
   await releasePhotoIfUnused(removed.personalInformation?.photo?.publicId);
+}
+
+/**
+ * "Generate": validates the content, creates the unguessable share link (the same link every time),
+ * marks the resume as generated and - for logged-in users - merges its data into the profile.
+ * Safe against double clicks: every step is idempotent.
+ */
+export async function generateResume(owner, id, { hideContact } = {}) {
+  const doc = await Resume.findOne({ _id: id, ...owner.filter }).lean();
+  if (!doc) throw notFound();
+
+  const fieldErrors = checkReadyToGenerate(doc);
+  if (Object.keys(fieldErrors).length > 0) {
+    throw new ApiError(400, 'VALIDATION_ERROR', 'Please fix the highlighted fields before generating', { fieldErrors });
+  }
+
+  const share = await enableShare(owner, id, { hideContact });
+
+  await Resume.updateOne(
+    { _id: id, ...owner.filter, status: { $ne: 'generated' } },
+    { $set: { status: 'generated', generatedAt: new Date() } },
+  );
+
+  // Profile merge: latest values win, but an empty value never wipes existing profile data.
+  const updatedSections = owner.kind === 'user' ? await mergeIntoProfile(owner.userId, pickSections(doc), 'overwrite') : [];
+
+  return { resume: await getResume(owner, id), share, profile: { updatedSections } };
+}
+
+/**
+ * Guest -> user. Moves the guest's resumes to the account and tops up the profile from them.
+ *  - idempotent: after the first run there is nothing left under that guest id, so a repeat does nothing
+ *  - never overwrites non-empty profile data (mode "fill"); the newest data fills the gaps first
+ *  - `draft` = the guest's latest data from the browser (localStorage), treated as the newest
+ *
+ * @returns {{ claimed: number, updatedSections: string[] }}
+ */
+export async function claimGuestResumes(user, guestId, draft = {}) {
+  const updated = new Set();
+  const fill = async (content) => {
+    for (const section of await mergeIntoProfile(user._id, content, 'fill')) updated.add(section);
+  };
+
+  const guestResumes = guestId ? await Resume.find({ guestId }).sort({ updatedAt: -1 }).lean() : [];
+
+  if (guestResumes.length > 0) {
+    await Resume.updateMany({ guestId }, { $set: { user: user._id }, $unset: { guestId: '' } });
+  }
+
+  const draftSections = pickSections(draft);
+  if (Object.keys(draftSections).length > 0) await fill(prepareSections(String(user._id), draftSections));
+  for (const resume of guestResumes) await fill(pickSections(resume));
+
+  return { claimed: guestResumes.length, updatedSections: [...updated] };
+}
+
+/** Called right after a login: claims silently and never lets a problem here break the login. */
+export async function claimOnLogin(req, user, guestId) {
+  if (!guestId) return;
+  try {
+    await claimGuestResumes(user, guestId);
+  } catch (err) {
+    logger.warn('[claim] could not claim guest resumes on login:', err.message);
+    return; // keep the cookie so the explicit POST /resumes/claim can retry
+  }
+  if (req.res) clearGuestCookie(req.res);
 }

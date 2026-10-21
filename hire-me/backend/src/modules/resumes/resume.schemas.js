@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 const OBJECT_ID = /^[a-f\d]{24}$/i;
 export const resumeIdParams = z.object({ id: z.string().regex(OBJECT_ID, 'Invalid resume id') });
+export const slugParams = z.object({ slug: z.string().regex(/^[\w-]{8,32}$/, 'Invalid link') });
 
 // Strips invisible control characters (keeps tab and new lines) from pasted text.
 // eslint-disable-next-line no-control-regex
@@ -12,60 +13,29 @@ const text = (max) => z.string().trim().max(max, `Maximum ${max} characters`).tr
 /** Optional text inside a section: missing -> "" */
 const field = (max) => text(max).default('');
 
-const isHttpUrl = (value) => {
-  try {
-    const { protocol } = new URL(value);
-    return protocol === 'http:' || protocol === 'https:';
-  } catch {
-    return false;
-  }
-};
+/*
+ * AUTOSAVE STORES DRAFTS. A draft can be half typed ("john@", "linkedin.com/in/"), so formats are NOT
+ * enforced here - the UI validates, and anything shown on a public page is checked again at render time.
+ * What the server does enforce: sizes, no control characters, and no dangerous link schemes.
+ */
+const DANGEROUS_SCHEME = /^\s*(javascript|data|vbscript|file|blob):/i;
+const HAS_SCHEME = /^[a-z][a-z\d+.-]*:\/\//i;
 
-// "linkedin.com/in/me" -> "https://linkedin.com/in/me"; javascript:, data: ... are rejected.
+// "linkedin.com/in/me" -> "https://linkedin.com/in/me"
 const urlField = z
   .string()
   .trim()
   .max(300, 'Maximum 300 characters')
-  .transform((value) => (value === '' || /^https?:\/\//i.test(value) ? value : `https://${value}`))
-  .refine((value) => value === '' || isHttpUrl(value), 'Enter a valid link, e.g. https://example.com')
+  .refine((value) => !DANGEROUS_SCHEME.test(value), 'This kind of link is not allowed')
+  .transform((value) => (value === '' || HAS_SCHEME.test(value) ? value : `https://${value}`))
+  .transform(clean)
   .default('');
 
-const emailField = z
-  .string()
-  .trim()
-  .toLowerCase()
-  .max(254, 'Email is too long')
-  .refine((value) => value === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), 'Enter a valid email address')
-  .default('');
-
-const phoneField = z
-  .string()
-  .trim()
-  .max(30, 'Maximum 30 characters')
-  .refine((value) => /^[+\d\s().-]*$/.test(value), 'Enter a valid phone number')
-  .default('');
-
-const isRealDate = (value) => {
-  const match = /^(\d{4})-(\d{2})(?:-(\d{2}))?$/.exec(value);
-  if (!match) return false;
-  const year = Number(match[1]);
-  const month = Number(match[2]);
-  const day = match[3] ? Number(match[3]) : 1;
-  if (year < 1900 || year > 2100) return false;
-  const date = new Date(Date.UTC(year, month - 1, day));
-  return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
-};
-
-const dateField = z
-  .string()
-  .trim()
-  .refine((value) => value === '' || isRealDate(value), 'Use the YYYY-MM-DD format')
-  .default('');
+const emailField = field(254);
+const phoneField = field(40);
+const dateField = z.string().trim().max(10).regex(/^[\d-]*$/, 'Use the YYYY-MM-DD format').default('');
 
 const itemId = z.string().trim().max(64).regex(/^[\w-]*$/, 'Invalid id').optional();
-
-const rangeIsValid = (item) => !item.startDate || !item.endDate || item.endDate >= item.startDate;
-const rangeIssue = { message: 'End date cannot be before start date', path: ['endDate'] };
 
 const uniqueList = (list) => {
   const seen = new Set();
@@ -110,7 +80,6 @@ const experienceItem = z
     currentlyWorking: z.boolean().default(false),
     jobDescription: field(2000),
   })
-  .refine(rangeIsValid, rangeIssue)
   .transform((item) => (item.currentlyWorking ? { ...item, endDate: '' } : item));
 
 const educationItem = z
@@ -125,7 +94,6 @@ const educationItem = z
     gpa: field(20),
     description: field(1500),
   })
-  .refine(rangeIsValid, rangeIssue)
   .transform((item) => (item.currentlyStudying ? { ...item, endDate: '' } : item));
 
 const projectItem = z.object({
@@ -159,22 +127,14 @@ const design = z.object({
 });
 
 const titleField = z.string().trim().min(1, 'Title is required').max(100, 'Maximum 100 characters').transform(clean);
-
-// ───────── request bodies ─────────
-export const createResumeBody = z.object({
-  title: titleField.optional(),
-  design: design.optional(),
-});
+const targetJob = z.object({ title: field(120), description: field(5000) });
 
 /**
- * Autosave body: send ONLY the sections that changed.
- * A section you send replaces the stored section completely (arrays included),
- * except `design`, which is merged key by key.
- * Do not use .partial() here: defaults inside optional fields would wipe sections that were not sent.
+ * The 8 sections shared by resumes and the profile.
+ * Do not build update schemas with .partial(): in zod 4 defaults inside optional fields would be applied
+ * to sections that were NOT sent and silently wipe them.
  */
-export const updateResumeBody = z.object({
-  title: titleField.optional(),
-  design: design.optional(),
+export const sections = {
   personalInformation: personalInformation.optional(),
   professionalSummary: text(2000).optional(),
   workExperience: z.array(experienceItem).max(30, 'Maximum 30 entries').optional(),
@@ -183,6 +143,55 @@ export const updateResumeBody = z.object({
   skills: tagList(50, 50).optional(),
   languages: z.array(languageItem).max(15, 'Maximum 15 entries').optional(),
   references: z.array(referenceItem).max(10, 'Maximum 10 entries').optional(),
-  targetJob: z.object({ title: field(120), description: field(5000) }).optional(),
+};
+
+// ───────── request bodies ─────────
+
+/** The profile page's save: any subset of the 8 sections. */
+export const profileUpdateBody = z.object(sections);
+
+/**
+ * Create a resume. Three ways to call it:
+ *  - {}                          -> new resume pre-filled from the user's profile
+ *  - { design }                  -> same, with a template chosen ("Use This")
+ *  - { clientDraftId, ...sections } -> create from a browser draft (guest draft after login). Safe to retry.
+ */
+export const createResumeBody = z.object({
+  title: titleField.optional(),
+  design: design.optional(),
+  clientDraftId: z.string().regex(/^[\w-]{8,64}$/, 'Invalid draft id').optional(),
+  targetJob: targetJob.optional(),
+  ...sections,
+});
+
+/**
+ * Autosave body: send ONLY the sections that changed. A section you send replaces the stored one
+ * (arrays included), except `design`, which is merged key by key.
+ */
+export const updateResumeBody = z.object({
+  title: titleField.optional(),
+  design: design.optional(),
+  targetJob: targetJob.optional(),
   revision: z.number().int().min(0).optional(),
+  ...sections,
+});
+
+export const shareBody = z.object({
+  hideContact: z.boolean().optional(),
+  rotate: z.boolean().optional(),
+});
+
+// ───────── list / claim ─────────
+export const listResumesQuery = z.object({
+  page: z.coerce.number().int().min(1).max(1000).default(1),
+  limit: z.coerce.number().int().min(1).max(50).default(12),
+});
+
+/** Optional: the guest's latest data from the browser (localStorage) so auto-fill keeps working after login. */
+export const claimBody = z.object({
+  draft: z.object(sections).optional(),
+});
+
+export const generateBody = z.object({
+  hideContact: z.boolean().optional(),
 });

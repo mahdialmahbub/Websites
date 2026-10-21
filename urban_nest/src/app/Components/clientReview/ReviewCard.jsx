@@ -17,7 +17,7 @@ const ReviewCard = ({ clientInfo }) => {
       <i className="fi fi-bs-quote-right flex items-center justify-center text-[120px] text-primary-5 absolute -top-5 left-0 opacity-10"></i>
       {/* review content, client information, and rating*/}
       <div className="w-full">
-        <p className="text-lg font-medium">
+        <p className="text-lg font-medium leading-6.5">
           &quot;
           {quote}
           &quot;

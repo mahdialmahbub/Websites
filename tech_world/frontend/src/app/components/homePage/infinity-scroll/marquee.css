@@ -1,0 +1,78 @@
+.marquee-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Dui pashe fade effect: --marquee-fade-color ke site er background color din */
+.marquee-fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 64px;
+  pointer-events: none;
+}
+.marquee-fade--left {
+  left: 0;
+  background: linear-gradient(to right, var(--marquee-fade-color, #0C1221), transparent);
+}
+.marquee-fade--right {
+  right: 0;
+  background: linear-gradient(to left, var(--marquee-fade-color, #0C1221), transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll var(--marquee-duration, 35s) linear infinite;
+  animation-direction: var(--marquee-direction, normal);
+}
+.marquee-track--paused-on-hover:hover,
+.marquee-track--paused-on-hover:focus-within {
+  animation-play-state: paused;
+}
+
+/* Duita group, protita track er theke exactly 50%, tai loop e jump hoy na */
+.marquee-group {
+  display: flex;
+  flex-shrink: 0;
+  gap: 12px;
+  margin: 0;
+  padding: 0 12px 0 0;
+  list-style: none;
+}
+
+.marquee-link {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  background: rgb(255 255 255 / 0.05);
+  color: #e2e8f0;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 0.3s, background 0.3s, color 0.3s;
+}
+.marquee-link:hover,
+.marquee-link:focus-visible {
+  border-color: #22d3ee;
+  background: rgb(34 211 238 / 0.1);
+  color: #22d3ee;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Reduced motion: animation bondho, manual scroll */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-wrapper { overflow-x: auto; }
+  .marquee-track { animation: none; width: auto; }
+  .marquee-group[aria-hidden="true"] { display: none; }
+  .marquee-fade { display: none; }
+}

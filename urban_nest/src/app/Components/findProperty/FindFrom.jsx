@@ -52,7 +52,7 @@ const FindForm = ({ onSearch, onLocate }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="p-space-5 bg-background findForm max-w-[480px]"
+      className="p-space-5 bg-background findForm max-w-120"
     >
       <div className="mb-space-7">
         <div className="flex items-end gap-space-3">

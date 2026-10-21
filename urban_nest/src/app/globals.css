@@ -233,3 +233,7 @@ h1 {
   font-size: clamp(1.75rem, 4vw + 1rem, 3.5rem);
   line-height: 1.15;
 }
+
+html {
+  scroll-padding-top: 88px;
+}

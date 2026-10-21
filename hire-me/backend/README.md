@@ -1,10 +1,11 @@
-# Resume Builder - Backend (Milestone 1)
+# Resume Builder - Backend (Milestone 2 + Phase 1)
 
 Express 5 · MongoDB (Mongoose 9) · cookie sessions · e-mail OTP · Google + LinkedIn login · Cloudinary
 
 **In this milestone:** auth (register, e-mail OTP verification, login/logout, forgot/reset password with OTP,
-Google and LinkedIn sign-in), resumes (create, list, get, autosave, duplicate, delete) and photo upload.
-**Next milestones:** ATS score + AI (Gemini) with usage limits, public share links + Open Graph, reviews.
+Google and LinkedIn sign-in), resumes (create, list, get, autosave, duplicate, delete), photo upload,
+**user profile** (pre-fills new resumes), **"claim a guest draft after login"**, and **public share links** (Open Graph data included).
+**Next milestones:** ATS score + AI (Gemini) with usage limits, reviews.
 
 ## Quick start
 
@@ -37,11 +38,17 @@ without an e-mail account. Google, LinkedIn and Cloudinary are optional until yo
 | PATCH | `/users/me` | yes | `{ name }` |
 | POST | `/uploads/photo` | yes | multipart field `photo` (jpg/png/webp, max 3 MB) -> `{ photo: { url, publicId } }` |
 | DELETE | `/uploads/photo?publicId=` | yes | removes an unused uploaded photo |
-| GET | `/resumes` | yes | dashboard list (title, design, completion %, photo ...) |
-| POST | `/resumes` | yes | `{ title?, design?: { templateId, color, font } }` |
+| GET | `/profile` | yes | the user's reusable data (the 8 builder sections; name + e-mail fall back to the account) |
+| PATCH | `/profile` | yes | any subset of the 8 sections (for the profile page) |
+| GET | `/resumes` | yes | dashboard list (title, design, completion %, photo, shared ...) |
+| POST | `/resumes` | yes | `{}` or `{ design }` -> pre-filled from the profile. `{ clientDraftId, ...sections }` -> created from a browser draft (idempotent). Returns `{ resume, profile: { updatedSections } }` |
 | GET | `/resumes/:id` | yes | full resume |
 | PATCH | `/resumes/:id` | yes | autosave: any subset of the sections below, plus optional `revision` |
+| POST | `/resumes/:id/sync-profile` | yes | copies the resume's non-empty sections into the profile -> `{ updatedSections }` |
 | POST | `/resumes/:id/duplicate` | yes | |
+| POST | `/resumes/:id/share` | yes | `{ hideContact? (default true), rotate? }` -> `{ share: { slug, url, hideContact } }` - same link every time |
+| DELETE | `/resumes/:id/share` | yes | turns the link off |
+| GET | `/public/resumes/:slug` | - | what a share link shows (+ `og` data for the Open Graph tags); contact details hidden unless the owner allowed them |
 | DELETE | `/resumes/:id` | yes | |
 
 ### Response format
@@ -53,7 +60,7 @@ without an e-mail account. Google, LinkedIn and Cloudinary are optional until yo
 
 Codes you will handle in the UI: `VALIDATION_ERROR`, `INVALID_CREDENTIALS`, `EMAIL_NOT_VERIFIED`, `EMAIL_TAKEN`,
 `INVALID_OTP`, `OTP_RATE_LIMITED` (use `retryAfterSeconds` for the resend timer), `OTP_ATTEMPTS_EXCEEDED`,
-`RESET_EXPIRED`, `UNAUTHENTICATED`, `RESUME_NOT_FOUND`, `RESUME_LIMIT_REACHED`, `REVISION_CONFLICT`, `RATE_LIMITED`.
+`RESET_EXPIRED`, `UNAUTHENTICATED`, `RESUME_NOT_FOUND`, `REVISION_CONFLICT`, `RATE_LIMITED`.
 
 ### Resume sections (`PATCH /resumes/:id`)
 
@@ -77,6 +84,17 @@ Dates are `YYYY-MM-DD` strings. Array items may carry a client generated `id` (k
 
 The response is only `{ revision, updatedAt }`.
 
+Autosave stores **drafts**: e-mail / phone / dates are not format-checked on the server (the UI validates), so a half-typed value never blocks saving.
+The server still enforces sizes, strips control characters and rejects `javascript:`-style links.
+
+## Guest draft -> account -> profile
+
+1. A guest builds in the browser (draft in localStorage). Nothing is sent to the server.
+2. After login / sign-up the frontend calls `POST /resumes` with the whole draft and a `clientDraftId`. Calling it twice returns the same resume.
+3. The API creates the resume and tops up the **profile**: sections that are still empty are filled (a new account gets everything; an existing profile is never overwritten). `personalInformation` is merged field by field.
+4. `POST /resumes` without content starts from the profile, so the next resume is pre-filled.
+5. `POST /resumes/:id/sync-profile` (called on every Generate) copies the resume's non-empty sections into the profile - empty sections never wipe it.
+
 ## How the main flows work
 
 - **Sign up:** register -> code by e-mail -> `verify-email` -> logged in. Registering again with an unverified address overwrites the pending sign-up and sends a new code.
@@ -87,10 +105,11 @@ The response is only `{ revision, updatedAt }`.
 
 ## Security decisions
 
+- Public pages: a share link is an unguessable 12-character id; e-mail and phone are hidden by default; the page is `noindex`.
 - Sessions: random id in an `httpOnly` cookie, data in MongoDB (`sessions` collection), new id on login (no session fixation), 7 days rolling.
   A password reset bumps `authVersion`, which invalidates every other session of that user.
 - CSRF: `SameSite` cookie + every non-GET request must come from an allowed `Origin` (`CLIENT_URL`, `EXTRA_ALLOWED_ORIGINS`).
-- Passwords: Argon2id (OWASP profile). Login timing is equalised for unknown e-mails.
+- Passwords: scrypt (N=2^15, r=8, p=3 - an OWASP-listed profile) from Node's own `crypto`: no native add-on, so `npm install` works on Windows without Visual Studio. Hashes carry their parameters and are upgraded on login. Login timing is equalised for unknown e-mails.
 - Input: every body/param is validated with zod; unknown keys are dropped; control characters are stripped; links must be http(s).
 - Uploads: type + size limits, Cloudinary re-encodes to JPEG, and users can only attach/delete images inside their own Cloudinary folder.
 - Rate limits per IP on the whole API and tighter ones on auth/OTP/upload routes.
@@ -127,5 +146,46 @@ curl -b jar.txt http://localhost:5000/api/resumes
 
 - **Server exits with "Invalid environment configuration"** - the list shows exactly which `.env` values are missing or invalid.
 - **`npm install` cannot find a version** - run `npm install <package>@latest` for that package; the code only uses the stable APIs.
+- **`npm install` fails with `EPERM ... rmdir` on Windows** - something (VS Code, antivirus, a running `node`) holds files in `node_modules`. Close them, delete the folder (`Remove-Item -Recurse -Force node_modules`) and install again.
 - **Login works in Postman but not in the browser** - frontend and API are not same-site or `CLIENT_URL` does not match the page origin (`403 BAD_ORIGIN`).
 - **Social login says `oauth_state`** - the session cookie was lost between the redirect and the callback (check the points above, and that the redirect URI registered at Google/LinkedIn is exactly `<API_PUBLIC_URL>/api/auth/<provider>/callback`).
+
+
+---
+
+## Phase 1 additions (guests, catalog, reviews, admin API)
+
+**Run once after pulling:** `npm install`, set `ADMIN_EMAILS=you@example.com` in `.env`, then `npm run seed`
+(creates the categories + templates and gives any category-less template the "General" category).
+
+**Changes you will notice**
+- `/dashboard` is gone: `POST_LOGIN_PATH` now defaults to `/`.
+- No resume limit any more (`MAX_RESUMES_PER_USER` removed), and any number of resumes per template.
+- **Guests are saved in the database.** The first `POST /resumes` gives the visitor an httpOnly cookie `rb.gid`; every resume route
+  (create, get, autosave, duplicate, generate, share, delete) works for a guest OR a logged-in user. The owner always comes from
+  the session / cookie, never from the request body.
+- **Claim at login:** every login path (password, e-mail verify, Google, LinkedIn) moves the guest's resumes to the account and tops up
+  the profile without overwriting non-empty data. `POST /resumes/claim` does the same on demand (idempotent; optional `{ draft }`).
+- Guests cannot upload photos yet (upload needs a login).
+
+| Method | Path | Who | Notes |
+|---|---|---|---|
+| GET | `/categories` | public | active categories that have templates (`templateCount`) |
+| GET | `/templates?category=<slug>&page=&limit=` | public | active templates, paginated, `category` + `pagination` in the answer |
+| GET | `/templates/:slug` | public | one template (404 when inactive / missing) |
+| POST | `/resumes` | guest or user | always a NEW resume; `design.templateId` must be an active template |
+| POST | `/resumes/:id/generate` | guest or user | validates, creates the share link (same link every time), `status: generated`; merges into the profile for users. Safe to double click |
+| GET | `/resumes?page=&limit=` | user | `{ resumes[], pagination }`, each with `templateName`, `atsScore`, `status`, `shareUrl` |
+| POST | `/resumes/claim` | user | `{ draft? }` -> `{ claimed, updatedSections }` |
+| POST | `/reviews` | guest or user | `{ resumeId, rating 1-5, comment?, guestName?, website (honeypot, leave empty) }`; only for your own resume; 10 per hour per IP |
+| GET/POST | `/admin/categories` | admin | list / create |
+| PATCH/DELETE | `/admin/categories/:id` | admin | rename (slug kept unless `regenerateSlug`) / delete (`409 CATEGORY_IN_USE`, or `?reassignTo=<categoryId>`) |
+| GET/POST | `/admin/templates` | admin | `category: { id }` or `{ name }` (a new name creates the category automatically) |
+| PATCH/DELETE | `/admin/templates/:id` | admin | |
+| GET | `/admin/reviews?status=&page=` | admin | |
+| PATCH | `/admin/reviews/:id` | admin | `{ status: pending \| approved \| rejected }` |
+
+Admin = a verified account whose e-mail is in `ADMIN_EMAILS` (there is no admin dashboard in the website; use Postman / Thunder Client).
+New error codes: `CATEGORY_EXISTS`, `CATEGORY_IN_USE`, `CATEGORY_NOT_FOUND`, `TEMPLATE_EXISTS`, `TEMPLATE_NOT_FOUND`, `REVIEW_NOT_FOUND`, `FORBIDDEN`.
+
+`npm test` runs the unit tests (merge/claim planning, generate rules, slugs).

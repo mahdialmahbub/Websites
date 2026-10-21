@@ -49,7 +49,12 @@ const schema = z.object({
   CLOUDINARY_API_SECRET: z.string().optional(),
   CLOUDINARY_FOLDER: z.string().default('resume-builder'),
 
-  MAX_RESUMES_PER_USER: z.coerce.number().int().positive().default(10),
+  // Who may use /api/admin/*. Comma separated e-mail addresses (the account must have a verified e-mail).
+  // There is no admin dashboard in the website, so admin work is done with these API routes.
+  ADMIN_EMAILS: list,
+
+  // How long a guest's anonymous cookie (and so their saved resumes) lives.
+  GUEST_COOKIE_DAYS: z.coerce.number().int().positive().default(365),
 });
 
 const parsed = schema.safeParse(raw);
@@ -95,7 +100,9 @@ export const env = Object.freeze({
   API_PUBLIC_URL: config.API_PUBLIC_URL.replace(/\/+$/, ''),
   clientOrigin,
   allowedOrigins: [...new Set([clientOrigin, ...config.EXTRA_ALLOWED_ORIGINS.map(toOrigin)])],
+  adminEmails: config.ADMIN_EMAILS.map((email) => email.toLowerCase()),
   sessionTtlMs: config.SESSION_TTL_DAYS * 24 * 60 * 60 * 1000,
+  guestCookieMaxAgeMs: config.GUEST_COOKIE_DAYS * 24 * 60 * 60 * 1000,
   cookieSecure:
     config.COOKIE_SAMESITE === 'none' ? true : config.COOKIE_SECURE ? config.COOKIE_SECURE === 'true' : isProd,
   googleEnabled: Boolean(config.GOOGLE_CLIENT_ID && config.GOOGLE_CLIENT_SECRET),

@@ -30,22 +30,22 @@ const Footer = () => {
 
   return (
     <section className="p-space-8 bg-primary-1">
-      <div className="container mx-auto max-w-[1440px]">
+      <div className="container mx-auto max-w-360">
         {/* Footer Content */}
         <div className="flex flex-wrap justify-between gap-space-6">
           {/* Logo & Social Links */}
-          <div className="max-w-[318px]">
+          <div className="max-w-79.5">
             <FadeLeft>
               <Image
-  src={assets.logo}
-  alt="Urban Nest logo"
-  width={320}
-  height={80}
-  className="h-[48px] w-auto"
-/>
+                src={assets.logo}
+                alt="Urban Nest logo"
+                width={320}
+                height={80}
+                className="h-[48px] w-auto"
+              />
             </FadeLeft>
             <FadeLeft delay={0.2}>
-              <p className="mt-space-3 text-lg font-medium opacity-70">
+              <p className="mt-space-3 text-lg font-medium opacity-70 leading-[28px] tracking-wide">
                 Find your ideal property with confidence. Explore verified
                 homes, apartments, and commercial spaces powered by smart search
                 and AI-driven recommendations for a seamless buying experience.

@@ -1,9 +1,11 @@
 import React from "react";
 import FadeLeft from "./motions/FadeLeft";
+import TextButton from "./TextButton";
 
-const SectionHeader = ({ text, mainText, isDark = false, className }) => {
+const SectionHeader = ({ text, mainText, isDark = false, className, isButton= false }) => {
   return (
     <FadeLeft>
+      <div className="flex items-center justify-between">
       <div
         className={`flex items-center gap-space-3 ${isDark && "text-background"} ${className} `}
       >
@@ -13,6 +15,8 @@ const SectionHeader = ({ text, mainText, isDark = false, className }) => {
             {mainText}
           </h2>
         </div>
+      </div>
+      {isButton && <TextButton text={"View All"} />}
       </div>
     </FadeLeft>
   );

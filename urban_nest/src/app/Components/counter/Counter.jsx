@@ -5,7 +5,7 @@ import FadeUp from "../motions/FadeUp";
 
 const Counter = () => {
   return (
-    <section className="px-space-9 container mx-auto">
+    <section className="px-space-9 pt-space-8 container mx-auto">
       <FadeUp>
         <div className="flex items-center justify-between">
           {counterItems.map((item, index) => (

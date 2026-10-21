@@ -7,7 +7,7 @@ import { requireAuth } from '../../middleware/requireAuth.js';
 import { uploadLimiter } from '../../middleware/rateLimiters.js';
 import { photoUpload } from '../../middleware/upload.js';
 import { validate } from '../../middleware/validate.js';
-import { releasePhotoIfUnused } from '../resumes/resume.service.js';
+import { releasePhotoIfUnused } from '../content/content.photos.js';
 
 const router = Router();
 router.use(requireAuth);

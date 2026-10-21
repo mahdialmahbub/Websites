@@ -23,7 +23,7 @@ const AiAssistent = () => {
             </h2>
           </FadeRight>
           <FadeRight delay={0.2}>
-            <p className="text-3xl text-placeholder">
+            <p className="text-3xl text-placeholder leading-9">
               Ask questions, discover properties, and receive intelligent
               recommendations tailored to your goals in seconds.
             </p>

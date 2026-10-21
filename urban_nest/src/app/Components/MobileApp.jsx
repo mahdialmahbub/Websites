@@ -24,7 +24,7 @@ const MobileApp = () => {
             </h2>
           </FadeLeft>
           <FadeLeft delay={0.2}>
-            <p className="text-3xl text-placeholder">
+            <p className="text-3xl text-placeholder leading-9">
               Search properties, receive AI-powered recommendations, and track
               market trends anytime, anywhere.{" "}
             </p>

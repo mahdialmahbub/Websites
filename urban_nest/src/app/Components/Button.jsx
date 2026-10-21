@@ -14,7 +14,7 @@ const Button = ({
 
   const variants = {
     primary: "bg-primary-6 text-background",
-    secondary: "bg-primary-2 text-primary-9",
+    secondary: "bg-primary-1 hover:bg-primary-2 text-primary-9",
   };
 
   const handleMouseMove = (e) => {
@@ -41,8 +41,8 @@ const Button = ({
       className={`
         relative overflow-hidden
         block items-center gap-1
-        font-primary font-bold text-[18px] leading-5.5 text-center btn
-        px-space-4 py-space-3 cursor-pointer
+        font-primary font-bold text-[16px] leading-5.5 text-center btn
+        px-space-4 py-space-3 cursor-pointer transition-colors duration-150
         ${variants[property]}
         ${className}
       `}

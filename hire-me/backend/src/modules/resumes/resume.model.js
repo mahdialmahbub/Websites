@@ -9,7 +9,7 @@ const photoSchema = new Schema(
   { _id: false },
 );
 
-const personalInformationSchema = new Schema(
+export const personalInformationSchema = new Schema(
   {
     photo: { type: photoSchema, default: null },
     fullName: text(),
@@ -24,7 +24,7 @@ const personalInformationSchema = new Schema(
 );
 
 // Dates are stored as "YYYY-MM-DD" strings: no time zone surprises, trivially sortable.
-const experienceSchema = new Schema(
+export const experienceSchema = new Schema(
   {
     id: { type: String, required: true },
     companyName: text(),
@@ -39,7 +39,7 @@ const experienceSchema = new Schema(
   { _id: false },
 );
 
-const educationSchema = new Schema(
+export const educationSchema = new Schema(
   {
     id: { type: String, required: true },
     institutionName: text(),
@@ -54,7 +54,7 @@ const educationSchema = new Schema(
   { _id: false },
 );
 
-const projectSchema = new Schema(
+export const projectSchema = new Schema(
   {
     id: { type: String, required: true },
     projectName: text(),
@@ -69,12 +69,12 @@ const projectSchema = new Schema(
   { _id: false },
 );
 
-const languageSchema = new Schema(
+export const languageSchema = new Schema(
   { id: { type: String, required: true }, name: text(), level: text() },
   { _id: false },
 );
 
-const referenceSchema = new Schema(
+export const referenceSchema = new Schema(
   {
     id: { type: String, required: true },
     name: text(),
@@ -89,10 +89,22 @@ const referenceSchema = new Schema(
 
 const resumeSchema = new Schema(
   {
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    // Exactly one owner: a logged-in user OR an anonymous guest (httpOnly cookie id).
+    // A guest's resumes move to the user (guestId is removed) when the guest logs in - see claimGuestResumes.
+    user: { type: Schema.Types.ObjectId, ref: 'User' },
+    guestId: { type: String },
     title: { type: String, default: 'Untitled Resume' },
 
-    // What "Use This" / Template / Color pickers save. Templates themselves live in the frontend.
+    // draft = being edited, generated = the user pressed "Generate" at least once (it has a share link).
+    // There is NO limit on resumes per template or per user.
+    status: { type: String, enum: ['draft', 'generated'], default: 'draft' },
+    generatedAt: Date,
+
+    // 0-100, calculated by the ATS rules (added in a later phase). null = not calculated yet.
+    atsScore: { type: Number, min: 0, max: 100, default: null },
+
+    // What "Use This" / Template / Color pickers save. design.templateId = Template.slug.
+    // The look of a template lives in the frontend; the Template collection holds its catalog data.
     design: {
       templateId: { type: String, default: null },
       color: { type: String, default: null },
@@ -111,12 +123,38 @@ const resumeSchema = new Schema(
     // Optional job the resume is tailored for (used by the ATS match score later).
     targetJob: { title: text(), description: text() },
 
+    // Public share link. Managed only by the share endpoints (never by the client's autosave).
+    share: {
+      enabled: { type: Boolean, default: false },
+      slug: { type: String },
+      hideContact: { type: Boolean, default: true }, // privacy first: e-mail / phone hidden on the public page
+      sharedAt: Date,
+    },
+
+    // Set when the resume was created from a browser draft. Makes "create from draft" idempotent (retries, double clicks).
+    sourceDraftId: { type: String },
+
     // +1 on every save. Lets the client detect that another tab/device saved in between.
     revision: { type: Number, default: 0 },
   },
   { timestamps: true, minimize: false },
 );
 
+// A resume must belong to somebody.
+resumeSchema.pre('validate', function () {
+  if (!this.user && !this.guestId) {
+    this.invalidate('user', 'A resume needs an owner');
+  }
+});
+
 resumeSchema.index({ user: 1, updatedAt: -1 });
+resumeSchema.index({ guestId: 1, updatedAt: -1 }, { partialFilterExpression: { guestId: { $type: 'string' } } });
+resumeSchema.index({ 'share.slug': 1 }, { unique: true, partialFilterExpression: { 'share.slug': { $type: 'string' } } });
+// Unchanged from milestone 2 (same options, so MongoDB keeps the existing index). Only users send a
+// clientDraftId; guests are saved straight to the database, so their resumes never have a sourceDraftId.
+resumeSchema.index(
+  { user: 1, sourceDraftId: 1 },
+  { unique: true, partialFilterExpression: { sourceDraftId: { $type: 'string' } } },
+);
 
 export const Resume = mongoose.model('Resume', resumeSchema);

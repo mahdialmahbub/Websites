@@ -1,21 +1,28 @@
 import { ApiError } from '../../lib/ApiError.js';
 import { sendOtpEmail } from '../../lib/emails.js';
+import { readGuestId } from '../../lib/guest.js';
 import { logger } from '../../lib/logger.js';
 import { burnPasswordCheck, hashPassword, needsRehash, verifyPassword } from '../../lib/password.js';
 import { destroySession, regenerateSession, saveSession } from '../../lib/session.js';
+import { claimOnLogin } from '../resumes/resume.service.js';
 import { User } from '../users/user.model.js';
 import { Identity } from './identity.model.js';
 import { OTP_PURPOSES, issueOtp, verifyOtp } from './otp.service.js';
 
 const RESET_GRANT_TTL_MS = 10 * 60 * 1000;
 
-/** Logs the user in: brand-new session id, then remember who they are. */
+/**
+ * Logs the user in: brand-new session id, then remember who they are.
+ * If the visitor was a guest, their saved resumes are claimed by the account (login, sign-up, Google, LinkedIn).
+ */
 export async function establishSession(req, user) {
+  const guestId = readGuestId(req);
   await regenerateSession(req);
   req.session.userId = String(user._id);
   req.session.authVersion = user.authVersion;
   await saveSession(req);
   await User.updateOne({ _id: user._id }, { $set: { lastLoginAt: new Date() } });
+  await claimOnLogin(req, user, guestId);
 }
 
 export async function logout(req) {

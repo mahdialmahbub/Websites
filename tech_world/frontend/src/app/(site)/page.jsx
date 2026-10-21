@@ -1,8 +1,6 @@
-
-
 import React from "react";
 import Hero from "../components/homePage/Hero";
-import InfinityScroll from "../components/homePage/InfinityScroll";
+import InfinityScroll from "../components/homePage/infinity-scroll/InfinityScroll";
 import Category from "../components/homePage/Category";
 import ForYou from "../components/homePage/ForYou";
 import TopSellingProduct from "../components/homePage/TopSellingProduct";
