@@ -189,30 +189,30 @@ const rawProjects = [
         { name: "Photoshop", logo: tools.photoshop },
       ],
       coverImage: {
-        src: "/projects/FurneiStyle/1.jpg",
+        src: "./FurneiStyle/1.jpg",
         alt: "UI Kit Landing Page preview",
       }, // project card er cover image
       // hero thumbnail carousel + final design gallery, duita-i ei list theke
       images: [
         {
-          src: "/projects/FurneiStyle/1.jpg",
+          src: "./FurneiStyle/1.jpg",
           alt: "UI Kit Landing Page preview",
         },
         {
-          src: "/projects/FurneiStyle/2.jpg",
+          src: "./FurneiStyle/2.jpg",
           alt: "Furniture homepage preview",
         },
-        { src: "/projects/FurneiStyle/3.jpg", alt: "Product video preview" },
+        { src: "./FurneiStyle/3.jpg", alt: "Product video preview" },
         {
-          src: "/projects/FurneiStyle/4.jpg",
+          src: "./FurneiStyle/4.jpg",
           alt: "Furniture catalog preview",
         },
         {
-          src: "/projects/FurneiStyle/5.jpg",
+          src: "./FurneiStyle/5.jpg",
           alt: "Furniture catalog preview",
         },
         {
-          src: "/projects/FurneiStyle/6.jpg",
+          src: "./FurneiStyle/6.jpg",
           alt: "Furniture catalog preview",
         },
       ],
