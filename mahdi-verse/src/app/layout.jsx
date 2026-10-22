@@ -8,6 +8,8 @@ import { THEME_COOKIE } from "../lib/theme";
 import { SITE_URL } from "@/src/app/utils/buildMetadata";
 import Script from "next/script";
 
+export const revalidate = 86400; // 60 * 60 * 24
+
 // Runs before first paint: reads the theme cookie and sets data-theme (no flash)
 const themeInitScript = `(function(){try{var m=document.cookie.match(/(?:^|; )${THEME_COOKIE}=(light|dark)/);if(m){document.documentElement.setAttribute('data-theme',m[1])}}catch(e){}})();`;
 

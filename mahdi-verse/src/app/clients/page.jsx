@@ -102,7 +102,7 @@ export default async function Page({ searchParams }) {
                       activeCategory,
                     )}&client=${encodeURIComponent(slug)}`}
                     scroll={false}
-                    className="block shrink-0 *:h-full card-lazy"
+                    className="block shrink-0 card-lazy"
                   >
                     <ClientCard
                       name={name}

@@ -26,6 +26,7 @@ export default function ProjectDetails({ project, initialView }) {
 
   // prottek view er content server e render hoy, client switcher shudhu show/hide kore
   const panels = Object.fromEntries(
+    
     views.map((key) => {
       const View = VIEW_COMPONENTS[key];
       return [

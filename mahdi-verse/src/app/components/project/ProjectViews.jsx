@@ -13,6 +13,7 @@ import {
   SpacingSection,
   StackSection,
   TypographySection,
+  OtherProjects,
 } from "./ProjectSections";
 
 /**
@@ -63,6 +64,7 @@ export function DesignView({ project, data, switchTo }) {
         items={data.learnings}
         tone="brand"
       />
+      <OtherProjects currentSlug={project.slug} />
       <ProjectCTA />
     </div>
   );
@@ -121,6 +123,7 @@ export function DevelopmentView({ project, data, switchTo }) {
         items={data.learnings}
         tone="brand"
       />
+      <OtherProjects currentSlug={project.slug} />
       <ProjectCTA />
     </div>
   );

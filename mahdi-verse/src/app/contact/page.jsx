@@ -16,9 +16,10 @@ export const metadata = buildMetadata({
   path: "/contact",
 });
 
+const EASE = "ease-[cubic-bezier(0.22,1,0.36,1)]";
+
 const page = () => {
-  const { title, trust, contact, socialLinks } =
-    contactPageInfo;
+  const { title, trust, contact, socialLinks } = contactPageInfo;
 
   return (
     <>
@@ -117,7 +118,14 @@ const page = () => {
                     href={link.userName}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`inline-flex items-center w-full gap-2.5 rounded-lg py-space-3 px-space-4 font-semibold shadow-lg transition-all`}
+                    className={`inline-flex items-center w-full gap-2.5 rounded-lg py-space-3 px-space-4 font-semibold shadow-lg 
+                  transition-all
+                  duration-300
+                  ${EASE}
+                  hover:-translate-y-0.5
+                  hover:brightness-110
+                  hover:shadow-lg
+                  active:scale-95`}
                     style={{
                       backgroundColor: link.color,
                       color: link.blackText ? "black" : "white",

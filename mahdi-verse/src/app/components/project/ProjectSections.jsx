@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { VIEW_META } from "../../utils/projectViews";
-import { HeroGallery, ViewToggleButton } from "./ProjectViewClient";
+import { ViewToggleButton } from "./ProjectViewClient";
 import Chips from "../Chips";
 import Button from "../Button";
 import ProjectImageGallery from "./ProjectImageGallery";
@@ -10,10 +10,12 @@ import ScrollThanksBanner from "./ScrollThanksBanner";
 import FeedbackCard from "./FeedbackCard";
 import ProjectGallery from "./ProjectGallery";
 
-// NOTE: path-ta tomar folder structure onujayi mile nio
 import FadeUp from "../motions/FadeUp";
 import FadeLeft from "../motions/FadeLeft";
 import FadeRight from "../motions/FadeRight";
+import ProjectCard from "../ProjectCard";
+import Carousel from "../Carousel";
+import projectsData from "../../assets/projects/projects";
 
 const subHeading = "font-primary text-[20px] font-semibold";
 
@@ -117,7 +119,13 @@ export function SectionIntro({ label, children }) {
  *   delay?: number,
  * }} props
  */
-export function ListPanel({ title, items = [], tone = "info", icon, delay = 0 }) {
+export function ListPanel({
+  title,
+  items = [],
+  tone = "info",
+  icon,
+  delay = 0,
+}) {
   if (!items.length) return null;
   const t = TONES[tone];
 
@@ -131,7 +139,10 @@ export function ListPanel({ title, items = [], tone = "info", icon, delay = 0 })
       <h3 className={`mb-space-4 ${subHeading} ${t.text}`}>{title}</h3>
       <ul className="space-y-2.5 max-w-175">
         {items.map((item) => (
-          <li key={item} className={`flex items-start gap-2.5 text-size-base max-w-[700px]`}>
+          <li
+            key={item}
+            className={`flex items-start gap-2.5 text-size-base max-w-[700px]`}
+          >
             <span
               className={`size-3 mt-1.25 ${t.dotCover} rounded-full flex items-center justify-center`}
               aria-hidden="true"
@@ -513,12 +524,7 @@ export function SpacingSection({ spacing }) {
   if (!spacing?.scale?.length) return null;
 
   return (
-    <FadeUp
-      as="section"
-      {...REVEAL}
-      amount={0.15}
-      className="space-y-space-7"
-    >
+    <FadeUp as="section" {...REVEAL} amount={0.15} className="space-y-space-7">
       <SectionIntro label="Spacing">{spacing.description}</SectionIntro>
       <ul className="grid gap-x-space-10 gap-y-space-3 sm:grid-cols-2 lg:grid-cols-3">
         {spacing.scale.map(({ name, value }) => (
@@ -645,12 +651,7 @@ export function ApiRoutesSection({ intro, routes = [] }) {
   if (!routes.length) return null;
 
   return (
-    <FadeUp
-      as="section"
-      {...REVEAL}
-      amount={0.15}
-      className="space-y-space-8"
-    >
+    <FadeUp as="section" {...REVEAL} amount={0.15} className="space-y-space-8">
       <SectionIntro label="API Routes">{intro}</SectionIntro>
       <Terminal title="api / routes">
         <ul className="space-y-space-3 font-mono">
@@ -705,6 +706,69 @@ export function DataModelSection({ intro, collections = [] }) {
             </Terminal>
           </FadeUp>
         ))}
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Every project except the one being viewed (no category filter).
+ * Starts with the projects after the current one and wraps around,
+ * so each project page shows the "next" project first.
+ * @param {string} currentSlug
+ */
+function getOtherProjects(currentSlug) {
+  const index = projectsData.findIndex(
+    (project) => project.slug === currentSlug,
+  );
+  if (index === -1) return projectsData;
+
+  return [...projectsData.slice(index + 1), ...projectsData.slice(0, index)];
+}
+
+/**
+ * "Other Projects" section for the bottom of a project details page.
+ * Shows every project except the one currently open.
+ *
+ * @param {{ currentSlug: string, className?: string }} props
+ */
+export function OtherProjects({ currentSlug, className = "" }) {
+  const projects = getOtherProjects(currentSlug);
+  if (projects.length === 0) return null;
+
+  return (
+    <section aria-labelledby="other-projects-heading" className={className}>
+
+      <FadeUp {...REVEAL}>
+        <SectionIntro label="Other Projects">
+          More of my UI/UX design and full stack development work.
+        </SectionIntro>
+      </FadeUp>
+      <div className="mt-space-6">
+        {projects.length > 0 && (
+          <Carousel resetKey={currentSlug} label="projects">
+            {projects.map((project, index) => {
+              const { title, tags = [], slug } = project;
+
+              const image =
+                project?.finalDesign?.coverImage?.src ||
+                project?.finalDesign?.images?.[0]?.src ||
+                "/placeholder.jpg";
+
+              return (
+                <ProjectCard
+                  key={project.id || slug}
+                  image={image}
+                  title={title || "No title"}
+                  tags={tags}
+                  slug={slug}
+                  index={index}
+                  priority={index < 2}
+                />
+              );
+            })}
+          </Carousel>
+        )}
       </div>
     </section>
   );

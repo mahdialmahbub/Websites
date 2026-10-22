@@ -1,25 +1,19 @@
 import Image from "next/image";
 import React from "react";
 import Chips from "../Chips";
-import { assets } from "../../assets/assets";
+import { CARD_BASE, getCardStateClass } from "../../utils/cardStyles";
 
 const ClientCard = ({
   name = "Default Client",
   country = "Default Country",
   shortIntro = "Default shortIntro",
   image,
-  onSelect,
   isSelected,
   index,
 }) => {
   return (
     <div
-      onClick={onSelect}
-      className={`animate-fade-up p-space-3 rounded-xl clientCard-shadow hover:bg-secondary-50 dark:hover:bg-secondary-500/5 flex items-center gap-space-3 w-90 max-h-[126px] cursor-pointer border-2 transition-colors ${
-        isSelected
-          ? "border-secondary-500/30 bg-secondary-50 dark:bg-secondary-500/5 dark:border-secondary-500/30"
-          : "border-transparent bg-[#E9F7F8] dark:bg-secondary-500/5 hover:border-secondary-500 dark:hover:border-secondary-500/10"
-      }`}
+      className={`animate-fade-up p-space-4 rounded-xl flex items-center gap-space-3 w-90 max-h-31.5 cursor-pointer overflow-hidden h-full ${CARD_BASE} ${getCardStateClass(isSelected)}`}
     >
       <Image
         alt="client"

@@ -66,6 +66,8 @@ export default async function Page({ searchParams }) {
     projectsData.find((p) => String(p.slug) === String(projectSlugFromUrl)) ||
     null;
 
+    console.log(selectedProject)
+
   return (
     <>
       <JsonLd data={projectsPageSchema(projectsData)} />
@@ -124,6 +126,7 @@ export default async function Page({ searchParams }) {
                     selectHref={`?category=${encodeURIComponent(
                       activeCategory,
                     )}&project=${encodeURIComponent(slug)}`}
+                    isSelected={selectedProject?.slug === slug}
                   />
                 );
               })}

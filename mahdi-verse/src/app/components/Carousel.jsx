@@ -31,7 +31,6 @@ const SCROLLER_BASE = "flex gap-space-6 overflow-x-auto p-1";
 const buttonBase =
   "absolute top-1/2 z-10 flex h-full w-10 -translate-y-1/2 justify-center items-center rounded-full " +
   "border border-black/5 bg-white/90 text-primary-500 backdrop-blur-sm " +
-  "shadow-[0_8px_24px_-8px_rgba(0,0,0,0.35)] cursor-pointer " +
   "transition-all duration-200 ease-out " +
   "hover:scale-105 hover:bg-primary-500 hover:text-white active:scale-95 " +
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 " +
