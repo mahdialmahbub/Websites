@@ -14,6 +14,7 @@ import {
 import { buildMetadata } from "../utils/buildMetadata";
 import JsonLd from "../components/JsonLd";
 import { projectsPageSchema } from "../utils/schema";
+import Carousel from "../components/Carousel";
 
 export async function generateMetadata({ searchParams }) {
   const { project: slug } = await searchParams;
@@ -102,16 +103,31 @@ export default async function Page({ searchParams }) {
           </div>
 
           {filteredProjects.length > 0 && (
-            <div className="flex gap-space-6 overflow-x-auto p-1">
-              {filteredProjects.map((project, index) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  index={index}
-                  selectHref={`?category=${encodeURIComponent(activeCategory)}&project=${project.slug}`}
-                />
-              ))}
-            </div>
+            <Carousel resetKey={activeCategory} label="projects">
+              {filteredProjects.map((project, index) => {
+                const { title, tags = [], slug } = project;
+
+                const image =
+                  project?.finalDesign?.coverImage?.src ||
+                  project?.finalDesign?.images?.[0]?.src ||
+                  "/placeholder.jpg";
+
+                return (
+                  <ProjectCard
+                    key={project.id || slug}
+                    image={image}
+                    title={title || "No title"}
+                    tags={tags}
+                    slug={slug}
+                    index={index}
+                    priority={index < 2}
+                    selectHref={`?category=${encodeURIComponent(
+                      activeCategory,
+                    )}&project=${encodeURIComponent(slug)}`}
+                  />
+                );
+              })}
+            </Carousel>
           )}
         </div>
 

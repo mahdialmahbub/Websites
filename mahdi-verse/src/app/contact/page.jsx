@@ -112,7 +112,7 @@ const page = () => {
             <div className="grid grid-cols-5 content-center gap-space-5 mt-2 *:w-full *:flex-1">
               {/* Behance case study link */}
               {socialLinks.map((link, i) => (
-                <FadeUp key={i} delay={i * 0.1} amount={0}>
+                <FadeUp key={i} delay={i * 0.05} amount={0}>
                   <Link
                     href={link.userName}
                     target="_blank"

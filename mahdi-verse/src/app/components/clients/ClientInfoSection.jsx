@@ -69,13 +69,29 @@ export default function ClientInfoSection({ client, allProjects = [] }) {
         </div>
       ) : clientProjects.length > 0 ? (
         <div className="flex gap-space-6">
-          {clientProjects.map((project) => (
-            <>
-              <ScrollToDetails key={project.id} targetId="project-details" />
+          {clientProjects.map((project, index) => {
+            const { title, tags = [], slug } = project;
 
-              <ProjectCard key={project.id} project={project} />
-            </>
-          ))}
+            const image =
+              project?.finalDesign?.coverImage?.src ||
+              project?.finalDesign?.images?.[0]?.src ||
+              "/placeholder.jpg";
+            return (
+              <>
+                <ScrollToDetails key={project.index} targetId="project-details" />
+
+                <ProjectCard
+                  key={project.id || slug}
+                  image={image}
+                  title={title || "No title"}
+                  tags={tags}
+                  slug={slug}
+                  index={index}
+                  priority={index < 2}
+                />
+              </>
+            );
+          })}
         </div>
       ) : (
         <p className="font-medium text-size-base text-placeholder_2 py-space-6">

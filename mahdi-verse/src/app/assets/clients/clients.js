@@ -33,7 +33,7 @@ export const clientsData = [
     slug: "ahmed-al-farsi-south-africa",
     name: "Ahmed Al-Farsi",
     country: "South Africa",
-    image: "./clientImages/Ahmed_Al_Farsi.jpg", // shown in the glow placeholder if avatarSrc isn't set yet
+    image: "/Ahmed_Al_Farsi.jpg", // shown in the glow placeholder if avatarSrc isn't set yet
     shortIntro:
       "Trusted by clients across different industries to design and develop",
     rating: 4.5,

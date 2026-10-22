@@ -430,6 +430,11 @@ textarea {
   }
 }
 
+/* Skips layout and paint work for cards that are far off-screen */
+.card-lazy {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 440px; /* about the height of one card */
+}
 
 /* --- Hero icon ----------------------------------------------------------- */
 

@@ -12,6 +12,8 @@ import JsonLd from "../components/JsonLd";
 import { clientsPageSchema } from "../utils/schema";
 import FadeLeft from "../components/motions/FadeLeft";
 import FadeRight from "../components/motions/FadeRight";
+import ClientsCarousel from "../components/clients/ClientsCarousel";
+import Carousel from "../components/Carousel";
 
 export const metadata = buildMetadata({
   title: "Clients",
@@ -89,21 +91,31 @@ export default async function Page({ searchParams }) {
           </div>
 
           {filteredClients.length > 0 && (
-            <div className="flex gap-space-6 overflow-x-auto p-1">
-              {filteredClients.map((client) => (
-                <Link
-                  key={client.id}
-                  href={`?category=${encodeURIComponent(activeCategory)}&client=${client.slug}`}
-                  scroll={false}
-                  className="block shrink-0 *:h-full "
-                >
-                  <ClientCard
-                    client={client}
-                    isSelected={selectedClient?.slug === client.slug}
-                  />
-                </Link>
-              ))}
-            </div>
+            <Carousel resetKey={activeCategory} label="clients">
+              {filteredClients.map((client, index) => {
+                const { id, slug, name, country, shortIntro, image } = client;
+
+                return (
+                  <Link
+                    key={id || slug}
+                    href={`?category=${encodeURIComponent(
+                      activeCategory,
+                    )}&client=${encodeURIComponent(slug)}`}
+                    scroll={false}
+                    className="block shrink-0 *:h-full card-lazy"
+                  >
+                    <ClientCard
+                      name={name}
+                      country={country}
+                      shortIntro={shortIntro}
+                      image={image}
+                      index={index}
+                      isSelected={selectedClient?.slug === slug}
+                    />
+                  </Link>
+                );
+              })}
+            </Carousel>
           )}
         </div>
         {/* ) : (
