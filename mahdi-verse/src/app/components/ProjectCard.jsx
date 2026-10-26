@@ -43,11 +43,11 @@ const ProjectCard = ({
       </div>
 
       <div className="p-space-4 space-y-space-5 h-full">
-        <Heading className="font-semibold text-size-md cursor-pointer group-hover:text-primary-500 transition-colors duration-200">
+        <Heading className="font-semibold text-size-md cursor-pointer group-hover:text-primary-500 group-visited:text-primary-700  dark:group-visited:text-primary-200  dark:group-hover:text-primary-500 transition-colors duration-200">
           {title}
         </Heading>
 
-        <div className="flex flex-wrap gap-space-3 mt-space-4">
+        <div className="flex flex-wrap gap-space-3 ">
           {visibleTags.map((item, i) => (
             <Chips varient="small" key={i} text={item} />
           ))}

@@ -4,7 +4,7 @@ export const CARD_BASE =
 
 // Normal state: halka bg, transparent border, halka shadow
 export const CARD_DEFAULT =
-  "border-transparent bg-secondary-50 dark:bg-background hover:border-secondary-500/30";
+  " bg-secondary-50 dark:bg-background border-secondary-500/10 hover:border-secondary-500/30";
 
 // Selected state: full border, gaorho bg, boro glow shadow
 export const CARD_SELECTED =

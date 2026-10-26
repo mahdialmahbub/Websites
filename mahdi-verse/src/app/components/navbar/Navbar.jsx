@@ -5,7 +5,7 @@ import NavbarAction from "./NavbarAction";
 
 const Navbar = () => {
   return (
-    <div className="flex items-center justify-between py-space-4 h-[64px]">
+    <div className="flex items-center justify-between h-11 mb-space-4">
       <NavbarTitle />
       <div className="flex items-center gap-space-6">
         {/* Dark Button */}

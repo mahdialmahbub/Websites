@@ -65,7 +65,7 @@ const TechStack = () => {
             -top-20
             size-40
             rounded-full
-            bg-cyan-400/[0.035]
+            bg-cyan-400/3.5
             blur-3xl
             transition-all
             duration-500

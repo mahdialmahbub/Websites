@@ -99,7 +99,7 @@ export function SectionIntro({ label, children }) {
       <h4 className="font-primary text-size-lg font-semibold">{label}</h4>
       {children && (
         <p
-          className={`w-175 text-size-base text-placeholder_2 dark:text-placeholder/80 leading-6.25`}
+          className={` text-size-base text-placeholder_2 dark:text-placeholder/80 leading-6.25`}
         >
           {children}
         </p>
@@ -141,7 +141,7 @@ export function ListPanel({
         {items.map((item) => (
           <li
             key={item}
-            className={`flex items-start gap-2.5 text-size-base max-w-[700px]`}
+            className={`flex items-start gap-2.5 text-size-base max-w-175`}
           >
             <span
               className={`size-3 mt-1.25 ${t.dotCover} rounded-full flex items-center justify-center`}
@@ -176,7 +176,7 @@ function Terminal({ title, className = "", children }) {
           <span className="block size-3 rounded-full bg-amber-400" />
           <span className="block size-3 rounded-full bg-emerald-400" />
         </span>
-        <span className="font-mono text-size-sm text-slate-400">{title}</span>
+        <span className="text-size-sm text-placeholder_2">{title}</span>
       </div>
       <div className="p-space-5 text-size-sm">{children}</div>
     </div>
@@ -219,7 +219,7 @@ export function ProjectHero({ project, view, data, switchTo }) {
           {project.title}
         </h2>
         {description && (
-          <p className="max-w-xl text-size-base text-placeholder_2 dark:text-placeholder/80 mt-space-3">
+          <p className="max-w-175 text-size-base text-placeholder_2 dark:text-placeholder/80 mt-space-3">
             {description}
           </p>
         )}
@@ -406,7 +406,7 @@ export function FeedbackSection({ intro, client }) {
   if (!client || !feedback.length) return null;
 
   return (
-    <section className="space-y-space-7 pb-space-5">
+    <section className="space-y-space-7">
       <FadeUp {...REVEAL}>
         <SectionIntro label="Feedback">{intro}</SectionIntro>
       </FadeUp>
@@ -477,7 +477,7 @@ export function ColorsSection({ colors }) {
   const { description, shades = {}, others = [], dark = [] } = colors;
 
   return (
-    <section className="space-y-space-10">
+    <section className="space-y-space-10 ">
       <FadeUp {...REVEAL}>
         <SectionIntro label="Colors">{description}</SectionIntro>
       </FadeUp>
@@ -497,7 +497,7 @@ export function ColorsSection({ colors }) {
                   key={hex}
                   title={hex}
                   style={{ backgroundColor: hex }}
-                  className="ml-[-40px] size-[80px] rounded-full border-2 border-background first:ml-0 "
+                  className="ml-[-40px] size-[80px] rounded-full border-2 border-secondary-50 dark:border-background first:ml-0 "
                 />
               ))}
             </ul>
@@ -532,11 +532,11 @@ export function SpacingSection({ spacing }) {
             key={name}
             className="flex items-center justify-between gap-space-3 border-b border-secondary-500/15 pb-space-2 text-size-sm"
           >
-            <span className="font-medium text-secondary-500">{name}</span>
+            <span className="font-medium text-secondary-500 dark:text-secondary-700">{name}</span>
             <span className="flex items-center gap-space-3">
               <span
                 aria-hidden="true"
-                className="h-2 rounded-full bg-secondary-500/40"
+                className="h-2 rounded-full bg-secondary-500/40 dark:text-secondary-700/40"
                 style={{ width: Math.min(value, 120) }}
               />
               {value} px
@@ -622,7 +622,7 @@ export function StackSection({ intro, stack = [] }) {
           >
             {/* Header */}
             <div className="flex items-center justify-between gap-4">
-              <h2 className="text-size-lg font-bold tracking-tight uppercase">
+              <h2 className="text-size-lg font-medium opacity-60 tracking-wider uppercase">
                 {title}
               </h2>
             </div>
@@ -651,14 +651,14 @@ export function ApiRoutesSection({ intro, routes = [] }) {
   if (!routes.length) return null;
 
   return (
-    <FadeUp as="section" {...REVEAL} amount={0.15} className="space-y-space-8">
+    <FadeUp as="section" {...REVEAL} amount={0.15} className="space-y-space-7">
       <SectionIntro label="API Routes">{intro}</SectionIntro>
       <Terminal title="api / routes">
         <ul className="space-y-space-3 font-mono">
           {routes.map(({ method, path, note }) => (
             <li
               key={`${method}-${path}`}
-              className="grid gap-x-space-3 gap-y-1 sm:grid-cols-[4rem_15rem_1fr]"
+              className="grid gap-x-space-3 gap-y-1 grid-cols-[4rem_15rem_1fr]"
             >
               <span
                 className={`font-semibold ${METHOD_COLORS[method] ?? "text-slate-300"}`}
@@ -685,22 +685,17 @@ export function DataModelSection({ intro, collections = [] }) {
   if (!collections.length) return null;
 
   return (
-    <section className="space-y-space-8">
+    <section className="space-y-space-7">
       <FadeUp {...REVEAL}>
         <SectionIntro label="Data model">{intro}</SectionIntro>
       </FadeUp>
-      <div className="grid gap-space-6 sm:grid-cols-2">
+      <div className="grid gap-space-6 grid-cols-2">
         {collections.map(({ name, fields = [] }, index) => (
           <FadeUp key={name} {...REVEAL} delay={stagger(index)}>
             <Terminal title={name} className="h-full">
               <ul className="flex flex-wrap gap-space-3">
                 {fields.map((field) => (
-                  <li
-                    key={field}
-                    className="rounded-full bg-white/10 px-space-3 py-1 font-mono text-xs"
-                  >
-                    {field}
-                  </li>
+                  <Chips key={field} text={field} varient={"small"} code  />
                 ))}
               </ul>
             </Terminal>
@@ -738,7 +733,6 @@ export function OtherProjects({ currentSlug, className = "" }) {
 
   return (
     <section aria-labelledby="other-projects-heading" className={className}>
-
       <FadeUp {...REVEAL}>
         <SectionIntro label="Other Projects">
           More of my UI/UX design and full stack development work.

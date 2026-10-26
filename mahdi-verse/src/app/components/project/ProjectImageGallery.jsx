@@ -33,6 +33,14 @@ const DEMO_IMAGES = [
   },
 ];
 
+const edgeButtonBase =
+  "absolute top-1/2 z-10 flex -translate-y-1/2 items-center justify-center rounded-full " +
+  "border border-black/5 bg-white/90 text-primary-500 backdrop-blur-sm " +
+  "transition-all duration-200 ease-out " +
+  "hover:scale-105 hover:bg-primary-500 hover:text-white active:scale-95 " +
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 " +
+  "dark:border-white/10 dark:bg-background/90 dark:hover:bg-primary-500";
+
 const THUMB_SLOT = 124; // 112px thumb (w-28) + 12px gap (gap-3)
 
 export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
@@ -103,7 +111,7 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
 
       <div className="">
         {/* Main preview */}
-        <div className="relative rounded-lg overflow-hidden aspect-video bg-violet-100">
+        <div className="relative rounded-lg overflow-hidden aspect-video bg-secondary-100">
           <Image
             key={selected}
             src={active?.src}
@@ -115,7 +123,7 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
           />
           <div className="absolute" />
 
-          <span className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-secondary-50/90 backdrop-blur px-3 py-1 text-xs font-semibold tracking-wide text-secondary-800 shadow-[0px_0px_5px_rgba(34,211,238,0.5)]">
+          <span className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-secondary-50/90 dark:bg-background/90 backdrop-blur px-3 py-1.75 pb-1.5 text-xs font-semibold tracking-wide text-secondary-700 shadow-[0px_0px_5px_rgba(34,211,238,0.5)] leading-none">
             {String(selected + 1).padStart(2, "0")} /{" "}
             {String(images.length).padStart(2, "0")}
           </span>
@@ -135,9 +143,9 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
               type="button"
               onClick={() => scrollBy(-1)}
               aria-label="Scroll thumbnails left"
-              className="hidden sm:flex items-center justify-center absolute -left-3 top-9 -translate-y-1/2 z-20 h-8 w-8 rounded-full bg-white border border-violet-200 shadow text-violet-700 hover:bg-violet-50"
+              className={`${edgeButtonBase} -left-3 h-[80%] w-8`}
             >
-              <ChevronLeft className="h-4 w-4" />
+              <i className="fi fi-rr-angle-small-left text-size-base"></i>
             </button>
           )}
           {edges.right && (
@@ -145,9 +153,9 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
               type="button"
               onClick={() => scrollBy(1)}
               aria-label="Scroll thumbnails right"
-              className="hidden sm:flex items-center justify-center absolute -right-3 top-9 -translate-y-1/2 z-20 h-8 w-8 rounded-full bg-white border border-violet-200 shadow text-violet-700 hover:bg-violet-50"
+              className={`${edgeButtonBase} -right-3 h-[80%] w-8`}
             >
-              <ChevronRight className="h-4 w-4" />
+              <i className="fi fi-rr-angle-small-right text-size-base"></i>
             </button>
           )}
 
@@ -191,7 +199,7 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
                   />
                   {isSelected && (
                     <div className="absolute inset-0 bg-linear-to-t from-secondary-700/70 via-secondary-600/20 to-transparent flex items-end justify-center pb-1.5">
-                      <Eye className="h-3.5 w-3.5 text-white" />
+                      <i class="fi fi-rr-eye text-size-sm opacity-80"></i>
                     </div>
                   )}
                 </button>

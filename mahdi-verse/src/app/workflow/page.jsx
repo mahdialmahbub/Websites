@@ -92,7 +92,7 @@ export default async function Page({ searchParams }) {
           </FadeRight>
         </div>
 
-        <div className="h-0.5 w-full rounded-full opacity-5 bg-placeholder mt-space-7 mb-space-7"></div>
+        <div className="h-0.5 w-full rounded-full opacity-5 bg-placeholder my-space-7"></div>
 
         <div className="flex flex-col gap-space-6">
           {steps.map((item, index) => (

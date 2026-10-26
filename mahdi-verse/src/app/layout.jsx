@@ -7,8 +7,9 @@ import { Toaster } from "react-hot-toast";
 import { THEME_COOKIE } from "../lib/theme";
 import { SITE_URL } from "@/src/app/utils/buildMetadata";
 import Script from "next/script";
-
-export const revalidate = 86400; // 60 * 60 * 24
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { WebVitals } from "../lib/web-vitals";
+import { ErrorPageProvider } from "./components/ErrorPageContext";
 
 // Runs before first paint: reads the theme cookie and sets data-theme (no flash)
 const themeInitScript = `(function(){try{var m=document.cookie.match(/(?:^|; )${THEME_COOKIE}=(light|dark)/);if(m){document.documentElement.setAttribute('data-theme',m[1])}}catch(e){}})();`;
@@ -103,11 +104,15 @@ export default async function RootLayout({ children }) {
         />
       </head>
       <body className="h-dvh bg-background dark:bg-linear-to-br dark:from-secondary-500/5 dark:to-primary-500/2 w-screen min-w-250 min-h-138.5">
+      <WebVitals />
+      <SpeedInsights />
         <div className="flex h-full gap-6 p-space-4">
           <Sidebar />
           <div className="flex-1 min-w-0 flex flex-col">
+            <ErrorPageProvider>
             <Navbar />
             <HomePageChecker>{children}</HomePageChecker>
+            </ErrorPageProvider>
           </div>
         </div>
         <Toaster

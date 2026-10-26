@@ -66,7 +66,7 @@ export default async function Page({ searchParams }) {
     projectsData.find((p) => String(p.slug) === String(projectSlugFromUrl)) ||
     null;
 
-    console.log(selectedProject)
+    (selectedProject)
 
   return (
     <>

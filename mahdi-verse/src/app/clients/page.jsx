@@ -91,7 +91,7 @@ export default async function Page({ searchParams }) {
           </div>
 
           {filteredClients.length > 0 && (
-            <Carousel resetKey={activeCategory} label="clients">
+            <Carousel resetKey={activeCategory} label="clients" className="gap-space-4">
               {filteredClients.map((client, index) => {
                 const { id, slug, name, country, shortIntro, image } = client;
 
@@ -102,7 +102,7 @@ export default async function Page({ searchParams }) {
                       activeCategory,
                     )}&client=${encodeURIComponent(slug)}`}
                     scroll={false}
-                    className="block shrink-0 card-lazy"
+                    className="block shrink-0 card-lazy max-h-31.5"
                   >
                     <ClientCard
                       name={name}

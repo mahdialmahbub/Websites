@@ -82,7 +82,7 @@ const page = () => {
         </div>
 
         {/* Socials */}
-        <div className="relative w-full mx-auto rounded-3xl overflow-hidden shadow-xl">
+        <div className="relative w-full mx-auto rounded-3xl overflow-hidden">
           <Image
             src={assets.backgroundImage}
             alt=""
@@ -93,11 +93,11 @@ const page = () => {
 
           {/* Overlay */}
           <div className="absolute inset-0 bg-black/60" />
-          <div className="relative flex flex-col items-center justify-center gap-4 p-10 text-center">
+          <div className="relative flex flex-col items-center justify-center gap-6 p-10 text-center">
             <div>
               <FadeUp
                 as="h2"
-                className="text-background text-xl sm:text-2xl font-bold dark:text-foreground"
+                className="text-background text-2xl font-bold dark:text-foreground"
               >
                 Let&apos;s Build Something Amazing Together
               </FadeUp>
@@ -110,7 +110,7 @@ const page = () => {
               </FadeUp>
             </div>
 
-            <div className="grid grid-cols-5 content-center gap-space-5 mt-2 *:w-full *:flex-1">
+            <div className="grid grid-cols-5 content-center gap-space-5 *:w-full *:flex-1">
               {/* Behance case study link */}
               {socialLinks.map((link, i) => (
                 <FadeUp key={i} delay={i * 0.05} amount={0}>
@@ -118,7 +118,7 @@ const page = () => {
                     href={link.userName}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`inline-flex items-center w-full gap-2.5 rounded-lg py-space-3 px-space-4 font-semibold shadow-lg 
+                    className={`inline-flex items-center w-full gap-2.5 rounded-lg py-space-3 px-space-4 shadow-lg 
                   transition-all
                   duration-300
                   ${EASE}
@@ -138,7 +138,7 @@ const page = () => {
                       height={24}
                     />
                     <div className="flex min-w-0 flex-1 flex-col items-start">
-                      <span className="font-semibold italic tracking-tight text-sm">
+                      <span className="font-semibold tracking-tight text-sm">
                         {link.title}
                       </span>
 

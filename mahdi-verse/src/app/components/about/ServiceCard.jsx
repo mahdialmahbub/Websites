@@ -279,7 +279,6 @@ const ServiceCard = ({
       duration-300
       group-hover:opacity-100
       dark:opacity-40
-      dark:group-hover:opacity-100
     "
             >
               {buttonText}

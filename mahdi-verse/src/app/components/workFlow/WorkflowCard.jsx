@@ -17,7 +17,7 @@ const WorkflowCard = ({
         border border-[#D6EEF0]
         bg-secondary-50/50
 
-        dark:border-white/[0.07]
+        dark:border-white/7
         dark:bg-[#0B1117]
 
         transition-colors duration-300
@@ -37,7 +37,7 @@ const WorkflowCard = ({
           rounded-full
           bg-cyan-300/12
           blur-3xl
-          dark:bg-cyan-400/[0.07]
+          dark:bg-cyan-400/7
         "
       />
 
@@ -49,27 +49,25 @@ const WorkflowCard = ({
           absolute
           right-6
           top-2
-          hidden
           select-none
           font-primary
           text-[110px]
           font-bold
           leading-none
-          text-cyan-500/[0.07]
-          sm:block
+          text-cyan-500/7
           dark:text-cyan-400/5
         "
       >
         {phaseNumber}
       </span>
 
-      <div className="relative z-10 p-7 sm:p-8">
+      <div className="relative z-10 p-8">
         {/* =====================================
             HEADER
         ====================================== */}
         <div className="flex items-center gap-4">
           {/* Icon */}
-          <div
+          <div 
             className="
               flex size-14 shrink-0
               items-center justify-center
@@ -151,7 +149,7 @@ const WorkflowCard = ({
         </p>
 
         {/* Divider */}
-        <div className="my-6 h-px w-full bg-cyan-100 dark:bg-white/[0.07]" />
+        <div className="my-6 h-px w-full bg-cyan-100 dark:bg-white/7" />
 
         {/* =====================================
             POINTS

@@ -81,7 +81,6 @@ const page = () => {
           {/* content */}
           <div className="w-full">
             <div>
-              
               <FadeLeft
                 as="h1"
                 className="font-primary font-semibold text-size-2xl mb-space-4 text-background dark:text-foreground"

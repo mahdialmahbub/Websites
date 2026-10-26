@@ -20,17 +20,11 @@ const techIcons = [
   { name: "VS Code", src: assets.Visual_Studio_Code, x: 105, y: 85 }, // bottom right
 ];
 
-const count = [
-  { label: "Years of Experience", number: "5", icon: "fi fi-sr-briefcase" },
-  { label: "Completed Projects", number: "100", icon: "fi fi-sr-browser" },
-  { label: "Happy Clients", number: "50", icon: "fi fi-sr-employee-man-alt" },
-];
-
 const page = () => {
   return (
     <>
     <JsonLd data={homeSchema()} />
-    <div className="flex flex-col items-center justify-center">
+    <section className="flex flex-col items-center justify-center">
       {/* image + tech icons + badge */}
       <div className="px-2.5 flex flex-col items-center justify-center relative gap-12.5">
         <div className="relative">
@@ -112,17 +106,8 @@ const page = () => {
             </Link>
           </HeroItem>
         </div>
-
-        <HeroItem stage="stats" className="flex items-center gap-space-7">
-          {count.map((item, i) => (
-            <div
-              key={i}
-              className="flex flex-col items-center justify-center gap-space-2 px-space-6 w-60"
-            ></div>
-          ))}
-        </HeroItem>
       </div>
-    </div></>
+    </section></>
   );
 };
 

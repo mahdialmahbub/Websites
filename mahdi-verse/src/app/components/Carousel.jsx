@@ -25,16 +25,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 // "auto" mode e koyta card ekshathe dekhale 2 ta peek card rakhbe (er kom hole 1 ta)
 const WIDE_VIEW_MIN_ITEMS = 4;
 
-const SCROLLER_BASE = "flex gap-space-6 overflow-x-auto p-1";
-
+const SCROLLER_BASE = "flex gap-space-4 overflow-x-auto p-1 rounded-[24px]";
 
 const buttonBase =
   "absolute top-1/2 z-10 flex h-full w-10 -translate-y-1/2 justify-center items-center rounded-full " +
-  "border border-black/5 bg-white/90 text-primary-500 backdrop-blur-sm " +
+  "border border-black/5 bg-white text-primary-500 " +
   "transition-all duration-200 ease-out " +
   "hover:scale-105 hover:bg-primary-500 hover:text-white active:scale-95 " +
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 " +
-  "dark:border-white/10 dark:bg-background/90 dark:hover:bg-primary-500";
+  "dark:border-white/10 dark:bg-background dark:hover:bg-primary-500";
 
 const buttonHidden = "pointer-events-none scale-90 opacity-0";
 const buttonVisible = "opacity-100";
@@ -42,7 +41,10 @@ const buttonVisible = "opacity-100";
 // Koyta card peek (age er card) hishebe screen e thakbe
 function getPeekCount(visibleItems, peek) {
   if (typeof peek === "number") {
-    return Math.min(Math.max(Math.floor(peek), 0), Math.max(visibleItems - 1, 0));
+    return Math.min(
+      Math.max(Math.floor(peek), 0),
+      Math.max(visibleItems - 1, 0),
+    );
   }
   return visibleItems >= WIDE_VIEW_MIN_ITEMS ? 2 : 1;
 }
@@ -116,7 +118,7 @@ export default function Carousel({
 
   return (
     <div
-      className="relative"
+      className="relative max-w-max "
       role="region"
       aria-roledescription="carousel"
       aria-label={label}
