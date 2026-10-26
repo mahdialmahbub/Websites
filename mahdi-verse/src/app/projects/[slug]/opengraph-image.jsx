@@ -8,9 +8,9 @@ export const alt = 'Project case study preview'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-const SITE_NAME = 'Your Name — Web Developer'
-const BACKGROUND = '#0a0a0a'
-const ACCENT = '#8b5cf6' // site er brand color diye replace koro
+const SITE_NAME = 'MahdiVerse | MERN Developer, UI/UX Designer & SEO Specialist'
+const BACKGROUND = '#F8FAFC'
+const ACCENT = '#6C63FF' // site er brand color diye replace koro
 
 const truncate = (text = '', max) =>
   text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text
