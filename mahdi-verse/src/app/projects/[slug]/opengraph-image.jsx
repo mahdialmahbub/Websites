@@ -9,8 +9,8 @@ export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
 const SITE_NAME = 'MahdiVerse | MERN Developer, UI/UX Designer & SEO Specialist'
-const BACKGROUND = '#F8FAFC'
-const ACCENT = '#6C63FF' // site er brand color diye replace koro
+const BACKGROUND = '#0a0a0a'
+const ACCENT = '#8b5cf6' // site er brand color diye replace koro
 
 const truncate = (text = '', max) =>
   text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text
@@ -28,7 +28,7 @@ async function getCoverSrc(src) {
   if (/^https?:\/\//i.test(src)) return src
 
   const ext = path.extname(src).slice(1).toLowerCase()
-  const mime = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png' }[ext]
+  const mime = { jpg: 'image/jpg', jpeg: 'image/jpeg', png: 'image/png' }[ext]
   if (!mime) return null // webp ImageResponse e support kore na
 
   try {
