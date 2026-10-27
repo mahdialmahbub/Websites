@@ -28,7 +28,7 @@ async function getCoverSrc(src) {
   if (/^https?:\/\//i.test(src)) return src
 
   const ext = path.extname(src).slice(1).toLowerCase()
-  const mime = { jpg: 'image/jpg', jpeg: 'image/jpeg', png: 'image/png' }[ext]
+  const mime = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png' }[ext]
   if (!mime) return null // webp ImageResponse e support kore na
 
   try {
