@@ -109,8 +109,9 @@ const Page = () => {
   const getErrorMessage = (err) => {
     if (!err) return null;
     return (
-      err?.data?.message ||
+      err?.data?.error[0] ||
       err?.error ||
+      err?.data?.message ||
       "Something went wrong. Please try again."
     );
   };
