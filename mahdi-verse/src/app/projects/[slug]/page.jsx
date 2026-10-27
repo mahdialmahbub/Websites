@@ -6,13 +6,13 @@ import slugify from "../../utils/slugify";
 import { buildMetadata } from "../../utils/buildMetadata";
 import JsonLd from "../../components/JsonLd";
 import { projectSchema } from "../../utils/schema";
+import { notFound } from "next/navigation";
 
 
 export async function generateMetadata({ params }) {
   const { slug } = await params
-  const project = projectsData.find((p) => p.slug === slug)
-
-  if (!project) return {}
+  const project = projectsData.find((p) => (p.slug || slugify(p.title)) === slug);
+  if (!project) notFound();
 
   return buildMetadata({
     title: project.title,

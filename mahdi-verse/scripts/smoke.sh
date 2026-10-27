@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # Production smoke test for the portfolio site.
-# Usage: bash scripts/smoke.sh https://yourdomain.com
-#        INDEXNOW_KEY=yourkey bash scripts/smoke.sh https://yourdomain.com   (also checks the IndexNow key file)
+# Usage: bash scripts/smoke.sh https://mahdi-verse.vercel.app/
+#        INDEXNOW_KEY=yourkey bash scripts/smoke.sh https://mahdi-verse.vercel.app/   (also checks the IndexNow key file)
 set -u
 
-SITE="${1:-https://yourdomain.com}"
+SITE="${1:-https://mahdi-verse.vercel.app/}"
 SITE="${SITE%/}"
 
 case "$SITE" in
   https://*) ;;
-  *) echo "Use the production https:// URL, for example: bash $0 https://yourdomain.com"; exit 2 ;;
+  *) echo "Use the production https:// URL, for example: bash $0 https://mahdi-verse.vercel.app/"; exit 2 ;;
 esac
 
 fail=0

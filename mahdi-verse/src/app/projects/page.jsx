@@ -23,12 +23,23 @@ export async function generateMetadata({ searchParams }) {
   // /projects?project=slug e jodi oi project er detail dekhay,
   // tahole canonical oi project er nijer page e jabe (duplicate hobe na)
   if (selected) {
-    return buildMetadata({
-      title: selected.title,
-      description: selected.description,
-      path: `/projects/${selected.slug}`,
-    });
-  }
+  const base = buildMetadata({
+    title: selected.title,
+    description: selected.description,
+    path: `/projects/${selected.slug}`,
+    image: false, // [slug] page er moto, default image bondho
+  });
+  const ogUrl = `/projects/${selected.slug}/opengraph-image`;
+
+  return {
+    ...base,
+    openGraph: {
+      ...base.openGraph,
+      images: [{ url: ogUrl, width: 1200, height: 630, alt: selected.title }],
+    },
+    twitter: { ...base.twitter, images: [ogUrl] },
+  };
+}
 
   return buildMetadata({
     title: "Projects",
