@@ -23,23 +23,36 @@ export async function generateMetadata({ searchParams }) {
   // /projects?project=slug e jodi oi project er detail dekhay,
   // tahole canonical oi project er nijer page e jabe (duplicate hobe na)
   if (selected) {
-  const base = buildMetadata({
-    title: selected.title,
-    description: selected.description,
-    path: `/projects/${selected.slug}`,
-    image: false, // [slug] page er moto, default image bondho
-  });
-  const ogUrl = `/projects/${selected.slug}/opengraph-image`;
+    const base = buildMetadata({
+      title: selected.title,
+      description: selected.description,
+      path: `/projects/${selected.slug}`,
+      image: false, // default image bondho
+    });
 
-  return {
-    ...base,
-    openGraph: {
-      ...base.openGraph,
-      images: [{ url: ogUrl, width: 1200, height: 630, alt: selected.title }],
-    },
-    twitter: { ...base.twitter, images: [ogUrl] },
-  };
-}
+    // [slug]/opengraph-image.jsx er route ta-i use hobe
+    const ogImage = `/projects/${selected.slug}/opengraph-image`;
+
+    return {
+      ...base,
+      openGraph: {
+        ...base.openGraph,
+        images: [
+          {
+            url: ogImage,
+            width: 1200,
+            height: 630,
+            type: "image/png",
+            alt: selected.title,
+          },
+        ],
+      },
+      twitter: {
+        ...base.twitter,
+        images: [ogImage],
+      },
+    };
+  }
 
   return buildMetadata({
     title: "Projects",
@@ -77,7 +90,7 @@ export default async function Page({ searchParams }) {
     projectsData.find((p) => String(p.slug) === String(projectSlugFromUrl)) ||
     null;
 
-    (selectedProject)
+  selectedProject;
 
   return (
     <>
