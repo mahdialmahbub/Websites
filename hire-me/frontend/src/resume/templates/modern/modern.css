@@ -1,0 +1,33 @@
+/*
+ * MODERN template (two columns: coloured sidebar + main).
+ * Colours: ONLY var(--resume-...) from resume/theme/palette.js. Class prefix: rmd-
+ * Blocks use padding for spacing, never outer margin.
+ */
+.rmd-page { display: flex; flex-direction: row; width: 100%; height: 100%; box-sizing: border-box; font-family: var(--resume-font); font-size: 12.5px; line-height: 1.45; color: var(--resume-text); background: var(--resume-paper); }
+
+/* sidebar: same width on every page */
+.rmd-side { flex: none; width: 31%; min-height: 0; box-sizing: border-box; padding: 44px 24px 0 28px; background: var(--resume-accent); color: var(--resume-paper); } /* <- data-column="sidebar" */
+/* main */
+.rmd-main { flex: 1; min-width: 0; min-height: 0; box-sizing: border-box; padding: 44px 40px 0 34px; } /* <- data-column="main" */
+
+/* main column */
+.rmd-header { padding: 0 0 4px; }
+.rmd-name { margin: 0; padding: 0; font-size: 30px; line-height: 1.1; font-weight: 800; letter-spacing: -0.01em; }
+.rmd-title { margin: 0; padding: 6px 0 0; font-size: 14px; font-weight: 600; color: var(--resume-accent); }
+.rmd-heading { margin: 0; padding: 20px 0 6px; font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--resume-accent); border-bottom: 1px solid var(--resume-border); }
+.rmd-text { margin: 0; padding: 8px 0 0; }
+
+.rmd-job { padding: 10px 0 0; }
+.rmd-job-title { font-weight: 700; font-size: 13px; }
+.rmd-job-meta { display: flex; justify-content: space-between; gap: 12px; padding: 1px 0 0; }
+.rmd-company { font-weight: 600; color: var(--resume-accent); }
+.rmd-muted { font-weight: 400; color: var(--resume-muted); }
+.rmd-bullets { margin: 0; padding: 3px 0 0 16px; }
+.rmd-bullets li::marker { color: var(--resume-accent); }
+
+/* sidebar column */
+.rmd-heading-side { padding: 20px 0 6px; color: var(--resume-paper); border-bottom: 1px solid var(--resume-paper); border-bottom-color: color-mix(in srgb, var(--resume-paper) 45%, transparent); }
+.rmd-side .rmd-heading-side:first-child { padding-top: 0; }
+.rmd-list { margin: 0; padding: 8px 0 0; list-style: none; }
+.rmd-list li { padding: 0 0 5px; overflow-wrap: anywhere; }
+.rmd-skill { margin: 0; padding: 6px 0 0; }

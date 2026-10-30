@@ -6,6 +6,7 @@ import { Template } from '../catalog/template.model.js';
 import { pickSections } from '../content/content.js';
 import { prepareSections, releasePhotoIfUnused } from '../content/content.photos.js';
 import { getProfileContent, mergeIntoProfile } from '../profile/profile.service.js';
+import { evaluateAts } from './ats.engine.js';
 import { Resume } from './resume.model.js';
 import { checkReadyToGenerate } from './resume.rules.js';
 import { enableShare, shareUrl } from './share.service.js';
@@ -42,6 +43,18 @@ export function calcCompletion(resume) {
     [10, resume.projects?.length ? 1 : 0],
   ];
   return Math.round(parts.reduce((sum, [weight, filled]) => sum + weight * filled, 0));
+}
+
+/** The overall ATS score (0-100) of a resume. The browser shows the same number: both use the same engine file. */
+export const computeAtsScore = (resume) => evaluateAts(pickSections(resume)).score;
+
+/** Recalculates and stores the score after the content changed. Does not touch `revision`. Returns the score. */
+async function refreshAtsScore(owner, id) {
+  const doc = await Resume.findOne({ _id: id, ...owner.filter }).lean();
+  if (!doc) return null;
+  const atsScore = computeAtsScore(doc);
+  if (doc.atsScore !== atsScore) await Resume.updateOne({ _id: id, ...owner.filter }, { $set: { atsScore } });
+  return atsScore;
 }
 
 const present = (doc) => ({ ...serialize(doc), completion: calcCompletion(doc) });
@@ -137,6 +150,7 @@ export async function createResume(owner, input) {
       title: title ?? 'Untitled Resume',
       design: design ?? {},
       ...sections,
+      atsScore: computeAtsScore(sections),
       ...(targetJob && { targetJob }),
       ...(draftId && { sourceDraftId: draftId }),
     });
@@ -194,7 +208,11 @@ export async function updateResume(owner, id, patch) {
     if (oldPublicId && oldPublicId !== newPublicId) await releasePhotoIfUnused(oldPublicId);
   }
 
-  return { revision: (before.revision ?? 0) + 1, updatedAt: new Date().toISOString() };
+  // Only a content change can change the score (a template or colour change cannot).
+  const contentChanged = Object.keys($set).some((key) => !key.startsWith('design.') && key !== 'title' && key !== 'targetJob');
+  const atsScore = contentChanged ? await refreshAtsScore(owner, id) : undefined;
+
+  return { revision: (before.revision ?? 0) + 1, updatedAt: new Date().toISOString(), ...(atsScore !== undefined && { atsScore }) };
 }
 
 /** "Update my profile from this resume": the resume's non-empty sections win, empty ones never wipe the profile. */
@@ -240,6 +258,7 @@ export async function generateResume(owner, id, { hideContact } = {}) {
     { _id: id, ...owner.filter, status: { $ne: 'generated' } },
     { $set: { status: 'generated', generatedAt: new Date() } },
   );
+  await refreshAtsScore(owner, id); // the final overall ATS score, calculated on the server
 
   // Profile merge: latest values win, but an empty value never wipes existing profile data.
   const updatedSections = owner.kind === 'user' ? await mergeIntoProfile(owner.userId, pickSections(doc), 'overwrite') : [];
@@ -263,13 +282,19 @@ export async function claimGuestResumes(user, guestId, draft = {}) {
 
   const guestResumes = guestId ? await Resume.find({ guestId }).sort({ updatedAt: -1 }).lean() : [];
 
-  if (guestResumes.length > 0) {
-    await Resume.updateMany({ guestId }, { $set: { user: user._id }, $unset: { guestId: '' } });
-  }
-
+  // 1) top up the profile FIRST (newest data fills the gaps first, nothing non-empty is overwritten).
+  //    If this fails, no resume has moved yet, so a retry still finds everything.
   const draftSections = pickSections(draft);
   if (Object.keys(draftSections).length > 0) await fill(prepareSections(String(user._id), draftSections));
   for (const resume of guestResumes) await fill(pickSections(resume));
+
+  // 2) then move exactly the resumes that were just read (one created a moment ago is picked up by the next call)
+  if (guestResumes.length > 0) {
+    await Resume.updateMany(
+      { _id: { $in: guestResumes.map((resume) => resume._id) }, guestId },
+      { $set: { user: user._id }, $unset: { guestId: '' } },
+    );
+  }
 
   return { claimed: guestResumes.length, updatedSections: [...updated] };
 }

@@ -9,6 +9,12 @@
 
 export const STORAGE_KEY = 'rb.builderDraft.v1';
 
+/** ownerId of a draft whose server resume belongs to an anonymous guest (see the guest cookie on the server). */
+export const GUEST_OWNER = 'guest';
+
+/** The newest information a guest typed (all 8 sections). It auto-fills their NEXT resume and is handed to the account at login. */
+export const GUEST_PROFILE_KEY = 'rb.guestProfile.v1';
+
 /** The 8 sections shared with the profile, plus the resume-only targetJob. */
 export const CONTENT_SECTIONS = [
   'personalInformation',
@@ -162,4 +168,46 @@ export function buildPatch(draft, keys) {
     else if (key in draft.content) patch[key] = draft.content[key];
   }
   return patch;
+}
+
+// ───────── guest auto-fill (localStorage) ─────────
+export function readGuestProfile() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(GUEST_PROFILE_KEY) ?? 'null');
+    return stored && typeof stored === 'object' ? stored : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Keeps the latest NON-EMPTY value of every section (an empty value never wipes what was saved before). */
+export function rememberGuestProfile(content) {
+  try {
+    const saved = readGuestProfile() ?? {};
+    for (const section of PROFILE_SECTIONS) {
+      if (!isFieldEmpty(content[section])) saved[section] = content[section];
+    }
+    localStorage.setItem(GUEST_PROFILE_KEY, JSON.stringify(saved));
+  } catch {
+    /* storage full / blocked: auto-fill just will not work for guests */
+  }
+}
+
+export function clearGuestProfile() {
+  try {
+    localStorage.removeItem(GUEST_PROFILE_KEY);
+  } catch {
+    /* ignore */
+  }
+}
+
+// ───────── list helpers ─────────
+/** Moves the entry with this id one step up (-1) or down (+1). Returns a new array; out-of-range moves change nothing. */
+export function moveInList(list, id, direction) {
+  const from = list.findIndex((entry) => entry.id === id);
+  const to = from + direction;
+  if (from === -1 || to < 0 || to >= list.length) return list;
+  const next = [...list];
+  [next[from], next[to]] = [next[to], next[from]];
+  return next;
 }

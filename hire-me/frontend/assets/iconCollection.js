@@ -15,6 +15,8 @@ import facebook_violet from "./icons/facebook_violet.svg";
 import instagram_violet from "./icons/instagram_violet.svg";
 import linkedin_violet from "./icons/linkedin_violet.svg";
 import twitter_violet from "./icons/twitter_violet.svg";
+import whatsapp_violet from "./icons/whatsapp_violet.svg";
+import telegram_violet from "./icons/telegram_violet.svg";
 
 export const icons = {
   facebook,
@@ -34,6 +36,8 @@ export const icons = {
   twitter_violet,
   instagram_violet,
   linkedin_violet,
+  whatsapp_violet,
+  telegram_violet,
 
   user: "fi fi-rr-user",
   home: "fi fi-rr-home",

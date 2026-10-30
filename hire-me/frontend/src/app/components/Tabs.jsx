@@ -11,12 +11,12 @@ const ICON_CONFIG = {
   add: {
     icon: icons.addSmall,
     color: "text-green-500",
-    ariaLabel: "Remove",
+    ariaLabel: "Add",
   },
   remove: {
     icon: icons.cross,
     color: "text-red-500",
-    ariaLabel: "Add",
+    ariaLabel: "Remove",
   },
 };
 

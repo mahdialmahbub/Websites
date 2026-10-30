@@ -1,0 +1,157 @@
+"use client";
+
+import React, { useState } from "react";
+import AtsSuggestionCard from "./AtsSuggestionCard";
+import BreakdownProgress from "./BreakdownProgress";
+import CircularScore from "./CircularScore";
+import { useAts } from "./useAts";
+
+const BAND_COLORS = [
+  {
+    min: 80,
+    progress: "#40B58A",
+    value: "#1F6B54",
+    label: "#2F8F6F",
+    bg: "#E8F5EF",
+  },
+  {
+    min: 60,
+    progress: "#3B82F6",
+    value: "#1E4FA8",
+    label: "#2563EB",
+    bg: "#EAF1FE",
+  },
+  {
+    min: 40,
+    progress: "#F59E0B",
+    value: "#92580A",
+    label: "#B45309",
+    bg: "#FEF3E2",
+  },
+  {
+    min: 0,
+    progress: "#E5484D",
+    value: "#9B2226",
+    label: "#C13438",
+    bg: "#FDECEC",
+  },
+];
+
+/**
+ * Displays the overall ATS score, section-specific suggestions,
+ * and the score breakdown for every resume section.
+ */
+export default function AtsPanel({ activeSection }) {
+  const ats = useAts();
+
+  const [picked, setPicked] = useState({
+    from: activeSection,
+    section: activeSection,
+  });
+
+  // Follow the active section unless the user selects a breakdown row.
+  const focus =
+    picked.from === activeSection ? picked.section : activeSection;
+
+  const section = ats.sections[focus];
+
+  const failed = section.rules.filter((rule) => !rule.passed);
+
+  const colors =
+    BAND_COLORS.find((band) => ats.score >= band.min) ??
+    BAND_COLORS[BAND_COLORS.length - 1];
+
+  return (
+    <div className="flex w-full flex-col gap-[clamp(1.5rem,calc(1.502vw+1.148rem),2.5rem)] rounded-[clamp(0.5rem,calc(0.939vw+0.28rem),1.125rem)] border border-neutral-500/10 p-[clamp(1rem,calc(0.376vw+0.912rem),1.25rem)] shadow-[0_6px_8px_rgba(2,6,23,0.10)]">
+      {/* Overall ATS score */}
+      <div className="flex justify-center">
+        <CircularScore
+          value={ats.score}
+          label={ats.label}
+          progressColor={colors.progress}
+          valueColor={colors.value}
+          labelColor={colors.label}
+          labelBgColor={colors.bg}
+        />
+      </div>
+
+      {/* Active section suggestions */}
+      <div aria-live="polite">
+        <div className="mb-[clamp(1rem,calc(0.751vw+0.824rem),1.5rem)] flex items-center justify-between gap-2">
+          <h3 className="text-[clamp(0.875rem,calc(0.188vw+0.831rem),1rem)] font-medium text-neutral-500/80">
+            Suggestions: {section.title}
+          </h3>
+
+          {section.complete && (
+            <span className="rounded-full bg-violet-500/5 px-3 py-1 text-caption font-semibold text-violet-500">
+              Section score {section.earned}/{section.max}
+            </span>
+          )}
+        </div>
+
+        {!section.complete ? (
+          <p className="rounded-lg bg-blue-500/5 p-4 text-center text-[clamp(0.75rem,calc(0.188vw+0.706rem),0.875rem)] text-blue-500">
+            {section.missing}
+          </p>
+        ) : failed.length === 0 ? (
+          <p className="flex items-center justify-center gap-2 rounded-lg bg-green-500/5 p-4 text-center text-[clamp(0.75rem,calc(0.188vw+0.706rem),0.875rem)] font-semibold text-green-700">
+            <i
+              className="fi fi-rr-memo-circle-check"
+              aria-hidden="true"
+            />
+            This section is fully optimized. Nothing to improve here.
+          </p>
+        ) : (
+          <ul className="mb-[clamp(1rem,calc(0.751vw+0.824rem),1.5rem)] flex flex-col gap-[clamp(0.75rem,calc(0.563vw+0.618rem),1.125rem)]">
+            {failed.map((rule) => (
+              <AtsSuggestionCard
+                key={rule.id}
+                title={rule.title}
+                suggestion={rule.suggestion}
+                points={rule.points - rule.earned}
+              />
+            ))}
+          </ul>
+        )}
+      </div>
+
+      {/* Score breakdown for every section */}
+      <div>
+        <h3 className="mb-[clamp(1rem,calc(0.751vw+0.824rem),1.5rem)] text-[clamp(0.875rem,calc(0.188vw+0.831rem),1rem)] font-medium text-neutral-500/80">
+          Score Breakdown
+        </h3>
+
+        <ul className="flex flex-col gap-space-3">
+          {Object.values(ats.sections).map((item) => (
+            <li key={item.id}>
+              <button
+                type="button"
+                onClick={() => {
+                  setPicked({
+                    from: activeSection,
+                    section: item.id,
+                  });
+
+                  window.scrollTo({
+                    top: 0,
+                    behavior: "smooth",
+                  });
+                }}
+                aria-pressed={item.id === focus}
+                aria-label={`Show suggestions for ${item.title}`}
+                className={`block w-full rounded-lg text-left outline-none focus-visible:ring-[3px] focus-visible:ring-indigo-300 ${
+                  item.id === focus ? "ring-2 ring-violet-500/30" : ""
+                }`}
+              >
+                <BreakdownProgress
+                  title={item.title}
+                  score={item.percent}
+                />
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}

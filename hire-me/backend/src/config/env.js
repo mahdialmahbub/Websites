@@ -39,6 +39,12 @@ const schema = z.object({
   RESEND_API_KEY: z.string().optional(),
   SENDGRID_API_KEY: z.string().optional(),
 
+  // AI description enhancer. Without a key the "Improve with AI" buttons answer 503 AI_UNAVAILABLE.
+  AI_PROVIDER: z.enum(['gemini']).default('gemini'),
+  GEMINI_API_KEY: z.string().optional(),
+  GEMINI_MODEL: z.string().default('gemini-2.5-flash'),
+  AI_TIMEOUT_MS: z.coerce.number().int().min(3000).max(60000).default(20000),
+
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
   LINKEDIN_CLIENT_ID: z.string().optional(),

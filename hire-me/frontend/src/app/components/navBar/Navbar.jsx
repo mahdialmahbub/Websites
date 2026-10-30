@@ -1,7 +1,6 @@
 import React from "react";
 import Logo from "../Logo";
 import NavLink from "./NavLink";
-import { Button } from "../Button";
 import MobileMenu from "./MobileMenu";
 import Link from "next/link";
 import LoginBTN from "./LoginBTN";
@@ -9,13 +8,12 @@ import LoginBTN from "./LoginBTN";
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
-  { name: "Services", href: "/services" },
-  { name: "Contact", href: "/contact" },
+  { name: "Templates", href: "/templates" },
 ];
 
 const Navbar = () => {
   return (
-    <nav className="bg-neutral-50 text-white h-[clamp(3.5rem,calc(2.04vw+3.02rem),4.5rem)] border-b border-[#7F6FFF]/20 w-full">
+    <nav className="bg-neutral-50 text-white h-[clamp(3.5rem,calc(2.04vw+3.02rem),4.5rem)] border-b border-[#7F6FFF]/20 w-full sticky top-0 z-50">
       <div className="flex items-center justify-between h-full max-w-300 mx-auto px-[clamp(1rem,calc(6.01vw-0.41rem),5rem)]">
         {/* Logo */}
         <Link href={"/"}>

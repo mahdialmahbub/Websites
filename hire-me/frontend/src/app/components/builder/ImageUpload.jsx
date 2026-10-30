@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { icons } from "../../../../assets/iconCollection";
-import Image from "next/image";
 
 // Reuse the detector instead of loading the model for every image.
 let faceDetectorPromise = null;
@@ -335,13 +334,12 @@ export default function ImageUpload({
 
         {current === "uploaded" && preview && (
           <>
+            {/* A plain <img>: the photo comes from Cloudinary or a local blob: URL, which next/image would refuse. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <Image
+            <img
               src={preview}
               alt="Uploaded profile photo"
               draggable={false}
-              width={e.currentTarget.naturalWidth}
-              height={e.currentTarget.naturalHeight}
               onLoad={(e) => {
                 setImageSize({
                   width: e.currentTarget.naturalWidth,

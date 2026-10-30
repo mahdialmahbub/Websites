@@ -62,7 +62,7 @@ const BTNDropdown = ({ onLogout, onDeleteAccount }) => {
             onClick={run(onLogout)}
             className="flex min-h-11 w-full items-center gap-2.5 rounded-lg px-3 text-left text-small sm:text-body font-medium text-neutral-700 transition-colors hover:bg-neutral-500/5 focus-visible:bg-neutral-500/5 focus-visible:outline-none"
           >
-            <i className="fi fi-rr-user-logout text-[22px]"></i>
+            <i className="fi fi-rr-user-logout text-body"></i>
             Log out
           </button>
 
@@ -72,7 +72,7 @@ const BTNDropdown = ({ onLogout, onDeleteAccount }) => {
             onClick={run(onDeleteAccount)}
             className="flex min-h-11 w-full items-center gap-2.5 rounded-lg px-3 text-left text-small sm:text-body font-medium text-red-500 transition-colors hover:bg-red-500/5 focus-visible:bg-red-500/5 focus-visible:outline-none"
           >
-            <i className="fi fi-rr-trash text-[22px]"></i>
+            <i className="fi fi-rr-trash text-body"></i>
             Delete account
           </button>
         </div>

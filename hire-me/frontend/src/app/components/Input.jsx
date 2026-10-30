@@ -20,18 +20,27 @@ import { CalendarDays, Clock, Search } from "lucide-react";
  *   Label er pasher icon, shudu icon class string, jemon `"fi fi-rr-envelope"`.
  *   Value dile icon dekhay, na dile hide.
  * @property {boolean} [required=false]
- *   true dile `<input>` ta native required hoy. Label e `*` dekhay na.
+ *   true dile `<input>` ta native required hoy. Label e "Required" text dekhay na.
  * @property {boolean} [requiredLabel=false]
- *   true dile label e required `*` dekhay (shudu text, input required kore na).
+ *   true dile label e "Required" text dekhay (shudu text, input required kore na).
  * @property {InputVariant} [variant="default"]
  *   `icon` | `counter` | `amount` | `calendar` | `time`: variant onujayi icon,
  *   placeholder ar inputMode ashe.
  * @property {InputSize} [size="md"]
  *   Input er size.
  * @property {InputValidation} [validation="default"]
- *   Border, focus ring ar helper text er rong ei state onujayi hoy.
+ *   Border, focus ring, helper text ar helper icon er rong ei state onujayi hoy.
  * @property {string} [helperText]
  *   Input er niche message (rong `validation` onujayi).
+ * @property {string | null | false} [helperIcon]
+ *   Helper text er pasher Flaticon icon class, jemon `"fi fi-rr-info"`.
+ *   Na dile `validation` onujayi default icon ashe. `null` / `false` dile hide.
+ * @property {React.ReactNode} [inputCta]
+ *   Helper text er pashe ekta text button (jemon "Resend"). `helperText` thakle
+ *   tobei dekhay.
+ * @property {React.MouseEventHandler<HTMLButtonElement>} [onCtaClick]
+ *   `inputCta` button e click korle ei function chole. (`onClick` ekhon normal
+ *   `<input>` er onClick.)
  * @property {React.ReactNode} [icon]
  *   Prefix icon. `icon` variant e Search, `calendar` e CalendarDays, `time` e
  *   Clock default. `icon={null}` dile hide.
@@ -61,8 +70,10 @@ import { CalendarDays, Clock, Search } from "lucide-react";
 // Project e already `cn` (clsx + tailwind-merge) thakle oita diye replace koro.
 const cn = (...parts) => parts.filter(Boolean).join(" ");
 
+// `min-h` shudu small screen e (44px touch target). Na hole `size` prop er
+// h-9 / h-10 kaj korto na, shob size e 44px hoye jeto.
 const INPUT_BASE = [
-  "block w-full min-h-[44px] outline-none",
+  "block w-full max-sm:min-h-[44px] outline-none",
   "transition-[border-color,box-shadow] duration-150 motion-reduce:transition-none",
   "placeholder:text-neutral-400 focus:ring-[3px]",
   "disabled:cursor-not-allowed disabled:border-transparent disabled:bg-slate-100",
@@ -118,7 +129,18 @@ const VALIDATION = {
   },
 };
 
+// Tailwind v3 ar v4 duitaite kaj kore, ar upore baki size gular sathe consistent.
 const SMALL_TEXT = "text-[length:var(--text-caption,0.75rem)]";
+
+// Helper text er pasher Flaticon (UIcons, regular rounded) icon — validation onujayi.
+// Icon bodlate chaile shudu ekhane class name bodlao.
+const HELPER_ICON = {
+  default: "fi fi-rr-info",
+  success: "fi fi-rr-check",
+  error: "fi fi-rr-cross-circle",
+  info: "fi fi-rr-info",
+  warning: "fi fi-rr-exclamation",
+};
 
 // Variant er default icon, placeholder ar inputMode.
 const VARIANT = {
@@ -142,171 +164,225 @@ const DEFAULT_MAX_LENGTH = 140;
 
 export const Input = React.forwardRef(
   /** @type {React.ForwardRefRenderFunction<HTMLInputElement, InputProps>} */
-  (function Input(
-    {
-      // look
-      variant = "default",
-      size = "md",
-      validation = "default",
-      darkBg = false,
+  (
+    function Input(
+      {
+        // look
+        variant = "default",
+        size = "md",
+        validation = "default",
+        darkBg = false,
 
-      // label
-      label,
-      labelIcon,
-      required = false,
-      requiredLabel = false,
+        // label
+        label,
+        labelIcon,
+        required = false,
+        requiredLabel = false,
 
-      // content
-      helperText,
-      icon,
-      currency = "$",
-      maxLength,
+        // content
+        helperText,
+        helperIcon,
+        inputCta,
+        onCtaClick,
+        icon,
+        currency = "$",
+        maxLength,
 
-      // <input> props
-      id,
-      type = "text",
-      placeholder,
-      inputMode,
-      value,
-      defaultValue,
-      onChange,
-      disabled = false,
-      "aria-describedby": describedBy,
+        // <input> props
+        id,
+        type = "text",
+        placeholder,
+        inputMode,
+        value,
+        defaultValue,
+        onChange,
+        disabled = false,
+        "aria-describedby": describedBy,
 
-      // classes
-      className,
-      inputClassName,
+        // classes
+        className,
+        inputClassName,
 
-      ...rest
-    },
-    ref,
-  ) {
-    const autoId = React.useId();
-    const inputId = id ?? autoId;
-    const helpId = `${inputId}-help`;
-
-    // Char counter: controlled (value) ar uncontrolled (defaultValue) duitai kaj kore.
-    const showCounter = variant === "counter";
-    const counterMax = maxLength ?? DEFAULT_MAX_LENGTH;
-    const [count, setCount] = React.useState(
-      () => String(value ?? defaultValue ?? "").length,
-    );
-    const length = value !== undefined ? String(value).length : count;
-
-    // TypeScript nai, tai label/aria-label miss hole dev e warning dey.
-    if (
-      process.env.NODE_ENV !== "production" &&
-      !label &&
-      !rest["aria-label"] &&
-      !rest["aria-labelledby"]
+        ...rest
+      },
+      ref,
     ) {
-      console.warn(
-        "Input: `label` ba `aria-label` dite hobe (accessibility er jonno).",
+      const autoId = React.useId();
+      const inputId = id ?? autoId;
+      const helpId = `${inputId}-help`;
+
+      // Char counter: controlled (value) ar uncontrolled (defaultValue) duitai kaj kore.
+      const showCounter = variant === "counter";
+      const counterMax = maxLength ?? DEFAULT_MAX_LENGTH;
+      const [count, setCount] = React.useState(
+        () => String(value ?? defaultValue ?? "").length,
       );
-    }
+      const length = value !== undefined ? String(value).length : count;
 
-    const sz = SIZE[size] ?? SIZE.md;
-    const tone = VALIDATION[validation] ?? VALIDATION.default;
-    const config = VARIANT[variant] ?? VARIANT.default;
-    const textColor = darkBg ? TEXT_COLOR.dark : TEXT_COLOR.light;
+      // TypeScript nai, tai label/aria-label miss hole dev e warning dey.
+      // useEffect e rakha hoyeche jate protiti render e console spam na hoy.
+      const ariaLabel = rest["aria-label"];
+      const ariaLabelledBy = rest["aria-labelledby"];
+      React.useEffect(() => {
+        if (
+          process.env.NODE_ENV !== "production" &&
+          !label &&
+          !ariaLabel &&
+          !ariaLabelledBy
+        ) {
+          console.warn(
+            "Input: `label` ba `aria-label` dite hobe (accessibility er jonno).",
+          );
+        }
+      }, [label, ariaLabel, ariaLabelledBy]);
 
-    // amount e currency; onno variant e `icon` prop (null dile hide), na hole variant er default.
-    const prefix =
-      variant === "amount" ? currency : icon === undefined ? config.icon : icon;
-    const hasPrefix = prefix != null && prefix !== false;
+      const sz = SIZE[size] ?? SIZE.md;
+      const tone = VALIDATION[validation] ?? VALIDATION.default;
+      const config = VARIANT[variant] ?? VARIANT.default;
+      const textColor = darkBg ? TEXT_COLOR.dark : TEXT_COLOR.light;
 
-    const describedByIds = [describedBy, helperText ? helpId : null]
-      .filter(Boolean)
-      .join(" ");
+      // amount e currency; onno variant e `icon` prop (null dile hide), na hole variant er default.
+      const prefix =
+        variant === "amount"
+          ? currency
+          : icon === undefined
+            ? config.icon
+            : icon;
+      const hasPrefix = prefix != null && prefix !== false;
 
-    const handleChange = (e) => {
-      setCount(e.target.value.length);
-      onChange?.(e);
-    };
+      // helperIcon na dile validation er default; null/false dile hide.
+      const helperIconClass =
+        helperIcon === undefined
+          ? (HELPER_ICON[validation] ?? HELPER_ICON.default)
+          : helperIcon;
 
-    return (
-      <div className={cn("flex w-full flex-col gap-1.5", className)}>
-        {label && (
-          <label
-            htmlFor={inputId}
-            className={cn(
-              "flex items-center gap-space-1 text-small font-semibold",
-              textColor,
-            )}
-          >
-            {labelIcon && (
-              <i aria-hidden="true" className={cn("size-3.5", labelIcon)} />
-            )}
-            <span>
-              {label}
-              {requiredLabel && (
-                <span className="ml-0.5 text-red-500" aria-hidden="true">
-                  *
-                </span>
-              )}
-            </span>
-          </label>
-        )}
+      const describedByIds = [describedBy, helperText ? helpId : null]
+        .filter(Boolean)
+        .join(" ");
 
-        <div className="relative">
-          {hasPrefix && (
-            <span
-              aria-hidden="true"
+      const handleChange = (e) => {
+        setCount(e.target.value.length);
+        onChange?.(e);
+      };
+
+      return (
+        <div className={cn("flex w-full flex-col gap-1.5", className)}>
+          {label && (
+            <label
+              htmlFor={inputId}
               className={cn(
-                "pointer-events-none absolute inset-y-0 left-0 flex items-center",
-                disabled ? "text-neutral-400" : "text-neutral-500",
-                sz.text,
-                sz.prefix,
+                "flex items-center gap-space-1 text-small font-semibold px-0.5",
+                textColor,
               )}
             >
-              {prefix}
-            </span>
+              {labelIcon && (
+                <i aria-hidden="true" className={cn("size-3.5", labelIcon)} />
+              )}
+              <span className="flex items-end justify-between w-full">
+                {label}
+                {requiredLabel && (
+                  <span
+                    className="text-green-500/90 text-[8px]"
+                    aria-hidden="true"
+                  >
+                    Required
+                  </span>
+                )}
+              </span>
+            </label>
           )}
 
-          <input
-            ref={ref}
-            id={inputId}
-            type={type}
-            value={value}
-            defaultValue={defaultValue}
-            onChange={handleChange}
-            disabled={disabled}
-            required={required}
-            placeholder={placeholder ?? config.placeholder}
-            inputMode={inputMode ?? config.inputMode}
-            maxLength={showCounter ? counterMax : maxLength}
-            aria-invalid={validation === "error" || undefined}
-            aria-describedby={describedByIds || undefined}
-            className={cn(
-              INPUT_BASE,
-              textColor,
-              sz.input,
-              sz.text,
-              hasPrefix ? sz.plIcon : sz.pl,
-              tone.field,
-              inputClassName,
-            )}
-            {...rest}
-          />
-        </div>
-
-        {(helperText || showCounter) && (
-          <div className="flex items-start gap-2">
-            {helperText && (
-              <p id={helpId} className={cn(SMALL_TEXT, tone.help)}>
-                {helperText}
-              </p>
-            )}
-            {showCounter && (
+          <div className="relative">
+            {hasPrefix && (
               <span
-                className={cn(SMALL_TEXT, "ml-auto shrink-0 text-neutral-500")}
+                aria-hidden="true"
+                className={cn(
+                  "pointer-events-none absolute inset-y-0 left-0 flex items-center",
+                  disabled ? "text-neutral-400" : "text-neutral-500",
+                  sz.text,
+                  sz.prefix,
+                )}
               >
-                {length} / {counterMax}
+                {prefix}
               </span>
             )}
+
+            <input
+              ref={ref}
+              id={inputId}
+              type={type}
+              value={value}
+              defaultValue={defaultValue}
+              onChange={handleChange}
+              disabled={disabled}
+              required={required}
+              placeholder={placeholder ?? config.placeholder}
+              inputMode={inputMode ?? config.inputMode}
+              maxLength={showCounter ? counterMax : maxLength}
+              aria-invalid={validation === "error" || undefined}
+              aria-describedby={describedByIds || undefined}
+              className={cn(
+                INPUT_BASE,
+                textColor,
+                sz.input,
+                sz.text,
+                hasPrefix ? sz.plIcon : sz.pl,
+                tone.field,
+                inputClassName,
+              )}
+              {...rest}
+            />
           </div>
-        )}
-      </div>
-    );
-  }),
+
+          {(helperText || showCounter) && (
+            <div className="flex items-start gap-2 px-0.5">
+              {helperText && (
+                <div className="flex items-start gap-space-1">
+                  {helperIconClass && (
+                    <i
+                      aria-hidden="true"
+                      className={cn(
+                        helperIconClass,
+                        SMALL_TEXT,
+                        tone.help,
+                        // h-[1lh]: icon ta helper text er prothom line er majhkhane thake,
+                        // text multi-line hole-o.
+                        "flex h-[1lh] shrink-0 items-center",
+                      )}
+                    />
+                  )}
+                  <p id={helpId} className={cn(SMALL_TEXT, tone.help)}>
+                    {helperText}
+                  </p>
+                  {inputCta && (
+                    <button
+                      type="button"
+                      onClick={onCtaClick}
+                      className={cn(
+                        SMALL_TEXT,
+                        tone.help,
+                        "shrink-0 cursor-pointer hover:underline",
+                      )}
+                    >
+                      {inputCta}
+                    </button>
+                  )}
+                </div>
+              )}
+              {showCounter && (
+                <span
+                  className={cn(
+                    SMALL_TEXT,
+                    "ml-auto shrink-0 text-neutral-500",
+                  )}
+                >
+                  {length} / {counterMax}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+      );
+    }
+  ),
 );

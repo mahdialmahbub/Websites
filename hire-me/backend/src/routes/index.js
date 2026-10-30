@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import mongoose from 'mongoose';
 import adminRoutes from '../modules/admin/admin.routes.js';
+import aiRoutes from '../modules/ai/ai.routes.js';
 import authRoutes from '../modules/auth/auth.routes.js';
 import catalogRoutes from '../modules/catalog/catalog.routes.js';
 import profileRoutes from '../modules/profile/profile.routes.js';
@@ -28,6 +29,7 @@ router.use('/resumes', resumeRoutes);
 router.use('/public', publicRoutes);
 router.use('/', catalogRoutes); //  GET /templates, /templates/:slug, /categories (public)
 router.use('/reviews', reviewRoutes);
+router.use('/ai', aiRoutes);
 router.use('/admin', adminRoutes);
 
 export default router;

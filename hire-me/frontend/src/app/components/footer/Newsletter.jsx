@@ -14,6 +14,7 @@
 
 import { useState } from "react";
 import { Title } from "./shared";
+import toast from "@/lib/toast";
 
 export default function Newsletter({ className = "", onSubscribe }) {
   const [email, setEmail] = useState("");
@@ -24,6 +25,10 @@ export default function Newsletter({ className = "", onSubscribe }) {
     if (!value) return;
     onSubscribe?.(value);
     setEmail("");
+    toast.success("Thanks! Your email has been sent.", {
+      id: "contact-newsletter-success",
+      duration: 4000,
+    });
   };
 
   return (
@@ -35,7 +40,10 @@ export default function Newsletter({ className = "", onSubscribe }) {
         Subscribe To Get The Latest Updates, Tips And Resources.
       </p>
 
-      <form onSubmit={handleSubmit} className="mt-[clamp(1rem,calc(0.781rem+0.939vw),1.625rem)]">
+      <form
+        onSubmit={handleSubmit}
+        className="mt-[clamp(1rem,calc(0.781rem+0.939vw),1.625rem)]"
+      >
         <label htmlFor="footer-subscribe-email" className="sr-only">
           Email address
         </label>

@@ -52,7 +52,7 @@ const FAQCard = ({
           aria-expanded={isOpen}
           aria-controls={panelId}
           onClick={handleToggle}
-          className="group flex w-full items-center gap-space-4 rounded-md py-space-2 text-left outline-none hover:bg-neutral-500/5 focus-visible:ring-[3px] focus-visible:ring-primary-200/50"
+          className="group flex w-full items-center gap-space-4 rounded-md py-space-2 text-left outline-none focus-visible:ring-[3px] focus-visible:ring-primary-200/50"
         >
           <span className="flex-1 text-h4 font-medium group-hover:underline">
             {question}

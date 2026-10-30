@@ -36,9 +36,6 @@ const ThemeCard = ({
         )}
       </div>
 
-      <div className="rounded-lg bg-blue-500/5 p-space-4">
-        <p className="text-body font-medium text-blue-500">{subtitle}</p>
-      </div>
     </div>
   );
 };

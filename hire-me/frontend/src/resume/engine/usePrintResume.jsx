@@ -45,5 +45,5 @@ export function usePrintResume() {
       )
     : null;
 
-  return { printResume, printPortal, isPrinting: Boolean(job) };
+  return { printResume, printPortal, isDownloading: Boolean(job) };
 }

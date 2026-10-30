@@ -9,7 +9,7 @@ const router = Router();
 
 router.get('/resumes/:slug', validate({ params: slugParams }), async (req, res) => {
   const data = await getPublicResume(req.valid.params.slug);
-  res.set('Cache-Control', 'public, max-age=30'); // overrides the API-wide "no-store"
+  // No cache override on purpose: the API-wide "no-store" stays, so turning sharing off works at once.
   ok(res, data);
 });
 

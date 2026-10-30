@@ -9,8 +9,9 @@ export const createReviewBody = z.object({
   rating: z.number({ error: 'Choose a rating from 1 to 5' }).int().min(1, 'Choose a rating from 1 to 5').max(5, 'Choose a rating from 1 to 5'),
   comment: z.string().trim().max(1000, 'Maximum 1000 characters').transform(clean).default(''),
   guestName: z.string().trim().max(60, 'Maximum 60 characters').transform(clean).default(''),
-  // Honeypot: the form has a hidden input called "website" that people never fill in, bots do.
-  website: z.string().max(200).optional(),
+  // Honeypot: the form has a hidden input that people never fill in, bots do. (Not called "website" or "url":
+  // password managers like to auto-fill those and would make real people look like bots.)
+  hpField: z.string().max(200).optional(),
 });
 
 export const adminReviewsQuery = z.object({

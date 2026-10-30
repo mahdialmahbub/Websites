@@ -1,0 +1,21 @@
+/*
+ * MINIMAL template (single column).
+ * Colours: ONLY var(--resume-...) from resume/theme/palette.js. Class prefix: rmn-
+ * Blocks use padding for spacing, never outer margin.
+ */
+.rmn-page { display: flex; flex-direction: column; width: 100%; height: 100%; box-sizing: border-box; font-family: var(--resume-font); font-size: 12.5px; line-height: 1.45; color: var(--resume-text); background: var(--resume-paper); }
+.rmn-body { flex: 1; min-height: 0; box-sizing: border-box; padding: 52px 56px 0; } /* <- data-column="main" */
+
+.rmn-name { margin: 0; padding: 0; font-size: 44px; line-height: 1.1; font-weight: 400; letter-spacing: 0.03em; }
+.rmn-title { margin: 0; padding: 8px 0 0; font-size: 14px; color: var(--resume-muted); }
+.rmn-contact { margin: 0; padding: 14px 0 0; font-weight: 700; }
+
+.rmn-heading { margin: 0; padding: 26px 0 6px; font-size: 14px; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; border-bottom: 1px solid var(--resume-text); }
+.rmn-text { margin: 0; padding: 10px 0 0; }
+
+.rmn-job { padding: 12px 0 0 10px; }
+.rmn-row { display: flex; justify-content: space-between; gap: 12px; font-weight: 500; }
+.rmn-role { padding: 2px 0 0 22px; font-style: italic; }
+.rmn-bullets { margin: 0; padding: 4px 0 0 44px; }
+.rmn-bullets li { padding: 0 0 2px 6px; }
+.rmn-bullets li::marker { color: var(--resume-accent); }

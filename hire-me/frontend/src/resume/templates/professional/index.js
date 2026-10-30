@@ -7,6 +7,7 @@ import './professional.css';
  * Template definition. The registry (../registry.js) turns this object into a selectable template.
  * See docs/HOW_TO_ADD_A_TEMPLATE.md.
  */
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   id: 'professional', //        unique, lower-case, saved in resume.design.templateId
   name: 'Professional',

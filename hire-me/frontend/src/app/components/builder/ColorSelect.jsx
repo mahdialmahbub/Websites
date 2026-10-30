@@ -12,7 +12,7 @@ import React from "react";
 const DEFAULT_COLOR = "#64748B";
 
 const styles = {
-  root: "flex items-center gap-space-3 rounded-sm border px-space-3 py-space-2 transition-colors",
+  root: "flex items-center gap-space-3 rounded-sm border px-space-3 py-space-2 transition-colors min-w-[270px]",
   swatch:
     "size-[clamp(3.0625rem,calc(2.182vw+2.551rem),4.1875rem)] shrink-0 rounded-full ring-1 ring-inset ring-neutral-500/10",
   title:
@@ -20,7 +20,7 @@ const styles = {
   badge:
     "shrink-0 rounded-full bg-blue-500/5 font-primary text-[8px] font-medium text-blue-500/70 md:text-[10px] px-[clamp(0.375rem,calc(0.485vw+0.261rem),0.625rem)] py-[clamp(0.25rem,calc(0.242vw+0.193rem),0.375rem)] font-medium",
   subtitle:
-    "text-[clamp(0.75rem,calc(0.242vw+0.693rem),0.875rem)] text-neutral-500/50 ",
+    "text-[clamp(0.75rem,calc(0.242vw+0.693rem),0.875rem)] text-neutral-500/50 truncate",
   check:
     "flex size-7 shrink-0 items-center justify-center rounded-full bg-blue-500/60 text-2.5 text-neutral-50",
 };
@@ -50,8 +50,8 @@ const ColorSelect = ({
       />
 
       {/* Content */}
-      <div className="min-w-0 flex-1">
-        <div className="mb-space-1 flex items-center gap-space-2 md:mb-1.5">
+      <div className="flex-1 w-4">
+        <div className="mb-space-1 flex items-center gap-space-2 md:mb-1.5 ">
           <h3 className={styles.title}>{title}</h3>
           <span className={styles.badge}>{color}</span>
         </div>

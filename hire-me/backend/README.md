@@ -177,7 +177,7 @@ curl -b jar.txt http://localhost:5000/api/resumes
 | POST | `/resumes/:id/generate` | guest or user | validates, creates the share link (same link every time), `status: generated`; merges into the profile for users. Safe to double click |
 | GET | `/resumes?page=&limit=` | user | `{ resumes[], pagination }`, each with `templateName`, `atsScore`, `status`, `shareUrl` |
 | POST | `/resumes/claim` | user | `{ draft? }` -> `{ claimed, updatedSections }` |
-| POST | `/reviews` | guest or user | `{ resumeId, rating 1-5, comment?, guestName?, website (honeypot, leave empty) }`; only for your own resume; 10 per hour per IP |
+| POST | `/reviews` | guest or user | `{ resumeId, rating 1-5, comment?, guestName?, hpField (honeypot, leave empty) }`; only for your own resume; 10 per hour per IP |
 | GET/POST | `/admin/categories` | admin | list / create |
 | PATCH/DELETE | `/admin/categories/:id` | admin | rename (slug kept unless `regenerateSlug`) / delete (`409 CATEGORY_IN_USE`, or `?reassignTo=<categoryId>`) |
 | GET/POST | `/admin/templates` | admin | `category: { id }` or `{ name }` (a new name creates the category automatically) |
@@ -189,3 +189,59 @@ Admin = a verified account whose e-mail is in `ADMIN_EMAILS` (there is no admin 
 New error codes: `CATEGORY_EXISTS`, `CATEGORY_IN_USE`, `CATEGORY_NOT_FOUND`, `TEMPLATE_EXISTS`, `TEMPLATE_NOT_FOUND`, `REVIEW_NOT_FOUND`, `FORBIDDEN`.
 
 `npm test` runs the unit tests (merge/claim planning, generate rules, slugs).
+
+
+---
+
+## Phase 4: AI description enhancer
+
+`POST /api/ai/enhance` `{ field, text, context }` -> `{ text, mode: "improve" | "generate", field }`
+
+- `field`: `summary`, `jobDescription`, `educationDescription`, `projectResponsibilities`, `projectDescription`.
+- Text in the field -> it is improved. Empty (under 10 characters) -> it is written from `context` (job title, company, skills ...).
+  If there is not enough information the answer is `422 NOT_ENOUGH_INFO` with a message that says what to fill in.
+- Quality gate: the answer is cleaned and checked. First-person words or numbers that were not in the user's text / form data make the
+  server ask once more; a second failure is `502 AI_BAD_OUTPUT` (the browser keeps the old text).
+- Guests can use it. Limits: 15 / hour per guest IP, 60 / hour per logged-in user, 120 / hour per IP in total (`429 RATE_LIMITED`).
+- Setup: `GEMINI_API_KEY` (optional `GEMINI_MODEL`, `AI_TIMEOUT_MS`) in `.env`. Without a key the route answers `503 AI_UNAVAILABLE`.
+- Other providers: add a file next to `src/lib/ai/gemini.js` that returns `{ name, generate({ system, prompt, maxTokens, temperature }) }`
+  and select it in `src/lib/ai/index.js`. Nothing else changes.
+- Errors: `AI_UNAVAILABLE` 503, `AI_BUSY` 503, `AI_TIMEOUT` 504, `AI_FAILED` 502, `AI_EMPTY` 502, `AI_BAD_OUTPUT` 502, `NOT_ENOUGH_INFO` 422.
+
+
+---
+
+## Phase 5: ATS score
+
+- The score engine is ONE pure file used by both sides: `src/modules/resumes/ats.engine.js` (backend) and
+  `frontend/src/resume/ats/engine.js`. They must stay identical: a test fails when they differ (copy one over the other).
+- 20 rules, 100 points in total (personal 20, summary 15, experience 25, education 10, projects 10, skills 15, languages 3, references 2).
+  Each rule has an id, section, points, check, suggestion and benefit text. The "expected improvement" is the sum of the points that failed rules
+  still miss, so it always matches the score.
+- The server stores the score on the resume: when it is created, after every content change (`PATCH /resumes/:id` also answers `atsScore`),
+  and at `POST /resumes/:id/generate` (the final overall score). Template or colour changes do not touch it.
+  `GET /resumes` and `GET /resumes/:id` return `atsScore`.
+- Optional AI keyword ideas: `POST /api/ai/keywords` `{ professionalTitle, targetJobTitle?, skills }` -> `{ keywords: [...], role }`.
+  They are only suggestions (the person clicks the ones they really have). Same limits and errors as `/ai/enhance`.
+
+---
+
+## Phase 6: Generate, share, public page
+
+- `POST /api/resumes/:id/generate` (guest or user): validates, creates the share link (the same link every time), sets `status: generated`,
+  recalculates `atsScore`, and for logged-in users merges the data into the profile. Safe to double click.
+- `POST /api/resumes/:id/share` `{ hideContact?, rotate? }` / `DELETE /api/resumes/:id/share`: turn the link on (same link again) or off.
+- `GET /api/public/resumes/:slug`: the data behind a share link. Email and phone are removed unless the owner turned "show contact" on.
+  It is no longer cached (turning sharing off takes effect on the next visit). Off or unknown links answer `404 SHARE_NOT_FOUND`.
+
+
+---
+
+## Phase 7: reviews after Generate
+
+- `POST /api/reviews` `{ resumeId, rating 1-5, comment?, guestName?, hpField? }` (guest or user). The review must be for a resume the sender owns.
+  `hpField` is the hidden honeypot input of the form: filled in = a bot, the answer is a fake "thanks" and nothing is saved.
+  (It was called `website` in Phase 1; password managers fill fields with that name, so it was renamed.)
+- The website's three faces map to ratings: Bad = 1, Decent = 3, Excellent = 5.
+- Same person + same resume within 10 minutes returns the review already saved (double click / retry safe). 10 reviews per hour per IP.
+- New reviews are `pending`. Admin: `GET /api/admin/reviews?status=pending`, `PATCH /api/admin/reviews/:id` `{ status: "approved" | "rejected" }`.

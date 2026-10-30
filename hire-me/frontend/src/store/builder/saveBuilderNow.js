@@ -12,8 +12,8 @@ export const registerSaver = (fn) => {
 };
 
 /**
- * Saves pending changes (creating the server resume if it does not exist yet).
- * Guests: resolves { resumeId: null } - nothing to save, the draft lives in the browser.
+ * Saves pending changes right now (creating the server resume if it does not exist yet). Guests and logged-in users alike.
+ * Resolves { resumeId: null } only when no saver is mounted.
  * @returns {Promise<{ resumeId: string | null }>}
  */
 export const saveBuilderNow = () => (saver ? saver({ force: true }) : Promise.resolve({ resumeId: null }));

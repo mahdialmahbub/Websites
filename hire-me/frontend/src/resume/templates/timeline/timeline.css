@@ -1,0 +1,44 @@
+/*
+ * TIMELINE template (main column + dark sidebar on the right).
+ * Colours: ONLY var(--resume-...) from resume/theme/palette.js. Class prefix: rtl-
+ * Blocks use padding for spacing, never outer margin.
+ */
+.rtl-page { display: flex; flex-direction: row; width: 100%; height: 100%; box-sizing: border-box; font-family: var(--resume-font); font-size: 12px; line-height: 1.45; color: var(--resume-text); background: var(--resume-paper); }
+
+/* main: no side padding here, every block has its own, so the profile band can reach both edges */
+.rtl-main { flex: 1; min-width: 0; min-height: 0; box-sizing: border-box; padding: 44px 0 0; } /* <- data-column="main" */
+/* sidebar: same width on every page */
+.rtl-side { flex: none; width: 35%; min-height: 0; box-sizing: border-box; padding: 44px 30px 0; background: var(--resume-text); color: var(--resume-paper); } /* <- data-column="sidebar" */
+
+/* ---- main: header ---- */
+.rtl-header { padding: 0 32px 22px; }
+.rtl-name { margin: 0; padding: 0; font-size: 32px; line-height: 1.1; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+.rtl-title { margin: 0; padding: 8px 0 0; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--resume-muted); }
+.rtl-title::after { content: ''; display: inline-block; width: 36px; margin-left: 12px; vertical-align: middle; border-top: 1px solid var(--resume-accent); }
+
+/* ---- headings ---- */
+.rtl-heading { margin: 0; font-size: 14px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; }
+.rtl-heading-main { padding: 26px 32px 10px; }
+.rtl-heading-band { padding: 18px 32px 8px; font-size: 13px; background: var(--resume-accent); color: var(--resume-paper); }
+.rtl-heading-side { padding: 28px 0 10px; color: var(--resume-paper); border-top: 1px solid var(--resume-paper); border-top-color: color-mix(in srgb, var(--resume-paper) 35%, transparent); }
+.rtl-heading-side-first { padding: 0 0 10px; color: var(--resume-paper); }
+
+/* ---- main: profile band ---- */
+.rtl-band-text { margin: 0; padding: 0 32px 20px; font-size: 11px; background: var(--resume-accent); color: var(--resume-paper); }
+
+/* ---- main: experience timeline ---- */
+.rtl-job, .rtl-job-line { position: relative; box-sizing: border-box; padding-left: 122px; padding-right: 32px; }
+.rtl-job::before, .rtl-job-line::before { content: ''; position: absolute; top: 0; bottom: 0; left: 100px; border-left: 1px solid var(--resume-border); } /* the vertical line runs through every block */
+.rtl-job { padding-top: 16px; }
+.rtl-job::after { content: ''; position: absolute; top: 20px; left: 96px; width: 7px; height: 7px; box-sizing: border-box; border: 1px solid var(--resume-muted); border-radius: 50%; background: var(--resume-paper); }
+.rtl-dates { position: absolute; top: 17px; left: 32px; width: 58px; font-size: 10px; line-height: 1.25; font-weight: 700; color: var(--resume-muted); }
+.rtl-job-title { font-size: 12.5px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+.rtl-company { padding: 1px 0 0; font-size: 11px; color: var(--resume-accent); font-weight: 600; }
+.rtl-bullets { margin: 0; padding: 4px 0 0 14px; font-size: 11px; color: var(--resume-muted); font-style: italic; }
+.rtl-bullets li::marker { color: var(--resume-accent); }
+
+/* ---- sidebar: contacts + skills ---- */
+.rtl-contact { display: flex; align-items: center; gap: 10px; padding: 7px 0 0; font-size: 11px; }
+.rtl-ico { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--resume-accent); color: var(--resume-paper); }
+.rtl-contact-text { min-width: 0; overflow-wrap: anywhere; }
+.rtl-skill { padding: 8px 0 5px; font-size: 11px; border-bottom: 1px solid var(--resume-paper); border-bottom-color: color-mix(in srgb, var(--resume-paper) 25%, transparent); }

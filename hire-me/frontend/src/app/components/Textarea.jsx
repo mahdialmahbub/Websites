@@ -24,12 +24,22 @@ import * as React from "react";
  * @property {TextareaSize} [size="md"]
  *   Textarea er size.
  * @property {TextareaValidation} [validation="default"]
- *   Border, focus ring, helper text er rong ar status icon ei state onujayi hoy.
+ *   Border, focus ring, helper text er rong ar helper icon ei state onujayi hoy.
  * @property {string} [helperText]
  *   Niche message. Na dile `validation` er default message dekhay
  *   (`default` e kichu dekhay na).
  * @property {boolean} [isIcon=true]
- *   Helper text er age status icon dekhabe kina.
+ *   Helper text er age icon dekhabe kina. `false` dile sob state e hide.
+ * @property {string | null | false} [helperIcon]
+ *   Helper text er pasher Flaticon icon class, jemon `"fi fi-rr-info"`.
+ *   Na dile `validation` onujayi default icon ashe. `null` / `false` dile hide.
+ * @property {React.ReactNode} [inputCta]
+ *   Helper text er pashe ekta text button (jemon "Resend"). Helper text (ba
+ *   validation er default message) thakle tobei dekhay. <Input /> er sathe
+ *   same prop name.
+ * @property {React.MouseEventHandler<HTMLButtonElement>} [onCtaClick]
+ *   `inputCta` button e click korle ei function chole. (`onClick` normal
+ *   `<textarea>` er onClick.)
  * @property {number} [rows]
  *   Minimum height (line er hishebe). Text barle height nijei barbe, komle
  *   abar kombe. Default: `sm` = 3, `md` = 4.
@@ -114,11 +124,13 @@ const VALIDATION = {
 const SMALL_TEXT = "text-[length:var(--text-caption,0.75rem)]";
 const STATUS_ICON_TEXT = "text-[length:var(--text-small,0.875rem)]";
 
-// Validation er status icon (Flaticon CDN class). Pack er icon name onujayi ekhane change koro.
+// Helper text er pasher Flaticon (UIcons, regular rounded) icon — validation onujayi.
+// <Input /> er HELPER_ICON er sathe same. Icon bodlate chaile ekhane class name bodlao.
 const STATUS_ICON = {
-  success: "fi fi-rr-check-circle",
+  default: "fi fi-rr-info",
+  success: "fi fi-rr-check",
   error: "fi fi-rr-cross-circle",
-  warning: "fi fi-rr-triangle-warning",
+  warning: "fi fi-rr-exclamation",
   info: "fi fi-rr-info",
 };
 
@@ -136,130 +148,169 @@ const DEFAULT_HELP = {
 
 export const Textarea = React.forwardRef(
   /** @type {React.ForwardRefRenderFunction<HTMLTextAreaElement, TextareaProps>} */
-  (function Textarea(
-    {
-      // look
-      size = "md",
-      validation = "default",
-      darkBg = false,
+  (
+    function Textarea(
+      {
+        // look
+        size = "md",
+        validation = "default",
+        darkBg = false,
 
-      // label
-      label,
-      labelIcon,
-      required = false,
-      requiredLabel = false,
+        // label
+        label,
+        labelIcon,
+        required = false,
+        requiredLabel = false,
 
-      // content
-      helperText,
-      isIcon = true,
-      rows,
+        // content
+        helperText,
+        isIcon = true,
+        helperIcon,
+        inputCta,
+        onCtaClick,
+        rows,
 
-      // <textarea> props
-      id,
-      style,
-      "aria-describedby": describedBy,
+        // <textarea> props
+        id,
+        style,
+        "aria-describedby": describedBy,
 
-      // classes
-      className,
-      textareaClassName,
+        // classes
+        className,
+        textareaClassName,
 
-      ...rest
-    },
-    ref,
-  ) {
-    const autoId = React.useId();
-    const fieldId = id ?? autoId;
-    const helpId = `${fieldId}-help`;
-
-    // TypeScript nai, tai label/aria-label miss hole dev e warning dey.
-    if (
-      process.env.NODE_ENV !== "production" &&
-      !label &&
-      !rest["aria-label"] &&
-      !rest["aria-labelledby"]
+        ...rest
+      },
+      ref,
     ) {
-      console.warn(
-        "Textarea: `label` ba `aria-label` dite hobe (accessibility er jonno).",
-      );
-    }
+      const autoId = React.useId();
+      const fieldId = id ?? autoId;
+      const helpId = `${fieldId}-help`;
 
-    const sz = SIZE[size] ?? SIZE.md;
-    const tone = VALIDATION[validation] ?? VALIDATION.default;
-    const textColor = darkBg ? TEXT_COLOR.dark : TEXT_COLOR.light;
-    const statusIcon = isIcon ? STATUS_ICON[validation] : undefined;
+      // TypeScript nai, tai label/aria-label miss hole dev e warning dey.
+      // useEffect e rakha hoyeche jate protiti render e console spam na hoy.
+      const ariaLabel = rest["aria-label"];
+      const ariaLabelledBy = rest["aria-labelledby"];
+      React.useEffect(() => {
+        if (
+          process.env.NODE_ENV !== "production" &&
+          !label &&
+          !ariaLabel &&
+          !ariaLabelledBy
+        ) {
+          console.warn(
+            "Textarea: `label` ba `aria-label` dite hobe (accessibility er jonno).",
+          );
+        }
+      }, [label, ariaLabel, ariaLabelledBy]);
 
-    // `field-sizing-content` e `rows` ignore hoy, tai minimum height nijei set kori:
-    // rows lines + vertical padding + border.
-    const minHeight = `calc(${rows ?? sz.rows}lh + ${sz.padY} + 3px)`;
+      const sz = SIZE[size] ?? SIZE.md;
+      const tone = VALIDATION[validation] ?? VALIDATION.default;
+      const textColor = darkBg ? TEXT_COLOR.dark : TEXT_COLOR.light;
 
-    const help = helperText ?? DEFAULT_HELP[validation];
+      // isIcon={false} dile sob hide. Na hole helperIcon na dile validation er default;
+      // helperIcon null/false dile hide.
+      const helperIconClass = !isIcon
+        ? null
+        : helperIcon === undefined
+          ? (STATUS_ICON[validation] ?? STATUS_ICON.default)
+          : helperIcon;
 
-    const describedByIds = [describedBy, help ? helpId : null]
-      .filter(Boolean)
-      .join(" ");
+      // `field-sizing-content` e `rows` ignore hoy, tai minimum height nijei set kori:
+      // rows lines + vertical padding + border.
+      const minHeight = `calc(${rows ?? sz.rows}lh + ${sz.padY} + 3px)`;
 
-    return (
-      <div className={cn("flex w-full flex-col gap-1.5", className)}>
-        {label && (
-          <label
-            htmlFor={fieldId}
+      const help = helperText ?? DEFAULT_HELP[validation];
+
+      const describedByIds = [describedBy, help ? helpId : null]
+        .filter(Boolean)
+        .join(" ");
+
+      return (
+        <div className={cn("flex w-full flex-col gap-1.5", className)}>
+          {label && (
+            <label
+              htmlFor={fieldId}
+              className={cn(
+                "flex items-center gap-space-1 text-small font-semibold",
+                textColor,
+              )}
+            >
+              {labelIcon && (
+                <i aria-hidden="true" className={cn("size-3.5", labelIcon)} />
+              )}
+              <span>
+                {label}
+                {requiredLabel && (
+                  <span className="ml-0.5 text-red-500" aria-hidden="true">
+                    *
+                  </span>
+                )}
+              </span>
+            </label>
+          )}
+
+          <textarea
+            ref={ref}
+            id={fieldId}
+            rows={rows ?? sz.rows}
+            style={{ minHeight, ...style }}
+            required={required}
+            aria-invalid={validation === "error" || undefined}
+            aria-describedby={describedByIds || undefined}
             className={cn(
-              "flex items-center gap-space-1 text-small font-semibold",
+              TEXTAREA_BASE,
               textColor,
+              sz.field,
+              sz.text,
+              tone.field,
+              textareaClassName,
             )}
-          >
-            {labelIcon && (
-              <i aria-hidden="true" className={cn("size-3.5", labelIcon)} />
-            )}
-            <span>
-              {label}
-              {requiredLabel && (
-                <span className="ml-0.5 text-red-500" aria-hidden="true">
-                  *
+            {...rest}
+          />
+
+          {help && (
+            <div className="flex items-start gap-1.5">
+              {helperIconClass && (
+                // Bahire wrapper ta helper text er prothom line er height er soman (h-[1lh]),
+                // tai text multi-line hole-o icon prothom line er majhkhane thake.
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "flex h-lh shrink-0 items-center",
+                    SMALL_TEXT,
+                    tone.help,
+                  )}
+                >
+                  <i
+                    className={cn(
+                      "flex leading-none",
+                      STATUS_ICON_TEXT,
+                      helperIconClass,
+                    )}
+                  />
                 </span>
               )}
-            </span>
-          </label>
-        )}
-
-        <textarea
-          ref={ref}
-          id={fieldId}
-          rows={rows ?? sz.rows}
-          style={{ minHeight, ...style }}
-          required={required}
-          aria-invalid={validation === "error" || undefined}
-          aria-describedby={describedByIds || undefined}
-          className={cn(
-            TEXTAREA_BASE,
-            textColor,
-            sz.field,
-            sz.text,
-            tone.field,
-            textareaClassName,
+              <p id={helpId} className={cn(SMALL_TEXT, tone.help)}>
+                {help}
+              </p>
+              {inputCta && (
+                <button
+                  type="button"
+                  onClick={onCtaClick}
+                  className={cn(
+                    SMALL_TEXT,
+                    tone.help,
+                    "shrink-0 cursor-pointer hover:underline",
+                  )}
+                >
+                  {inputCta}
+                </button>
+              )}
+            </div>
           )}
-          {...rest}
-        />
-
-        {help && (
-          <p
-            id={helpId}
-            className={cn("flex items-center gap-1.5", SMALL_TEXT, tone.help)}
-          >
-            {statusIcon && (
-              <i
-                aria-hidden="true"
-                className={cn(
-                  "flex shrink-0 leading-none",
-                  STATUS_ICON_TEXT,
-                  statusIcon,
-                )}
-              />
-            )}
-            <span>{help}</span>
-          </p>
-        )}
-      </div>
-    );
-  }),
+        </div>
+      );
+    }
+  ),
 );

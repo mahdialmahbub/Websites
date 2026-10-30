@@ -15,6 +15,7 @@ const NotFound = () => {
           src={"/404-icon.svg"}
           width={200}
           height={200}
+          loading="eager"
           className="h-[clamp(7.5rem,calc(7.51vw+5.74rem),12.5rem)] w-auto"
         />
 

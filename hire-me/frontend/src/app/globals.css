@@ -217,6 +217,7 @@
 @layer base {
   html {
     font-size: 100%;
+    scrollbar-gutter: stable;
   }
 
   body {
@@ -272,6 +273,101 @@
 
 @utility z-tooltip {
   z-index: var(--z-tooltip);
+}
+
+
+/* ========================================
+   Professional Modal Entrance / Exit
+======================================== */
+
+.modal-dialog-motion {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0) scale(0.985);
+  transform-origin: center center;
+
+  transition:
+    opacity 150ms ease-in,
+    transform 180ms cubic-bezier(0.4, 0, 1, 1);
+}
+
+.modal-dialog-motion.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+
+  transition:
+    opacity 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Backdrop fade-in / fade-out */
+.modal-dialog-motion::backdrop {
+  background-color: rgb(0 0 0 / 0);
+  transition: background-color 150ms ease-in;
+}
+
+.modal-dialog-motion.is-visible::backdrop {
+  background-color: rgb(0 0 0 / 40%);
+
+  transition: background-color 280ms ease-out;
+}
+
+/* Accessibility: respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .modal-dialog-motion,
+  .modal-dialog-motion.is-visible,
+  .modal-dialog-motion::backdrop,
+  .modal-dialog-motion.is-visible::backdrop {
+    transition: none !important;
+  }
+}
+
+/* Mobile menu panel: .modal-dialog-motion er moto same timing ar easing.
+   Panel header er niche theke ektu upor theke neme ashe (translateY negative),
+   tai transform-origin top. */
+.mobile-menu-panel {
+  opacity: 0;
+  transform: translate3d(0, -12px, 0) scale(0.985);
+  transform-origin: top center;
+  pointer-events: none;
+
+  /* Exit: druto ar halka */
+  transition:
+    opacity 150ms ease-in,
+    transform 180ms cubic-bezier(0.4, 0, 1, 1);
+}
+
+.mobile-menu-panel.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  pointer-events: auto;
+
+  /* Enter: ektu dhire, smooth settle */
+  transition:
+    opacity 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Backdrop overlay fade-in / fade-out (rong Tailwind class theke ashe) */
+.mobile-menu-overlay {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease-in;
+}
+
+.mobile-menu-overlay.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 280ms ease-out;
+}
+
+/* Accessibility: respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu-panel,
+  .mobile-menu-panel.is-visible,
+  .mobile-menu-overlay,
+  .mobile-menu-overlay.is-visible {
+    transition: none !important;
+  }
 }
 
 /*

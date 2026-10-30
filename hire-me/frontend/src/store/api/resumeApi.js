@@ -2,10 +2,13 @@ import { baseApi } from './baseApi';
 
 export const resumeApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    /** Dashboard cards: [{ id, title, design, fullName, professionalTitle, photoUrl, completion, updatedAt }] */
+    /**
+     * "My resumes": one page of the user's resumes, newest first. arg: { page = 1, limit = 12 }
+     * -> { resumes: [{ id, title, templateName, design, fullName, professionalTitle, completion, atsScore, status,
+     *                  shared, shareUrl, createdAt, updatedAt }], pagination: { page, limit, total, totalPages } }
+     */
     listResumes: build.query({
-      query: () => '/resumes',
-      transformResponse: (data) => data.resumes,
+      query: ({ page = 1, limit = 12 } = {}) => `/resumes?page=${page}&limit=${limit}`,
       providesTags: ['ResumeList'],
     }),
 
@@ -39,6 +42,16 @@ export const resumeApi = baseApi.injectEndpoints({
       invalidatesTags: ['ResumeList'],
     }),
 
+    /**
+     * "Generate": the server validates the resume, finalizes it and returns the SAME share link every time (double click safe).
+     * arg: { id, hideContact? } -> { resume, share: { enabled, slug, url, hideContact }, profile: { updatedSections } }
+     * A VALIDATION_ERROR answer carries details.fieldErrors ({ 'personalInformation.email': ['...'] }).
+     */
+    generateResume: build.mutation({
+      query: ({ id, ...body }) => ({ url: `/resumes/${id}/generate`, method: 'POST', body }),
+      invalidatesTags: (_result, _error, { id }) => ['ResumeList', 'Profile', { type: 'Resume', id }],
+    }),
+
     unshareResume: build.mutation({
       query: (id) => ({ url: `/resumes/${id}/share`, method: 'DELETE' }),
       invalidatesTags: ['ResumeList'],
@@ -67,6 +80,16 @@ export const resumeApi = baseApi.injectEndpoints({
       },
     }),
 
+    /**
+     * Guest -> account. The server already claims the guest's resumes at login; this call also hands over the
+     * latest data from the browser (localStorage) so it tops up the profile. Idempotent.
+     * arg: { draft? } -> { claimed, updatedSections }
+     */
+    claimGuestData: build.mutation({
+      query: (body) => ({ url: '/resumes/claim', method: 'POST', body }),
+      invalidatesTags: ['ResumeList', 'Profile'],
+    }),
+
     duplicateResume: build.mutation({
       query: (id) => ({ url: `/resumes/${id}/duplicate`, method: 'POST' }),
       transformResponse: (data) => data.resume,
@@ -83,11 +106,14 @@ export const resumeApi = baseApi.injectEndpoints({
 export const {
   useListResumesQuery,
   useGetResumeQuery,
+  useLazyGetResumeQuery,
   useCreateResumeMutation,
   useSyncProfileMutation,
   useShareResumeMutation,
   useUnshareResumeMutation,
   useUpdateResumeMutation,
+  useClaimGuestDataMutation,
   useDuplicateResumeMutation,
+  useGenerateResumeMutation,
   useDeleteResumeMutation,
 } = resumeApi;

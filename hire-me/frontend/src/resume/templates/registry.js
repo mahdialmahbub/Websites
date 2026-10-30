@@ -1,10 +1,13 @@
+import minimal from './minimal';
+import modern from './modern';
 import professional from './professional';
+import timeline from './timeline';
 
 /**
  * ➜ TO ADD A TEMPLATE:  create its folder (copy ./professional), then import it here and add it to TEMPLATES.
  *   That is the only place that needs to change.
  */
-const TEMPLATES = [professional];
+const TEMPLATES = [professional, modern, timeline, minimal];
 
 /** Allowed categories, in the order you want them shown. Add a new category here. */
 export const TEMPLATE_CATEGORIES = ['Professional', 'Creative', 'Modern', 'Simple', 'Student'];

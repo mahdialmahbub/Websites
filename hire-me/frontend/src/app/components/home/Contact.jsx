@@ -6,6 +6,7 @@ import { Textarea } from "../Textarea";
 import { Button } from "../Button";
 import Image from "next/image";
 import { icons } from "../../../../assets/iconCollection";
+import ContactForm from "./ContactForm";
 
 const contactInfo = [
   {
@@ -73,48 +74,7 @@ const Contact = () => {
             Message us for your needs
           </h2>
 
-          <form action="">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-6">
-              <Input
-                label="Full Name"
-                name="name"
-                placeholder="John Doe"
-                labelIcon="fi fi-rr-user"
-                required
-              />
-
-              <Input
-                label="Email"
-                name="email"
-                type="email"
-                placeholder="yourmail@mail.com"
-                labelIcon="fi fi-rr-envelope"
-                required
-              />
-
-              <Textarea
-                label="Message"
-                name="message"
-                placeholder="I want to make a resume that ..."
-                labelIcon="fi fi-rr-comment-dots"
-                className="sm:col-span-2"
-              />
-
-              <div className="sm:col-span-2 space-y-space-3">
-                <Button className="w-full">Send Message</Button>
-
-                <div className="flex items-center justify-center gap-[clamp(0.5rem,calc(0.376vw+0.412rem),0.75rem)]">
-                  <p className="font-semibold text-green-300 text-[clamp(0.875rem,calc(0.188vw+0.831rem),1rem)]">
-                    Your information is secure
-                  </p>
-                  <span className="size-1.5 rounded-full bg-neutral-400 max-sm:hidden" />
-                  <p className="font-semibold text-neutral-400 text-[clamp(0.875rem,calc(0.188vw+0.831rem),1rem)]">
-                    Response within 24 hours
-                  </p>
-                </div>
-              </div>
-            </div>
-          </form>
+          <ContactForm />
         </div>
 
         {/* Banner */}
@@ -136,7 +96,7 @@ const Contact = () => {
               <h2 className="mb-2 font-primary font-semibold text-neutral-50 text-[clamp(1.5rem,calc(1.2vw+1.2rem),2rem)]">
                 Contact Us As You Want
               </h2>
-              <p className="text-neutral-400 text-[clamp(1rem,calc(0.4vw+0.9rem),1.125rem)]">
+              <p className="text-neutral-200 text-[clamp(1rem,calc(0.4vw+0.9rem),1.125rem)]">
                 We’re just a message away. Get in touch and we’ll assist you
                 with pleasure.
               </p>
@@ -174,7 +134,7 @@ const Contact = () => {
             </div>
 
             {/* Address */}
-            <p className="mt-[clamp(1.375rem,calc(0.939vw+1.155rem),1.5rem)] flex items-start gap-2 text-neutral-400 text-[clamp(1rem,calc(0.376vw+0.912rem),1.25rem)]">
+            <p className="mt-[clamp(1.375rem,calc(0.939vw+1.155rem),1.5rem)] flex items-start gap-2 text-neutral-200 text-[clamp(1rem,calc(0.376vw+0.912rem),1.25rem)]">
               <i
                 className="fi fi-sr-marker mt-1.5 text-sky-500 w-[clamp(1rem,calc(0.188vw+0.956rem),1.125rem)]"
                 aria-hidden="true"

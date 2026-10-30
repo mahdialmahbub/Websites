@@ -14,20 +14,12 @@ import {
   InfoItem,
   ChipList,
 } from "../components/profile/ProfileBlocks";
-import {
-  profile,
-  professionalSummary,
-  workExperience,
-  education,
-  skills,
-  projects,
-  languages,
-  references,
-} from "../../../assets/profileData";
 import ProfileTabs from "../components/profile/ProfileTabs";
 import Avatar from "../components/navBar/Avatar";
 import { OTP_LENGTH, ROUTES, useCountdown, withEmail } from "@/app/lib/auth";
 import { useForgotPasswordMutation, useGetMeQuery } from "@/store/api/authApi";
+import { useGetProfileQuery } from "@/store/api/profileApi";
+import { safeHref } from "@/resume/lib/format";
 
 const PROFILE_PATH = "/profile";
 
@@ -35,60 +27,89 @@ const containerClass =
   "relative mx-auto w-full max-w-300 px-[clamp(1rem,calc(5.258vw+0.268rem),5rem)]";
 
 /* -------------------------------------------------------------------------- */
+/*  Real profile data -> the shape the FieldDropdown cards were designed for    */
+/*  (the profile is saved in the same shape as a resume; the cards use shorter  */
+/*  key names, so they are translated here in one place)                        */
+/* -------------------------------------------------------------------------- */
+
+const toWorkItem = (job) => ({
+  id: job.id,
+  company: job.companyName,
+  jobTitle: job.jobTitle,
+  employeeType: job.employeeType,
+  location: job.location,
+  startDate: job.startDate,
+  endDate: job.endDate,
+  isCurrent: job.currentlyWorking,
+  jobDescription: job.jobDescription,
+});
+
+const toEducationItem = (entry) => ({
+  id: entry.id,
+  institution: entry.institutionName,
+  degree: entry.degree,
+  fieldOfStudy: entry.fieldOfStudy,
+  gpa: entry.gpa,
+  startDate: entry.startDate,
+  endDate: entry.currentlyStudying ? "" : entry.endDate,
+  description: entry.description,
+});
+
+const toProjectItem = (project) => ({
+  id: project.id,
+  projectName: project.projectName,
+  projectType: project.projectType,
+  role: project.role,
+  keyAchievement: project.keyAchievements,
+  keyResponsibilities: project.keyResponsibilities,
+  technologies: project.technologies,
+  projectUrl: project.projectUrl,
+  description: project.projectDescription,
+});
+
+const toReferenceItem = (reference) => ({
+  id: reference.id,
+  name: reference.name,
+  designation: reference.jobTitle,
+  company: reference.company,
+  relationship: reference.relationship,
+  email: reference.email,
+  phone: reference.phone,
+});
+
+/** An entry with no text at all (an empty card the user never filled in) is not shown. */
+const hasText = (item) =>
+  Object.entries(item).some(([key, value]) => key !== "id" && typeof value !== "boolean" && (Array.isArray(value) ? value.length > 0 : String(value ?? "").trim() !== ""));
+
+/* -------------------------------------------------------------------------- */
 /*  Small helpers                                                              */
 /* -------------------------------------------------------------------------- */
 
-/** A section's items followed by its "Add" button. */
-const FieldList = ({ field, items, addTitle }) => (
+/** A section's items followed by its "Add" button (it opens that section in the editor). */
+const FieldList = ({ field, items, addTitle, editTab }) => (
   <div className="space-y-3">
     {items.map((item) => (
       <FieldDropdown key={item.id} field={field} data={item} />
     ))}
-    <AddField title={addTitle} />
+    <AddField title={addTitle} href={`/profile/edit?tab=${editTab}`} />
   </div>
 );
 
-const getContactItems = (user) => [
-  {
-    label: "Email",
-    value: user.email,
-    icon: "mail",
-    href: `mailto:${user.email}`,
-  },
-  // TODO: everything below is placeholder data. Replace with real user fields.
-  {
-    label: "Phone number",
-    value: "+880 17359 99190",
-    icon: "phone",
-    href: "tel:+8801735999190",
-  },
-  {
-    label: "Location",
-    value: "Mouchak, Kaliakoir, Gazipur",
-    icon: "mapPin",
-  },
-  {
-    label: "Personal website",
-    value: "https://mahdi.com",
-    icon: "globe",
-    href: "https://mahdi.com",
-    external: true,
-  },
-  {
-    label: "LinkedIn",
-    value: "https://mahdi.com",
-    icon: "linkedin",
-    href: "https://mahdi.com",
-    external: true,
-  },
-  {
-    label: "GitHub",
-    value: "https://mahdi.com",
-    icon: "github",
-    href: "https://mahdi.com",
-    external: true,
-  },
-];
+const linkItem = (label, value, icon) => {
+  const href = safeHref(value);
+  return { label, value, icon, ...(href && { href, external: true }) };
+};
+
+const getContactItems = (info, accountEmail) => {
+  const email = info.email || accountEmail;
+  return [
+    { label: "Email", value: email, icon: "mail", href: email ? `mailto:${email}` : undefined },
+    { label: "Phone number", value: info.phone, icon: "phone", href: info.phone ? `tel:${info.phone.replace(/[^\d+]/g, "")}` : undefined },
+    { label: "Location", value: info.location, icon: "mapPin" },
+    linkItem("Personal website", info.website, "globe"),
+    linkItem("LinkedIn", info.linkedin, "linkedin"),
+  ];
+};
 
 /* -------------------------------------------------------------------------- */
 /*  Page states: loading / error / success notice                              */
@@ -224,11 +245,11 @@ const SecurityCard = ({ email }) => {
   );
 };
 
-const PersonalInformation = ({ user }) => (
+const PersonalInformation = ({ profile, user }) => (
   <div className="flex max-lg:flex-col gap-6 max-h-max">
     <SectionCard title="Contact details" description="How people can reach you.">
       <dl className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
-        {getContactItems(user).map((item) => (
+        {getContactItems(profile.personalInformation, user.email).map((item) => (
           <InfoItem key={item.label} {...item} />
         ))}
       </dl>
@@ -242,66 +263,93 @@ const PersonalInformation = ({ user }) => (
 /*  Tab 2: Professional information                                            */
 /* -------------------------------------------------------------------------- */
 
-const ProfessionalInformation = () => (
-  <div className="space-y-6">
-    <SectionCard title="Professional summary">
-      <p className="max-w-3xl text-small leading-relaxed text-neutral-700 sm:text-body">
-        {professionalSummary}
-      </p>
-    </SectionCard>
+const ProfessionalInformation = ({ profile }) => {
+  const workExperience = profile.workExperience.map(toWorkItem).filter(hasText);
+  const education = profile.education.map(toEducationItem).filter(hasText);
+  const projects = profile.projects.map(toProjectItem).filter(hasText);
+  const references = profile.references.map(toReferenceItem).filter(hasText);
+  const languages = profile.languages.filter((entry) => entry.name).map((entry) => (entry.level ? `${entry.name} - ${entry.level}` : entry.name));
 
-    <SectionCard title="Work experience" count={workExperience.length}>
-      <FieldList
-        field="work experience"
-        items={workExperience}
-        addTitle="Add work experience"
-      />
-    </SectionCard>
-
-    <SectionCard title="Education" count={education.length}>
-      <FieldList field="education" items={education} addTitle="Add education" />
-    </SectionCard>
-
-    <SectionCard title="Projects" count={projects.length}>
-      <FieldList field="project" items={projects} addTitle="Add project" />
-    </SectionCard>
-
-    <div className="grid items-start gap-6 md:grid-cols-2">
-      <SectionCard title="Skills">
-        <ChipList items={skills} emptyText="No skills added yet" />
+  return (
+    <div className="space-y-6">
+      <SectionCard title="Professional summary">
+        {profile.professionalSummary ? (
+          <p className="max-w-3xl whitespace-pre-line text-small leading-relaxed text-neutral-700 sm:text-body">
+            {profile.professionalSummary}
+          </p>
+        ) : (
+          <AddField title="Add a professional summary" href="/profile/edit?tab=summary" />
+        )}
       </SectionCard>
 
-      <SectionCard title="Languages">
-        <ChipList items={languages} emptyText="No languages added yet" />
+      <SectionCard title="Work experience" count={workExperience.length}>
+        <FieldList field="work experience" items={workExperience} addTitle="Add work experience" editTab="experience" />
+      </SectionCard>
+
+      <SectionCard title="Education" count={education.length}>
+        <FieldList field="education" items={education} addTitle="Add education" editTab="education" />
+      </SectionCard>
+
+      <SectionCard title="Projects" count={projects.length}>
+        <FieldList field="project" items={projects} addTitle="Add project" editTab="projects" />
+      </SectionCard>
+
+      <div className="grid items-start gap-6 md:grid-cols-2">
+        <SectionCard title="Skills">
+          <ChipList items={profile.skills} emptyText="No skills added yet" />
+        </SectionCard>
+
+        <SectionCard title="Languages">
+          <ChipList items={languages} emptyText="No languages added yet" />
+        </SectionCard>
+      </div>
+
+      <SectionCard title="References" count={references.length}>
+        <FieldList field="reference" items={references} addTitle="Add reference" editTab="references" />
       </SectionCard>
     </div>
-
-    <SectionCard title="References" count={references.length}>
-      <FieldList
-        field="reference"
-        items={references}
-        addTitle="Add reference"
-      />
-    </SectionCard>
-  </div>
-);
+  );
+};
 
 /* -------------------------------------------------------------------------- */
 /*  Loaded profile: cover + header + tabs                                      */
 /* -------------------------------------------------------------------------- */
 
-const ProfileView = ({ user, notice }) => {
-  // Built here (not at module level) because the tabs need the loaded user.
+/** The profile photo (Cloudinary), or the account picture / initials when there is none. A plain <img>: the host is not in next.config. */
+const ProfilePhoto = ({ user, photoUrl, name }) =>
+  photoUrl ? (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={photoUrl} alt={`${name} profile photo`} width={144} height={144} className="size-28 rounded-xl object-cover sm:size-36" />
+  ) : (
+    <Avatar
+      user={user}
+      alt={`${name} profile photo`}
+      width={144}
+      height={144}
+      sizes="(max-width: 640px) 112px, 144px"
+      className="size-28 rounded-xl object-cover sm:size-36"
+      priority={true}
+    />
+  );
+
+const ProfileView = ({ user, profile, notice }) => {
+  const router = useRouter();
+  const info = profile.personalInformation;
+  const name = info.fullName || user.name;
+
+  // Built here (not at module level) because the tabs need the loaded data.
   const tabs = [
     {
       key: "personal",
       label: "Personal information",
-      content: <PersonalInformation user={user} />,
+      text: "Personal information",
+      content: <PersonalInformation profile={profile} user={user} />,
     },
     {
       key: "professional",
       label: "Professional information",
-      content: <ProfessionalInformation />,
+      text: "Professional information",
+      content: <ProfessionalInformation profile={profile} />,
     },
   ];
 
@@ -327,32 +375,22 @@ const ProfileView = ({ user, notice }) => {
         {/* header: avatar + name + actions */}
         <header className="-mt-14 flex flex-col items-center gap-4 text-center sm:-mt-16 md:flex-row md:items-end md:gap-6 md:text-left">
           <div className="shrink-0 rounded-2xl bg-white p-1.5 shadow-[0_8px_24px_rgba(16,24,40,0.10)] ring-1 ring-neutral-500/10">
-            <Avatar
-              user={user}
-              alt={`${user.name} profile photo`}
-              width={144}
-              height={144}
-              sizes="(max-width: 640px) 112px, 144px"
-              className="size-28 rounded-xl object-cover sm:size-36"
-              priority={true}
-            />
+            <ProfilePhoto user={user} photoUrl={info.photo?.url} name={name} />
           </div>
 
           <div className="flex min-w-0 flex-1 flex-col items-center gap-1 md:items-start md:pb-2">
             <h1 className="font-primary text-[22px] leading-tight font-semibold wrap-break-word sm:text-[28px]">
-              {user.name}
+              {name}
             </h1>
-            {/* real user data wins; profile.title is only a placeholder */}
-            <p className="text-body text-neutral-500">
-              {user.title || profile.title}
-            </p>
+            <p className="text-body text-neutral-500">{info.professionalTitle || "Add your professional title"}</p>
           </div>
 
           <div className="flex items-center gap-3 md:pb-2">
             <Button
               variant="secondary"
               icon={icons.edit}
-              className="border-violet-100 bg-violet-50 text-violet-500 hover:bg-violet-100"
+              onClick={() => router.push("/profile/edit")}
+              className="border-violet-100/30 bg-violet-50 text-violet-500 hover:bg-violet-100/40"
             >
               Edit information
             </Button>
@@ -361,6 +399,11 @@ const ProfileView = ({ user, notice }) => {
         </header>
 
         {notice && <div className="mt-6">{notice}</div>}
+
+        <p className="mt-6 flex items-start gap-2 rounded-lg bg-blue-500/5 p-3 text-small text-blue-500">
+          <i className={`${icons.information} mt-0.75`} aria-hidden="true"></i>
+          <span>This information fills in your next resumes. Changing it never changes resumes you already made.</span>
+        </p>
 
         {/* tabs */}
         <div className="mt-[clamp(1.5rem,calc(1.878vw+1.06rem),2.5rem)]">
@@ -378,8 +421,16 @@ const ProfileView = ({ user, notice }) => {
 const ProfileContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { data: user, isLoading, isError, error, refetch } = useGetMeQuery();
+  const { data: user, isLoading: userLoading, isError, error, refetch } = useGetMeQuery();
+  const {
+    data: profile,
+    isLoading: profileLoading,
+    isError: profileFailed,
+    error: profileError,
+    refetch: refetchProfile,
+  } = useGetProfileQuery(undefined, { skip: !user });
   const [showUpdated, setShowUpdated] = useState(false);
+  const [showSaved, setShowSaved] = useState(false);
 
   const isLoggedOut =
     isError && (error?.status === 401 || error?.code === "UNAUTHENTICATED");
@@ -391,22 +442,34 @@ const ProfileContent = () => {
     }
   }, [isLoggedOut, router]);
 
-  // Coming back from the change-password flow: show a message once, then clean the URL
+  // Coming back from the change-password flow or from the editor: show a message once, then clean the URL
   useEffect(() => {
-    if (searchParams.get("passwordUpdated") === "1") {
+    const passwordUpdated = searchParams.get("passwordUpdated") === "1";
+    const saved = searchParams.get("saved") === "1";
+    if (passwordUpdated || saved) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setShowUpdated(true);
+      if (passwordUpdated) setShowUpdated(true);
+      if (saved) setShowSaved(true);
       router.replace(PROFILE_PATH, { scroll: false });
     }
   }, [searchParams, router]);
 
-  // if (condition) {
-    
-  // }
+  const notice = (
+    <>
+      {showUpdated && (
+        <SuccessNotice onDismiss={() => setShowUpdated(false)}>Your password has been updated.</SuccessNotice>
+      )}
+      {showSaved && (
+        <SuccessNotice onDismiss={() => setShowSaved(false)}>
+          Your profile was saved. New resumes will start with this information.
+        </SuccessNotice>
+      )}
+    </>
+  );
 
   return (
     <main className="min-h-screen min-w-[320px] bg-neutral-50 pb-[clamp(2rem,calc(6.009vw+0.592rem),6rem)]">
-      {(isLoading || isLoggedOut) && <ProfileSkeleton />}
+      {(userLoading || isLoggedOut || (user && profileLoading)) && <ProfileSkeleton />}
 
       {isError && !isLoggedOut && (
         <ErrorState
@@ -415,18 +478,14 @@ const ProfileContent = () => {
         />
       )}
 
-      {user && (
-        <ProfileView
-          user={user}
-          notice={
-            showUpdated && (
-              <SuccessNotice onDismiss={() => setShowUpdated(false)}>
-                Your password has been updated.
-              </SuccessNotice>
-            )
-          }
+      {user && profileFailed && (
+        <ErrorState
+          message={profileError?.message ?? "Could not load your profile."}
+          onRetry={() => refetchProfile()}
         />
       )}
+
+      {user && profile && <ProfileView user={user} profile={profile} notice={showUpdated || showSaved ? notice : null} />}
     </main>
   );
 };

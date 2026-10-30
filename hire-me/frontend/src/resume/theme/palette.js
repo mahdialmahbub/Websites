@@ -4,14 +4,54 @@
  * preview, the PDF and the shared link always agree.
  */
 export const PALETTE = Object.freeze([
-  { id: 'ocean', name: 'Ocean Blue', hex: '#1d4ed8' },
-  { id: 'teal', name: 'Teal', hex: '#0f766e' },
-  { id: 'emerald', name: 'Emerald', hex: '#047857' },
-  { id: 'violet', name: 'Violet', hex: '#6d28d9' },
-  { id: 'rose', name: 'Rose', hex: '#be123c' },
-  { id: 'amber', name: 'Amber', hex: '#b45309' },
-  { id: 'slate', name: 'Slate', hex: '#334155' },
-  { id: 'charcoal', name: 'Charcoal', hex: '#111827' },
+  {
+    id: "ocean",
+    name: "Ocean Blue",
+    hex: "#1d4ed8",
+    subtitle: "Builds trust and clarity with a polished, professional look.",
+  },
+  {
+    id: "teal",
+    name: "Teal",
+    hex: "#0f766e",
+    subtitle: "Creates a calm, modern feel that balances confidence and approachability.",
+  },
+  {
+    id: "emerald",
+    name: "Emerald",
+    hex: "#047857",
+    subtitle: "Adds a fresh, balanced look that reflects growth and professionalism.",
+  },
+  {
+    id: "violet",
+    name: "Violet",
+    hex: "#6d28d9",
+    subtitle: "Brings a creative, distinctive touch while keeping the design refined.",
+  },
+  {
+    id: "rose",
+    name: "Rose",
+    hex: "#be123c",
+    subtitle: "Adds warmth and personality for a confident, expressive resume style.",
+  },
+  {
+    id: "amber",
+    name: "Amber",
+    hex: "#b45309",
+    subtitle: "Introduces warmth and energy, making key details stand out.",
+  },
+  {
+    id: "slate",
+    name: "Slate",
+    hex: "#334155",
+    subtitle: "Keeps the resume understated, structured, and easy to scan.",
+  },
+  {
+    id: "charcoal",
+    name: "Charcoal",
+    hex: "#111827",
+    subtitle: "Creates a bold, sophisticated look with strong visual contrast.",
+  },
 ]);
 
 export const DEFAULT_COLOR = PALETTE[0].hex;
