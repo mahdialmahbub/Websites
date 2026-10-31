@@ -43,7 +43,7 @@ export async function upsertCategoryByName(name) {
     Category.findOneAndUpdate(
       { slug },
       { $setOnInsert: { name: name.trim(), slug, description: '', isActive: true } },
-      { upsert: true, new: true, setDefaultsOnInsert: true },
+      { upsert: true, returnDocument: "after", setDefaultsOnInsert: true },
     );
   try {
     return await run();

@@ -66,7 +66,7 @@ export async function verifyEmail({ email, otp }, req) {
   const user = await User.findOneAndUpdate(
     { email },
     { $set: { emailVerified: true, emailVerifiedAt: new Date() } },
-    { new: true },
+    { returnDocument: "after" },
   );
   if (!user) throw new ApiError(400, 'INVALID_OTP', 'The code is incorrect or has expired');
 

@@ -9,7 +9,7 @@ async function upsertProfile(userId, $set) {
     Profile.findOneAndUpdate(
       { user: userId },
       { $set },
-      { upsert: true, new: false, setDefaultsOnInsert: true, runValidators: true, projection: { 'personalInformation.photo': 1 } },
+      { upsert: true, returnDocument: "before", setDefaultsOnInsert: true, runValidators: true, projection: { 'personalInformation.photo': 1 } },
     ).lean();
   try {
     return await run();

@@ -192,7 +192,7 @@ export async function updateResume(owner, id, patch) {
   const before = await Resume.findOneAndUpdate(
     filter,
     { $set, $inc: { revision: 1 } },
-    { new: false, runValidators: true, projection: { revision: 1, 'personalInformation.photo': 1 } },
+    { returnDocument: "before", runValidators: true, projection: { revision: 1, 'personalInformation.photo': 1 } },
   ).lean();
 
   if (!before) {

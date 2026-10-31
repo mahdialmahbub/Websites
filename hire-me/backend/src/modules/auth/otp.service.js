@@ -80,7 +80,7 @@ export async function verifyOtp({ email, purpose, code }) {
     const updated = await Otp.findOneAndUpdate(
       { _id: doc._id, codeHash: doc.codeHash },
       { $inc: { attempts: 1 } },
-      { new: true },
+      { returnDocument: "after" },
     );
     if (updated && updated.attempts >= MAX_ATTEMPTS) {
       await Otp.updateOne({ _id: doc._id }, { $set: { codeHash: null } });

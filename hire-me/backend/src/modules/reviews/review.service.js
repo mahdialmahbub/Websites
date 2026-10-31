@@ -68,7 +68,7 @@ export async function listReviews({ status, page, limit }) {
 }
 
 export async function setReviewStatus(id, status) {
-  const doc = await Review.findByIdAndUpdate(id, { $set: { status } }, { new: true }).populate('user', 'name').lean();
+  const doc = await Review.findByIdAndUpdate(id, { $set: { status } }, { returnDocument: "after" }).populate('user', 'name').lean();
   if (!doc) throw new ApiError(404, 'REVIEW_NOT_FOUND', 'Review not found');
   return reviewDto(doc);
 }
