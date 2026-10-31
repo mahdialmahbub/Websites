@@ -6,18 +6,17 @@ const FeatureCard = ({ title, subtitle, icon, color, bgColor }) => {
     <div
       className="
         group relative overflow-hidden isolate
-        border border-black/[0.06] dark:border-white/5
-        bg-white dark:bg-white/[0.03]
+        border border-black/10 dark:border-white/10
+        bg-[#f8fafc] dark:bg-[#080b10]
         rounded-2xl md:rounded-3xl
-        p-[20px] md:p-[28px] xl:p-[32px]
+        p-[clamp(1rem,0.8182rem+0.9091vw,1.5rem)]
         h-full flex flex-col
         transition-all duration-300 ease-out
         hover:-translate-y-1 hover:border-transparent
-        hover:shadow-[0_24px_48px_-16px_rgba(0,0,0,0.14)]
-        dark:hover:shadow-[0_24px_48px_-16px_rgba(0,0,0,0.55)]
+        hover:shadow-[0_24px_30px_-16px_rgba(0,0,0,0.14)]
+        dark:hover:shadow-[0_24px_30px_-16px_rgba(0,0,0,0.55)]
       "
       style={{
-        backgroundColor: `color-mix(in srgb, ${bgColor} 8%, transparent)`,
       }}
     >
       {/* soft accent glow, only visible on hover */}
@@ -33,7 +32,7 @@ const FeatureCard = ({ title, subtitle, icon, color, bgColor }) => {
       {/* accent line, sweeps in on hover */}
       <div
         className="
-          absolute top-0 left-0 h-[3px] w-0 rounded-t-2xl
+          absolute top-0 left-0 h-[clamp(0.125rem,0.1023rem+0.1136vw,0.1875rem)] w-0 rounded-t-2xl
           transition-all duration-300 ease-out group-hover:w-full
         "
         style={{ backgroundColor: color }}
@@ -42,28 +41,27 @@ const FeatureCard = ({ title, subtitle, icon, color, bgColor }) => {
       {/* Icon */}
       <div
         className="
-          size-13 md:size-15.5 xl:size-18.5
+          size-[clamp(3.125rem,2.5795rem+2.7273vw,4.625rem)]
           flex items-center justify-center
-          text-h4 md:text-h3 xl:text-h2
-          rounded-2xl ring-1 ring-inset
+          text-[clamp(1.75rem,1.5682rem+0.9091vw,2.25rem)]
+          rounded-full
           transition-transform duration-300 group-hover:scale-105
         "
         style={{
           color,
-          backgroundColor: `color-mix(in srgb, ${color} 12%, transparent)`,
-          "--tw-ring-color": `color-mix(in srgb, ${color} 22%, transparent)`,
+          backgroundColor: `color-mix(in srgb, ${color} 5%, transparent)`,
         }}
       >
         <i className={`${icon} inline-flex items-center justify-center`} />
       </div>
 
       {/* Content */}
-      <div className="mt-5 flex flex-col justify-between flex-1 gap-4">
+      <div className="mt-5 flex flex-col justify-between flex-1">
         <div className="space-y-2">
-          <h3 className="text-h4 font-semibold text-black dark:text-white">
+          <h3 className="text-[clamp(1.125rem,0.8977rem+1.1364vw,1.75rem)] font-semibold text-black dark:text-white">
             {title}
           </h3>
-          <p className="text-h6 xl:text-h5 font-medium leading-relaxed text-black/60 dark:text-white/60">
+          <p className="text-[clamp(0.875rem,0.8295rem+0.2273vw,1.13rem)] font-regular leading-relaxed text-black/60 dark:text-white/60">
             {subtitle}
           </p>
         </div>

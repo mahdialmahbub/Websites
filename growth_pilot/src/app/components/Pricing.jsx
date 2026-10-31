@@ -49,6 +49,8 @@ const Pricing = () => {
       accentText: "text-accent2",
       accentBg: "bg-accent2-bg",
       accentSolid: "bg-accent2",
+      accentborder: "hover:border-accent2",
+      accentshadow: "hover:shadow-accent2/50",
     },
     {
       id: "professional",
@@ -59,9 +61,11 @@ const Pricing = () => {
       features: pricingPro,
       cta: "Start Free Trial",
       highlighted: true,
-      accentText: "text-accent3",
-      accentBg: "bg-accent3-bg",
-      accentSolid: "bg-accent3",
+      accentText: "text-accent5",
+      accentBg: "bg-accent5-bg",
+      accentSolid: "bg-accent5",
+      accentborder: "hover:border-accent5",
+      accentshadow: "hover:shadow-accent5/50",
     },
     {
       id: "business",
@@ -72,9 +76,11 @@ const Pricing = () => {
       features: pricingBusiness,
       cta: "Start Free Trial",
       highlighted: false,
-      accentText: "text-accent5",
-      accentBg: "bg-accent5-bg",
-      accentSolid: "bg-accent5",
+      accentText: "text-accent3",
+      accentBg: "bg-accent3-bg",
+      accentSolid: "bg-accent3",
+      accentborder: "hover:border-accent3",
+      accentshadow: "hover:shadow-accent3/50",
     },
   ];
 
@@ -131,17 +137,17 @@ const Pricing = () => {
       </Reveal>
 
       {/* Pricing cards */}
-      <div className="flex flex-col md:flex-row gap-[24px] xl:gap-[32px] items-stretch">
+      <div className="flex flex-col xl:flex-row gap-[24px] xl:gap-[32px] items-stretch">
         {plans.map((plan) => (
           <FadeUp
             scale={plan.highlighted}
             delay={!plan.highlighted && 0.5}
             duration={plan.highlighted ? 2.5 : 2}
             key={plan.id}
-            className={`relative flex flex-col w-full md:flex-1 rounded-4xl p-[24px] md:p-[32px] gap-[20px] bg-white dark:bg-black transition-shadow duration-300 ${
+            className={`relative flex flex-col w-full md:flex-1 rounded-4xl p-[24px] md:p-[32px] gap-[20px] bg-[#f8fafc] dark:bg-[#080b10] transition-[box-shadow,border-color,translate] duration-300 xl:hover:-translate-y-3 ${
               plan.highlighted
-                ? "border-2 border-secondary2 shadow-[0_16px_40px_-16px] shadow-secondary2/50"
-                : "border border-black/10 dark:border-white/15"
+                ? "border-2 border-secondary2/50 shadow-[0_16px_40px_-16px] shadow-secondary2/50"
+                : `border border-black/10 dark:border-white/15 ${plan.accentborder} hover:shadow-[0_16px_40px_-16px] ${plan.accentshadow}`
             }`}
           >
             {plan.highlighted && (
@@ -214,7 +220,7 @@ const Pricing = () => {
             {/* CTA */}
             <div className="mt-auto pt-[8px]">
               <Button
-                variant={!plan.highlighted ? "text" : "primary"}
+                variant={!plan.highlighted ? "secondary" : "primary"}
                 fullWidth
                 text={plan.cta}
                 isIcon={false}

@@ -5,12 +5,12 @@ import FadeUp from "./motions/FadeUp";
 const SectionHeading = ({ title, subtitle, tagName, isCenter = true }) => {
   return (
     <header
-      className={`flex flex-col gap-[16px] md:gap-[20px] xl:gap-[32px]  w-full ${isCenter && "items-center *:text-center"}`}
+      className={`flex flex-col gap-[clamp(1rem,0.8636rem+0.6818vw,1.375rem)] w-full ${isCenter && "items-center *:text-center"}`}
     >
       <SectionTag text={tagName}/>
-      <div className={`${isCenter && "*:text-center"} w-full space-y-space-sm`}>
-        <FadeUp delay={0.3} as="h2" className="text-h4 md:text-h3 xl:text-h2 font-bold">{title}</FadeUp>
-        <FadeUp delay={0.6} as="p" className="text-large md:text-h5 xl:text-[20px] font-medium text-black/50 dark:text-white/50">{subtitle}</FadeUp>
+      <div className={`${isCenter && "*:text-center items-center justify-center"} flex flex-col space-y-[clamp(0.25rem,0.0682rem+0.9091vw,0.75rem)]`}>
+        <FadeUp delay={0.3} as="h2" className="text-[clamp(1.375rem,1.1477rem+1.1364vw,2rem)] font-semibold leading-8">{title}</FadeUp>
+        <FadeUp delay={0.6} as="p" className="text-[clamp(0.875rem,0.7841rem+0.4545vw,1.125rem)] font-regular text-black/70 dark:text-white/70 max-w-175">{subtitle}</FadeUp>
       </div>
     </header>
   );

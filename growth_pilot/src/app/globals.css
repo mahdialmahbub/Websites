@@ -5,9 +5,6 @@
 
 
 @theme inline {
-  --font-primary: var(--font-workSans);
-  --font-secondary: var(--font-workSans);
-
   /* =========================
      SPACING SCALE
      ========================== */
@@ -73,7 +70,7 @@
 
 
 body {
-  font-family: Arial, Helvetica, sans-serif, var(--font-sans);
+  font-family: var(--font-work-sans), Arial, Helvetica, sans-serif;
 }
 
 /* .input, .textarea, .select {
@@ -81,7 +78,7 @@ body {
 } */
 
 .section {
-  @apply flex flex-col items-center py-[40px] px-[16px] gap-[32px] md:py-[40px] md:px-[48px] md:gap-[48px] xl:py-20 xl:px-20 xl:gap-[64px] ;
+  @apply flex flex-col items-center py-[clamp(3rem,1.9091rem+5.4545vw,6rem)] px-[clamp(1rem,-0.0909rem+5.4545vw,4rem)] gap-[clamp(1.5rem,0.9545rem+2.7273vw,3rem)] ;
 }
 
 
@@ -192,5 +189,7 @@ html {
 }
 
 .container {
-  width: clamp(300px, 80%, 2000px);
+  width: clamp(320px, 80%, 2000px);
 }
+
+/* container ta edit korte hobe */
