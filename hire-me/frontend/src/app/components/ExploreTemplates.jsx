@@ -66,7 +66,7 @@ export default function ExploreTemplates({
   if (items.length === 0) return null;
 
   return (
-    <section aria-label={label} className="flex w-full flex-col items-center">
+    <section aria-label={label} className="flex flex-col items-center *:min-w-[320px] *:max-w-300">
       {/* On pages the wrapper cancels the page's side padding, so the cards run edge to edge like on the home page. */}
       <div className={bleed ? "w-[calc(100%+2*var(--page-pad))] [--page-pad:clamp(1.5rem,calc(2.254vw+0.972rem),3rem)]" : "w-full"}>
         <TemplateCarousel key={resetKey} categories={categories} items={items} startAt={startAt} padded={false} />

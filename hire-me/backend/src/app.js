@@ -22,7 +22,7 @@ export function createApp() {
   app.use(helmet());
   app.use(
     cors({
-      origin: env.allowedOrigins,
+      origin: ["http://192.168.0.105:3000"],
       credentials: true,
       methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
       maxAge: 600,

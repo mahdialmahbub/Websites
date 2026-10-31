@@ -20,6 +20,7 @@ import { OTP_LENGTH, ROUTES, useCountdown, withEmail } from "@/app/lib/auth";
 import { useForgotPasswordMutation, useGetMeQuery } from "@/store/api/authApi";
 import { useGetProfileQuery } from "@/store/api/profileApi";
 import { safeHref } from "@/resume/lib/format";
+import toast from "@/lib/toast";
 
 const PROFILE_PATH = "/profile";
 
@@ -79,7 +80,14 @@ const toReferenceItem = (reference) => ({
 
 /** An entry with no text at all (an empty card the user never filled in) is not shown. */
 const hasText = (item) =>
-  Object.entries(item).some(([key, value]) => key !== "id" && typeof value !== "boolean" && (Array.isArray(value) ? value.length > 0 : String(value ?? "").trim() !== ""));
+  Object.entries(item).some(
+    ([key, value]) =>
+      key !== "id" &&
+      typeof value !== "boolean" &&
+      (Array.isArray(value)
+        ? value.length > 0
+        : String(value ?? "").trim() !== ""),
+  );
 
 /* -------------------------------------------------------------------------- */
 /*  Small helpers                                                              */
@@ -103,8 +111,18 @@ const linkItem = (label, value, icon) => {
 const getContactItems = (info, accountEmail) => {
   const email = info.email || accountEmail;
   return [
-    { label: "Email", value: email, icon: "mail", href: email ? `mailto:${email}` : undefined },
-    { label: "Phone number", value: info.phone, icon: "phone", href: info.phone ? `tel:${info.phone.replace(/[^\d+]/g, "")}` : undefined },
+    {
+      label: "Email",
+      value: email,
+      icon: "mail",
+      href: email ? `mailto:${email}` : undefined,
+    },
+    {
+      label: "Phone number",
+      value: info.phone,
+      icon: "phone",
+      href: info.phone ? `tel:${info.phone.replace(/[^\d+]/g, "")}` : undefined,
+    },
     { label: "Location", value: info.location, icon: "mapPin" },
     linkItem("Personal website", info.website, "globe"),
     linkItem("LinkedIn", info.linkedin, "linkedin"),
@@ -145,23 +163,6 @@ const ErrorState = ({ message, onRetry }) => (
   </div>
 );
 
-const SuccessNotice = ({ children, onDismiss }) => (
-  <div
-    role="status"
-    className="flex items-start justify-between gap-3 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-small font-medium text-green-700 sm:text-body"
-  >
-    <span>{children}</span>
-    <button
-      type="button"
-      onClick={onDismiss}
-      aria-label="Dismiss message"
-      className="shrink-0 leading-none text-green-700/70 hover:text-green-700"
-    >
-      ✕
-    </button>
-  </div>
-);
-
 /* -------------------------------------------------------------------------- */
 /*  Tab 1: Personal information                                                */
 /* -------------------------------------------------------------------------- */
@@ -192,7 +193,8 @@ const SecurityCard = ({ email }) => {
     } catch (err) {
       if (err.retryAfterSeconds) setCooldown(err.retryAfterSeconds);
       setError(
-        err.message ?? "Could not send the verification code. Please try again.",
+        err.message ??
+          "Could not send the verification code. Please try again.",
       );
     }
   };
@@ -205,7 +207,11 @@ const SecurityCard = ({ email }) => {
         : "Change password";
 
   return (
-    <SectionCard title="Password" description="Keep your account protected." className="max-w-[426px] max-h-max">
+    <SectionCard
+      title="Password"
+      description="Keep your account protected."
+      className="max-w-[426px] max-h-max"
+    >
       {/* The password is never shown as a real value, only masked */}
       <div className="flex items-center justify-between gap-3 rounded-lg bg-neutral-500/5 p-3 max-sm:flex-col max-sm:items-start">
         <div className="flex min-w-0 items-center gap-3">
@@ -237,7 +243,9 @@ const SecurityCard = ({ email }) => {
       ) : (
         <p className="mt-3 text-caption text-neutral-400 sm:text-small">
           We’ll email a {OTP_LENGTH}-digit code to{" "}
-          <span className="font-medium break-all text-neutral-500">{email}</span>{" "}
+          <span className="font-medium break-all text-neutral-500">
+            {email}
+          </span>{" "}
           to confirm it’s you.
         </p>
       )}
@@ -247,11 +255,16 @@ const SecurityCard = ({ email }) => {
 
 const PersonalInformation = ({ profile, user }) => (
   <div className="flex max-lg:flex-col gap-6 max-h-max">
-    <SectionCard title="Contact details" description="How people can reach you.">
+    <SectionCard
+      title="Contact details"
+      description="How people can reach you."
+    >
       <dl className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
-        {getContactItems(profile.personalInformation, user.email).map((item) => (
-          <InfoItem key={item.label} {...item} />
-        ))}
+        {getContactItems(profile.personalInformation, user.email).map(
+          (item) => (
+            <InfoItem key={item.label} {...item} />
+          ),
+        )}
       </dl>
     </SectionCard>
 
@@ -268,7 +281,11 @@ const ProfessionalInformation = ({ profile }) => {
   const education = profile.education.map(toEducationItem).filter(hasText);
   const projects = profile.projects.map(toProjectItem).filter(hasText);
   const references = profile.references.map(toReferenceItem).filter(hasText);
-  const languages = profile.languages.filter((entry) => entry.name).map((entry) => (entry.level ? `${entry.name} - ${entry.level}` : entry.name));
+  const languages = profile.languages
+    .filter((entry) => entry.name)
+    .map((entry) =>
+      entry.level ? `${entry.name} - ${entry.level}` : entry.name,
+    );
 
   return (
     <div className="space-y-6">
@@ -278,20 +295,38 @@ const ProfessionalInformation = ({ profile }) => {
             {profile.professionalSummary}
           </p>
         ) : (
-          <AddField title="Add a professional summary" href="/profile/edit?tab=summary" />
+          <AddField
+            title="Add a professional summary"
+            href="/profile/edit?tab=summary"
+          />
         )}
       </SectionCard>
 
       <SectionCard title="Work experience" count={workExperience.length}>
-        <FieldList field="work experience" items={workExperience} addTitle="Add work experience" editTab="experience" />
+        <FieldList
+          field="work experience"
+          items={workExperience}
+          addTitle="Add work experience"
+          editTab="experience"
+        />
       </SectionCard>
 
       <SectionCard title="Education" count={education.length}>
-        <FieldList field="education" items={education} addTitle="Add education" editTab="education" />
+        <FieldList
+          field="education"
+          items={education}
+          addTitle="Add education"
+          editTab="education"
+        />
       </SectionCard>
 
       <SectionCard title="Projects" count={projects.length}>
-        <FieldList field="project" items={projects} addTitle="Add project" editTab="projects" />
+        <FieldList
+          field="project"
+          items={projects}
+          addTitle="Add project"
+          editTab="projects"
+        />
       </SectionCard>
 
       <div className="grid items-start gap-6 md:grid-cols-2">
@@ -305,7 +340,12 @@ const ProfessionalInformation = ({ profile }) => {
       </div>
 
       <SectionCard title="References" count={references.length}>
-        <FieldList field="reference" items={references} addTitle="Add reference" editTab="references" />
+        <FieldList
+          field="reference"
+          items={references}
+          addTitle="Add reference"
+          editTab="references"
+        />
       </SectionCard>
     </div>
   );
@@ -319,7 +359,13 @@ const ProfessionalInformation = ({ profile }) => {
 const ProfilePhoto = ({ user, photoUrl, name }) =>
   photoUrl ? (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={photoUrl} alt={`${name} profile photo`} width={144} height={144} className="size-28 rounded-xl object-cover sm:size-36" />
+    <img
+      src={photoUrl}
+      alt={`${name} profile photo`}
+      width={144}
+      height={144}
+      className="size-28 rounded-xl object-cover sm:size-36"
+    />
   ) : (
     <Avatar
       user={user}
@@ -332,7 +378,7 @@ const ProfilePhoto = ({ user, photoUrl, name }) =>
     />
   );
 
-const ProfileView = ({ user, profile, notice }) => {
+const ProfileView = ({ user, profile }) => {
   const router = useRouter();
   const info = profile.personalInformation;
   const name = info.fullName || user.name;
@@ -382,7 +428,9 @@ const ProfileView = ({ user, profile, notice }) => {
             <h1 className="font-primary text-[22px] leading-tight font-semibold wrap-break-word sm:text-[28px]">
               {name}
             </h1>
-            <p className="text-body text-neutral-500">{info.professionalTitle || "Add your professional title"}</p>
+            <p className="text-body text-neutral-500">
+              {info.professionalTitle || "Add your professional title"}
+            </p>
           </div>
 
           <div className="flex items-center gap-3 md:pb-2">
@@ -398,11 +446,12 @@ const ProfileView = ({ user, profile, notice }) => {
           </div>
         </header>
 
-        {notice && <div className="mt-6">{notice}</div>}
-
         <p className="mt-6 flex items-start gap-2 rounded-lg bg-blue-500/5 p-3 text-small text-blue-500">
           <i className={`${icons.information} mt-0.75`} aria-hidden="true"></i>
-          <span>This information fills in your next resumes. Changing it never changes resumes you already made.</span>
+          <span>
+            This information fills in your next resumes. Changing it never
+            changes resumes you already made.
+          </span>
         </p>
 
         {/* tabs */}
@@ -421,7 +470,13 @@ const ProfileView = ({ user, profile, notice }) => {
 const ProfileContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { data: user, isLoading: userLoading, isError, error, refetch } = useGetMeQuery();
+  const {
+    data: user,
+    isLoading: userLoading,
+    isError,
+    error,
+    refetch,
+  } = useGetMeQuery();
   const {
     data: profile,
     isLoading: profileLoading,
@@ -454,22 +509,53 @@ const ProfileContent = () => {
     }
   }, [searchParams, router]);
 
-  const notice = (
-    <>
-      {showUpdated && (
-        <SuccessNotice onDismiss={() => setShowUpdated(false)}>Your password has been updated.</SuccessNotice>
-      )}
-      {showSaved && (
-        <SuccessNotice onDismiss={() => setShowSaved(false)}>
-          Your profile was saved. New resumes will start with this information.
-        </SuccessNotice>
-      )}
-    </>
-  );
+  // Coming back from the change-password flow or from the editor: show a message once, then clean the URL
+  useEffect(() => {
+    const passwordUpdated = searchParams.get("passwordUpdated") === "1";
+    const saved = searchParams.get("saved") === "1";
+    if (passwordUpdated || saved) {
+      /* eslint-disable react-hooks/set-state-in-effect */
+      if (passwordUpdated) setShowUpdated(true);
+      if (saved) setShowSaved(true);
+      /* eslint-enable react-hooks/set-state-in-effect */
+      router.replace(PROFILE_PATH, { scroll: false });
+    }
+  }, [searchParams, router]);
+
+  // Password updated toast: closes itself after 4s, then the flag is reset
+  useEffect(() => {
+    if (!showUpdated) return;
+
+    toast.success("Your password has been updated.", {
+      id: "password-update-success",
+      duration: 4000,
+    });
+
+    const timer = setTimeout(() => setShowUpdated(false), 4000);
+    return () => clearTimeout(timer);
+  }, [showUpdated]);
+
+  // Profile saved toast
+  useEffect(() => {
+    if (!showSaved) return;
+
+    toast.success(
+      "Your profile was saved. New resumes will start with this information.",
+      {
+        id: "edit-profile-success",
+        duration: 4000,
+      },
+    );
+
+    const timer = setTimeout(() => setShowSaved(false), 4000);
+    return () => clearTimeout(timer);
+  }, [showSaved]);
 
   return (
     <main className="min-h-screen min-w-[320px] bg-neutral-50 pb-[clamp(2rem,calc(6.009vw+0.592rem),6rem)]">
-      {(userLoading || isLoggedOut || (user && profileLoading)) && <ProfileSkeleton />}
+      {(userLoading || isLoggedOut || (user && profileLoading)) && (
+        <ProfileSkeleton />
+      )}
 
       {isError && !isLoggedOut && (
         <ErrorState
@@ -485,7 +571,7 @@ const ProfileContent = () => {
         />
       )}
 
-      {user && profile && <ProfileView user={user} profile={profile} notice={showUpdated || showSaved ? notice : null} />}
+      {user && profile && <ProfileView user={user} profile={profile} />}
     </main>
   );
 };

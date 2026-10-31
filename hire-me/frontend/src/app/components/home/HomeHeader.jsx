@@ -2,7 +2,7 @@ import React from "react";
 
 const HomeHeader = ({ bg, color, name, title }) => {
   return (
-    <div className="space-y-[clamp(0.5rem,calc(0.188vw+0.206rem),1rem)] max-w-max flex flex-col items-start">
+    <div className="space-y-[clamp(0.675rem,calc(0.188vw+0.206rem),1rem)] max-w-max flex flex-col items-start">
 
     <span
       className="flex items-center justify-center h-[clamp(1.25rem,calc(0.751vw+1.074rem),1.75rem)] gap-[clamp(0.25rem,calc(0.188vw+0.206rem),0.375rem)] px-[clamp(0.75rem,calc(0.188vw+0.206rem),1.125rem)] rounded-full text-[clamp(0.75rem,calc(0.188vw+0.706rem),0.875rem)] font-primary font-medium"

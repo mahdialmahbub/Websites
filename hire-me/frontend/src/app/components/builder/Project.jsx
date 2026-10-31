@@ -81,10 +81,10 @@ const Project = () => {
   return (
     <EntryList
       section="projects"
-      label="project"
       items={items}
       max={L.max}
       dispatch={dispatch}
+      errors={errors}
       sectionError={sectionError}
       renderEntry={(item) => {
         const set = (key) => (event) => dispatch(updateItem({ section: "projects", id: item.id, field: key, value: event.target.value }));

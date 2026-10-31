@@ -14,7 +14,12 @@ import AtsPanel from "./AtsPanel";
  *  - The card below has an automatic height. The preview gives itself an A4 ratio
  *    (see BuilderPreview), while the ATS panel simply grows with its content.
  */
-const PreviewandScore = ({ activeSection = "personalInformation", showScore = false, onToggleScore, onDownload }) => {
+const PreviewandScore = ({
+  activeSection = "personalInformation",
+  showScore = false,
+  onToggleScore,
+  onDownload,
+}) => {
   const isScore = showScore;
 
   return (
@@ -27,23 +32,29 @@ const PreviewandScore = ({ activeSection = "personalInformation", showScore = fa
           icon={isScore ? "fi fi-rr-eye" : "fi fi-rr-hard-disk-scan"}
           aria-pressed={isScore}
           onClick={onToggleScore}
-          className="bg-violet-500/5 text-violet-500 hover:bg-violet-500/10"
+          className="bg-violet-500/5 text-violet-500 hover:bg-violet-500/10 border-violet-500/10"
         >
-          {isScore ? "Preview" : "ATS Score"}
+          <span className="hidden sm:inline">
+            {isScore ? "Preview" : "ATS Score"}
+          </span>
         </Button>
         <Button
           variant="secondary"
           icon="fi fi-rr-file-download"
           onClick={onDownload}
-          className="bg-green-500/5 text-green-500 hover:bg-green-500/10"
+          className="bg-green-500/5 text-green-500 hover:bg-green-500/10 border-green-500/5"
         >
-          Download
+          <span className="hidden sm:inline">Download</span>
         </Button>
       </div>
 
       {/* shared card: border / shadow / rounded live here, height is auto */}
       <div className="w-full min-w-0 overflow-hidden rounded-[clamp(0.5rem,calc(0.939vw+0.28rem),1.125rem)] border border-neutral-500/10 bg-white shadow-[0_6px_8px_rgba(2,6,23,0.10)]">
-        {isScore ? <AtsPanel activeSection={activeSection} /> : <BuilderPreview />}
+        {isScore ? (
+          <AtsPanel activeSection={activeSection} />
+        ) : (
+          <BuilderPreview />
+        )}
       </div>
     </section>
   );

@@ -49,9 +49,7 @@ export default function useUndoableDelete({ delay = 6000 } = {}) {
 
       const toastId = toast.undo(message, {
         duration: delay,
-        position: "bottom-left",
         draggable: true,
-        transition: Bounce,
         pauseOnFocusLoss: false,
         onUndo: () => {
           const entry = pending.current.get(key);

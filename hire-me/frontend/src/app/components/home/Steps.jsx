@@ -31,17 +31,17 @@ const Steps = () => {
   return (
     <section
       className="
-        mx-auto flex w-full max-w-[90rem] flex-col items-center gap-y-2
+        mx-auto flex w-full max-w-300 flex-col items-center gap-y-2
         px-[clamp(1rem,calc(5.258vw+0.268rem),5rem)]
         sm:flex-row sm:items-start sm:justify-center sm:gap-y-0
-        sm:gap-x-[clamp(1rem,calc(10.5vw-3.2rem),6.25rem)]
+        sm:gap-x-[clamp(1rem,calc(10.5vw-3.2rem),6.25rem)] min-w-[320px]
       "
     >
       {stepContent.map((item) => (
         <div
           key={item.title}
           className="
-            flex w-full max-w-[17.5rem] flex-col items-center sm:min-w-0 sm:flex-1
+            flex w-full max-w-70 flex-col items-center sm:min-w-0 sm:flex-1
             gap-[clamp(0.625rem,calc(0.188vw+0.581rem),0.75rem)]
             p-[clamp(1.25rem,calc(0.376vw+1.162rem),1.5rem)]
           "

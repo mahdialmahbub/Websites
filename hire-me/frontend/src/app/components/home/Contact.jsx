@@ -7,6 +7,9 @@ import { Button } from "../Button";
 import Image from "next/image";
 import { icons } from "../../../../assets/iconCollection";
 import ContactForm from "./ContactForm";
+import Link from "next/link";
+
+const email = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent("mahdiallmahbub@gmail.com")}&su=${encodeURIComponent("Project Inquiry")}&body=${encodeURIComponent("I want to make a resume that ...")}`;
 
 const contactInfo = [
   {
@@ -16,6 +19,7 @@ const contactInfo = [
     icon: icons.Gmail_Contact,
     alt: "Send an email to hireme@gmail.com",
     dark: true,
+    link: email,
   },
   {
     name: "Whats App",
@@ -23,6 +27,7 @@ const contactInfo = [
     color: "#39AE41",
     icon: icons.WhatsApp_Contact,
     alt: "Chat or call the Hire Me team on WhatsApp",
+    link: "https://wa.me/+8801735999190",
   },
   {
     name: "Facebook",
@@ -30,6 +35,7 @@ const contactInfo = [
     color: "#0165E1",
     icon: icons.Facebook_Contact,
     alt: "Visit the Hire Me Facebook page",
+    link: "https://www.facebook.com/mahdi.al.mahbub.webexpert",
   },
 ];
 
@@ -43,7 +49,7 @@ const Contact = () => {
     <>
       {/* ───────── Top: header + contact cards ───────── */}
       <section
-        className={`${sectionSpacing} space-y-[clamp(1.5rem,calc(1.690vw+1.104rem),2.625rem)]`}
+        className={`${sectionSpacing} space-y-[clamp(1.5rem,calc(1.690vw+1.104rem),2.625rem)] min-w-[320px] max-w-300`}
       >
         <HomeHeader
           bg="#0284C7"
@@ -105,7 +111,10 @@ const Contact = () => {
             {/* Contact chips: stacked on phones, in a row from sm up */}
             <div className="flex flex-wrap max-sm:flex-col gap-space-2">
               {contactInfo.map((item) => (
-                <div
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={item.link}
                   key={item.name}
                   style={{ "--item-color": item.color }}
                   className="flex items-center gap-3 rounded-lg p-space-3 cursor-pointer transition-all hover:-translate-y-1
@@ -117,19 +126,19 @@ const Contact = () => {
                     src={item.icon}
                     width={24}
                     height={24}
-                    className="size-6 shrink-0"
+                    className="size-6 shrink-0 object-cover"
                   />
                   <div
                     className={`min-w-0 sm:w-30 ${item.dark ? "text-neutral-950" : "text-neutral-50"}`}
                   >
-                    <h3 className="font-primary font-semibold text-[12px]">
+                    <h3 className="font-primary font-semibold text-[clamp(0.75rem,calc(0.227vw+0.705rem),0.875rem)]">
                       {item.name}
                     </h3>
-                    <p className="font-medium text-[10px] text-nowrap opacity-80">
+                    <p className="font-medium text-[12px] text-nowrap opacity-80">
                       {item.value}
                     </p>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
 

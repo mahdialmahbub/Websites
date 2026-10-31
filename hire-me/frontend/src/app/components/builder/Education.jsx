@@ -12,16 +12,16 @@ import { LIMITS } from "@/resume/validation";
 const L = LIMITS.education;
 
 const Education = () => {
-  const { value: items, dispatch, actions, field, sectionError } = useSection("education");
+  const { value: items, dispatch, actions, field, errors, sectionError } = useSection("education");
   const { updateItem } = actions;
 
   return (
     <EntryList
       section="education"
-      label="education entry"
       items={items}
       max={L.max}
       dispatch={dispatch}
+      errors={errors}
       sectionError={sectionError}
       renderEntry={(item) => {
         const set = (key) => (event) => dispatch(updateItem({ section: "education", id: item.id, field: key, value: event.target.value }));

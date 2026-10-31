@@ -297,9 +297,9 @@ function MyResumes() {
   const canGoRight = !edge.end || page < totalPages;
 
   return (
-    <section className="px-[clamp(1.5rem,calc(2.254vw+0.972rem),3rem)] py-[clamp(1.5rem,calc(0.751vw+1.324rem),2rem)] gap-space-10 min-w-[320px] max-w-300 mx-auto *:w-full">
+    <section className="px-[clamp(1.5rem,calc(2.254vw+0.972rem),3rem)] py-[clamp(1.5rem,calc(0.751vw+1.324rem),2rem)] gap-space-10 w-screen *:w-full">
       {/* resume */}
-      <div className="mb-space-10">
+      <div className="mb-space-10 mx-auto min-w-[320px] max-w-300">
         <div className="flex items-center max-sm:flex-col gap-space-7 max-sm:items-start mb-space-7">
           <div className="w-full">
             <h1 className="text-[clamp(1.625rem,calc(0.939vw+1.405rem),2.25rem)] mb-space-3 font-semibold font-primary">

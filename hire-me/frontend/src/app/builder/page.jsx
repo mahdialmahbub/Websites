@@ -233,9 +233,9 @@ function BuilderScreen() {
   const toggleScore = () => setShowScore((value) => !value);
 
   return (
-    <main className="px-[clamp(1rem,calc(6.009vw-0.409rem),5rem)] gap-[clamp(0.8125rem,calc(1.221vw+0.526rem),1rem)] py-[clamp(2rem,calc(3.380vw+1.208rem),0.5rem)] flex flex-col max-w-300 min-w-[320px] mx-auto w-full relative">
+    <main className="px-[clamp(1rem,calc(6.009vw-0.409rem),5rem)] gap-[clamp(0.5rem,calc(1.221vw+0.526rem),1rem)] py-[clamp(1rem,calc(3.380vw+1.208rem),0.5rem)] flex flex-col max-w-300 min-w-[320px] mx-auto w-full relative">
       {/* Header */}
-      <div className="flex items-center justify-between sticky top-0 z-10 bg-white px-3 py-3 rounded-[clamp(0.5rem,calc(0.939vw+0.28rem),1.125rem)] shadow-sm">
+      <div className="flex items-center justify-between md:sticky top-0 z-10 md:bg-white md:px-3 md:py-3 rounded-[clamp(0.5rem,calc(0.939vw+0.28rem),1.125rem)] md:shadow-sm">
         <Link
           href="/"
           className="h-11 flex items-center gap-[clamp(0.375rem,calc(0.188vw+0.331rem),0.5rem)] text-[clamp(0.8125rem,calc(0.282vw+0.746rem),1rem)] font-primary font-medium text-neutral-500"
@@ -296,24 +296,24 @@ function BuilderScreen() {
                   icon={icons.templete}
                   onClick={() => setPickerOpen("template")}
                 >
-                  Template
+                  <span className="hidden sm:inline">Template</span>
                 </Button>
                 <Button
                   variant="secondary"
-                  className="text-violet-500 bg-violet-500/5 hover:bg-violet-500/10"
+                  className="text-violet-500 bg-violet-500/5 hover:bg-violet-500/10 border-violet-500/5"
                   icon={icons.color}
                   onClick={() => setPickerOpen("color")}
                 >
-                  Color
+                  <span className="hidden sm:inline">Color</span>
                 </Button>
               </div>
               <Button
                 variant="text"
                 icon={icons.reset}
                 onClick={handleReset}
-                className="text-red-300 hover:text-red-500"
+                className="text-red-300 hover:text-red-500 max-sm:w-11"
               >
-                Reset
+                <span className="hidden sm:inline">Reset</span>
               </Button>
             </div>
 

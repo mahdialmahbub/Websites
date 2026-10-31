@@ -9,7 +9,7 @@ const Testimonial = async () => {
   if (reviews.length === 0) return <p>No resume here.</p>;
 
   return (
-    <section className="px-[clamp(1rem,calc(5.258vw+0.268rem),5rem)] py-[clamp(2rem,calc(6.009vw+0.592rem),6rem)] space-y-[clamp(1.5rem,calc(1.690vw+1.104rem),2.625rem)]">
+    <section className="px-[clamp(1rem,calc(5.258vw+0.268rem),5rem)] py-[clamp(2rem,calc(6.009vw+0.592rem),6rem)] space-y-[clamp(1.5rem,calc(1.690vw+1.104rem),2.625rem)] min-w-[320px] max-w-300">
       <HomeHeader
         bg={"#D97706"}
         color={"#D97706"}

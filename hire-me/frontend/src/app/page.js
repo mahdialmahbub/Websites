@@ -10,7 +10,7 @@ import ATSScore from './components/home/ATS/ATSScore'
 
 const page = () => {
   return (
-    <main className="flex min-h-screen flex-col items-center min-w-[320px] max-w-300 mx-auto *:w-full">
+    <main className="flex min-h-screen flex-col items-center *:w-full">
       <Hero />
       <Steps />
       {/* feature section */}

@@ -41,16 +41,16 @@ export const FAQContent = [
 
 const FAQ = () => {
   return (
-    <section className='flex max-md:flex-col items-center gap-[clamp(1.5rem,calc(1.690vw+1.104rem),2.625rem)] px-[clamp(1rem,calc(5.258vw+0.268rem),5rem)] py-[clamp(2rem,calc(6.009vw+0.592rem),6rem)]'>
+    <section className='flex max-md:flex-col items-center gap-[clamp(1.5rem,calc(1.690vw+1.104rem),2.625rem)] px-[clamp(1rem,calc(5.258vw+0.268rem),5rem)] py-[clamp(2rem,calc(6.009vw+0.592rem),6rem)] min-w-[320px] max-w-300'>
         {/* FAQ */}
-        <div className='space-y-[clamp(1.25rem,calc(1.455vw+0.909rem),2rem)] flex-[60%]'>
+        <div className='space-y-[clamp(1.25rem,calc(1.455vw+0.909rem),2rem)] flex-[60%] max-md:flex-1'>
             {FAQContent.map((item, i) => (
                 <FAQCard key={i} answer={item.answer} question={item.question} />
             ))}
         </div>
 
         {/* Brand Video */}
-        <div className='flex-[40%] rounded-[24px]'>
+        <div className='flex-[40%] rounded-[24px] max-md:order-1 max-md:flex-1'>
 
         </div>
     </section>

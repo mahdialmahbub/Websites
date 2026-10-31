@@ -33,7 +33,7 @@ const Templetes = async () => {
   }));
 
   return (
-    <section className="py-[clamp(2rem,calc(6.009vw+0.592rem),6rem)] space-y-[clamp(1.5rem,calc(1.690vw+1.104rem),2.625rem)] flex flex-col items-center justify-center">
+    <section className="py-[clamp(2rem,calc(6.009vw+0.592rem),6rem)] space-y-[clamp(1.5rem,calc(1.690vw+1.104rem),2.625rem)] flex flex-col items-center justify-center min-w-[320px] max-w-300 ">
       <div className={`w-full ${PAD}`}>
         <HomeHeader
           title={"Choose a Template That Works for You"}
@@ -71,7 +71,7 @@ const Templetes = async () => {
           <Link href={"/create-resume"} className="max-sm:w-full">
             <Button
               variant="secondary"
-              className="max-sm:w-full text-violet-500 bg-violet-500/5 *:text-[clamp(0.75rem,calc(-0.188vw+0.919rem),0.875rem)]"
+              className="max-sm:w-full text-violet-500 bg-violet-500/5 border-violet-500/5 hover:bg-violet-500/10 *:text-[clamp(0.75rem,calc(-0.188vw+0.919rem),0.875rem)]"
             >
               Start Build With AI
             </Button>

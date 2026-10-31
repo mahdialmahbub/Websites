@@ -43,7 +43,7 @@ const FAQCard = ({
   };
 
   return (
-    <div className={cn("border-b border-neutral-500/20 px-space-6", className)}>
+    <div className={cn("border-b border-neutral-500/20 px-[clamp(0px,calc(2.727vw-0.545rem),1.5rem)]", className)}>
       {/* Question (poro button, tai keyboard e kaj kore) */}
       <h4>
         <button

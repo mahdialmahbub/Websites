@@ -95,7 +95,7 @@ const ContactForm = () => {
             {pending ? "Sending..." : "Send Message"}
           </Button>
 
-          <div className="flex items-center justify-center gap-[clamp(0.5rem,calc(0.376vw+0.412rem),0.75rem)]">
+          <div className="flex items-center max-sm:flex-col justify-center gap-[clamp(0.250rem,calc(0.376vw+0.412rem),0.75rem)]">
             <p className="font-semibold text-green-300 text-[clamp(0.875rem,calc(0.188vw+0.831rem),1rem)]">
               Your information is secure
             </p>

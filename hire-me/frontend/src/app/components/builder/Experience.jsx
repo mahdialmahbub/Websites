@@ -12,17 +12,16 @@ import { LIMITS } from "@/resume/validation";
 const L = LIMITS.workExperience;
 
 const Experience = () => {
-  const { value: items, dispatch, actions, field, sectionError } = useSection("workExperience");
+  const { value: items, dispatch, actions, field, errors, sectionError } = useSection("workExperience");
   const { updateItem } = actions;
 
   return (
     <EntryList
       section="workExperience"
-      label="job"
-      PIcon
       items={items}
       max={L.max}
       dispatch={dispatch}
+      errors={errors}
       sectionError={sectionError}
       renderEntry={(item) => {
         const set = (key) => (event) => dispatch(updateItem({ section: "workExperience", id: item.id, field: key, value: event.target.value }));
@@ -46,7 +45,7 @@ const Experience = () => {
               </div>
               <Input label="End Date" type="date" icon={null} disabled={item.currentlyWorking} min={item.startDate || undefined} value={item.currentlyWorking ? "" : item.endDate} onChange={set("endDate")} {...f("endDate")} />
             </div>
-            <div className="flex flex-col items-end gap-space-2 ">
+            <div className="flex flex-col items-end gap-space-2">
               <Textarea
                 label="Job Description"
                 placeholder={"Led a team of 5 designers and improved website conversion by 20% ..."}

@@ -9,16 +9,16 @@ import { LIMITS } from "@/resume/validation";
 const L = LIMITS.references;
 
 const Reference = () => {
-  const { value: items, dispatch, actions, field, sectionError } = useSection("references");
+  const { value: items, dispatch, actions, field, errors, sectionError } = useSection("references");
   const { updateItem } = actions;
 
   return (
     <EntryList
       section="references"
-      label="reference"
       items={items}
       max={L.max}
       dispatch={dispatch}
+      errors={errors}
       sectionError={sectionError}
       renderEntry={(item) => {
         const set = (key) => (event) => dispatch(updateItem({ section: "references", id: item.id, field: key, value: event.target.value }));

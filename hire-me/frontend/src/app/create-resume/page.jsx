@@ -81,7 +81,7 @@ const Page = () => {
   };
 
   return (
-    <main className="px-[clamp(1.5rem,calc(2.254vw+0.972rem),3rem)] py-[clamp(1.5rem,calc(0.751vw+1.324rem),2rem)] gap-[clamp(2rem,calc(1.502vw+1.648rem),3rem)] md:max-w-200 md:mx-auto min-w-[320px] md:rounded-xl md:border md:border-neutral-500/20 md:my-[32px]">
+    <main className="px-[clamp(1.5rem,calc(2.254vw+0.972rem),3rem)] py-[clamp(1.5rem,calc(0.751vw+1.324rem),2rem)] gap-[clamp(2rem,calc(1.502vw+1.648rem),3rem)] md:max-w-200 md:mx-auto min-w-[320px] md:rounded-xl md:border md:border-neutral-500/20 md:my-[32px] overflow-hidden">
       <h1 className="text-[clamp(1.625rem,calc(0.939vw+1.405rem),2.25rem)] font-primary font-semibold mb-[clamp(0.5rem,calc(0.376vw+0.412rem),0.75rem)]">
         Create a Resume
       </h1>
@@ -129,7 +129,7 @@ const Page = () => {
               type="button"
               variant="secondary"
               onClick={() => router.push(user ? "/my-resume" : "/")}
-              className="bg-red-500/5 text-red-500 hover:bg-red-500/10"
+              className="bg-red-500/5 text-red-500 border-red-500/5 hover:bg-red-500/10"
             >
               Cancel
             </Button>

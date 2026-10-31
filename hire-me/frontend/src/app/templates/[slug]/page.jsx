@@ -5,6 +5,8 @@ import TemplateCard from "../../components/templates/TemplateCard";
 import TemplateThumb from "../../components/templates/TemplateThumb";
 import { categoryPath, getTemplate, getTemplates, templatePath } from "@/lib/catalog";
 import { absoluteUrl } from "@/lib/site";
+import { Button } from "@/app/components/Button";
+import { icons } from "../../../../assets/iconCollection";
 
 // /templates/professional - one template: big preview, description, "Use this template", related templates.
 // "category" is a static route (/templates/category/...), so a template can never take that slug.
@@ -52,7 +54,7 @@ export default async function TemplatePage({ params }) {
   ];
 
   return (
-    <main className="mx-auto flex min-h-screen w-full min-w-[320px] max-w-300 flex-col gap-[clamp(1.5rem,calc(1.690vw+1.104rem),2.625rem)] px-[clamp(1rem,calc(5.258vw+0.268rem),5rem)] py-[clamp(2rem,calc(6.009vw+0.592rem),6rem)]">
+    <main className="mx-auto flex min-h-screen w-full min-w-[320px] max-w-300 flex-col gap-[clamp(1.5rem,calc(1.690vw+1.104rem),2.625rem)] px-[clamp(1rem,calc(5.258vw+0.268rem),5rem)] py-[clamp(rem,calc(6.009vw+0.592rem),2rem)]">
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -72,13 +74,12 @@ export default async function TemplatePage({ params }) {
         }}
       />
 
-      <nav aria-label="Breadcrumb" className="text-caption text-neutral-500/70">
+      <nav aria-label="Breadcrumb" className="text-caption text-neutral-500/70 -mb-[10px]">
       <Link
           href="/templates"
-          className="h-11 flex items-center gap-[clamp(0.375rem,calc(0.188vw+0.331rem),0.5rem)] text-[clamp(0.8125rem,calc(0.282vw+0.746rem),1rem)] font-primary font-medium text-neutral-500"
+          className="h-11 flex items-center gap-[clamp(0.375rem,calc(0.188vw+0.331rem),0.5rem)] text-[clamp(0.8125rem,calc(0.282vw+0.746rem),1rem)] font-primary font-medium text-neutral-500 max-w-max"
         >
-          <i className="fi fi-rr-arrow-small-left text-[clamp(1rem,calc(0.563vw+0.868rem),1.375rem)]"></i>
-          Back
+          <Button variant="text" icon={icons.left}>Back</Button>
         </Link>
         
       </nav>

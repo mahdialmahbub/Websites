@@ -15,7 +15,7 @@ export function showUndoToast({ message, onUndo, duration = 5000 }) {
       <div
         role="status"
         style={{ opacity: t.visible ? 1 : 0 }}
-        className="flex items-center gap-4 rounded-lg bg-neutral-900 px-4 py-3 text-sm text-white shadow-lg transition-opacity duration-200"
+        className="flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-3 text-sm text-white shadow-lg transition-opacity duration-200"
       >
         <span>{message}</span>
         <button

@@ -83,12 +83,12 @@ const VARIANT = {
     "disabled:bg-neutral-200 disabled:text-neutral-500",
   ].join(" "),
   secondary: [
-    "border-indigo-100 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 active:after:opacity-10",
-    "disabled:border-transparent disabled:bg-neutral-50 disabled:text-neutral-500",
+    "border-indigo-500/5 bg-indigo-500/5 text-indigo-500 hover:bg-indigo-500/10 active:after:opacity-20",
+    "disabled:border-transparent disabled:bg-neutral-50 disabled:text-neutral-300",
   ].join(" "),
   text: [
     "bg-transparent text-neutral-900 hover:text-indigo-900 active:after:opacity-5",
-    "disabled:bg-transparent disabled:text-neutral-500",
+    "disabled:bg-transparent disabled:text-neutral-500 px-0",
   ].join(" "),
 };
 

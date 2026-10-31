@@ -1,7 +1,7 @@
-
 import React from "react";
 import { Button } from "./components/Button";
 import Image from "next/image";
+import Link from "next/link";
 
 // Fluid values: choto value = 375px screen, boro value = 1440px screen (1rem = 16px)
 // clamp(min, calc(intercept + slope * vw), max): min shobshomoy choto, max shobshomoy boro.
@@ -31,11 +31,15 @@ const NotFound = () => {
       </div>
 
       {/* Buttons: row parent er full width nibe, button duita equal vag korbe */}
-      <div className="flex w-full items-center gap-[clamp(1rem,calc(1.127vw+0.736rem),1.75rem)]">
-        <Button variant="secondary" className="flex-1">
-          Go Home
-        </Button>
-        <Button className="flex-1">Create Resume</Button>
+      <div className="flex w-full *:flex-1 items-center gap-[clamp(1rem,calc(1.127vw+0.736rem),1.75rem)]">
+        <Link href={"/"}>
+          <Button variant="secondary" className="w-full">
+            Go Home
+          </Button>
+        </Link>
+        <Link href={"/create-resume"}>
+          <Button className="w-full">Create Resume</Button>
+        </Link>
       </div>
     </main>
   );

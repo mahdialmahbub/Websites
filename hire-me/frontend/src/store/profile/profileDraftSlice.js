@@ -26,6 +26,7 @@ const slice = createSlice({
     updateItem: edit.updateItem,
     moveItem: edit.moveItem,
     removeItem: edit.removeItem,
+    restoreItem: edit.restoreItem, // "Undo" after deleting an entry
     addSkill: edit.addSkill,
     removeSkill: edit.removeSkill,
     markAttempted: edit.markAttempted,
@@ -54,7 +55,7 @@ const slice = createSlice({
 });
 
 export const {
-  updateField, setSection, addItem, updateItem, moveItem, removeItem, addSkill, removeSkill, markAttempted,
+  updateField, setSection, addItem, updateItem, moveItem, removeItem, restoreItem, addSkill, removeSkill, markAttempted,
   profileLoaded, profileSaved, profileDiscarded,
 } = slice.actions;
 

@@ -17,6 +17,8 @@ import linkedin_violet from "./icons/linkedin_violet.svg";
 import twitter_violet from "./icons/twitter_violet.svg";
 import whatsapp_violet from "./icons/whatsapp_violet.svg";
 import telegram_violet from "./icons/telegram_violet.svg";
+import Collups from "./icons/Collups.svg";
+import Expand from "./icons/Expand.svg";
 
 export const icons = {
   facebook,
@@ -77,5 +79,9 @@ export const icons = {
   color: "fi fi-rr-palette",
   reset: "fi fi-rr-rotate-right",
   left: "fi fi-rr-arrow-small-left",
+  leftAngle: "fi fi-rr-angle-small-left",
   right: "fi fi-rr-arrow-small-right",
+  rightAngle: "fi fi-rr-angle-small-right",
+  collups: Collups,
+  expand: Expand,
 };

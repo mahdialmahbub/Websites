@@ -1,22 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Inter, Poppins } from "next/font/google";
 import styles from "./ATSScore.module.css";
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["600", "700"],
-  variable: "--font-poppins",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-inter",
-  display: "swap",
-});
 
 /*
   Keep the four `key` values as they are: they pick each card's colour,
@@ -237,7 +222,7 @@ export default function ATSScore({
 
   return (
     <section
-      className={`${poppins.variable} ${inter.variable} ${styles.section}`}
+      className={`${styles.section} `}
       aria-labelledby="ats-score-title"
     >
       <div className={styles.inner}>
