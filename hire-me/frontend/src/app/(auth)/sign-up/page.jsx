@@ -4,12 +4,7 @@ import { Button } from "@/app/components/Button";
 import { Input } from "@/app/components/Input";
 import { PasswordInput } from "@/app/components/PasswordInput";
 import AuthLayout from "@/app/components/auth/AuthLayout";
-import {
-  AuthForm,
-  Field,
-  FooterLink,
-  FormAlert,
-} from "@/app/components/auth/AuthForm";
+import { AuthForm, FooterLink } from "@/app/components/auth/AuthForm";
 import SocialAuth from "@/app/components/auth/SocialAuth";
 import {
   ROUTES,
@@ -75,55 +70,54 @@ const SignUpForm = () => {
         </>
       }
     >
-      <FormAlert>{formError}</FormAlert>
+      <Input
+        label="Name"
+        placeholder="John Doe"
+        isLabelIcon
+        labelIcon="fi fi-rr-user"
+        darkBg
+        name="name"
+        autoComplete="name"
+        value={values.name}
+        onChange={handleChange}
+        disabled={isLoading}
+        aria-invalid={!!errors.name}
+        validation={errors.name ? "error" : "default"}
+        helperText={errors.name}
+      />
 
-      <Field error={errors.name}>
-        <Input
-          label="Name"
-          placeholder="John Doe"
-          isLabelIcon
-          labelIcon="fi fi-rr-user"
-          darkBg
-          name="name"
-          autoComplete="name"
-          value={values.name}
-          onChange={handleChange}
-          disabled={isLoading}
-          aria-invalid={!!errors.name}
-        />
-      </Field>
+      {/* API-level errors (e.g. "email already in use") show under the email field */}
+      <Input
+        label="Email"
+        placeholder="you@example.com"
+        isLabelIcon
+        labelIcon="fi fi-rr-envelope"
+        darkBg
+        name="email"
+        type="email"
+        autoComplete="email"
+        value={values.email}
+        onChange={handleChange}
+        disabled={isLoading}
+        aria-invalid={!!(errors.email || formError)}
+        validation={errors.email || formError ? "error" : "default"}
+        helperText={errors.email || formError}
+      />
 
-      <Field error={errors.email}>
-        <Input
-          label="Email"
-          placeholder="you@example.com"
-          isLabelIcon
-          labelIcon="fi fi-rr-envelope"
-          darkBg
-          name="email"
-          type="email"
-          autoComplete="email"
-          value={values.email}
-          onChange={handleChange}
-          disabled={isLoading}
-          aria-invalid={!!errors.email}
-        />
-      </Field>
-
-      <Field error={errors.password}>
-        <PasswordInput
-          label="Create a Password"
-          placeholder="Enter your password"
-          labelIcon="fi fi-rr-lock"
-          darkBg
-          name="password"
-          autoComplete="new-password"
-          value={values.password}
-          onChange={handleChange}
-          disabled={isLoading}
-          aria-invalid={!!errors.password}
-        />
-      </Field>
+      <PasswordInput
+        label="Create a Password"
+        placeholder="Enter your password"
+        labelIcon="fi fi-rr-lock"
+        darkBg
+        name="password"
+        autoComplete="new-password"
+        value={values.password}
+        onChange={handleChange}
+        disabled={isLoading}
+        aria-invalid={!!errors.password}
+        validation={errors.password ? "error" : "default"}
+        helperText={errors.password}
+      />
 
       <Button type="submit" disabled={isLoading}>
         {isLoading ? "Creating account..." : "Sign Up"}

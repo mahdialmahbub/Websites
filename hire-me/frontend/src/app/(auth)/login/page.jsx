@@ -6,9 +6,7 @@ import { PasswordInput } from "@/app/components/PasswordInput";
 import AuthLayout from "@/app/components/auth/AuthLayout";
 import {
   AuthForm,
-  Field,
   FooterLink,
-  FormAlert,
 } from "@/app/components/auth/AuthForm";
 import SocialAuth from "@/app/components/auth/SocialAuth";
 import { fluid } from "@/app/components/auth/fluid";
@@ -62,7 +60,9 @@ const LoginForm = () => {
     } catch (error) {
       // Account exists but the email was never confirmed -> finish verification.
       if (error.code === "EMAIL_NOT_VERIFIED") {
-        router.push(withEmail(ROUTES.verifyEmail, error.details?.email ?? email));
+        router.push(
+          withEmail(ROUTES.verifyEmail, error.details?.email ?? email),
+        );
         return;
       }
       applyApiError(error);
@@ -81,33 +81,26 @@ const LoginForm = () => {
         </>
       }
     >
-      {justReset && (
-        <FormAlert variant="success">
-          Your password has been updated. Log in with your new password.
-        </FormAlert>
-      )}
-      <FormAlert>{formError}</FormAlert>
 
-      <Field error={errors.email}>
-        <Input
-          label="Email"
-          placeholder="Email"
-          isLabelIcon
-          labelIcon="fi fi-rr-envelope"
-          darkBg
-          name="email"
-          type="email"
-          autoComplete="email"
-          value={values.email}
-          onChange={handleChange}
-          disabled={isLoading}
-          aria-invalid={!!errors.email}
-        />
-      </Field>
+      <Input
+        label="Email"
+        placeholder="Email"
+        isLabelIcon
+        labelIcon="fi fi-rr-envelope"
+        darkBg
+        name="email"
+        type="email"
+        autoComplete="email"
+        value={values.email}
+        onChange={handleChange}
+        disabled={isLoading}
+        aria-invalid={!!errors.email}
+        validation={(errors.email || formError) && "error"}
+        helperText={errors.email || formError}
+      />
 
       {/* Password + forgot link */}
       <div className={`flex flex-col ${fluid.gapTight}`}>
-        <Field error={errors.password}>
           <PasswordInput
             label="Password"
             placeholder="Password"
@@ -119,8 +112,11 @@ const LoginForm = () => {
             onChange={handleChange}
             disabled={isLoading}
             aria-invalid={!!errors.password}
+            validation={
+              errors.password ? "error" : justReset ? "info" : "default"
+            }
+            helperText={errors.password || justReset}
           />
-        </Field>
         <Link
           href={ROUTES.forgotPassword}
           className={`flex min-h-11 items-center self-start text-red-400 sm:text-red-500 ${fluid.forgot}`}

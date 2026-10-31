@@ -3,12 +3,7 @@
 import { Button } from "@/app/components/Button";
 import { Input } from "@/app/components/Input";
 import AuthLayout from "@/app/components/auth/AuthLayout";
-import {
-  AuthForm,
-  Field,
-  FooterLink,
-  FormAlert,
-} from "@/app/components/auth/AuthForm";
+import { AuthForm, FooterLink } from "@/app/components/auth/AuthForm";
 import {
   ROUTES,
   normalizeEmail,
@@ -74,24 +69,22 @@ const ForgotPasswordForm = () => {
         </>
       }
     >
-      <FormAlert>{formError}</FormAlert>
-
-      <Field error={errors.email}>
-        <Input
-          label="Email"
-          placeholder="you@example.com"
-          isLabelIcon
-          labelIcon="fi fi-rr-envelope"
-          darkBg
-          name="email"
-          type="email"
-          autoComplete="email"
-          value={values.email}
-          onChange={handleChange}
-          disabled={isLoading}
-          aria-invalid={!!errors.email}
-        />
-      </Field>
+      <Input
+        label="Email"
+        placeholder="you@example.com"
+        isLabelIcon
+        labelIcon="fi fi-rr-envelope"
+        darkBg
+        name="email"
+        type="email"
+        autoComplete="email"
+        value={values.email}
+        onChange={handleChange}
+        disabled={isLoading}
+        aria-invalid={!!(errors.email || formError)}
+        validation={errors.email || formError ? "error" : "default"}
+        helperText={errors.email || formError}
+      />
 
       <Button type="submit" disabled={isLoading || cooldown > 0}>
         {buttonLabel}

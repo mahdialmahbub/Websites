@@ -3,12 +3,7 @@
 import { Button } from "@/app/components/Button";
 import { PasswordInput } from "@/app/components/PasswordInput";
 import AuthLayout from "@/app/components/auth/AuthLayout";
-import {
-  AuthForm,
-  Field,
-  FooterLink,
-  FormAlert,
-} from "@/app/components/auth/AuthForm";
+import { AuthForm, FooterLink } from "@/app/components/auth/AuthForm";
 import {
   ROUTES,
   collectErrors,
@@ -77,42 +72,42 @@ const ResetPasswordForm = () => {
         </>
       }
     >
-      <FormAlert>{formError}</FormAlert>
+      <PasswordInput
+        label="New Password"
+        placeholder="Enter your new password"
+        labelIcon="fi fi-rr-lock"
+        darkBg
+        name="password"
+        autoComplete="new-password"
+        value={values.password}
+        onChange={handleChange}
+        disabled={isLoading}
+        aria-invalid={!!errors.password}
+        validation={errors.password ? "error" : "default"}
+        helperText={errors.password}
+      />
+
+      {/* API-level errors (e.g. expired reset session) show under the last field */}
+      <PasswordInput
+        label="Confirm Password"
+        placeholder="Re-enter your new password"
+        labelIcon="fi fi-rr-lock"
+        darkBg
+        name="confirmPassword"
+        autoComplete="new-password"
+        value={values.confirmPassword}
+        onChange={handleChange}
+        disabled={isLoading}
+        aria-invalid={!!(errors.confirmPassword || formError)}
+        validation={errors.confirmPassword || formError ? "error" : "default"}
+        helperText={errors.confirmPassword || formError}
+      />
+
       {needsRestart && (
         <div className="flex justify-center">
           <FooterLink href={ROUTES.forgotPassword}>Request a new code</FooterLink>
         </div>
       )}
-
-      <Field error={errors.password}>
-        <PasswordInput
-          label="New Password"
-          placeholder="Enter your new password"
-          labelIcon="fi fi-rr-lock"
-          darkBg
-          name="password"
-          autoComplete="new-password"
-          value={values.password}
-          onChange={handleChange}
-          disabled={isLoading}
-          aria-invalid={!!errors.password}
-        />
-      </Field>
-
-      <Field error={errors.confirmPassword}>
-        <PasswordInput
-          label="Confirm Password"
-          placeholder="Re-enter your new password"
-          labelIcon="fi fi-rr-lock"
-          darkBg
-          name="confirmPassword"
-          autoComplete="new-password"
-          value={values.confirmPassword}
-          onChange={handleChange}
-          disabled={isLoading}
-          aria-invalid={!!errors.confirmPassword}
-        />
-      </Field>
 
       <Button type="submit" disabled={isLoading}>
         {isLoading ? "Saving..." : "Reset Password"}

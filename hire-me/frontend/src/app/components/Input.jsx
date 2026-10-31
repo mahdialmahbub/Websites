@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { CalendarDays, Clock, Search } from "lucide-react";
 
 /* -------------------------------------------------------------------------- */
 /*  Types (JSDoc) — parent e <Input /> likhle ei prop gula suggest korbe      */
@@ -145,15 +144,18 @@ const HELPER_ICON = {
 // Variant er default icon, placeholder ar inputMode.
 const VARIANT = {
   default: {},
-  icon: { icon: <Search aria-hidden="true" /> },
+  icon: { icon: <i aria-hidden="true" className="fi fi-rr-search"></i> },
   counter: {},
   amount: { placeholder: "0.00", inputMode: "decimal" },
   calendar: {
-    icon: <CalendarDays aria-hidden="true" />,
+    icon: <i className="fi fi-rr-calendar"></i>,
     placeholder: "DD / MM / YYYY",
     inputMode: "numeric",
   },
-  time: { icon: <Clock aria-hidden="true" />, placeholder: "HH : MM AM/PM" },
+  time: {
+    icon: <i aria-hidden="true" className="fi fi-rr-clock-three"></i>,
+    placeholder: "HH : MM AM/PM",
+  },
 };
 
 const DEFAULT_MAX_LENGTH = 140;
@@ -347,7 +349,7 @@ export const Input = React.forwardRef(
                         tone.help,
                         // h-[1lh]: icon ta helper text er prothom line er majhkhane thake,
                         // text multi-line hole-o.
-                        "flex h-[1lh] shrink-0 items-center",
+                        "flex h-lh shrink-0 items-center",
                       )}
                     />
                   )}

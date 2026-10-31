@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { Eye, EyeOff } from "lucide-react";
 
 /* -------------------------------------------------------------------------- */
 /*  Types (JSDoc) — <PasswordInput /> likhle ei prop gula suggest korbe       */
@@ -25,9 +24,12 @@ import { Eye, EyeOff } from "lucide-react";
  * @property {PasswordInputSize} [size="md"]
  *   Input er size.
  * @property {PasswordInputValidation} [validation="default"]
- *   Border, focus ring ar helper text er rong ei state onujayi hoy.
+ *   Border, focus ring, helper text ar helper icon er rong ei state onujayi hoy.
  * @property {string} [helperText]
  *   Input er niche message (rong `validation` onujayi).
+ * @property {string | null | false} [helperIcon]
+ *   Helper text er pasher Flaticon icon class, jemon `"fi fi-rr-info"`.
+ *   Na dile `validation` onujayi default icon ashe. `null` / `false` dile hide.
  * @property {boolean} [defaultVisible=false]
  *   true dile password prothom theke visible thake (pore eye icon diye toggle kora jay).
  * @property {string} [autoComplete="current-password"]
@@ -112,6 +114,16 @@ const VALIDATION = {
 
 const SMALL_TEXT = "text-[length:var(--text-caption,0.75rem)]";
 
+// Helper text er pasher Flaticon (UIcons, regular rounded) icon — validation onujayi.
+// Input component er sathe same. Icon bodlate chaile shudu ekhane class name bodlao.
+const HELPER_ICON = {
+  default: "fi fi-rr-info",
+  success: "fi fi-rr-check",
+  error: "fi fi-rr-cross-circle",
+  info: "fi fi-rr-info",
+  warning: "fi fi-rr-exclamation",
+};
+
 /* Eye (show / hide) button */
 
 // w-11 = 44px touch target. inset-y-0 diye input er full height ney.
@@ -131,8 +143,8 @@ const TOGGLE_COLOR = {
 // Icon click er action dekhay: hidden thakle "dekhao" (Eye), visible thakle "lukao" (EyeOff).
 // uicons use korte chaile: <i className="fi fi-rr-eye" aria-hidden="true" />
 // ar <i className="fi fi-rr-eye-crossed" aria-hidden="true" />
-const ICON_SHOW = <Eye aria-hidden="true" />;
-const ICON_HIDE = <EyeOff aria-hidden="true" />;
+const ICON_SHOW = <i className="fi fi-rr-eye"></i>;
+const ICON_HIDE = <i className="fi fi-rr-eye-crossed"></i>;
 
 // Button er accessible name (screen reader). Onno bhasha lagle ekhane change koro.
 const SHOW_LABEL = "Show password";
@@ -144,134 +156,158 @@ const HIDE_LABEL = "Hide password";
 
 export const PasswordInput = React.forwardRef(
   /** @type {React.ForwardRefRenderFunction<HTMLInputElement, PasswordInputProps>} */
-  (function PasswordInput(
-    {
-      // look
-      size = "md",
-      validation = "default",
-      darkBg = false,
+  (
+    function PasswordInput(
+      {
+        // look
+        size = "md",
+        validation = "default",
+        darkBg = false,
 
-      // label
-      label,
-      labelIcon,
-      required = false,
-      requiredLabel = false,
+        // label
+        label,
+        labelIcon,
+        required = false,
+        requiredLabel = false,
 
-      // content
-      helperText,
-      defaultVisible = false,
+        // content
+        helperText,
+        helperIcon,
+        defaultVisible = false,
 
-      // <input> props
-      id,
-      disabled = false,
-      autoComplete = "current-password",
-      "aria-describedby": describedBy,
+        // <input> props
+        id,
+        disabled = false,
+        autoComplete = "current-password",
+        "aria-describedby": describedBy,
 
-      // classes
-      className,
-      inputClassName,
+        // classes
+        className,
+        inputClassName,
 
-      ...rest
-    },
-    ref,
-  ) {
-    const autoId = React.useId();
-    const inputId = id ?? autoId;
-    const helpId = `${inputId}-help`;
-
-    // Password ekhon dekha jacche kina. Eye button click e toggle hoy.
-    const [visible, setVisible] = React.useState(defaultVisible);
-
-    // TypeScript nai, tai label/aria-label miss hole dev e warning dey.
-    if (
-      process.env.NODE_ENV !== "production" &&
-      !label &&
-      !rest["aria-label"] &&
-      !rest["aria-labelledby"]
+        ...rest
+      },
+      ref,
     ) {
-      console.warn(
-        "PasswordInput: `label` ba `aria-label` dite hobe (accessibility er jonno).",
+      const autoId = React.useId();
+      const inputId = id ?? autoId;
+      const helpId = `${inputId}-help`;
+
+      // Password ekhon dekha jacche kina. Eye button click e toggle hoy.
+      const [visible, setVisible] = React.useState(defaultVisible);
+
+      // TypeScript nai, tai label/aria-label miss hole dev e warning dey.
+      if (
+        process.env.NODE_ENV !== "production" &&
+        !label &&
+        !rest["aria-label"] &&
+        !rest["aria-labelledby"]
+      ) {
+        console.warn(
+          "PasswordInput: `label` ba `aria-label` dite hobe (accessibility er jonno).",
+        );
+      }
+
+      const sz = SIZE[size] ?? SIZE.md;
+      const tone = VALIDATION[validation] ?? VALIDATION.default;
+      const mode = darkBg ? "dark" : "light";
+
+      // helperIcon na dile validation er default; null/false dile hide.
+      const helperIconClass =
+        helperIcon === undefined
+          ? (HELPER_ICON[validation] ?? HELPER_ICON.default)
+          : helperIcon;
+
+      const describedByIds = [describedBy, helperText ? helpId : null]
+        .filter(Boolean)
+        .join(" ");
+
+      return (
+        <div className={cn("flex w-full flex-col gap-1.5", className)}>
+          {label && (
+            <label
+              htmlFor={inputId}
+              className={cn(
+                "flex items-center gap-space-1 text-small font-semibold",
+                TEXT_COLOR[mode],
+              )}
+            >
+              {labelIcon && (
+                <i aria-hidden="true" className={cn("size-3.5", labelIcon)} />
+              )}
+              <span>
+                {label}
+                {requiredLabel && (
+                  <span className="ml-0.5 text-red-500" aria-hidden="true">
+                    *
+                  </span>
+                )}
+              </span>
+            </label>
+          )}
+
+          <div className="relative">
+            <input
+              {...rest}
+              ref={ref}
+              id={inputId}
+              // type nijei toggle hoy, bahir theke override kora jabe na
+              type={visible ? "text" : "password"}
+              required={required}
+              disabled={disabled}
+              autoComplete={autoComplete}
+              // visible obosthay (type="text") jate keyboard/browser password bodlay ba spellcheck na kore
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
+              aria-invalid={validation === "error" || undefined}
+              aria-describedby={describedByIds || undefined}
+              className={cn(
+                INPUT_BASE,
+                TEXT_COLOR[mode],
+                sz.input,
+                sz.text,
+                tone.field,
+                inputClassName,
+              )}
+            />
+
+            <button
+              type="button"
+              onClick={() => setVisible((prev) => !prev)}
+              // mouse click e input er focus/caret jate na harae
+              onMouseDown={(e) => e.preventDefault()}
+              disabled={disabled}
+              aria-label={visible ? HIDE_LABEL : SHOW_LABEL}
+              aria-controls={inputId}
+              className={cn(TOGGLE_BASE, TOGGLE_COLOR[mode], sz.text, sz.icon)}
+            >
+              {visible ? ICON_HIDE : ICON_SHOW}
+            </button>
+          </div>
+
+          {helperText && (
+            <div className="flex items-start gap-space-1">
+              {helperIconClass && (
+                <i
+                  aria-hidden="true"
+                  className={cn(
+                    helperIconClass,
+                    SMALL_TEXT,
+                    tone.help,
+                    // h-[1lh]: icon ta helper text er prothom line er majhkhane thake,
+                    // text multi-line hole-o.
+                    "flex h-lh shrink-0 items-center",
+                  )}
+                />
+              )}
+              <p id={helpId} className={cn(SMALL_TEXT, tone.help)}>
+                {helperText}
+              </p>
+            </div>
+          )}
+        </div>
       );
     }
-
-    const sz = SIZE[size] ?? SIZE.md;
-    const tone = VALIDATION[validation] ?? VALIDATION.default;
-    const mode = darkBg ? "dark" : "light";
-
-    const describedByIds = [describedBy, helperText ? helpId : null]
-      .filter(Boolean)
-      .join(" ");
-
-    return (
-      <div className={cn("flex w-full flex-col gap-1.5", className)}>
-        {label && (
-          <label
-            htmlFor={inputId}
-            className={cn(
-              "flex items-center gap-space-1 text-small font-semibold",
-              TEXT_COLOR[mode],
-            )}
-          >
-            {labelIcon && (
-              <i aria-hidden="true" className={cn("size-3.5", labelIcon)} />
-            )}
-            <span>
-              {label}
-              {requiredLabel && (
-                <span className="ml-0.5 text-red-500" aria-hidden="true">
-                  *
-                </span>
-              )}
-            </span>
-          </label>
-        )}
-
-        <div className="relative">
-          <input
-            {...rest}
-            ref={ref}
-            id={inputId}
-            // type nijei toggle hoy, bahir theke override kora jabe na
-            type={visible ? "text" : "password"}
-            required={required}
-            disabled={disabled}
-            autoComplete={autoComplete}
-            // visible obosthay (type="text") jate keyboard/browser password bodlay ba spellcheck na kore
-            autoCapitalize="none"
-            autoCorrect="off"
-            spellCheck={false}
-            aria-invalid={validation === "error" || undefined}
-            aria-describedby={describedByIds || undefined}
-            className={cn(
-              INPUT_BASE,
-              TEXT_COLOR[mode],
-              sz.input,
-              sz.text,
-              tone.field,
-              inputClassName,
-            )}
-          />
-
-          <button
-            type="button"
-            onClick={() => setVisible((prev) => !prev)}
-            // mouse click e input er focus/caret jate na harae
-            onMouseDown={(e) => e.preventDefault()}
-            disabled={disabled}
-            aria-label={visible ? HIDE_LABEL : SHOW_LABEL}
-            aria-controls={inputId}
-            className={cn(TOGGLE_BASE, TOGGLE_COLOR[mode], sz.text, sz.icon)}
-          >
-            {visible ? ICON_HIDE : ICON_SHOW}
-          </button>
-        </div>
-
-        {helperText && (
-          <p id={helpId} className={cn(SMALL_TEXT, tone.help)}>
-            {helperText}
-          </p>
-        )}
-      </div>
-    );
-  }),
+  ),
 );
