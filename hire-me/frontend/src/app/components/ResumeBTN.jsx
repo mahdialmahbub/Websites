@@ -4,7 +4,7 @@ import Link from "next/link";
 // Fluid values: choto value = 375px screen, boro value = 1440px screen (1rem = 16px)
 // clamp(min, calc(intercept + slope * vw), max): min shobshomoy choto, max shobshomoy boro.
 const CLASS_NAME =
-  "rounded-full bg-primary-300/10 inline-flex items-center gap-2.5 whitespace-nowrap p-space-2 border  border-primary-300/20 text-[clamp(0.8125rem,calc(0.282vw+0.746rem),1rem)] font-primary text-neutral-950 font-semibold mb-0 max-w-max";
+  "rounded-full bg-primary-300/10 inline-flex items-center gap-2.5 whitespace-nowrap p-space-2 border  border-primary-300/20 text-[clamp(0.8125rem,calc(0.282vw+0.746rem),1rem)] font-primary text-neutral-950 font-semibold mb-0 max-w-max pr-4";
 
 const Content = () => (
   <>

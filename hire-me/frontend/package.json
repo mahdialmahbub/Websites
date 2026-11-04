@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seo:audit": "node scripts/seo-audit.mjs",
+    "seo:links": "node scripts/check-links.mjs",
+    "seo:orphans": "node scripts/find-orphans.mjs",
+    "seo:deploy": "bash scripts/post-deploy-seo.sh",
+    "test:seo": "playwright test"
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "^1.1.0",
@@ -24,10 +29,12 @@
     "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/postcss": "^4.3.3",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
+    "node-html-parser": "^9.0.6",
     "tailwindcss": "^4.3.3"
   }
 }

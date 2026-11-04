@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Button } from "../Button";
 import { icons } from "../../../../assets/iconCollection";
+import { Button } from "../Button";
 
 // Items come from the parent already rendered: { key, category, recommended?, node }.
 // node = <TemplateCard />, so on the home page (server) the cards stay in the first HTML for crawlers.
@@ -10,45 +10,120 @@ import { icons } from "../../../../assets/iconCollection";
 // IMPORTANT: <TemplateCard /> should be `w-full` (no fixed width of its own).
 // The slide <li> below owns the width via --card-w, and the centering math depends on it.
 
-const PAD = "px-[clamp(1rem,calc(5.258vw+0.268rem),5rem)]";
-const SWIPE_MIN = 40; // px
-const NAV_STEP = 0.6; // one arrow click / swipe moves the filters by 60% of the visible width
-const NAV_EDGE = 44; // px, same as the arrow width (w-11), keeps a revealed pill clear of the arrow
+const PAD = "px-[clamp(1rem,calc(6.01vw-0.41rem),5rem)]";
+const SWIPE_MIN = 50; // px a drag must travel before it counts as "next / previous"
+const DRAG_DEADZONE = 6; // px before we decide if it's a horizontal drag or a page scroll
+const EDGE_RESISTANCE = 0.3; // rubber-band feel when dragging past the first / last card
+const NAV_STEP = 0.6; // one arrow click moves the filters by 60% of the visible width
+const NAV_EDGE = 44; // px, keeps a revealed pill clear of the arrow
 
-// One swipe rule for both the cards and the filters, so they always feel identical.
-// onSwipe receives +1 (swiped left = next) or -1 (swiped right = previous).
-function useSwipe(onSwipe) {
-  const start = useRef(null);
+// Fast start, soft landing. 300ms feels responsive; the old 500ms ease-out felt sluggish.
+const MOTION =
+  "transition-transform duration-500 will-change-transform motion-reduce:transition-none";
 
-  return {
-    onTouchStart: (e) => {
-      const t = e.touches[0];
-      start.current = { x: t.clientX, y: t.clientY };
+const clamp = (n, min, max) => Math.max(min, Math.min(n, max));
+
+// Pointer-based drag (mouse + touch + pen) that follows the finger while dragging.
+// - dx: live horizontal offset in px (0 when idle)
+// - dragging: true while a horizontal drag is active (use it to switch the CSS transition off)
+// - onEnd(dx): called on release with the final offset
+function useDrag(onEnd) {
+  const [dx, setDx] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const state = useRef(null);
+  const moved = useRef(false);
+
+  const reset = () => {
+    state.current = null;
+    setDragging(false);
+    setDx(0);
+  };
+
+  const bind = {
+    onPointerDown: (e) => {
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      state.current = {
+        id: e.pointerId,
+        x: e.clientX,
+        y: e.clientY,
+        locked: false,
+      };
+      moved.current = false;
     },
-    onTouchEnd: (e) => {
-      if (!start.current) return;
-      const t = e.changedTouches[0];
-      const dx = t.clientX - start.current.x;
-      const dy = t.clientY - start.current.y;
-      start.current = null;
-      // only a mostly-horizontal swipe moves things; diagonal/vertical = page scroll
-      if (Math.abs(dx) > SWIPE_MIN && Math.abs(dx) > Math.abs(dy)) {
-        onSwipe(dx < 0 ? 1 : -1);
+    onPointerMove: (e) => {
+      const s = state.current;
+      if (!s || s.id !== e.pointerId) return;
+      const ddx = e.clientX - s.x;
+      const ddy = e.clientY - s.y;
+
+      if (!s.locked) {
+        if (Math.max(Math.abs(ddx), Math.abs(ddy)) < DRAG_DEADZONE) return;
+        // vertical intent = normal page scroll, we stay out of the way
+        if (Math.abs(ddy) > Math.abs(ddx)) {
+          state.current = null;
+          return;
+        }
+        s.locked = true;
+        e.currentTarget.setPointerCapture?.(e.pointerId);
+        setDragging(true);
+      }
+
+      moved.current = true;
+      setDx(ddx);
+    },
+    onPointerUp: (e) => {
+      const s = state.current;
+      if (!s || s.id !== e.pointerId) return;
+      const finalDx = e.clientX - s.x;
+      const wasLocked = s.locked;
+      reset();
+      if (wasLocked) onEnd(finalDx);
+    },
+    onPointerCancel: reset,
+    // after a real drag, swallow the click so a card / pill underneath doesn't fire
+    onClickCapture: (e) => {
+      if (moved.current) {
+        e.stopPropagation();
+        e.preventDefault();
+        moved.current = false;
       }
     },
-    onTouchCancel: () => {
-      start.current = null;
-    },
+    onDragStart: (e) => e.preventDefault(),
   };
+
+  return { bind, dx, dragging };
+}
+
+// Small arrow that sits on top of the filter row, fades out when there is nothing more to scroll.
+function NavArrow({ side, label, disabled, onClick }) {
+  const left = side === "left";
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      disabled={disabled}
+      onClick={onClick}
+      className={`absolute top-1/2 z-10 flex h-11 w-12 -translate-y-1/2 items-center md:h-12 ${
+        left
+          ? "left-[-1] justify-start bg-linear-to-r "
+          : "right-[-1] justify-end bg-linear-to-l "
+      } from-background from-40% to-transparent outline-none transition-opacity duration-200 disabled:pointer-events-none disabled:opacity-0 group`}
+    >
+      <span className="flex size-8 items-center justify-center rounded-full border border-indigo-500/15 bg-white text-xl text-indigo-600 shadow-sm transition-[transform,background-color,color] duration-200 group-hover:bg-indigo-100  group-focus-visible:ring-[3px] group-focus-visible:ring-indigo-300 group-active:scale-90">
+        <i
+          aria-hidden="true"
+          className={`flex ${left ? icons.leftAngle : icons.rightAngle}`}
+        />
+      </span>
+    </button>
+  );
 }
 
 export default function TemplateCarousel({
   categories = [],
   items = [],
   startAt = 1,
-  padded = true, // false when the page already has its own side padding
 }) {
-  const pad = padded ? PAD : "";
   const [filter, setFilter] = useState("all");
   const [index, setIndex] = useState(() =>
     Math.max(0, Math.min(startAt, items.length - 1)),
@@ -81,9 +156,9 @@ export default function TemplateCarousel({
   const total = visible.length;
   const current = Math.max(0, Math.min(index, total - 1));
 
-  const go = (n) => setIndex(Math.max(0, Math.min(n, total - 1)));
+  const go = (n) => setIndex(clamp(n, 0, total - 1));
 
-  // ---- filter nav: same transform-based scrolling as the cards ----
+  // ---- filter nav ----
   const readNavMax = () => {
     const v = navViewport.current;
     const t = navTrack.current;
@@ -109,7 +184,7 @@ export default function TemplateCarousel({
 
   const navGo = (dir) => {
     const view = navViewport.current?.clientWidth ?? 0;
-    setNavPos(Math.max(0, Math.min(navX + dir * view * NAV_STEP, navMax)));
+    setNavPos(clamp(navX + dir * view * NAV_STEP, 0, navMax));
   };
 
   // slide the nav just enough so a pill is fully visible (keyboard focus, click on a half-hidden pill)
@@ -131,74 +206,103 @@ export default function TemplateCarousel({
   const pick = (slug) => {
     const count = items.filter((i) => matches(i, slug)).length;
     setFilter(slug);
-    setIndex(Math.max(0, Math.min(startAt, count - 1)));
+    setIndex(clamp(startAt, 0, Math.max(0, count - 1)));
   };
 
-  const cardSwipe = useSwipe((dir) => go(current + dir));
-  const navSwipe = useSwipe((dir) => navGo(dir));
+  // ---- drag: cards follow the finger, then snap to the next / previous card ----
+  const cardDrag = useDrag((d) => {
+    if (Math.abs(d) > SWIPE_MIN) go(current + (d < 0 ? 1 : -1));
+  });
+
+  // filters: free drag, they just stay where you let go (clamped to the ends)
+  const navDrag = useDrag((d) => setNavPos(clamp(navX - d, 0, navMax)));
+
+  // dragging past the first / last card feels "heavy" instead of hitting a wall
+  const pastEdge =
+    (current === 0 && cardDrag.dx > 0) ||
+    (current === total - 1 && cardDrag.dx < 0);
+  const cardShift = pastEdge ? cardDrag.dx * EDGE_RESISTANCE : cardDrag.dx;
+
+  const navShift = navDrag.dragging
+    ? clamp(navX - navDrag.dx, 0, navMax)
+    : navX;
+
+  const onCarouselKeyDown = (e) => {
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      go(current - 1);
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      go(current + 1);
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      go(0);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      go(total - 1);
+    }
+  };
 
   return (
-    <div className="mx-auto flex w-full min-w-0 max-w-300 flex-col items-center gap-[clamp(1.5rem,calc(1.690vw+1.104rem),2.625rem)]">
-      {/* Filters: scroll exactly like the cards (arrows, swipe, same 500ms ease-out).
+    <div className="mx-auto flex w-screen min-w-[320px] max-w-300 flex-col items-center gap-[clamp(1.5rem,calc(1.690vw+1.104rem),2.625rem)]">
+      {/* Filters: arrows, drag and keyboard all move the same track.
           When everything fits, the pills stay centered and the arrows hide themselves. */}
       <nav
         aria-label="Template categories"
-        className={`relative w-full max-w-[600px] px-[clamp(2.5rem,calc(5.258vw+0.268rem),7rem)]`}
+        className={`w-full max-w-150 px-[clamp(1rem,calc(6.01vw-0.41rem),5rem)] `}
       >
-        <button
-          type="button"
-          aria-label="Scroll categories left"
-          disabled={navAtStart}
-          onClick={() => navGo(-1)}
-          className="absolute left-0 top-0 z-10 flex h-10 w-11 items-center justify-center bg-linear-to-r from-background to-transparent transition-all duration-200 group disabled:pointer-events-none disabled:opacity-0 md:h-11 text-[26px] hover:text-primary-200 hover:*:-translate-x-1 *:transition-transform *:duration-200"
-        >
-          <i className={icons.leftAngle}></i>
-        </button>
-        <button
-          type="button"
-          aria-label="Scroll categories right"
-          disabled={navAtEnd}
-          onClick={() => navGo(1)}
-          className="absolute right-0 top-0 z-10 flex h-10 w-11 items-center justify-center bg-linear-to-l from-background to-transparent transition-all duration-200 group disabled:pointer-events-none disabled:opacity-0 md:h-11 text-[26px] hover:text-primary-200 hover:*:translate-x-1 *:transition-transform *:duration-200"
-        >
-          <i className={icons.rightAngle}></i>
-        </button>
+        <div className="relative">
+          <NavArrow
+            side="left"
+            label="Scroll categories left"
+            disabled={navAtStart}
+            onClick={() => navGo(-1)}
+          />
+          <NavArrow
+            side="right"
+            label="Scroll categories right"
+            disabled={navAtEnd}
+            onClick={() => navGo(1)}
+          />
 
-        {/* overflow-x-clip: no native scrollbar, vertical focus rings are not cut */}
-        <div
-          ref={navViewport}
-          {...navSwipe}
-          className="w-full touch-pan-y overflow-x-clip"
-        >
-          <ul
-            ref={navTrack}
-            onFocus={(e) => reveal(e.target)}
-            className="relative flex w-max gap-2.5 transition-transform duration-500 ease-out motion-reduce:transition-none sm:mx-auto"
-            style={{ transform: `translateX(${-navX}px)` }}
+          {/* overflow-x-clip: no native scrollbar, vertical focus rings are not cut */}
+          <div
+            ref={navViewport}
+            {...navDrag.bind}
+            className="w-full touch-pan-y select-none overflow-x-clip py-1"
           >
-            {filters.map((c) => {
-              const on = filter === c.slug;
-              return (
-                <li key={c.slug}>
-                  <button
-                    type="button"
-                    aria-pressed={on}
-                    onClick={(e) => {
-                      pick(c.slug);
-                      reveal(e.currentTarget);
-                    }}
-                    className={`inline-flex h-10 items-center rounded-full border px-4 text-small outline-none transition-colors focus-visible:ring-[3px] focus-visible:ring-indigo-300 md:h-11 md:px-6 md:text-body ${
-                      on
-                        ? "border-indigo-600 bg-indigo-600 text-white font-semibold"
-                        : "border-indigo-500/15 font-medium bg-white text-indigo-500/80 hover:bg-indigo-500/5"
-                    }`}
-                  >
-                    {c.name}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
+            <ul
+              ref={navTrack}
+              onFocus={(e) => reveal(e.target)}
+              className={`relative flex w-max min-w-full gap-2.5 sm:justify-center ${MOTION} ${
+                navDrag.dragging ? "transition-none" : ""
+              }`}
+              style={{ transform: `translate3d(${-navShift}px,0,0)` }}
+            >
+              {filters.map((c) => {
+                const on = filter === c.slug;
+                return (
+                  <li key={c.slug}>
+                    <button
+                      type="button"
+                      aria-pressed={on}
+                      onClick={(e) => {
+                        pick(c.slug);
+                        reveal(e.currentTarget);
+                      }}
+                      className={`inline-flex h-10 items-center whitespace-nowrap rounded-full border px-4 text-small outline-none transition-colors duration-200 focus-visible:ring-[3px] focus-visible:ring-indigo-300 md:h-11 md:px-6 md:text-body ${
+                        on
+                          ? "border-indigo-600 bg-indigo-600 font-semibold text-white"
+                          : "border-indigo-500/15 bg-white font-medium text-indigo-500/80 hover:bg-indigo-500/5"
+                      }`}
+                    >
+                      {c.name}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
       </nav>
 
@@ -208,13 +312,17 @@ export default function TemplateCarousel({
         role="region"
         aria-roledescription="carousel"
         aria-label="Resume templates"
-        {...cardSwipe}
-        className="relative w-full touch-pan-y overflow-x-clip py-3 [--card-w:clamp(13.125rem,65vw,15.3125rem)] [--gap:2rem] md:[--card-w:15.3125rem] md:[--gap:2.5rem] lg:[--gap:4rem]"
+        tabIndex={0}
+        onKeyDown={onCarouselKeyDown}
+        {...cardDrag.bind}
+        className="relative w-full touch-pan-y select-none overflow-x-clip rounded-xl py-3 outline-none focus-visible:ring-[3px] focus-visible:ring-indigo-300 [--card-w:clamp(13.125rem,65vw,15.3125rem)] [--gap:2rem] md:[--card-w:15.3125rem] md:[--gap:2.5rem] lg:[--gap:4rem]"
       >
         <ul
-          className="relative left-1/2 flex items-center gap-(--gap) transition-transform duration-500 ease-out motion-reduce:transition-none"
+          className={`relative left-1/2 flex items-center gap-(--gap) ${MOTION} ${
+            cardDrag.dragging ? "transition-none" : ""
+          }`}
           style={{
-            transform: `translateX(calc(var(--card-w) / -2 - ${current} * (var(--card-w) + var(--gap))))`,
+            transform: `translate3d(calc(var(--card-w) / -2 - ${current} * (var(--card-w) + var(--gap)) + ${cardShift}px),0,0)`,
           }}
         >
           {visible.map((item, i) => {
@@ -230,10 +338,14 @@ export default function TemplateCarousel({
                 // width comes from --card-w so it always matches the translate math
                 className={`group/slide w-(--card-w) shrink-0 ${active ? "" : "cursor-pointer"}`}
               >
-                {/* side cards: tap only slides to them, links inside don't fire (needs React 19 for `inert`) */}
+                {/* side cards: a tap only slides to them, links inside don't fire (needs React 19 for `inert`) */}
                 <div
                   inert={!active}
-                  className={`h-full ${active ? "" : "pointer-events-none"}`}
+                  className={`h-full origin-center transition-[transform,opacity] duration-300 ease-out motion-reduce:transition-none ${
+                    active
+                      ? "scale-100 opacity-100"
+                      : "pointer-events-none scale-[0.92] opacity-60"
+                  }`}
                 >
                   {item.node}
                 </div>
@@ -246,7 +358,7 @@ export default function TemplateCarousel({
       {/* Controls: arrows pushed to the edges on mobile, grouped in the middle from md */}
       {total > 1 && (
         <div
-          className={`flex w-full items-center justify-between md:w-auto md:justify-center md:gap-10 ${pad} md:px-0`}
+          className={`flex w-full items-center justify-between md:w-auto md:justify-center md:gap-10 px-[clamp(1rem,calc(6.01vw-0.41rem),5rem)] md:px-0`}
         >
           <Button
             type="button"
@@ -255,18 +367,17 @@ export default function TemplateCarousel({
             onClick={() => go(current - 1)}
             variant="secondary"
             icon={"fi fi-rr-arrow-small-left"}
+            className="text-[24px] aspect-square"
           />
-
           <p
             aria-live="polite"
-            className="min-w-16 text-center font-primary leading-none"
+            className="min-w-16 text-center font-primary leading-none tabular-nums"
           >
             <span className="text-2xl font-medium text-neutral-900">
               {current + 1}
             </span>
             <span className="text-base text-neutral-500">/{total}</span>
           </p>
-
           <Button
             type="button"
             aria-label="Next template"
@@ -274,6 +385,7 @@ export default function TemplateCarousel({
             onClick={() => go(current + 1)}
             variant="secondary"
             icon={"fi fi-rr-arrow-small-right"}
+            className="text-[24px] aspect-square"
           />
         </div>
       )}

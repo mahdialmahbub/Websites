@@ -20,9 +20,13 @@ import { useSelectableTemplates } from "./useSelectableTemplates";
  */
 export default function TemplatePickerModal({ open, onClose }) {
   const dispatch = useDispatch();
-  const activeId = useSelector((state) => state.builder.design.templateId) ?? DEFAULT_TEMPLATE_ID;
+  const activeId =
+    useSelector((state) => state.builder.design.templateId) ??
+    DEFAULT_TEMPLATE_ID;
   const color = useSelector((state) => state.builder.design.color);
-  const { options, isLoading, isError, refetch } = useSelectableTemplates({ skip: !open });
+  const { options, isLoading, isError, refetch } = useSelectableTemplates({
+    skip: !open,
+  });
   const templates = useEnrichedTemplates(options, { skip: !open });
 
   const choose = useCallback(
@@ -33,33 +37,47 @@ export default function TemplatePickerModal({ open, onClose }) {
     [dispatch, onClose],
   );
 
-  const startAt = Math.max(0, templates.findIndex((template) => template.slug === activeId));
+  const startAt = Math.max(
+    0,
+    templates.findIndex((template) => template.slug === activeId),
+  );
 
   return (
     <Modal open={open} onClose={onClose} title="Choose a template">
-      {isLoading && <p className="py-8 text-center text-neutral-500/70">Loading templates…</p>}
+      {isLoading && (
+        <p className="py-8 text-center text-neutral-500/70">
+          Loading templates…
+        </p>
+      )}
       {isError && (
-        <div role="alert" className="mb-4 flex items-center justify-between gap-3 rounded-lg bg-amber-500/10 p-3 text-small text-amber-700">
-          <span>We could not load the latest list. Showing the built-in templates.</span>
+        <div
+          role="alert"
+          className="mb-4 flex items-center justify-between gap-3 rounded-lg bg-amber-500/10 p-3 text-small text-amber-700"
+        >
+          <span>
+            We could not load the latest list. Showing the built-in templates.
+          </span>
           <Button type="button" variant="text" onClick={refetch}>
             Retry
           </Button>
         </div>
       )}
       {!isLoading && (
-        <ExploreTemplates
-          templates={templates}
-          limit={Infinity}
-          selectedSlug={activeId}
-          onSelect={choose}
-          color={color}
-          startAt={startAt}
-          // start from the current template every time the dialog opens or the template changes
-          resetKey={`${open}-${activeId}`}
-          bleed={false}
-          showViewAll={false}
-          label="Choose a template"
-        />
+        <div className="max-w-full overflow-hidden">
+          <ExploreTemplates
+            templates={templates}
+            limit={Infinity}
+            selectedSlug={activeId}
+            onSelect={choose}
+            color={color}
+            startAt={startAt}
+            // start from the current template every time the dialog opens or the template changes
+            resetKey={`${open}-${activeId}`}
+            bleed={false}
+            showViewAll={false}
+            label="Choose a template"
+          />
+        </div>
       )}
     </Modal>
   );

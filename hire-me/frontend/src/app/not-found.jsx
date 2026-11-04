@@ -1,7 +1,6 @@
-import React from "react";
-import { Button } from "./components/Button";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "./components/Button";
 
 // Fluid values: choto value = 375px screen, boro value = 1440px screen (1rem = 16px)
 // clamp(min, calc(intercept + slope * vw), max): min shobshomoy choto, max shobshomoy boro.
@@ -11,8 +10,8 @@ const NotFound = () => {
       {/* icon and text */}
       <div className="flex items-center flex-col gap-space-2">
         <Image
-          alt="This page took a different path. 404 Not found"
-          src={"/404-icon.svg"}
+          alt="Page not found. 404 error"
+          src="/404-icon.svg"
           width={200}
           height={200}
           loading="eager"
@@ -21,23 +20,23 @@ const NotFound = () => {
 
         <div className="text-center space-y-space-3">
           <h1 className="text-[clamp(1.625rem,calc(0.94vw+1.405rem),2.25rem)] font-bold font-primary">
-            This page took a different path
+            Page not found
           </h1>
           <p className="text-[clamp(1rem,calc(0.376vw+0.912rem),1.25rem)] text-neutral-500">
-            The link may be broken, or the page may have moved. Here’s how to
-            find your way back.
+            The page you&apos;re looking for may have been moved, or it may
+            never have existed.
           </p>
         </div>
       </div>
 
       {/* Buttons: row parent er full width nibe, button duita equal vag korbe */}
       <div className="flex w-full *:flex-1 items-center gap-[clamp(1rem,calc(1.127vw+0.736rem),1.75rem)]">
-        <Link href={"/"}>
+        <Link href="/">
           <Button variant="secondary" className="w-full">
             Go Home
           </Button>
         </Link>
-        <Link href={"/create-resume"}>
+        <Link href="/create-resume">
           <Button className="w-full">Create Resume</Button>
         </Link>
       </div>

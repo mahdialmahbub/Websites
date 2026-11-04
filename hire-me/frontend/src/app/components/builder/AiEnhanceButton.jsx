@@ -28,7 +28,9 @@ export default function AiEnhanceButton({ section, itemId, field }) {
   const [undo, setUndo] = useState(null); // { previous, applied }
 
   const target = { section, itemId, field };
-  const current = useSelector((state) => readFieldValue(state[stateKey].content, target));
+  const current = useSelector((state) =>
+    readFieldValue(state[stateKey].content, target),
+  );
 
   const write = (value) =>
     dispatch(
@@ -47,18 +49,29 @@ export default function AiEnhanceButton({ section, itemId, field }) {
       const result = await enhance(request).unwrap();
 
       // Typing while the AI worked: never overwrite what the person wrote in the meantime.
-      const nowText = readFieldValue(store.getState()[stateKey].content, target).trim();
+      const nowText = readFieldValue(
+        store.getState()[stateKey].content,
+        target,
+      ).trim();
       if (nowText !== request.text) {
-        setNotice("You changed the text while the AI was working, so it was left as you wrote it.");
+        setNotice(
+          "You changed the text while the AI was working, so it was left as you wrote it.",
+        );
         return;
       }
 
       const before = readFieldValue(store.getState()[stateKey].content, target); // exactly as typed (Undo restores it)
       write(result.text);
       setUndo({ previous: before, applied: result.text });
-      setNotice(result.mode === "generate" ? "Written from your information. Check it and edit freely." : "Improved. Check it and edit freely.");
+      setNotice(
+        result.mode === "generate"
+          ? "Written from your information. Check it and edit freely."
+          : "Improved. Check it and edit freely.",
+      );
     } catch (err) {
-      setError(err?.message || "The AI could not help right now. Please try again.");
+      setError(
+        err?.message || "The AI could not help right now. Please try again.",
+      );
     }
   };
 
@@ -70,14 +83,27 @@ export default function AiEnhanceButton({ section, itemId, field }) {
 
   // Undo is offered only while the text is still exactly what the AI wrote.
   const canUndo = undo && current === undo.applied;
-  const label = isLoading ? "Working…" : error ? "Try again" : current.trim() ? "Improve with AI" : "Write with AI";
+  const label = isLoading
+    ? "Working…"
+    : error
+      ? "Try again"
+      : current.trim()
+        ? "Improve with AI"
+        : "Write with AI";
 
   return (
     <div className="flex flex-col items-end gap-1">
-      <div className="flex flex-wrap items-center justify-end gap-space-2">
+      <div className="flex flex-wrap items-center justify-end gap-space-4">
         {canUndo && (
-          <Button type="button" variant="text" icon="fi fi-rr-undo" onClick={restore} disabled={isLoading} className="text-neutral-500 hover:text-neutral-700">
-            Undo
+          <Button
+            type="button"
+            variant="text"
+            icon="fi fi-rr-undo"
+            onClick={restore}
+            disabled={isLoading}
+            className="text-neutral-500 hover:text-neutral-700"
+          >
+            <span className="hidden sm:inline">Undo</span>
           </Button>
         )}
         <Button
@@ -90,12 +116,9 @@ export default function AiEnhanceButton({ section, itemId, field }) {
           aria-busy={isLoading}
           className="text-orange-500 hover:text-orange-600"
         >
-          {label}
+          <span className="hidden sm:inline">{label}</span>
         </Button>
       </div>
-      <p aria-live="polite" className={`min-h-4 text-[12px] ${error ? "text-red-600" : "text-neutral-500/70"}`} role={error ? "alert" : undefined}>
-        {error || notice}
-      </p>
     </div>
   );
 }

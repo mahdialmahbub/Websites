@@ -47,7 +47,7 @@ export default function Newsletter({ className = "", onSubscribe }) {
         <label htmlFor="footer-subscribe-email" className="sr-only">
           Email address
         </label>
-        <div className="flex h-11 overflow-hidden rounded-lg border border-neutral-300 bg-white transition-shadow focus-within:border-purple-600 focus-within:ring-2 focus-within:ring-purple-600/20 md:h-12">
+        <div className="flex h-11 overflow-hidden rounded-lg border border-neutral-300 bg-white transition-shadow focus-within:border-purple-600 focus-within:ring-2 focus-within:ring-purple-600/20 md:h-12 max-w-[400px]">
           <input
             id="footer-subscribe-email"
             name="email"

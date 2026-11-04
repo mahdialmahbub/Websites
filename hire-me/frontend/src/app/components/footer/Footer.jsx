@@ -75,8 +75,10 @@ export default function Footer({ onSubscribe }) {
             {/* 42px@375 → 48px@1440 */}
             <Logo className="h-[clamp(2.625rem,calc(0.563vw+2.493rem),3rem)]" />
             {/* 14px@375 → 16px@1440 (md:text-base soriye dewa hoyeche, noile 768 e jump korto) */}
-            <p className="mt-3 text-[clamp(0.875rem,calc(0.188vw+0.831rem),1rem)] text-neutral-400 md:mt-4">
-              Build a professional, ATS-friendly resume with AI-powered guidance, smart templates, and personalized content—so you can apply with confidence and stand out to the right employers.
+            <p className="mt-3 text-[clamp(0.875rem,calc(0.188vw+0.831rem),1rem)] text-neutral-500 md:mt-4">
+              Build a professional, ATS-friendly resume with AI-powered
+              guidance, smart templates, and personalized content—so you can
+              apply with confidence and stand out to the right employers.
             </p>
             <ul className="mt-4 md:mt-6.5 flex gap-2.5">
               {SOCIALS.map(({ label, href, icon }) => (
@@ -89,7 +91,13 @@ export default function Footer({ onSubscribe }) {
                       : {})}
                     className={`flex h-10 w-10 items-center justify-center rounded-full border border-[#121212]/10 group transition-transform hover:-translate-y-1.5 ${FOCUS}`}
                   >
-                    <Image src={icon} alt={label} width={20} height={20} className="w-auto h-4.5 md:h-[20px] opacity-60 group-hover:opacity-100" />
+                    <Image
+                      src={icon}
+                      alt={label}
+                      width={20}
+                      height={20}
+                      className="w-auto h-4.5 md:h-[20px] opacity-60 group-hover:opacity-100"
+                    />
                   </Link>
                 </li>
               ))}
@@ -115,9 +123,16 @@ export default function Footer({ onSubscribe }) {
             {LEGAL_LINKS.map(({ label, href }, i) => (
               <li
                 key={label}
-                className={i ? "ml-3 border-l border-[#121212]/40 pl-3 text-[#121212]/40" : ""}
+                className={
+                  i
+                    ? "ml-3 border-l border-[#121212]/40 pl-3 text-[#121212]/40"
+                    : ""
+                }
               >
-                <Link href={href} className={`transition-colors hover:text-purple-600 ${FOCUS}`}>
+                <Link
+                  href={href}
+                  className={`transition-colors hover:text-purple-600 ${FOCUS}`}
+                >
                   {label}
                 </Link>
               </li>
@@ -126,8 +141,17 @@ export default function Footer({ onSubscribe }) {
         </div>
 
         {/* Watermark — margin-top: 20px@375 → 28px@1440 */}
-        <div aria-hidden="true" className="pointer-events-none mt-[clamp(1.25rem,calc(0.752vw+1.074rem),1.75rem)] relative">
-          <Image alt="footer watermark image" src="/logoWatermark.svg" width={1280} height={300} className="w-full h-auto opacity-10" />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none mt-[clamp(1.25rem,calc(0.752vw+1.074rem),1.75rem)] relative"
+        >
+          <Image
+            alt="footer watermark image"
+            src="/logoWatermark.svg"
+            width={1280}
+            height={300}
+            className="w-full h-auto opacity-10"
+          />
 
           {/* overlay */}
           <div className="absolute inset-0 bg-linear-to-t from-neutral-50 to-transparent" />

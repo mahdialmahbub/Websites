@@ -55,4 +55,74 @@ export const teamInfo = [
       { name: "Facebook", link: "https://www.facebook.com/sophiabrown" },
     ],
   },
+  {
+    image:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80",
+    name: "Michael Anderson",
+    role: "Full Stack Developer",
+    phone: "+1 415-555-0162",
+    email: "michael.anderson@example.com",
+    address: "Los Angeles, CA, USA",
+    socials: [
+      { name: "LinkedIn", link: "https://www.linkedin.com/in/michaelanderson" },
+      { name: "GitHub", link: "https://github.com/michaelanderson" },
+      { name: "Facebook", link: "https://www.facebook.com/michaelanderson" },
+    ],
+  },
+  {
+    image:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+    name: "Olivia Martinez",
+    role: "Product Designer",
+    phone: "+1 415-555-0173",
+    email: "olivia.martinez@example.com",
+    address: "Miami, FL, USA",
+    socials: [
+      { name: "LinkedIn", link: "https://www.linkedin.com/in/oliviamartinez" },
+      { name: "GitHub", link: "https://github.com/oliviamartinez" },
+      { name: "Facebook", link: "https://www.facebook.com/oliviamartinez" },
+    ],
+  },
+  {
+    image:
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80",
+    name: "Ryan Cooper",
+    role: "DevOps Engineer",
+    phone: "+1 415-555-0198",
+    email: "ryan.cooper@example.com",
+    address: "Chicago, IL, USA",
+    socials: [
+      { name: "LinkedIn", link: "https://www.linkedin.com/in/ryancooper" },
+      { name: "GitHub", link: "https://github.com/ryancooper" },
+      { name: "Facebook", link: "https://www.facebook.com/ryancooper" },
+    ],
+  },
+  {
+    image:
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80",
+    name: "Isabella Garcia",
+    role: "Digital Marketing Specialist",
+    phone: "+1 415-555-0159",
+    email: "isabella.garcia@example.com",
+    address: "Boston, MA, USA",
+    socials: [
+      { name: "LinkedIn", link: "https://www.linkedin.com/in/isabellagarcia" },
+      { name: "GitHub", link: "https://github.com/isabellagarcia" },
+      { name: "Facebook", link: "https://www.facebook.com/isabellagarcia" },
+    ],
+  },
+  {
+    image:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
+    name: "James Wilson",
+    role: "Software Engineer",
+    phone: "+1 415-555-0138",
+    email: "james.wilson@example.com",
+    address: "Denver, CO, USA",
+    socials: [
+      { name: "LinkedIn", link: "https://www.linkedin.com/in/jameswilson" },
+      { name: "GitHub", link: "https://github.com/jameswilson" },
+      { name: "Facebook", link: "https://www.facebook.com/jameswilson" },
+    ],
+  },
 ];

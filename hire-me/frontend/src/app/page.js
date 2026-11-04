@@ -7,6 +7,12 @@ import Contact from './components/home/Contact'
 import FinalCTA from './components/home/FinalCTA'
 import FAQ from './components/home/FAQ'
 import ATSScore from './components/home/ATS/ATSScore'
+import { canonical } from '@/lib/seo/canonical'
+import ConfirmModal from './components/ConfirmModal'
+
+export const metadata = {
+  alternates: { canonical: canonical("/") },
+};
 
 const page = () => {
   return (

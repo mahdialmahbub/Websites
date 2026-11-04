@@ -12,7 +12,9 @@ import TemplateCard from "./TemplateCard";
  */
 export default function TemplatesView({ categories, data, page }) {
   const { templates, category, pagination } = data;
-  const heading = category ? `${category.name} Resume Templates` : "Free ATS-Friendly Resume Templates";
+  const heading = category
+    ? `${category.name} Resume Templates`
+    : "Free ATS-Friendly Resume Templates";
   const intro =
     category?.description ||
     (category
@@ -23,7 +25,9 @@ export default function TemplatesView({ categories, data, page }) {
   const crumbs = [
     { name: "Home", url: absoluteUrl("/") },
     { name: "Templates", url: absoluteUrl("/templates") },
-    ...(category ? [{ name: category.name, url: absoluteUrl(categoryPath(category.slug)) }] : []),
+    ...(category
+      ? [{ name: category.name, url: absoluteUrl(categoryPath(category.slug)) }]
+      : []),
   ];
 
   return (
@@ -38,11 +42,20 @@ export default function TemplatesView({ categories, data, page }) {
               url: absoluteUrl(pagePath),
               name: heading,
               description: intro,
-              isPartOf: { "@type": "WebSite", name: "HireMe", url: absoluteUrl("/") },
+              isPartOf: {
+                "@type": "WebSite",
+                name: "HireMe",
+                url: absoluteUrl("/"),
+              },
             },
             {
               "@type": "BreadcrumbList",
-              itemListElement: crumbs.map((crumb, index) => ({ "@type": "ListItem", position: index + 1, name: crumb.name, item: crumb.url })),
+              itemListElement: crumbs.map((crumb, index) => ({
+                "@type": "ListItem",
+                position: index + 1,
+                name: crumb.name,
+                item: crumb.url,
+              })),
             },
             {
               "@type": "ItemList",
@@ -58,15 +71,21 @@ export default function TemplatesView({ categories, data, page }) {
         }}
       />
 
-      <header className="max-w-2xl space-y-[clamp(0.375rem,calc(0.682vw+0.239rem),0.75rem)] text-center">
-        <h1 className="font-primary text-[clamp(1.5rem,calc(1.878vw+1.06rem),2.75rem)] font-semibold">{heading}</h1>
-        <p className="text-[clamp(0.875rem,calc(0.188vw+0.831rem),1rem)] text-[#5C5C61]/80">{intro}</p>
+      <header className="max-w-2xl space-y-[clamp(0.25rem,calc(0.364vw+0.136rem),0.5rem)] text-center">
+        <h1 className="font-primary text-[clamp(1.5rem,calc(1.878vw+1.06rem),2.75rem)] font-semibold">
+          {heading}
+        </h1>
+        <p className="text-[clamp(0.875rem,calc(0.188vw+0.831rem),1rem)] text-[#5C5C61]/80">
+          {intro}
+        </p>
       </header>
 
       <CategoryNav categories={categories} activeSlug={category?.slug} />
 
       {templates.length === 0 ? (
-        <p className="py-10 text-center text-neutral-500/70">No templates here yet. Check back soon.</p>
+        <p className="py-10 text-center text-neutral-500/70">
+          No templates here yet. Check back soon.
+        </p>
       ) : (
         <ul className="flex flex-wrap items-start justify-center gap-[clamp(1.5rem,calc(3.005vw+0.796rem),3.5rem)]">
           {templates.map((template) => (
@@ -77,7 +96,11 @@ export default function TemplatesView({ categories, data, page }) {
         </ul>
       )}
 
-      <Pagination page={pagination.page} totalPages={pagination.totalPages} category={category?.slug} />
+      <Pagination
+        page={pagination.page}
+        totalPages={pagination.totalPages}
+        category={category?.slug}
+      />
     </main>
   );
 }
