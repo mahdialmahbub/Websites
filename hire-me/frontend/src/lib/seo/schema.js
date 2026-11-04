@@ -1,8 +1,18 @@
-import { SITE_NAME, SITE_DESCRIPTION, SOCIAL_LINKS, SITE_URL, absoluteUrl } from "@/lib/site";
+import {
+  SITE_NAME,
+  SITE_DESCRIPTION,
+  SOCIAL_LINKS,
+  SITE_URL,
+  absoluteUrl,
+} from "@/lib/site";
 import { templatePath } from "@/lib/catalog";
 
 // Relative URL ke absolute banay (already absolute hole same thake)
 const toAbsolute = (url) => new URL(url, SITE_URL).toString();
+const toISODate = (value) => {
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? undefined : d.toISOString().slice(0, 10);
+};
 
 // Organization + WebSite
 export function siteSchema() {
@@ -30,22 +40,10 @@ export function siteSchema() {
   };
 }
 
-// BreadcrumbList. items = [{ name, href }], prothom item Home, shesh item current page.
-export function breadcrumbSchema(items) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: items.map((item, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      name: item.name,
-      item: toAbsolute(item.href),
-    })),
-  };
-}
-
 // Template page er Product schema (doc er productSchema er equivalent)
 export function templateSchema(template) {
+  const rating = Number(template.ratingAvg);
+  const validUntil = toISODate(template.priceValidUntil);
   const images = (template.images ?? [template.previewImage])
     .filter(Boolean)
     .map((image) => toAbsolute(typeof image === "string" ? image : image.url));
@@ -66,8 +64,11 @@ export function templateSchema(template) {
       availability: "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
       ...(template.priceValidUntil && {
-        priceValidUntil: new Date(template.priceValidUntil).toISOString().slice(0, 10),
+        priceValidUntil: new Date(template.priceValidUntil)
+          .toISOString()
+          .slice(0, 10),
       }),
+      ...(validUntil && { priceValidUntil: validUntil }),
     },
     // Shudhu prokrito review thakle, ar page e dekha gele
     ...(template.reviewCount > 0 && {

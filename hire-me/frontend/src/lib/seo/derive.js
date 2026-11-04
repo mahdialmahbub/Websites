@@ -13,7 +13,11 @@ export const isNoindex = (template) =>
 export function deriveSeo(template) {
   const name = text(template.name);
   const categoryName = text(template.category?.name);
-
+  const keywords = [
+    `${name} resume template`,
+    categoryName && `${categoryName} resume template`,
+    ...(Array.isArray(template.keywords) ? template.keywords : []), // admin theke dile
+  ];
   const title =
     text(template.metaTitle) ||
     `${name} Resume Template${categoryName ? ` (${categoryName})` : ""}`;
@@ -23,10 +27,12 @@ export function deriveSeo(template) {
     text(template.metaDescription) ||
     text(template.description) ||
     `Use the ${name} resume template.`;
-  const extra = "ATS-friendly design you can fill in and download as a PDF in minutes.";
-  const description = `${base} ${extra}`.length <= 160 && !text(template.metaDescription)
-    ? `${base} ${extra}`
-    : base;
+  const extra =
+    "ATS-friendly design you can fill in and download as a PDF in minutes.";
+  const description =
+    `${base} ${extra}`.length <= 160 && !text(template.metaDescription)
+      ? `${base} ${extra}`
+      : base;
 
   // Image na thakle null: tokhon root er opengraph-image file use hoy
   const image = text(template.ogImage) || text(template.previewImage) || null;
@@ -35,6 +41,7 @@ export function deriveSeo(template) {
     title,
     description,
     image,
+    keywords,
     path: templatePath(template.slug),
     noindex: isNoindex(template),
   };

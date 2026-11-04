@@ -12,7 +12,7 @@ export default function ColorPickerModal({ open, onClose }) {
   const selected = resolveColor(useSelector((state) => state.builder.design.color));
 
   return (
-    <Modal open={open} onClose={onClose} title="Choose a colour" className="max-w-2xl">
+    <Modal open={open} onClose={onClose} title="Choose a colour" className="w-full max-w-100">
       <ul className="grid gap-3 ">
         {PALETTE.map(({ id, name, hex, subtitle }) => (
           <li key={id}>

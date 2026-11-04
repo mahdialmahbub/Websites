@@ -21,6 +21,16 @@ export const SITE_URL = (rawSiteUrl ?? "http://localhost:3000").replace(
 export const SITE_DESCRIPTION =
   "Build a professional, ATS-friendly resume with smart templates and AI-powered guidance. Free to start.";
 
+export const DEFAULT_KEYWORDS = [
+  "resume builder",
+  "free resume builder",
+  "ATS friendly resume",
+  "CV maker",
+  "online CV builder",
+  "resume templates",
+  "professional resume",
+];
+
 // Optional: social profile, jodi thake (Organization schema te sameAs hishebe jabe)
 export const SOCIAL_LINKS = [
   // "https://www.linkedin.com/company/hireme",

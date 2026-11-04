@@ -2,19 +2,121 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { icons } from "../../../../assets/iconCollection";
 
 /* -------------------------------------------------------------------------- */
-/*  Scroll config                                                              */
+/*  Config (TemplateCarousel er filter nav er moto)                            */
 /* -------------------------------------------------------------------------- */
 
-// Ek click e visible width er koto ongsho scroll hobe (0.75 = 75%)
-const SCROLL_RATIO = 0.75;
-// Sub-pixel rounding er jonno ektu tolerance, noile end e button disable hoy na
-const EDGE_TOLERANCE = 1;
+const DRAG_DEADZONE = 6; // koto px er pore bujhbo horizontal drag naki page scroll
+const NAV_STEP = 0.6; // ek arrow click e visible width er 60% scroll hobe
+const NAV_EDGE = 44; // px, reveal howa tab jeno arrow er niche na thake
 
-// Reduced motion on thakle animation chara scroll korbe
-const getScrollBehavior = () =>
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ? "auto"
-    : "smooth";
+const MOTION =
+  "transition-transform duration-500 will-change-transform motion-reduce:transition-none";
+
+const clamp = (n, min, max) => Math.max(min, Math.min(n, max));
+
+/* -------------------------------------------------------------------------- */
+/*  useDrag                                                                    */
+/*  Pointer-based drag (mouse + touch + pen), finger er sathe sathe chole.     */
+/*  - dx: drag cholar somoy live horizontal offset (idle e 0)                  */
+/*  - dragging: drag active thakle true (CSS transition bondho korar jonno)    */
+/*  - onEnd(dx): chhere dile final offset diye call hoy                        */
+/* -------------------------------------------------------------------------- */
+
+function useDrag(onEnd) {
+  const [dx, setDx] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const state = useRef(null);
+  const moved = useRef(false);
+
+  const reset = () => {
+    state.current = null;
+    setDragging(false);
+    setDx(0);
+  };
+
+  const bind = {
+    onPointerDown: (e) => {
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      state.current = {
+        id: e.pointerId,
+        x: e.clientX,
+        y: e.clientY,
+        locked: false,
+      };
+      moved.current = false;
+    },
+    onPointerMove: (e) => {
+      const s = state.current;
+      if (!s || s.id !== e.pointerId) return;
+      const ddx = e.clientX - s.x;
+      const ddy = e.clientY - s.y;
+
+      if (!s.locked) {
+        if (Math.max(Math.abs(ddx), Math.abs(ddy)) < DRAG_DEADZONE) return;
+        // vertical hole normal page scroll, amra sore thaki
+        if (Math.abs(ddy) > Math.abs(ddx)) {
+          state.current = null;
+          return;
+        }
+        s.locked = true;
+        e.currentTarget.setPointerCapture?.(e.pointerId);
+        setDragging(true);
+      }
+
+      moved.current = true;
+      setDx(ddx);
+    },
+    onPointerUp: (e) => {
+      const s = state.current;
+      if (!s || s.id !== e.pointerId) return;
+      const finalDx = e.clientX - s.x;
+      const wasLocked = s.locked;
+      reset();
+      if (wasLocked) onEnd(finalDx);
+    },
+    onPointerCancel: reset,
+    // drag er por click swallow kori, jeno niche er tab accidentally select na hoy
+    onClickCapture: (e) => {
+      if (moved.current) {
+        e.stopPropagation();
+        e.preventDefault();
+        moved.current = false;
+      }
+    },
+    onDragStart: (e) => e.preventDefault(),
+  };
+
+  return { bind, dx, dragging };
+}
+
+/* -------------------------------------------------------------------------- */
+/*  NavArrow                                                                   */
+/*  Tab row er upor boshe, scroll korar kichu na thakle fade out hoy.          */
+/* -------------------------------------------------------------------------- */
+
+function NavArrow({ side, label, disabled, onClick }) {
+  const left = side === "left";
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      disabled={disabled}
+      onClick={onClick}
+      className={`group absolute inset-y-0 z-10 flex w-12 items-center from-background from-40% to-transparent outline-none transition-opacity duration-200 disabled:pointer-events-none disabled:opacity-0 ${
+        left
+          ? "left-0 justify-start bg-linear-to-r"
+          : "right-0 justify-end bg-linear-to-l"
+      }`}
+    >
+      <span className="flex size-8 items-center justify-center rounded-full border border-violet-500/15 bg-white text-xl text-violet-500 shadow-sm transition-[transform,background-color,color] duration-200 group-hover:bg-violet-500/10 group-focus-visible:ring-[3px] group-focus-visible:ring-violet-300 group-active:scale-90">
+        <i
+          aria-hidden="true"
+          className={`flex ${left ? icons.leftAngle : icons.rightAngle}`}
+        />
+      </span>
+    </button>
+  );
+}
 
 /* -------------------------------------------------------------------------- */
 /*  Single tab                                                                 */
@@ -74,8 +176,8 @@ export const ProfileNav = ({
 /* -------------------------------------------------------------------------- */
 /*  Tab bar                                                                    */
 /*  - role="tablist" + arrow keys / Home / End support                         */
-/*  - choto screen e wrap na hoye horizontal scroll hobe                       */
-/*  - left/right button diye smooth scroll, shesh e gele button disable hobe   */
+/*  - arrow, drag, keyboard shobai ekii track (translate) ke move kore         */
+/*  - dui pashe nav arrow; shuru/shesh e gele oi pash er arrow hide hoy        */
 /*  - active tab change hole (click / keyboard) seta auto visible hobe         */
 /* -------------------------------------------------------------------------- */
 
@@ -100,67 +202,76 @@ const ProfileNavbar = ({
   idPrefix = "profile",
   label = "Profile sections",
 }) => {
-  const scrollRef = useRef(null);
-  const hasMounted = useRef(false);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
+  const navViewport = useRef(null);
+  const navTrack = useRef(null);
+  const [navPos, setNavPos] = useState(0); // track ta koto px bame sorano
+  const [navMax, setNavMax] = useState(0); // 0 = shob fit hoye gese, scroll lagbe na
+  const [ready, setReady] = useState(false); // prothom render e animation off
 
-  // Scroll position dekhe left/right button enable-disable kora
-  const updateScrollState = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const maxScroll = el.scrollWidth - el.clientWidth;
-    setCanScrollLeft(el.scrollLeft > EDGE_TOLERANCE);
-    setCanScrollRight(el.scrollLeft < maxScroll - EDGE_TOLERANCE);
-  }, []);
-
-  // Container ba tab er size change hole (resize, font load, tab add/remove) abar check
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-
-    updateScrollState();
-
-    const observer = new ResizeObserver(updateScrollState);
-    observer.observe(el);
-    Array.from(el.children).forEach((child) => observer.observe(child));
-
-    return () => observer.disconnect();
-  }, [items.length, updateScrollState]);
-
-  const scrollByPage = (direction) => {
-    const el = scrollRef.current;
-    if (!el) return;
-    el.scrollBy({
-      left: direction * el.clientWidth * SCROLL_RATIO,
-      behavior: getScrollBehavior(),
-    });
+  const readNavMax = () => {
+    const v = navViewport.current;
+    const t = navTrack.current;
+    return v && t ? Math.max(0, t.scrollWidth - v.clientWidth) : 0;
   };
 
-  // Active tab arrow button er niche chole gele seta visible area te niye ashbe.
-  // scrollIntoView use kori nai, karon seta page-o scroll kore dite pare.
+  // nav ba tab er size change hole (resize, font load, tab add/remove) abar measure
   useEffect(() => {
-    const el = scrollRef.current;
-    const tab = el?.querySelector('[role="tab"][aria-selected="true"]');
-    if (!el || !tab) return;
+    const v = navViewport.current;
+    const t = navTrack.current;
+    if (!v || !t) return;
+    const measure = () => setNavMax(readNavMax());
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(v);
+    ro.observe(t);
+    return () => ro.disconnect();
+  }, [items.length]);
 
-    // Arrow button er jaygar width = container er padding
-    const edge = parseFloat(getComputedStyle(el).paddingLeft) || 0;
-    const tabLeft = tab.offsetLeft;
-    const tabRight = tabLeft + tab.offsetWidth;
-    const viewLeft = el.scrollLeft + edge;
-    const viewRight = el.scrollLeft + el.clientWidth - edge;
+  const navX = Math.min(navPos, navMax); // nav choto/boro hole clamp
+  const navAtStart = navX <= 0;
+  const navAtEnd = navX >= navMax;
 
-    // Prothom render e animation chara position set hobe
-    const behavior = hasMounted.current ? getScrollBehavior() : "auto";
-    hasMounted.current = true;
+  const navGo = (dir) => {
+    const view = navViewport.current?.clientWidth ?? 0;
+    setNavPos(clamp(navX + dir * view * NAV_STEP, 0, navMax));
+  };
 
-    if (tabLeft < viewLeft) {
-      el.scrollTo({ left: tabLeft - edge, behavior });
-    } else if (tabRight > viewRight) {
-      el.scrollTo({ left: tabRight - el.clientWidth + edge, behavior });
-    }
-  }, [activeKey]);
+  // track ta shudhu totuku sorabo jeno tab ta puropuri dekha jay (arrow er niche na thake)
+  const reveal = useCallback((tab) => {
+    const view = navViewport.current;
+    if (!tab || !view) return;
+    const max = readNavMax();
+    const left = tab.offsetLeft - NAV_EDGE;
+    const right =
+      tab.offsetLeft + tab.offsetWidth + NAV_EDGE - view.clientWidth;
+    setNavPos((cur) => {
+      const x = Math.min(cur, max);
+      if (left < x) return Math.max(0, left);
+      if (right > x) return Math.min(max, right);
+      return x;
+    });
+  }, []);
+
+  // active tab change hole (click / keyboard / prothom render) seta visible kora
+  useEffect(() => {
+    const tab = navTrack.current?.querySelector(
+      '[role="tab"][aria-selected="true"]',
+    );
+    reveal(tab);
+  }, [activeKey, reveal]);
+
+  // prothom position set howar por animation chalu
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setReady(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  // free drag: jekhane chhorbe sekhanei thakbe (dui prante clamp)
+  const navDrag = useDrag((d) => setNavPos(clamp(navX - d, 0, navMax)));
+
+  const navShift = navDrag.dragging
+    ? clamp(navX - navDrag.dx, 0, navMax)
+    : navX;
 
   const handleKeyDown = (event, index) => {
     const last = items.length - 1;
@@ -174,52 +285,56 @@ const ProfileNavbar = ({
 
     event.preventDefault();
     onChange?.(items[next].key);
-    // preventScroll: browser er instant jump bondho, upor er effect smooth scroll korbe
+    // preventScroll: browser er instant jump bondho, track er smooth move reveal() kore
     document
       .getElementById(`${idPrefix}-tab-${items[next].key}`)
       ?.focus({ preventScroll: true });
   };
 
   return (
-    // Button gulo scroll container er bahire, noile content er shathe scroll hoye cholei jabe
-    <div className="relative">
-      <button
-        type="button"
-        aria-label="Scroll categories left"
-        onClick={() => scrollByPage(-1)}
-        disabled={!canScrollLeft}
-        className="absolute left-0 top-0 z-10 flex h-10 w-11 items-center justify-center bg-linear-to-r from-background to-transparent transition-all duration-200 group disabled:pointer-events-none disabled:opacity-0 md:h-11 text-[26px] hover:text-primary-200 hover:*:-translate-x-1 *:transition-transform *:duration-200"
-      >
-        <i className={icons.leftAngle}></i>
-      </button>
-      <button
-        type="button"
-        aria-label="Scroll categories right"
-        onClick={() => scrollByPage(1)}
-        disabled={!canScrollRight}
-        className="absolute right-0 top-0 z-10 flex h-10 w-11 items-center justify-center bg-linear-to-l from-background to-transparent transition-all duration-200 group disabled:pointer-events-none disabled:opacity-0 md:h-11 text-[26px] hover:text-primary-200 hover:*:translate-x-1 *:transition-transform *:duration-200"
-      >
-        <i className={icons.rightAngle}></i>
-      </button>
+    // w-full min-w-0 max-w-full: flex/grid parent er bhitore thakleo parent er width er beshi boro hobe na
+    <div className="relative w-full min-w-0 max-w-full">
+      <NavArrow
+        side="left"
+        label="Scroll categories left"
+        disabled={navAtStart}
+        onClick={() => navGo(-1)}
+      />
+      <NavArrow
+        side="right"
+        label="Scroll categories right"
+        disabled={navAtEnd}
+        onClick={() => navGo(1)}
+      />
 
+      {/* overflow-x-clip: native scrollbar nai, vertical focus ring kete jay na */}
       <div
-        ref={scrollRef}
-        role="tablist"
-        aria-label={label}
-        onScroll={updateScrollState}
-        className="flex items-stretch gap-1 overflow-x-auto shadow-[inset_0_-1px_0_rgba(115,115,115,0.15)] scrollbar-none [&::-webkit-scrollbar]:hidden relative px-11"
+        ref={navViewport}
+        {...navDrag.bind}
+        className="w-full min-w-0 touch-pan-y select-none overflow-x-clip shadow-[inset_0_-1px_0_rgba(115,115,115,0.15)]"
       >
-        {items.map((item, index) => (
-          <ProfileNav
-            key={item.key}
-            id={`${idPrefix}-tab-${item.key}`}
-            panelId={`${idPrefix}-panel-${item.key}`}
-            text={item.text}
-            isActive={item.key === activeKey}
-            onClick={onChange ? () => onChange(item.key) : undefined}
-            onKeyDown={(event) => handleKeyDown(event, index)}
-          />
-        ))}
+        <div
+          ref={navTrack}
+          role="tablist"
+          aria-label={label}
+          onFocus={(e) => reveal(e.target.closest('[role="tab"]'))}
+          className={`relative flex w-max min-w-full items-stretch gap-1 ${
+            ready && !navDrag.dragging ? MOTION : "transition-none"
+          }`}
+          style={{ transform: `translate3d(${-navShift}px,0,0)` }}
+        >
+          {items.map((item, index) => (
+            <ProfileNav
+              key={item.key}
+              id={`${idPrefix}-tab-${item.key}`}
+              panelId={`${idPrefix}-panel-${item.key}`}
+              text={item.text}
+              isActive={item.key === activeKey}
+              onClick={onChange ? () => onChange(item.key) : undefined}
+              onKeyDown={(event) => handleKeyDown(event, index)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

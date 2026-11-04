@@ -41,9 +41,9 @@ const NavLink = ({ name, href, exact = false, className = "", onClick }) => {
       <span
         aria-hidden="true"
         className={[
-          "pointer-events-none absolute inset-x-3 bottom-1.5 h-0.5 origin-center rounded-full bg-violet-500",
+          "pointer-events-none absolute inset-x-3 bottom-1.5 h-0.75 origin-center rounded-full bg-violet-500",
           "transition-transform duration-300 ease-out",
-          isActive ? "scale-x-[20%]" : "scale-x-0 group-hover:scale-x-[20%]",
+          isActive ? "scale-x-20" : "scale-x-0 group-hover:scale-x-20",
         ].join(" ")}
       />
     </Link>
