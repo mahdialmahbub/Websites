@@ -26,7 +26,9 @@ export default function ExploreTemplates({
   bleed = true, // true: cancel the page's side padding (full-width pages). false: stay inside the box (dialogs)
 }) {
   // the query is skipped when the page passes its own list
-  const { data } = useGetBuilderTemplatesQuery(undefined, { skip: Boolean(provided) });
+  const { data } = useGetBuilderTemplatesQuery(undefined, {
+    skip: Boolean(provided),
+  });
   const source = provided ?? data;
 
   const { items, categories } = useMemo(() => {
@@ -37,7 +39,10 @@ export default function ExploreTemplates({
     const seen = new Map();
     for (const t of list) {
       if (t.category && !seen.has(t.category.slug)) {
-        seen.set(t.category.slug, { slug: t.category.slug, name: t.category.name });
+        seen.set(t.category.slug, {
+          slug: t.category.slug,
+          name: t.category.name,
+        });
       }
     }
 
@@ -66,11 +71,17 @@ export default function ExploreTemplates({
   if (items.length === 0) return null;
 
   return (
-    <section aria-label={label} className="flex flex-col items-center *:min-w-[320px] *:max-w-300">
-      {/* On pages the wrapper cancels the page's side padding, so the cards run edge to edge like on the home page. */}
-      <div className={bleed ? "w-[calc(100%+2*var(--page-pad))] [--page-pad:clamp(1.5rem,calc(2.254vw+0.972rem),3rem)]" : "w-full"}>
-        <TemplateCarousel key={resetKey} categories={categories} items={items} startAt={startAt} padded={false} />
-      </div>
+    <section
+      aria-label={label}
+      className="flex flex-col items-center"
+    >
+        <TemplateCarousel
+          key={resetKey}
+          categories={categories}
+          items={items}
+          startAt={startAt}
+          padded={false}
+        />
 
       {showViewAll && (
         <Link

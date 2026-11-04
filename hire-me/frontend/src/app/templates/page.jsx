@@ -1,7 +1,12 @@
 import { notFound } from "next/navigation";
 import TemplatesView from "../components/templates/TemplatesView";
-import { getCategories, getTemplates, listingPath, parsePage } from "@/lib/catalog";
-import { absoluteUrl } from "@/lib/site";
+import {
+  getCategories,
+  getTemplates,
+  listingPath,
+  parsePage,
+} from "@/lib/catalog";
+import { buildMetadata } from "@/lib/seo/build-metadata";
 
 // /templates            all templates
 // /templates?page=2     next page (plain links, crawlable)
@@ -10,30 +15,43 @@ import { absoluteUrl } from "@/lib/site";
 export async function generateMetadata({ searchParams }) {
   const page = parsePage((await searchParams).page);
   const data = await getTemplates({ page });
-  const total = data?.pagination.total ?? 0;
-  const title = page > 1 ? `Free Resume Templates - Page ${page}` : "Free ATS-Friendly Resume Templates";
-  const description = `Browse ${total || "our"} professional resume templates. Pick a clean, ATS-friendly design, fill in your details and download your resume in minutes.`;
-  const url = absoluteUrl(listingPath({ page }));
-  const { pagination } = data ?? {};
+  const pagination = data?.pagination;
+  const total = pagination?.total ?? 0;
 
-  return {
+  // Shesh page er por-er page: notFound() hobe, tai index korano jabe na
+  const outOfRange = !data || (page > 1 && page > pagination.totalPages);
+
+  const title =
+    page > 1
+      ? `Free Resume Templates - Page ${page}`
+      : "Free ATS-Friendly Resume Templates";
+  const base = `Browse ${total || "our"} professional resume templates. Pick a clean, ATS-friendly design, fill in your details and download your resume in minutes.`;
+
+  return buildMetadata({
     title,
-    description,
-    alternates: { canonical: url },
-    pagination: {
-      ...(page > 1 && { previous: absoluteUrl(listingPath({ page: page - 1 })) }),
-      ...(pagination && page < pagination.totalPages && { next: absoluteUrl(listingPath({ page: page + 1 })) }),
+    // Page 2+ e alada description, jate duplicate description na hoy
+    description: page > 1 ? `Page ${page}: ${base}` : base,
+    path: listingPath({ page }),
+    noindex: outOfRange,
+    pagination: pagination && {
+      previous: page > 1 ? listingPath({ page: page - 1 }) : undefined,
+      next:
+        page < pagination.totalPages
+          ? listingPath({ page: page + 1 })
+          : undefined,
     },
-    openGraph: { type: "website", url, title, description },
-    twitter: { card: "summary_large_image", title, description },
-  };
+  });
 }
 
 export default async function TemplatesPage({ searchParams }) {
   const page = parsePage((await searchParams).page);
-  const [categories, data] = await Promise.all([getCategories(), getTemplates({ page })]);
+  const [categories, data] = await Promise.all([
+    getCategories(),
+    getTemplates({ page }),
+  ]);
 
   // A page number past the end is not a real page (and would be thin duplicate content).
   if (!data || (page > 1 && page > data.pagination.totalPages)) notFound();
+
   return <TemplatesView categories={categories} data={data} page={page} />;
 }

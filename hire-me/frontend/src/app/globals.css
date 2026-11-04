@@ -221,7 +221,7 @@
   }
 
   body {
-    @apply bg-background text-neutral-950;
+    @apply bg-background text-neutral-950 overflow-x-hidden;
     font-family: var(--font-secondary), Arial, Helvetica, sans-serif;
     min-width: 320px;
   }
@@ -235,6 +235,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  p {
+    max-width: 700px;
   }
 }
 
@@ -369,6 +373,7 @@
     transition: none !important;
   }
 }
+
 
 /*
    Typography-এর জন্য আলাদা .text-h1 / .text-h2 CSS লেখার দরকার নেই,

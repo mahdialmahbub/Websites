@@ -43,7 +43,7 @@ const SOCIAL_NAMES = Object.keys(SOCIAL_ICONS);
 
 // Shared by the contact-row icons and the social buttons.
 const ICON_BOX =
-  "flex items-center justify-center rounded-sm border border-neutral-800 bg-[#111722]/30 text-blue-500";
+  "flex items-center justify-center rounded-sm border border-neutral-800 bg-[#111722]/30 text-blue-500 aspect-square";
 
 const ROW_ICON = `${ICON_BOX} size-[clamp(1.375rem,calc(0.376vw+1.287rem),1.625rem)] text-[clamp(0.5625rem,calc(0.282vw+0.497rem),0.75rem)]`;
 
@@ -81,7 +81,7 @@ const ContactRow = ({ icon, label, children }) => (
       <i className={`fi ${icon}`} />
     </span>
 
-    <div className="space-y-space-1">
+    <div className="space-y-0.5">
       <p className="font-primary text-[10px] text-blue-500">{label}</p>
       <p className="text-[12px] font-medium text-neutral-50">{children}</p>
     </div>
@@ -131,7 +131,7 @@ const ContactCard = ({
     <article
       className={[
         "relative isolate overflow-hidden rounded-md border border-blue-500/60",
-        "w-[clamp(14.375rem,calc(1.878vw+13.935rem),15.625rem)]",
+        "min-w-[clamp(14.375rem,calc(1.878vw+13.935rem),15.625rem)] max-w-[clamp(14.375rem,calc(1.878vw+13.935rem),15.625rem)]",
         "h-[clamp(16.875rem,calc(2.817vw+16.215rem),18.75rem)]",
         "shadow-[1px_1px_6px_rgb(2_132_199/0.25)]",
       ].join(" ")}
@@ -162,10 +162,10 @@ const ContactCard = ({
         className={[
           "absolute top-2.5 right-2.5 z-10 flex size-11 cursor-pointer items-center justify-center rounded-full transition-colors",
           "text-[clamp(1rem,calc(0.376vw+0.912rem),1.25rem)]",
-          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500",
+          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 bg-black/5 backdrop-blur-2xl",
           isOpen
             ? "text-red-500/80 hover:bg-red-500/10 hover:text-red-500"
-            : "bg-blue-900 text-blue-500 hover:bg-blue-800",
+            : " text-blue-300 hover:bg-blue-500/20",
         ].join(" ")}
       >
         <i
@@ -177,7 +177,7 @@ const ContactCard = ({
       {/* Front: name + role */}
       <div
         hidden={isOpen}
-        className="relative flex h-full flex-col items-center justify-end gap-space-1 pb-space-4 text-neutral-50"
+        className="relative flex h-full flex-col items-center justify-end pb-space-4 text-neutral-50"
       >
         <Heading
           className={`${signatureFont.className} text-[clamp(1.75rem,calc(0.751vw+1.574rem),2.25rem)]`}

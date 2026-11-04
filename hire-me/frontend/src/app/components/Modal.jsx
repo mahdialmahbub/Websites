@@ -104,13 +104,12 @@ export default function Modal({
           onClose?.();
         }
       }}
-      className={`modal-dialog-motion ${isVisible ? "is-visible" : ""} m-auto min-w-72.5 max-w-[700px]"
-      } max-h-[88vh] overflow-y-auto rounded-xl border border-neutral-500/10 bg-white p-0 shadow-[0_12px_32px_rgba(2,6,23,0.25)] ${className}`}
+      className={`modal-dialog-motion ${isVisible ? "is-visible" : ""} m-auto min-w-72.5 max-w-175 max-h-[88vh] overflow-y-auto rounded-xl border border-neutral-500/10 bg-white p-0 shadow-[0_12px_32px_rgba(2,6,23,0.25)] ${className}`}
     >
       <div className="relative p-[clamp(1rem,calc(1.5vw+0.65rem),2rem)]">
         <div
           className={
-            titleHidden ? "" : "mb-5 flex items-center justify-between gap-4"
+            titleHidden ? "" : "mb-3 flex items-center justify-between gap-4"
           }
         >
           <h2

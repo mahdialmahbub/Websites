@@ -1,0 +1,94 @@
+name: SEO checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Notun push ashle purono run bondho
+concurrency:
+  group: seo-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  seo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    # NEXT_PUBLIC_* build er shomoy bhitore boshe jay, tai build step er age-i thakte hobe.
+    # production dile robots.txt khola thake, proxy.js kichu kore na, ar noindex lage na.
+    env:
+      NEXT_PUBLIC_ENV: production
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      # Catalog API (templates/categories). Repo Settings > Secrets e CI_BACKEND_URL dao
+      # (staging API er URL). Na dile http://localhost:5000, jekhane kono backend chole na.
+      BACKEND_URL: ${{ secrets.CI_BACKEND_URL || 'http://localhost:5000' }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+
+      - run: npm ci
+
+      # 1) Build validation: build bhangle ar kichur mane nei
+      - run: npm run build
+
+      # Server ekbar-i chalu hoy, pore shob step eta-i use kore
+      - name: Start server
+        run: |
+          nohup npm start > server.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -fs http://localhost:3000/robots.txt > /dev/null; then exit 0; fi
+            sleep 2
+          done
+          echo "Server did not start in time"
+          cat server.log
+          exit 1
+
+      # 2) Sitemap o robots route ashole toiri hoyeche ki
+      - name: Route validation
+        run: |
+          curl -fsS http://localhost:3000/robots.txt  > /dev/null
+          curl -fsS http://localhost:3000/sitemap.xml > /dev/null
+
+      # 3) Metadata o structured data audit
+      - name: Metadata audit
+        run: SITE_URL=http://localhost:3000 node scripts/seo-audit.mjs
+
+      # 4) Broken link check
+      - name: Broken links
+        run: SITE_URL=http://localhost:3000 node scripts/check-links.mjs
+
+      # 5) Orphan page (sitemap e ache, kintu kono link nei)
+      - name: Orphan pages
+        run: SITE_URL=http://localhost:3000 node scripts/find-orphans.mjs
+
+      # 6) SEO regression test
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+      - name: Playwright SEO specs
+        run: npx playwright test tests/seo.spec.js
+        env:
+          PREVIEW_URL: http://localhost:3000
+
+      # 7) Lighthouse CI: performance budget
+      # Category ar template page er URL hardcode kora nei: sitemap theke prothom ta niye config e jog kori.
+      - name: Lighthouse CI
+        run: |
+          SITEMAP=$(curl -fsS http://localhost:3000/sitemap.xml)
+          CATEGORY=$(grep -oE '<loc>[^<]*/templates/category/[^/<]+</loc>' <<<"$SITEMAP" | head -1 | sed -E 's#</?loc>##g')
+          TEMPLATE=$(grep -oE '<loc>[^<]*/templates/[^/<]+</loc>' <<<"$SITEMAP" | head -1 | sed -E 's#</?loc>##g')
+          jq --arg c "$CATEGORY" --arg t "$TEMPLATE" \
+            '.ci.collect.url += ([$c, $t] | map(select(length > 0)))' \
+            lighthouserc.json > lighthouserc.ci.json
+          npm i -g @lhci/cli@0.15
+          lhci autorun --config=lighthouserc.ci.json
+
+      # Kono step fail korle server er log dekhao
+      - name: Server log
+        if: failure()
+        run: tail -n 80 server.log || true

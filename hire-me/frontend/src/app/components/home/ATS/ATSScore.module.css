@@ -1,8 +1,20 @@
 /*
-  Layout: a score hub on top, four metric cards below, joined by SVG wires.
-  1100px and up: one row of four, wires leave the hub's left and right sides.
-  Below 1100px: a 2x2 grid, wires drop from the hub's bottom through the centre lane.
+  Everything Tailwind can express lives in ATSScore.jsx as utility classes.
+  This file keeps only what utilities can't cleanly do:
+  - the design tokens (CSS variables) that the utilities read via var(--...)
+  - the bar's grow animation
+  - the "data flow" animation (keyframes, shared clock, conic icon ring)
+
+  Keyframes are scoped per CSS module, so every animation is attached here
+  through classes (.card, .trail, .head ...) that the JSX adds next to Tailwind.
 */
+
+/* Registered as an integer so the browser can animate it (count-up) on the shared clock. */
+@property --ats-n {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 0;
+}
 
 .section {
   --bg: #111111;
@@ -24,184 +36,26 @@
   --body: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
   --lane: clamp(56px, 14vw, 260px);
 
-  color-scheme: dark;
-  width: 100%;
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--body);
-  padding-block: clamp(40px, 7vw, 88px);
-  padding-inline: 16px;
-  -webkit-font-smoothing: antialiased;
+  /* ───────── MOTION TOKENS (tweak these) ─────────
+     ONE shared clock. Slot = one card firing. Cycle = 4 slots + half a slot rest
+     (4 x 2.4s + 1.2s = 10.8s). Because the keyframe percentages are written on
+     the cycle, changing --slot scales EVERY animation together and keeps sync. */
+  --slot: 2.4s;
+  --cycle: calc(var(--slot) * 4.5);
+  --bounce: 0.02; /* card spring: 0.05 = scale up to 1.05 */
+  --card-glow: 1; /* 0-1, strength of the card's firing glow */
+  --hub-glow: 1; /* 0-1, strength of the hub's arrival glow */
+  --ring-speed: 3s; /* one full turn of the icon ring */
+
+  /* ───────── CONNECTOR STYLE (hub plug) — see the block further down ───────── */
+  --plug-radius: 2px; /* corner roundness */
+  --plug-white-top: 60%; /* how much white is mixed into the top edge colour */
+  --plug-white-bottom: 38%; /* ...and into the bottom edge colour */
+  --plug-rim: rgb(0 0 0 / 45%); /* dark outline around the plug */
+  --plug-glow: 30%; /* idle glow strength in the wire colour */
 }
 
-.section,
-.section * {
-  box-sizing: border-box;
-}
-
-.inner {
-  max-width: 1000px;
-  min-width: 300px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.head {
-  text-align: center;
-  margin-bottom: clamp(40px, 6vw, 72px);
-}
-
-.headline {
-  margin: 0;
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: clamp(28px, 5.2vw, 48px);
-  line-height: 1.2;
-  text-wrap: balance;
-  background: linear-gradient(90deg, #a855f7 0%, #d8b4fe 28%, #f4f4f5 50%, #a7f3d0 74%, #34d399 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.sub {
-  max-width: 760px;
-  margin: 16px auto 0;
-  font-weight: 500;
-  font-size: clamp(14px, 1.9vw, 20px);
-  line-height: 1.5;
-  color: var(--muted);
-  text-wrap: balance;
-}
-
-/* Board */
-.board {
-  position: relative;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(26px, 4vw, 34px);
-}
-
-.hub {
-  width: clamp(240px, 52%, 420px);
-  padding: clamp(20px, 3.4vw, 34px) 16px;
-  text-align: center;
-  background: var(--hub);
-  border: 4px solid var(--hub-edge);
-  border-radius: 16px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
-}
-
-.hubLabel {
-  font-weight: 500;
-  font-size: clamp(16px, 2.2vw, 22px);
-  line-height: 1.2;
-  color: var(--muted);
-}
-
-.hubScore {
-  margin: clamp(6px, 1.4vw, 12px) 0;
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: clamp(46px, 8vw, 72px);
-  line-height: 1.1;
-  color: var(--score);
-  text-shadow: 0 0 30px rgba(124, 108, 245, 0.5);
-  font-variant-numeric: tabular-nums;
-}
-
-.cards {
-  width: 100%;
-  display: grid;
-  grid-template-columns: minmax(0, 275px) var(--lane) minmax(0, 275px);
-  justify-content: center;
-  row-gap: clamp(24px, 3vw, 34px);
-}
-
-.card[data-key="keyword"]    { grid-column: 1; grid-row: 1; }
-.card[data-key="skills"]     { grid-column: 1; grid-row: 2; }
-.card[data-key="content"]    { grid-column: 3; grid-row: 1; }
-.card[data-key="experience"] { grid-column: 3; grid-row: 2; }
-
-.card {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: clamp(20px, 3vw, 32px) clamp(12px, 2.2vw, 24px) clamp(20px, 3vw, 30px);
-  background: var(--panel);
-  border: 1.5px solid color-mix(in srgb, var(--c) 75%, transparent);
-  border-radius: clamp(18px, 3vw, 26px);
-  box-shadow:
-    0 0 0 4px color-mix(in srgb, var(--c) 9%, transparent),
-    0 0 32px color-mix(in srgb, var(--c) 26%, transparent);
-}
-
-.card[data-key="keyword"]    { --c: var(--violet);  --c-dim: var(--violet-dim); }
-.card[data-key="skills"]     { --c: var(--amber);   --c-dim: var(--amber-dim); }
-.card[data-key="experience"] { --c: var(--azure);   --c-dim: var(--azure-dim); }
-.card[data-key="content"]    { --c: var(--emerald); --c-dim: var(--emerald-dim); }
-
-.icon {
-  width: clamp(48px, 7vw, 68px);
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  border-radius: clamp(12px, 1.8vw, 16px);
-  border: 1.5px solid var(--c);
-  background: color-mix(in srgb, var(--c) 10%, #0d0d0d);
-  color: var(--c);
-}
-
-.icon svg {
-  width: 52%;
-  height: 52%;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.cardTitle {
-  margin: clamp(12px, 2vw, 18px) 0 0;
-  font-weight: 600;
-  font-size: clamp(14px, 2.2vw, 21px);
-  line-height: 1.25;
-  color: #fff;
-  text-wrap: balance;
-}
-
-.pct {
-  margin: clamp(10px, 2vw, 16px) 0 clamp(10px, 1.6vw, 14px);
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: clamp(28px, 5vw, 44px);
-  line-height: 1;
-  color: var(--c);
-  font-variant-numeric: tabular-nums;
-}
-
-.bar {
-  width: 100%;
-  height: 8px;
-  border-radius: 999px;
-  overflow: hidden;
-  background: color-mix(in srgb, var(--c) 12%, #151515);
-}
-
-.bar i {
-  display: block;
-  height: 100%;
-  width: var(--v);
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--c-dim), var(--c));
-  transform-origin: left center;
+.fill {
   animation: grow 0.9s cubic-bezier(0.22, 0.8, 0.3, 1) both;
 }
 
@@ -209,59 +63,381 @@
   from { transform: scaleX(0); }
 }
 
-.desc {
-  margin: clamp(12px, 2vw, 18px) 0 0;
-  font-size: clamp(11.5px, 1.5vw, 14.5px);
-  line-height: 1.4;
-  color: var(--muted);
-  text-wrap: pretty;
+/* ============================================================
+   ANIMATION 2: rotating conic-gradient ring around the icon box
+   The wrapper keeps the icon box's exact outer size (2px "border" =
+   the wrapper's padding), so nothing moves. The wrapper background is the
+   dim static border; ::before is the spinning bright arc on top of it.
+   ============================================================ */
+.ring {
+  isolation: isolate; /* Safari: keep overflow-hidden clipping while a child rotates */
+  background: color-mix(in srgb, var(--c) 40%, #0d0d0d);
 }
 
-/* Wires */
-.wires {
+.ring::before {
+  content: "";
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  pointer-events: none;
-  z-index: 2;
+  inset: -50%; /* 2x the box, so the arc covers every corner at any angle */
+  background: conic-gradient(from 0deg, transparent 0 55%, var(--c) 85%, #fff 100%);
+  animation: ringSpin var(--ring-speed) linear infinite;
+  will-change: transform;
 }
 
-.wire {
+@keyframes ringSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   ANIMATION 1: sequential data flow
+   Base styles below are the IDLE state of every animated element, so the
+   page looks right before the animation starts and with reduced motion.
+   Animations only attach once data-ready="true" (set by the JSX the moment
+   the wires exist), so every animation starts in the same frame.
+   ============================================================ */
+
+/* Source card: the glow lives on ::after so only opacity is animated. */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: -1.5px; /* cover the card's 1.5px border */
+  border-radius: inherit;
+  border: 1.5px solid var(--c);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--c) 20%, transparent),
+    0 0 44px color-mix(in srgb, var(--c) 55%, transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Hub: one glow layer per colour (opacity only, no competing box-shadow animations). */
+.hubLayer {
+  position: absolute;
+  inset: -5px; /* cover the hub's 5px border */
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow:
+    inset 0 0 0 2px color-mix(in srgb, var(--c) 65%, transparent),
+    inset 0 0 24px color-mix(in srgb, var(--c) 14%, transparent),
+    0 0 28px color-mix(in srgb, var(--c) 45%, transparent);
+}
+
+/* Wire overlays (all share the wire's own path via pathLength="1"). */
+.lit,
+.trail,
+.head {
   fill: none;
-  stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
+  opacity: 0;
 }
 
-.dot {
-  stroke: var(--bg);
+.lit {
+  stroke: color-mix(in srgb, var(--c) 55%, #fff);
+  stroke-width: 3;
+}
+
+.trail {
+  stroke: color-mix(in srgb, var(--c) 55%, #fff);
+  stroke-width: 4;
+  stroke-dasharray: 0.16 2;
+  --peak: 0.85;
+}
+
+.trail.halo {
+  stroke: var(--c);
+  stroke-width: 11;
+  --peak: 0.22;
+}
+
+.head {
+  stroke: color-mix(in srgb, var(--c) 40%, #fff);
+  stroke-width: 10;
+  stroke-dasharray: 0.001 2;
+  --peak: 1;
+}
+
+.head.halo {
+  stroke: var(--c);
+  stroke-width: 24;
+  --peak: 0.28;
+}
+
+/* ============================================================
+   CONNECTOR STYLE: the plug where each wire enters the hub.
+   Size is set in ATSScore.jsx (PLUG). Everything visual is here.
+   Layers (top to bottom of the box-shadow list):
+     1 inset top shine   2 inset bottom shade   3 dark rim
+     4 drop shadow       5 soft glow in the wire colour
+   ::after is the flash that fires when a packet arrives.
+   ============================================================ */
+.plug {
+  position: absolute;
+  z-index: 3; /* above the wire overlay */
+  pointer-events: none;
+  --plug-dir: 180deg; /* gradient direction: top -> bottom (horizontal plug) */
+  border-radius: var(--plug-radius);
+  background: linear-gradient(
+    var(--plug-dir),
+    color-mix(in srgb, #fff var(--plug-white-top), var(--c)),
+    color-mix(in srgb, #fff var(--plug-white-bottom), var(--c))
+  );
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 55%),
+    inset 0 -2px 2px rgb(0 0 0 / 22%),
+    0 0 0 1px var(--plug-rim),
+    0 2px 6px rgb(0 0 0 / 55%),
+    0 0 12px color-mix(in srgb, var(--c) var(--plug-glow), transparent);
+}
+
+/* 2x2 layout: the plug hangs under the hub, so shine/shade run left -> right */
+.plug[data-orient="v"] {
+  --plug-dir: 90deg;
+  box-shadow:
+    inset 1px 0 0 rgb(255 255 255 / 55%),
+    inset -2px 0 2px rgb(0 0 0 / 22%),
+    0 0 0 1px var(--plug-rim),
+    0 2px 6px rgb(0 0 0 / 55%),
+    0 0 12px color-mix(in srgb, var(--c) var(--plug-glow), transparent);
+}
+
+.plug::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgb(255 255 255 / 70%);
+  box-shadow: 0 0 16px 2px var(--c);
+  opacity: 0;
+}
+
+/* Score number: the text is drawn from the animated --ats-n counter */
+.count::before {
+  counter-reset: ats-score var(--ats-n);
+  content: counter(ats-score) "%";
+}
+
+.dot,
+.ripple,
+.portRing {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.ripple,
+.portRing {
+  fill: none;
+  stroke: var(--c);
   stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  opacity: 0;
 }
 
-.stub {
-  opacity: 0.7;
+/* ---------- shared clock ---------- */
+.section[data-ready="true"] .card,
+.section[data-ready="true"] .card::after,
+.section[data-ready="true"] .ring,
+.section[data-ready="true"] .lit,
+.section[data-ready="true"] .trail,
+.section[data-ready="true"] .head,
+.section[data-ready="true"] .dot,
+.section[data-ready="true"] .ripple,
+.section[data-ready="true"] .plug::after,
+.section[data-ready="true"] .portRing,
+.section[data-ready="true"] .hubLayer,
+.section[data-ready="true"] .hub,
+.section[data-ready="true"] .score {
+  animation-duration: var(--cycle);
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  /* --i is 0..3 (purple, orange, blue, green); hub and score have no --i, so delay 0 */
+  animation-delay: calc(var(--i, 0) * var(--slot));
 }
 
-@media (min-width: 1100px) {
-  .board {
-    gap: 80px;
-  }
-
-  .cards {
-    grid-template-columns: repeat(4, minmax(0, 275px));
-    justify-content: space-between;
-  }
-
-  .card[data-key] {
-    grid-column: auto;
-    grid-row: auto;
-  }
+.section[data-ready="true"] .card        { animation-name: cardFire; }
+.section[data-ready="true"] .card::after { animation-name: cardGlow; }
+.section[data-ready="true"] .ring        { animation-name: iconGlow; }
+.section[data-ready="true"] .lit         { animation-name: pipeLit; }
+.section[data-ready="true"] .trail       { animation-name: trailDash, trailFade; }
+.section[data-ready="true"] .head        { animation-name: packetTravel, packetFade; }
+.section[data-ready="true"] .dot         { animation-name: dotPulse; }
+.section[data-ready="true"] .ripple      { animation-name: dotRipple; }
+.section[data-ready="true"] .plug::after { animation-name: plugFlash; }
+.section[data-ready="true"] .portRing    { animation-name: portPulse; }
+.section[data-ready="true"] .hubLayer    { animation-name: hubGlow; }
+.section[data-ready="true"] .score       { animation-name: scoreGlow, scoreCount; }
+.section[data-ready="true"] .hub {
+  animation-name: hubPulse;
+  animation-timing-function: ease-in-out;
 }
 
+/* ---------- pause while the section is off-screen (set by IntersectionObserver) ---------- */
+.section[data-active="false"] *,
+.section[data-active="false"] *::before,
+.section[data-active="false"] *::after {
+  animation-play-state: paused;
+}
+
+/* ============================================================
+   KEYFRAMES
+   Percentages are on the CYCLE (10.8s). One slot = 22.22%.
+   Slot timeline (seconds -> %):
+     0.00 fire starts      0
+     0.35 packet leaves    3.24
+     0.50 fire ends        4.63
+     1.45 packet arrives   13.43
+     2.20 arrival ends     20.37
+     2.40 slot ends        22.22
+   ============================================================ */
+
+/* Source card: springy scale 1 -> 1.05 -> 0.98 -> 1.02 -> 1 in 0.5s */
+@keyframes cardFire {
+  0%    { transform: scale(1); animation-timing-function: cubic-bezier(0.2, 0.9, 0.3, 1); }
+  1.11% { transform: scale(calc(1 + var(--bounce))); animation-timing-function: ease-in-out; }
+  2.22% { transform: scale(calc(1 - var(--bounce) * 0.4)); animation-timing-function: ease-in-out; }
+  3.33% { transform: scale(calc(1 + var(--bounce) * 0.4)); animation-timing-function: ease-in-out; }
+  4.63%, 100% { transform: scale(1); }
+}
+
+/* Source card: border + glow ramp up (opacity of ::after), then fade while the packet travels */
+@keyframes cardGlow {
+  0%    { opacity: 0; animation-timing-function: ease-out; }
+  2.78% { opacity: var(--card-glow); animation-timing-function: ease-in-out; }
+  6.48% { opacity: calc(var(--card-glow) * 0.75); animation-timing-function: ease-in; }
+  13.43% { opacity: calc(var(--card-glow) * 0.3); animation-timing-function: ease-in; }
+  20.37%, 100% { opacity: 0; }
+}
+
+/* Icon box glows while its card fires */
+@keyframes iconGlow {
+  0%    { filter: drop-shadow(0 0 0 transparent); animation-timing-function: ease-out; }
+  2.78% { filter: drop-shadow(0 0 10px var(--c)); animation-timing-function: ease-in-out; }
+  9.26%, 100% { filter: drop-shadow(0 0 0 transparent); }
+}
+
+/* Card-side dot: small pulse + expanding ripple ring */
+@keyframes dotPulse {
+  0%    { transform: scale(1); animation-timing-function: cubic-bezier(0.2, 0.9, 0.3, 1); }
+  1.4%  { transform: scale(1.6); animation-timing-function: ease-in-out; }
+  4.6%, 100% { transform: scale(1); }
+}
+
+@keyframes dotRipple {
+  0%    { transform: scale(1); opacity: 0.85; animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
+  5.2%, 100% { transform: scale(3.4); opacity: 0; }
+}
+
+/* Packet: pathLength is 1 and the path runs hub -> card, so the dash offset
+   goes from -0.995 (card end) to 0 (hub end) = card -> hub. */
+@keyframes packetTravel {
+  0%, 3.24% { stroke-dashoffset: -0.995; animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
+  13.43%, 100% { stroke-dashoffset: 0; }
+}
+
+@keyframes packetFade {
+  0%, 3.24% { opacity: 0; }
+  3.9%, 12.9% { opacity: var(--peak); }
+  14.6%, 100% { opacity: 0; }
+}
+
+/* Trail: same travel as the head, and it shrinks into the head at the end */
+@keyframes trailDash {
+  0%, 3.24% {
+    stroke-dashoffset: -0.995;
+    stroke-dasharray: 0.16 2;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  11% { stroke-dasharray: 0.16 2; animation-timing-function: ease-in; }
+  13.43%, 100% { stroke-dashoffset: 0; stroke-dasharray: 0.001 2; }
+}
+
+@keyframes trailFade {
+  0%, 3.24% { opacity: 0; }
+  4.6%, 12.5% { opacity: var(--peak); }
+  13.6%, 100% { opacity: 0; }
+}
+
+/* Whole pipe brightens while the packet is on it */
+@keyframes pipeLit {
+  0%, 3.24% { opacity: 0; }
+  5.5%, 12.5% { opacity: 0.55; }
+  20.37%, 100% { opacity: 0; }
+}
+
+/* Hub plug: bright flash on arrival */
+@keyframes plugFlash {
+  0%, 13.43% { opacity: 0; animation-timing-function: ease-out; }
+  14.8% { opacity: 0.65; animation-timing-function: ease-in-out; }
+  18.5% { opacity: 0.3; animation-timing-function: ease-in; }
+  20.37%, 100% { opacity: 0; }
+}
+
+/* Hub port: ripple on arrival */
+
+@keyframes portPulse {
+  0%, 13.4% { transform: scale(0.5); opacity: 0; }
+  13.5% { transform: scale(0.5); opacity: 0.9; animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
+  19.5%, 100% { transform: scale(3); opacity: 0; }
+}
+
+/* Hub: soft glow in the arriving packet's colour (one layer per colour) */
+@keyframes hubGlow {
+  0%, 13.43% { opacity: 0; animation-timing-function: ease-out; }
+  15.5% { opacity: var(--hub-glow); animation-timing-function: ease-in-out; }
+  17.6% { opacity: calc(var(--hub-glow) * 0.8); animation-timing-function: ease-in; }
+  20.37%, 100% { opacity: 0; }
+}
+
+/* Hub: subtle 1 -> 1.015 pulse at each of the 4 arrivals (13.43, 35.65, 57.87, 80.09 %).
+   A single animation holds all 4 pulses, so they can never override each other. */
+@keyframes hubPulse {
+  0%, 13.43%, 18.53%, 35.65%, 40.75%, 57.87%, 62.97%, 80.09%, 85.19%, 100% { transform: scale(1); }
+  15.23%, 37.45%, 59.67%, 81.89% { transform: scale(1.015); }
+}
+
+/* "85%": one soft glow after the 4th arrival (filter only, no layout shift) */
+@keyframes scoreGlow {
+  0%, 82.5% {
+    filter: drop-shadow(0 0 0 color-mix(in srgb, var(--score) 0%, transparent));
+    animation-timing-function: ease-out;
+  }
+  89% {
+    filter: drop-shadow(0 0 14px color-mix(in srgb, var(--score) 80%, transparent));
+    animation-timing-function: ease-in;
+  }
+  96%, 100% { filter: drop-shadow(0 0 0 color-mix(in srgb, var(--score) 0%, transparent)); }
+}
+
+/* Score count-up: 0 -> --n1 -> --n2 -> --n3 -> --n4 (running totals set by the JSX from SCORE_STEPS)
+   at each of the 4 arrivals
+   (13.43, 35.65, 57.87, 80.09 %), each step counts for ~0.65s with ease-out.
+   Holds at the final value, then rolls back to 0 just before the next loop. */
+@keyframes scoreCount {
+  0%, 13.43%    { --ats-n: 0; animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  19.63%, 35.65% { --ats-n: var(--n1); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  41.85%, 57.87% { --ats-n: var(--n2); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  64.07%, 80.09% { --ats-n: var(--n3); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  86.29%, 96%   { --ats-n: var(--n4); animation-timing-function: ease-in-out; }
+  99.5%, 100%   { --ats-n: 0; }
+}
+
+/* ============================================================
+   REDUCED MOTION: no travel, bounce or spin. Static glowing idle state.
+   Keep this block LAST so it wins.
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  .bar i {
-    animation: none;
+  .section *,
+  .section *::before,
+  .section *::after {
+    animation: none !important;
+  }
+
+  .card::after {
+    opacity: 0.3;
+  }
+
+  /* no count-up: just show the final score */
+  .score {
+    --ats-n: var(--score-final);
   }
 }

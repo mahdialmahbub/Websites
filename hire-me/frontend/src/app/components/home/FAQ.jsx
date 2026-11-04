@@ -1,5 +1,6 @@
-import React from 'react'
-import FAQCard from '../FAQCard';
+import React from "react";
+import FAQCard from "../FAQCard";
+import LazyVideo from "../builder/LazyVideo";
 
 export const FAQContent = [
   {
@@ -41,20 +42,27 @@ export const FAQContent = [
 
 const FAQ = () => {
   return (
-    <section className='flex max-md:flex-col items-center gap-[clamp(1.5rem,calc(1.690vw+1.104rem),2.625rem)] px-[clamp(1rem,calc(5.258vw+0.268rem),5rem)] py-[clamp(2rem,calc(6.009vw+0.592rem),6rem)] min-w-[320px] max-w-300'>
-        {/* FAQ */}
-        <div className='space-y-[clamp(1.25rem,calc(1.455vw+0.909rem),2rem)] flex-[60%] max-md:flex-1'>
-            {FAQContent.map((item, i) => (
-                <FAQCard key={i} answer={item.answer} question={item.question} />
-            ))}
-        </div>
+    <section className="flex max-md:flex-col items-center gap-[clamp(1.5rem,calc(1.690vw+1.104rem),2.625rem)] px-[clamp(1rem,calc(5.258vw+0.268rem),5rem)] py-[clamp(3rem,calc(7.273vw+0.545rem),6rem)] min-w-[320px] max-w-300">
+      {/* FAQ */}
+      <div className="space-y-[clamp(1.25rem,calc(1.455vw+0.909rem),2rem)] flex-[60%] max-md:flex-1">
+        {FAQContent.map((item, i) => (
+          <FAQCard key={i} answer={item.answer} question={item.question} />
+        ))}
+      </div>
 
-        {/* Brand Video */}
-        <div className='flex-[40%] rounded-[24px] max-md:order-1 max-md:flex-1'>
-
-        </div>
+      {/* Brand Video */}
+      <div className="flex-[20%] rounded-[24px] max-md:order-1 max-md:flex-1 overflow-hidden sticky top-[clamp(3rem,calc(7.273vw+0.545rem),6rem)] max-md:top-0 max-md:max-h-50">
+        <LazyVideo
+          mp4="/HireMe.mp4"
+          poster="/HireMe-poster.webp"
+          label="HireMe resume builder demo"
+          width={450}
+          height={800}
+          className=" max-md:order-1 max-md:flex-1"
+        />
+      </div>
     </section>
-  )
-}
+  );
+};
 
-export default FAQ
+export default FAQ;

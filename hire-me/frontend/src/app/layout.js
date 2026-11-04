@@ -5,75 +5,133 @@ import Footer from "./components/footer/Footer";
 import StoreProvider from "@/store/StoreProvider";
 import BuilderSync from "@/store/builder/BuilderSync";
 import PostGenerateFlow from "./components/flow/PostGenerateFlow";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { SITE_NAME, SITE_URL, SITE_DESCRIPTION } from "@/lib/site";
+import { siteSchema } from "@/lib/seo/schema";
 import { ConfirmProvider } from "./components/ConfirmProvider";
 import { Toaster } from "@/lib/toast";
 import SiteChrome from "./components/SiteChome";
+import JsonLd from "./components/JsonLd";
+import NoScriptNotice from "./components/NoScriptNotice";
 
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
 });
 
 const roboto = Roboto({
   variable: "--font-roboto",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
 });
 
-// metadataBase makes every relative canonical / Open Graph URL absolute. Pages set their own title;
-// the template adds the site name after it.
+const TITLE = `${SITE_NAME} - Free ATS-Friendly Resume Builder`;
+
+// Optional: .env e NEXT_PUBLIC_TWITTER_HANDLE=@hireme dile twitter card e site/creator jabe
+const TWITTER_HANDLE = process.env.NEXT_PUBLIC_TWITTER_HANDLE;
+
 export const metadata = {
+  // Shob relative URL (OG image, canonical) ei base diye absolute hoy
   metadataBase: new URL(SITE_URL),
+
+  // Child page e shudhu title dile "%s | HireMe" hoye jabe
   title: {
-    default: `${SITE_NAME} - Free ATS-Friendly Resume Builder`,
+    default: TITLE,
     template: `%s | ${SITE_NAME}`,
   },
-  description:
-    "Build a professional, ATS-friendly resume with smart templates and AI-powered guidance. Free to start.",
-  openGraph: { type: "website", siteName: SITE_NAME, locale: "en_US" },
-  twitter: { card: "summary_large_image" },
+  description: SITE_DESCRIPTION,
+
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  generator: "Next.js",
+  referrer: "origin-when-cross-origin",
+
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    locale: "en_US",
+    title: TITLE,
+    description: SITE_DESCRIPTION,
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: SITE_DESCRIPTION,
+    ...(TWITTER_HANDLE && { site: TWITTER_HANDLE, creator: TWITTER_HANDLE }),
+  },
+
+  icons: {
+    icon: [
+      { url: "/logo.png", type: "image/svg+xml" },
+      { url: "/favicon-32.png", sizes: "32x32" },
+    ],
+    apple: "/apple-icon.png",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large", // boro thumbnail er onumoti
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+
+  // Phone/address/email auto-link bondho (resume preview e text bhenge na jay)
+  formatDetection: { telephone: false, address: false, email: false },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#6D65E9",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${roboto.variable} h-full antialiased`}
+      className={`${poppins.variable} ${roboto.variable} h-full antialiased scroll-smooth selection:bg-violet-500/20 selection:text-violet-700`}
     >
       <head>
         <link
           rel="stylesheet"
           href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
-        ></link>
+        />
         <link
           rel="stylesheet"
           href="https://cdn-uicons.flaticon.com/4.0.0/uicons-brands/css/uicons-brands.css"
-        ></link>
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
-        ></link>
+        />
         <link
           rel="stylesheet"
           href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-chubby/css/uicons-solid-chubby.css"
-        ></link>
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-brands/css/uicons-brands.css"
-        ></link>
+        />
         <link
           rel="stylesheet"
           href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css"
-        ></link>
+        />
         <link
           rel="stylesheet"
           href="https://cdn-uicons.flaticon.com/4.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css"
-        ></link>
+        />
       </head>
 
       <body className="min-h-full flex flex-col">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-4 focus:z-900 focus:rounded focus:bg-black focus:px-4 focus:py-2 focus:text-white"
+        >
+          Skip to main content
+        </a>
+        <NoScriptNotice />
+        {/* Organization + WebSite structured data */}
+        <JsonLd data={siteSchema()} />
         <Toaster />
         <StoreProvider>
           {/* Renders nothing: keeps the resume draft in the browser, auto-saves it, claims guest data after login */}
@@ -81,7 +139,15 @@ export default function RootLayout({ children }) {
           {/* Renders only dialogs: benefits of logging in (guests) -> review -> /my-resume or /create-resume */}
           <PostGenerateFlow />
           <SiteChrome navbar={<Navbar />} footer={<Footer />}>
-            <ConfirmProvider>{children}</ConfirmProvider>
+            <ConfirmProvider>
+              <main
+                id="main-content"
+                tabIndex={-1}
+                className="flex-1 outline-none"
+              >
+                {children}
+              </main>
+            </ConfirmProvider>
           </SiteChrome>
         </StoreProvider>
       </body>

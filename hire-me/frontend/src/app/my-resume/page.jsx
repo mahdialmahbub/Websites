@@ -297,12 +297,12 @@ function MyResumes() {
   const canGoRight = !edge.end || page < totalPages;
 
   return (
-    <section className="px-[clamp(1.5rem,calc(2.254vw+0.972rem),3rem)] py-[clamp(1.5rem,calc(0.751vw+1.324rem),2rem)] gap-space-10 w-screen *:w-full">
+    <main className="space-y-[clamp(1.5rem,calc(1.690vw+1.104rem),2.625rem)] py-[clamp(1.5rem,calc(0.751vw+1.324rem),2rem)]">
       {/* resume */}
-      <div className="mb-space-10 mx-auto min-w-[320px] max-w-300">
-        <div className="flex items-center max-sm:flex-col gap-space-7 max-sm:items-start mb-space-7">
+      <div className="mb-space-10 mx-auto min-w-[320px] max-w-300 px-[clamp(1rem,calc(6.01vw-0.41rem),5rem)]">
+        <div className="flex items-center max-sm:flex-col gap-space-7 max-sm:items-start mb-space-7 ">
           <div className="w-full">
-            <h1 className="text-[clamp(1.625rem,calc(0.939vw+1.405rem),2.25rem)] mb-space-3 font-semibold font-primary">
+            <h1 className="text-[clamp(1.625rem,calc(0.939vw+1.405rem),2.25rem)] mb-2 font-semibold font-primary">
               Your Resume
             </h1>
             <p className="leading-[24px] text-neutral-500">
@@ -442,14 +442,16 @@ function MyResumes() {
       </div>
 
       {/* Explore Templates */}
-      <ExploreTemplates />
+      <div className=" *:w-full *:overflow-hidden">
+        <ExploreTemplates />
+      </div>
 
       <ResumePreviewModal
         id={previewing?.id ?? null}
         title={previewing?.title}
         onClose={() => setPreviewing(null)}
       />
-    </section>
+    </main>
   );
 }
 

@@ -235,7 +235,7 @@ function BuilderScreen() {
   return (
     <main className="px-[clamp(1rem,calc(6.009vw-0.409rem),5rem)] gap-[clamp(0.5rem,calc(1.221vw+0.526rem),1rem)] py-[clamp(1rem,calc(3.380vw+1.208rem),0.5rem)] flex flex-col max-w-300 min-w-[320px] mx-auto w-full relative">
       {/* Header */}
-      <div className="flex items-center justify-between md:sticky top-0 z-10 md:bg-white md:px-3 md:py-3 rounded-[clamp(0.5rem,calc(0.939vw+0.28rem),1.125rem)] md:shadow-sm">
+      <div className="flex items-center justify-between md:sticky top-0 z-50 md:bg-white md:px-3 md:py-3 rounded-[clamp(0.5rem,calc(0.939vw+0.28rem),1.125rem)] md:shadow-sm">
         <Link
           href="/"
           className="h-11 flex items-center gap-[clamp(0.375rem,calc(0.188vw+0.331rem),0.5rem)] text-[clamp(0.8125rem,calc(0.282vw+0.746rem),1rem)] font-primary font-medium text-neutral-500"
@@ -370,16 +370,25 @@ function BuilderScreen() {
                 <Button
                   variant="secondary"
                   iconPosition="right"
-                  icon={icons.right}
+                  icon={FINAL_ACTION_LABEL ? icons.resume : icons.right}
                   onClick={handleNext}
                   loading={isGenerating}
                   disabled={isGenerating}
+                  aria-label={
+                    nextStep
+                      ? nextStep.title
+                      : isGenerating
+                        ? "Generating…"
+                        : FINAL_ACTION_LABEL
+                  }
                 >
-                  {nextStep
-                    ? nextStep.title
-                    : isGenerating
-                      ? "Generating…"
-                      : FINAL_ACTION_LABEL}
+                  <span className="hidden sm:inline">
+                    {nextStep
+                      ? nextStep.title
+                      : isGenerating
+                        ? "Generating…"
+                        : FINAL_ACTION_LABEL}
+                  </span>
                 </Button>
               </div>
 
