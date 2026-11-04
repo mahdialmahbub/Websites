@@ -406,7 +406,7 @@ export default function ATSScore({
               <span className="sr-only">{score}%</span>
               <span className={styles.count} aria-hidden="true" />
             </div>
-            <div className={`${HUB_LABEL} text-[clamp(12px,8vw,16px)]`}>
+            <div className={`${HUB_LABEL} text-[clamp(8px,8vw,12px)] opacity-50`}>
               Overall Impact
             </div>
           </div>

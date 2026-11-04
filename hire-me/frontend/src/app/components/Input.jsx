@@ -72,7 +72,7 @@ const cn = (...parts) => parts.filter(Boolean).join(" ");
 // `min-h` shudu small screen e (44px touch target). Na hole `size` prop er
 // h-9 / h-10 kaj korto na, shob size e 44px hoye jeto.
 const INPUT_BASE = [
-  "block w-full max-sm:min-h-[44px] outline-none",
+  "block w-full max-sm:min-h-[44px] outline-none truncate",
   "transition-[border-color,box-shadow] duration-150 motion-reduce:transition-none",
   "placeholder:text-neutral-400 focus:ring-[3px]",
   "disabled:cursor-not-allowed disabled:border-transparent disabled:bg-slate-100",

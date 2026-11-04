@@ -370,7 +370,7 @@ function BuilderScreen() {
                 <Button
                   variant="secondary"
                   iconPosition="right"
-                  icon={FINAL_ACTION_LABEL ? icons.resume : icons.right}
+                  icon={!nextStep ? icons.resume : icons.right}
                   onClick={handleNext}
                   loading={isGenerating}
                   disabled={isGenerating}

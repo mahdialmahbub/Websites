@@ -428,7 +428,7 @@ const ProfileView = ({ user, profile }) => {
             <h1 className="font-primary text-[22px] leading-tight font-semibold wrap-break-word sm:text-[28px]">
               {name}
             </h1>
-            <p className="text-body text-neutral-500">
+            <p className="text-body text-neutral-500 line-clamp-1">
               {info.professionalTitle || "Add your professional title"}
             </p>
           </div>

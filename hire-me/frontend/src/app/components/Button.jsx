@@ -87,7 +87,7 @@ const VARIANT = {
     "disabled:border-transparent disabled:bg-neutral-50 disabled:text-neutral-300",
   ].join(" "),
   text: [
-    "bg-transparent text-neutral-900 hover:text-indigo-900 active:after:opacity-5",
+    "bg-transparent text-neutral-900 hover:text-indigo-600 active:after:opacity-5",
     "disabled:bg-transparent disabled:text-neutral-500 px-0",
   ].join(" "),
 };

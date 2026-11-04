@@ -22,14 +22,6 @@ export default function TemplatesView({ categories, data, page }) {
       : "Choose a clean, recruiter-approved template, fill in your details and download a polished resume in minutes. You can change the template any time.");
   const pagePath = listingPath({ category: category?.slug, page });
 
-  const crumbs = [
-    { name: "Home", url: absoluteUrl("/") },
-    { name: "Templates", url: absoluteUrl("/templates") },
-    ...(category
-      ? [{ name: category.name, url: absoluteUrl(categoryPath(category.slug)) }]
-      : []),
-  ];
-
   return (
     <main className="mx-auto flex min-h-screen w-full min-w-[320px] max-w-300 flex-col items-center gap-[clamp(1.5rem,calc(1.690vw+1.104rem),2.625rem)] px-[clamp(1rem,calc(5.258vw+0.268rem),5rem)] py-[clamp(2rem,calc(6.009vw+0.592rem),4rem)]">
       <JsonLd
@@ -47,15 +39,6 @@ export default function TemplatesView({ categories, data, page }) {
                 name: "HireMe",
                 url: absoluteUrl("/"),
               },
-            },
-            {
-              "@type": "BreadcrumbList",
-              itemListElement: crumbs.map((crumb, index) => ({
-                "@type": "ListItem",
-                position: index + 1,
-                name: crumb.name,
-                item: crumb.url,
-              })),
             },
             {
               "@type": "ItemList",

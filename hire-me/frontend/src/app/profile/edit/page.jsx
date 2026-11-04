@@ -345,7 +345,7 @@ function ProfileEditor() {
     <FormTarget.Provider value="profile">
       <main
         ref={formRef}
-        className="mx-auto w-full max-w-200 min-w-0 space-y-[clamp(1.5rem,calc(0.751vw+1.324rem),2rem)] p-[clamp(1.5rem,calc(0.751vw+1.324rem),2rem)] md:my-8 md:rounded-xl md:border md:border-neutral-500/20"
+        className="mx-auto w-full max-w-200 min-w-0 space-y-[clamp(1.5rem,calc(0.751vw+1.324rem),2rem)] p-[clamp(1.5rem,calc(0.751vw+1.324rem),2rem)] md:my-8"
       >
         <p className="rounded-lg bg-blue-500/5 p-3 text-small text-blue-500">
           This is the information your next resumes start with. Saving it never
@@ -357,6 +357,7 @@ function ProfileEditor() {
 
         {/* Navigation */}
         <div className="flex gap-[clamp(1rem,calc(1.502vw+0.648rem),2rem)] overflow-hidden">
+          {/* Navigation */}
           <ProfileNavbar
             items={TABS}
             activeKey={active}

@@ -5,7 +5,12 @@ import Footer from "./components/footer/Footer";
 import StoreProvider from "@/store/StoreProvider";
 import BuilderSync from "@/store/builder/BuilderSync";
 import PostGenerateFlow from "./components/flow/PostGenerateFlow";
-import { SITE_NAME, SITE_URL, SITE_DESCRIPTION } from "@/lib/site";
+import {
+  SITE_NAME,
+  SITE_URL,
+  SITE_DESCRIPTION,
+  DEFAULT_KEYWORDS,
+} from "@/lib/site";
 import { siteSchema } from "@/lib/seo/schema";
 import { ConfirmProvider } from "./components/ConfirmProvider";
 import { Toaster } from "@/lib/toast";
@@ -43,8 +48,10 @@ export const metadata = {
   },
   description: SITE_DESCRIPTION,
 
+  keywords: DEFAULT_KEYWORDS,
+
   applicationName: SITE_NAME,
-  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  authors: [{ name: "Mahdi Al Mahbub", url: "https://mahdi-verse.vercel.app" }],
   generator: "Next.js",
   referrer: "origin-when-cross-origin",
 
@@ -54,6 +61,14 @@ export const metadata = {
     locale: "en_US",
     title: TITLE,
     description: SITE_DESCRIPTION,
+    images: [
+      {
+        url: "/og/default.jpg",
+        width: 1200,
+        height: 630,
+        alt: `${SITE_NAME} - Free ATS-friendly Resume Builder`,
+      },
+    ],
   },
 
   twitter: {
@@ -65,8 +80,8 @@ export const metadata = {
 
   icons: {
     icon: [
-      { url: "/logo.png", type: "image/svg+xml" },
-      { url: "/favicon-32.png", sizes: "32x32" },
+      { url: "/logo.png", type: "image/png" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
     ],
     apple: "/apple-icon.png",
   },
@@ -100,6 +115,11 @@ export default function RootLayout({ children }) {
       className={`${poppins.variable} ${roboto.variable} h-full antialiased scroll-smooth selection:bg-violet-500/20 selection:text-violet-700`}
     >
       <head>
+        <link
+          rel="preconnect"
+          href="https://cdn-uicons.flaticon.com"
+          crossOrigin=""
+        />
         <link
           rel="stylesheet"
           href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"

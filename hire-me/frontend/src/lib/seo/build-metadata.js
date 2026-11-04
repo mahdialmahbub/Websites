@@ -1,4 +1,4 @@
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { DEFAULT_KEYWORDS, SITE_NAME, SITE_URL } from "@/lib/site";
 import { canonical } from "@/lib/seo/canonical";
 
 const DEFAULT_OG_IMAGE = "/opengraph-image"; // app/opengraph-image.jsx er route
@@ -9,6 +9,23 @@ const truncate = (text = "", max) => {
   const clean = String(text).replace(/\s+/g, " ").trim();
   if (clean.length <= max) return clean;
   return `${clean.slice(0, max - 1).replace(/\s+\S*$/, "")}…`;
+};
+
+const mergeKeywords = (...lists) => {
+  const seen = new Set();
+  const result = [];
+  for (const list of lists) {
+    for (const item of list ?? []) {
+      const word = String(item ?? "")
+        .replace(/\s+/g, " ")
+        .trim();
+      const key = word.toLowerCase();
+      if (!word || seen.has(key)) continue;
+      seen.add(key);
+      result.push(word);
+    }
+  }
+  return result.slice(0, 15);
 };
 
 // Invalid date hole undefined dey, jate toISOString() crash na kore
@@ -31,6 +48,8 @@ export function buildMetadata({
   description,
   path,
   image,
+  keywords = [],
+  useDefaultKeywords = true,
   type = "website",
   noindex = false,
   publishedTime,
@@ -61,6 +80,10 @@ export function buildMetadata({
   return {
     title: cleanTitle,
     description: cleanDescription,
+    keywords: mergeKeywords(
+      useDefaultKeywords ? DEFAULT_KEYWORDS : [],
+      keywords,
+    ),
     alternates: { canonical: url },
 
     // Indexable page e robots set kori na, jate layout er googleBot setting (max-image-preview) hariye na jay

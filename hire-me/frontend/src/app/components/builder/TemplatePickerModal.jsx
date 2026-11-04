@@ -43,7 +43,7 @@ export default function TemplatePickerModal({ open, onClose }) {
   );
 
   return (
-    <Modal open={open} onClose={onClose} title="Choose a template">
+    <Modal open={open} onClose={onClose} title="Choose a template" className="max-md:max-w-full">
       {isLoading && (
         <p className="py-8 text-center text-neutral-500/70">
           Loading templates…
@@ -63,7 +63,7 @@ export default function TemplatePickerModal({ open, onClose }) {
         </div>
       )}
       {!isLoading && (
-        <div className="max-w-full overflow-hidden">
+        <div className="flex justify-center overflow-hidden">
           <ExploreTemplates
             templates={templates}
             limit={Infinity}

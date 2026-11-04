@@ -10,7 +10,7 @@ const PANEL_PADDING = "p-[clamp(0.75rem,calc(0.485vw+0.636rem),1rem)]";
 const TITLE_SIZE = "text-[clamp(1rem,calc(0.242vw+0.943rem),1.125rem)]";
 const BADGE_SPACING = "mb-[clamp(0.75rem,calc(0.485vw+0.636rem),1rem)]";
 const ACTIONS_GAP = "gap-[clamp(0.375rem,calc(0.485vw+0.261rem),0.625rem)]";
-const OVERLAY_LABEL_OFFSET = "mt-[clamp(3rem,calc(0.97vw+2.773rem),3.5rem)]";
+const OVERLAY_LABEL_OFFSET = "mt-[clamp(3rem,calc(0.97vw+2.773rem),3.5rem)] ";
 
 const ICON_BUTTON = "flex-1 min-w-0";
 
@@ -50,7 +50,13 @@ const RecentResumeCard = ({
     >
       {/* Thumbnail */}
       {thumbnail ?? (
-        <Image className="h-auto w-full object-cover" src="/preview.jpg" alt={`${title} resume preview`} width={310} height={440} />
+        <Image
+          className="h-auto w-full object-cover"
+          src="/preview.jpg"
+          alt={`${title} resume preview`}
+          width={310}
+          height={440}
+        />
       )}
 
       {/* Hover overlay: the preview */}
@@ -58,24 +64,38 @@ const RecentResumeCard = ({
         type="button"
         onClick={onPreview}
         aria-label={`View a larger preview of ${title}`}
-        className="absolute inset-x-0 top-0 hidden aspect-210/297 cursor-pointer bg-black/40 group-hover:flex group-focus-within:flex"
+        className="absolute inset-x-0 top-0 flex aspect-210/297 cursor-pointer bg-black/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100 focus-visible:opacity-100"
       >
-        <span className={`mx-auto text-center font-bold tracking-wide text-neutral-50 ${OVERLAY_LABEL_OFFSET}`}>
-          <i className={`${icons.preview} text-2xl mb-1.5`} aria-hidden="true" />
+        <span
+          className={`mx-auto text-center font-bold tracking-wide text-neutral-50 translate-y-2 transition-transform duration-200 group-hover:translate-y-0 group-focus-within:translate-y-0 ${OVERLAY_LABEL_OFFSET}`}
+        >
+          <i
+            className={`${icons.preview} text-2xl mb-1.5`}
+            aria-hidden="true"
+          />
           View Preview
         </span>
       </button>
 
       {/* Info panel */}
-      <div className={`absolute bottom-0 z-10 w-full rounded-md bg-white ${PANEL_PADDING} ${CARD_SHADOW}`}>
-        <h4 className={`mb-1.5 truncate font-primary font-semibold ${TITLE_SIZE}`} title={title}>
+      <div
+        className={`absolute bottom-0 z-10 w-full rounded-md bg-white ${PANEL_PADDING} ${CARD_SHADOW}`}
+      >
+        <h4
+          className={`mb-1.5 truncate font-primary font-semibold ${TITLE_SIZE}`}
+          title={title}
+        >
           {title}
         </h4>
 
-        <p className="mb-2.5 line-clamp-2 text-caption sm:text-small">{subtitle}</p>
+        <p className="mb-2.5 line-clamp-2 text-caption sm:text-small">
+          {subtitle}
+        </p>
 
         {/* Badges: ATS score, state, shared */}
-        <div className={`flex flex-wrap items-center gap-space-1 ${BADGE_SPACING}`}>
+        <div
+          className={`flex flex-wrap items-center gap-space-1 ${BADGE_SPACING}`}
+        >
           {atsScore !== null && (
             <span className="flex items-center gap-space-1 rounded-full bg-violet-500/5 px-space-3 py-1.5 text-nowrap font-primary text-[10px] font-medium text-violet-500/80">
               <i className={icons.resume} aria-hidden="true" />
@@ -83,21 +103,59 @@ const RecentResumeCard = ({
             </span>
           )}
           {statusLabel && (
-            <span className="rounded-full bg-neutral-500/5 px-space-3 py-1.5 text-nowrap font-primary text-[10px] font-medium text-neutral-500">{statusLabel}</span>
+            <span className="rounded-full bg-neutral-500/5 px-space-3 py-1.5 text-nowrap font-primary text-[10px] font-medium text-neutral-500">
+              {statusLabel}
+            </span>
           )}
           {shared && (
-            <span className="rounded-full bg-green-500/5 px-space-3 py-1.5 text-nowrap font-primary text-[10px] font-medium text-green-500">Shared</span>
+            <span className="rounded-full bg-green-500/5 px-space-3 py-1.5 text-nowrap font-primary text-[10px] font-medium text-green-500">
+              Shared
+            </span>
           )}
         </div>
 
         {/* Actions */}
         <div className={`mb-1.5 flex items-center ${ACTIONS_GAP}`}>
-          <Button variant="secondary" icon={icons.delete} aria-label={`Delete ${title}`} disabled={busy} onClick={onDelete} className={`${ICON_BUTTON} bg-red-500/5 text-red-500 hover:bg-red-500/10`} />
-          <Button variant="secondary" icon={icons.fileDownload} aria-label={`Download ${title}`} disabled={busy} onClick={onDownload} className={`${ICON_BUTTON} bg-green-500/5 text-green-500 hover:bg-green-500/10`} />
-          <Button variant="secondary" icon="fi fi-rr-copy-alt" aria-label={`Duplicate ${title}`} disabled={busy} onClick={onDuplicate} className={`${ICON_BUTTON} bg-violet-500/5 text-violet-500 hover:bg-violet-500/10`} />
-          <Button variant="secondary" icon={icons.link} aria-label={`Copy share link of ${title}`} disabled={busy} onClick={onCopyLink} className={`${ICON_BUTTON} bg-blue-500/5 text-blue-500 hover:bg-blue-500/10`} />
+          <Button
+            variant="secondary"
+            icon={icons.delete}
+            aria-label={`Delete ${title}`}
+            disabled={busy}
+            onClick={onDelete}
+            className={`${ICON_BUTTON} bg-red-500/5 text-red-500 hover:bg-red-500/10`}
+          />
+          <Button
+            variant="secondary"
+            icon={icons.fileDownload}
+            aria-label={`Download ${title}`}
+            disabled={busy}
+            onClick={onDownload}
+            className={`${ICON_BUTTON} bg-green-500/5 text-green-500 hover:bg-green-500/10`}
+          />
+          <Button
+            variant="secondary"
+            icon="fi fi-rr-copy-alt"
+            aria-label={`Duplicate ${title}`}
+            disabled={busy}
+            onClick={onDuplicate}
+            className={`${ICON_BUTTON} bg-violet-500/5 text-violet-500 hover:bg-violet-500/10`}
+          />
+          <Button
+            variant="secondary"
+            icon={icons.link}
+            aria-label={`Copy share link of ${title}`}
+            disabled={busy}
+            onClick={onCopyLink}
+            className={`${ICON_BUTTON} bg-blue-500/5 text-blue-500 hover:bg-blue-500/10`}
+          />
         </div>
-        <Button variant="secondary" disabled={busy} onClick={onEdit} aria-label={`Edit ${title}`} className="w-full bg-primary-200/5 text-primary-200 hover:bg-primary-200/10">
+        <Button
+          variant="secondary"
+          disabled={busy}
+          onClick={onEdit}
+          aria-label={`Edit ${title}`}
+          className="w-full bg-primary-200/5 text-primary-200 hover:bg-primary-200/10"
+        >
           Edit
         </Button>
       </div>

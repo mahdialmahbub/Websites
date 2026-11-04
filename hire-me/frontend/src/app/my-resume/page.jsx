@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useDispatch, useStore } from "react-redux";
 import ResumeBTN from "../components/ResumeBTN";
 import { Button } from "../components/Button";
@@ -22,21 +22,17 @@ import {
 } from "@/store/api/resumeApi";
 import { resetBuilder } from "@/store/builder/builderSlice";
 import ExploreTemplates from "../components/ExploreTemplates";
+import HorizontalScroller from "../components/home/HorizontalScroller";
 
 const MY_RESUME_PATH = "/my-resume";
 const PAGE_SIZE = 12;
 // How long the "Undo" toast stays. The real delete request is sent after this.
 const UNDO_DELAY = 5000;
-// One arrow click scrolls this share of the visible width.
-const SCROLL_STEP = 0.8;
 
 // Card width: 13rem on a 320px screen, growing evenly to 17rem at 1440px, fixed after that.
 // The real cards and the loading skeleton share it, so they always match.
 const CARD_WIDTH = "w-[clamp(13rem,calc(5.714vw+11.857rem),17rem)]";
 const CARD_GAP = "gap-[clamp(1.25rem,calc(1.127vw+0.986rem),2rem)]";
-// Side padding of the list = width of the arrows, so the arrows never cover a card at rest.
-const TRACK_PADDING = "px-2 sm:px-2 scroll-px-2 sm:scroll-px-2";
-
 const parsePage = (value) => {
   const page = Number.parseInt(value ?? "", 10);
   return Number.isFinite(page) && page >= 1 ? Math.min(page, 1000) : 1;
@@ -50,27 +46,6 @@ const CardSkeleton = () => (
   <div
     className={`aspect-210/340 shrink-0 animate-pulse rounded-md bg-neutral-200/70 ${CARD_WIDTH}`}
   />
-);
-
-// Gradient arrow on one side of the carousel
-const EdgeArrow = ({ side, label, onClick }) => (
-  <button
-    type="button"
-    aria-label={label}
-    onClick={onClick}
-    className={`group absolute top-0 z-20 flex h-full w-8 items-center justify-center outline-none sm:w-11 ${
-      side === "left"
-        ? "left-0 bg-linear-to-r from-background to-transparent"
-        : "right-0 bg-linear-to-l from-background to-transparent"
-    }`}
-  >
-    <span className="rounded-full p-1.5 group-hover:bg-primary-300/10 group-focus-visible:ring-[3px] group-focus-visible:ring-indigo-300 sm:p-2">
-      <i
-        aria-hidden="true"
-        className={`fi ${side === "left" ? "fi-rr-angle-small-left" : "fi-rr-angle-small-right"} inline-block text-[20px] text-primary-200 group-hover:scale-110 group-hover:text-primary-300`}
-      ></i>
-    </span>
-  </button>
 );
 
 function MyResumes() {
@@ -101,11 +76,6 @@ function MyResumes() {
   const [hiddenIds, setHiddenIds] = useState(() => new Set());
   const [message, setMessage] = useState({ text: "", tone: "info" });
   const timer = useRef(null);
-
-  // Carousel: the scrolling list, whether it sits at its left / right end, and where to land after a page change.
-  const trackRef = useRef(null);
-  const landAtEnd = useRef(false);
-  const [edge, setEdge] = useState({ start: true, end: true });
 
   const isLoggedOut =
     meFailed &&
@@ -219,7 +189,7 @@ function MyResumes() {
       },
     });
 
-  // scroll: false keeps the window where it is; only the carousel changes.
+  // scroll: false keeps the window where it is.
   const goToPage = (next) =>
     router.push(
       next === 1 ? MY_RESUME_PATH : `${MY_RESUME_PATH}?page=${next}`,
@@ -236,70 +206,10 @@ function MyResumes() {
   const showEmpty =
     Boolean(user && data) && !isError && page === 1 && resumes.length === 0;
 
-  /* ---------- carousel ---------- */
-
-  const updateEdges = useCallback(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    const max = el.scrollWidth - el.clientWidth;
-    const next = { start: el.scrollLeft <= 2, end: el.scrollLeft >= max - 2 };
-    setEdge((prev) =>
-      prev.start === next.start && prev.end === next.end ? prev : next,
-    );
-  }, []);
-
-  // Keep the arrows right whenever the list or its cards change size: window resize, a sidebar
-  // opening, fonts loading, cards coming and going (delete / undo). A ResizeObserver sees all of
-  // these, a window "resize" listener only sees the first.
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    updateEdges();
-    const observer = new ResizeObserver(updateEdges);
-    observer.observe(el);
-    Array.from(el.children).forEach((child) => observer.observe(child));
-    return () => observer.disconnect();
-  }, [updateEdges, resumes.length]);
-
-  // A new page of resumes arrived: start at its first card, or at its last card when the user came back from the next page.
-  const shownPage = pagination?.page;
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    el.scrollTo({
-      left: landAtEnd.current ? el.scrollWidth : 0,
-      behavior: "instant",
-    });
-    landAtEnd.current = false;
-    updateEdges();
-  }, [shownPage, updateEdges]);
-
-  // Arrows scroll smoothly. At the end of the list they move on to the next / previous page of resumes.
-  const scrollLeft = () => {
-    const el = trackRef.current;
-    if (el && !edge.start) {
-      el.scrollBy({ left: -el.clientWidth * SCROLL_STEP, behavior: "smooth" });
-    } else if (page > 1) {
-      landAtEnd.current = true;
-      goToPage(page - 1);
-    }
-  };
-  const scrollRight = () => {
-    const el = trackRef.current;
-    if (el && !edge.end) {
-      el.scrollBy({ left: el.clientWidth * SCROLL_STEP, behavior: "smooth" });
-    } else if (page < totalPages) {
-      goToPage(page + 1);
-    }
-  };
-
-  const canGoLeft = !edge.start || page > 1;
-  const canGoRight = !edge.end || page < totalPages;
-
   return (
     <main className="space-y-[clamp(1.5rem,calc(1.690vw+1.104rem),2.625rem)] py-[clamp(1.5rem,calc(0.751vw+1.324rem),2rem)]">
       {/* resume */}
-      <div className="mb-space-10 mx-auto min-w-[320px] max-w-300 px-[clamp(1rem,calc(6.01vw-0.41rem),5rem)]">
+      <div className="mb-2 mx-auto min-w-[320px] max-w-300 px-[clamp(1rem,calc(6.01vw-0.41rem),5rem)]">
         <div className="flex items-center max-sm:flex-col gap-space-7 max-sm:items-start mb-space-7 ">
           <div className="w-full">
             <h1 className="text-[clamp(1.625rem,calc(0.939vw+1.405rem),2.25rem)] mb-2 font-semibold font-primary">
@@ -325,7 +235,7 @@ function MyResumes() {
           <div
             aria-label="Loading your resumes"
             role="status"
-            className={`flex overflow-hidden py-2 ${CARD_GAP} ${TRACK_PADDING}`}
+            className={`flex overflow-hidden py-2 ${CARD_GAP}`}
           >
             {[0, 1, 2].map((n) => (
               <CardSkeleton key={n} />
@@ -351,95 +261,78 @@ function MyResumes() {
             button above.
           </p>
         )}
-
-        {resumes.length > 0 && (
-          <div
-            role="region"
-            aria-roledescription="carousel"
-            aria-label="Your resumes"
-          >
-            {/* The arrows sit next to the list, not inside it, so they stay put while the cards scroll.
-                They come AFTER the list in the DOM and have a higher z-index: a card with its own
-                stacking context (hover transform, z-index) can no longer paint over them. */}
-            <div className="relative">
-              <ul
-                ref={trackRef}
-                onScroll={updateEdges}
-                aria-busy={isFetching}
-                className={`flex snap-x snap-proximity overflow-x-auto scroll-smooth py-2 scrollbar-none transition-opacity [&::-webkit-scrollbar]:hidden ${CARD_GAP} ${TRACK_PADDING} ${isFetching ? "opacity-60" : ""}`}
-              >
-                {resumes.map((item) => (
-                  // The <li> owns the width; the card fills it, so cards resize with the screen.
-                  <li
-                    key={item.id}
-                    className={`shrink-0 snap-start *:w-full ${CARD_WIDTH}`}
-                  >
-                    <RecentResumeCard
-                      thumbnail={
-                        <ResumeThumb id={item.id} title={item.title} />
-                      }
-                      title={item.title}
-                      subtitle={[
-                        item.templateName,
-                        updatedLabel(item.updatedAt),
-                      ]
-                        .filter(Boolean)
-                        .join(" · ")}
-                      atsScore={item.atsScore}
-                      statusLabel={
-                        item.status === "generated" ? "Generated" : "Draft"
-                      }
-                      shared={item.shared}
-                      busy={busyId === item.id}
-                      onPreview={() =>
-                        setPreviewing({ id: item.id, title: item.title })
-                      }
-                      onEdit={() => handleEdit(item)}
-                      onDelete={() => handleDelete(item)}
-                      onDownload={() => handleDownload(item)}
-                      onDuplicate={() => handleDuplicate(item)}
-                      onCopyLink={() => handleCopyLink(item)}
-                    />
-                  </li>
-                ))}
-              </ul>
-
-              {canGoLeft && (
-                <EdgeArrow
-                  side="left"
-                  label={
-                    edge.start
-                      ? "Previous page of resumes"
-                      : "Scroll resumes left"
-                  }
-                  onClick={scrollLeft}
-                />
-              )}
-
-              {canGoRight && (
-                <EdgeArrow
-                  side="right"
-                  label={
-                    edge.end ? "Next page of resumes" : "Scroll resumes right"
-                  }
-                  onClick={scrollRight}
-                />
-              )}
-            </div>
-
-            {/* pages: part of the carousel now, the arrows above move between them */}
-            {pagination && pagination.totalPages > 1 && (
-              <p
-                aria-live="polite"
-                className="mt-3 text-center text-small text-neutral-500"
-              >
-                Page {pagination.page}{" "}
-                <span className="text-caption">/ {pagination.totalPages}</span>
-              </p>
-            )}
-          </div>
-        )}
       </div>
+
+      {/* Resume cards: padded on the left only, so the row runs off the right edge and shows it scrolls. */}
+      {resumes.length > 0 && (
+        <div className="mx-auto min-w-[320px] max-w-300">
+          <div
+            aria-busy={isFetching}
+            className={`overflow-hidden pl-[clamp(1rem,calc(6.01vw-0.41rem),5rem)] transition-opacity ${isFetching ? "opacity-60" : ""}`}
+          >
+            <HorizontalScroller
+              label="Your resumes"
+              className={`py-2 ${CARD_GAP}`}
+            >
+              {resumes.map((item) => (
+                // This wrapper owns the width; the card fills it, so cards resize with the screen.
+                <div
+                  key={item.id}
+                  className={`shrink-0 *:w-full ${CARD_WIDTH}`}
+                >
+                  <RecentResumeCard
+                    thumbnail={<ResumeThumb id={item.id} title={item.title} />}
+                    title={item.title}
+                    subtitle={[item.templateName, updatedLabel(item.updatedAt)]
+                      .filter(Boolean)
+                      .join(" · ")}
+                    atsScore={item.atsScore}
+                    statusLabel={
+                      item.status === "generated" ? "Generated" : "Draft"
+                    }
+                    shared={item.shared}
+                    busy={busyId === item.id}
+                    onPreview={() =>
+                      setPreviewing({ id: item.id, title: item.title })
+                    }
+                    onEdit={() => handleEdit(item)}
+                    onDelete={() => handleDelete(item)}
+                    onDownload={() => handleDownload(item)}
+                    onDuplicate={() => handleDuplicate(item)}
+                    onCopyLink={() => handleCopyLink(item)}
+                  />
+                </div>
+              ))}
+            </HorizontalScroller>
+          </div>
+
+          {/* The scroller only moves within one page of resumes, so these move between pages. */}
+          {pagination && totalPages > 1 && (
+            <div className="mt-3 flex items-center justify-center gap-3 px-[clamp(1rem,calc(6.01vw-0.41rem),5rem)] text-small text-neutral-500">
+              <Button
+                type="button"
+                variant="secondary"
+                disabled={page <= 1 || isFetching}
+                onClick={() => goToPage(page - 1)}
+              >
+                Prev
+              </Button>
+              <p aria-live="polite">
+                Page {pagination.page}{" "}
+                <span className="text-caption">/ {totalPages}</span>
+              </p>
+              <Button
+                type="button"
+                variant="secondary"
+                disabled={page >= totalPages || isFetching}
+                onClick={() => goToPage(page + 1)}
+              >
+                Next
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Explore Templates */}
       <div className=" *:w-full *:overflow-hidden">

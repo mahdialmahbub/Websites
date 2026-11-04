@@ -1,131 +1,87 @@
 @import "tailwindcss";
 
 /* ==========================================================================
+   GLOBALS.CSS  —  Table of contents
+   ==========================================================================
+
+   01. THEME (design tokens → Tailwind utility generate kore)
+       1.1  Fonts ................. font-primary, font-secondary
+       1.2  Scrollbar variables ... scrollbar thumb / track color
+       1.3  Colors ................ background + color palette
+       1.4  Spacing ............... p-space-4, gap-space-6 ...
+       1.5  Border radius ......... rounded-xl, rounded-pill ...
+       1.6  Shadows ............... shadow-subtle, shadow-modal ...
+       1.7  Z-index tokens ........ (utility-gulo section 03-e)
+       1.8  Typography ............ text-h1, font-h1, leading-h1 ...
+
+   02. BASE (html, body, button, i, p-er default style)
+   03. CUSTOM UTILITIES (z-index class: z-header, z-modal ...)
+   04. COMPONENT STYLES
+       4.1  Modal / dialog animation
+       4.2  Mobile menu animation
+   05. SCROLLBAR (Chrome/Edge/Safari + Firefox)
+   06. KEYFRAMES (commented out, pore lagle use korbe)
+   07. OPTIONAL UTILITIES (commented out, pore lagle use korbe)
+
+   ========================================================================== */
+
+
+/* ==========================================================================
    01. THEME
+   --------------------------------------------------------------------------
+   Ekhane je variable-gulo define kora hoy, Tailwind seigulo theke
+   automatically utility class bananay.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   Fonts
-   `inline` লাগবে, কারণ --font-poppins / --font-roboto next/font থেকে আসে
-   (html/body element-এ set হয়), :root-এ না।
+   1.1  Fonts   +   1.2  Scrollbar variables
+   `inline` lagbe, karon --font-poppins / --font-roboto next/font theke ashe
+   (html/body element-e set hoy), :root-e na.
+
+   Usage:  className="font-primary"   → Poppins
+           className="font-secondary" → Roboto
    -------------------------------------------------------------------------- */
 @theme inline {
+  /* 1.1 Fonts */
   --font-primary: var(--font-poppins);
   --font-secondary: var(--font-roboto);
+
+  /* 1.2 Scrollbar colors (section 05-e use hoyeche) */
+  --scrollbar-thumb: rgba(147, 51, 234, 0.2);
+  --scrollbar-thumb-hover: rgba(147, 51, 234, 0.6);
+  --scrollbar-track-hover: rgba(147, 51, 234, 0.08);
 }
 
 @theme {
   /* ------------------------------------------------------------------------
-     COLORS
+     1.3  COLORS
+     Usage: bg-background, text-primary-300, border-neutral-200 ...
   ------------------------------------------------------------------------ */
+
+  /* Page background */
   --color-background: #fffdfc;
 
-  /* ------------------------------------------------------------------------
-     SPACING
-     Usage: p-space-4, gap-space-6, mt-space-10 ...
-  ------------------------------------------------------------------------ */
-  --spacing-space-0: 0px;
-  --spacing-space-1: 4px;
-  --spacing-space-2: 8px;
-  --spacing-space-3: 12px;
-  --spacing-space-4: 16px;
-  --spacing-space-5: 20px;
-  --spacing-space-6: 24px;
-  --spacing-space-7: 32px;
-  --spacing-space-8: 40px;
-  --spacing-space-9: 48px;
-  --spacing-space-10: 64px;
-  --spacing-space-11: 80px;
-  --spacing-space-12: 96px;
-  --spacing-space-13: 128px;
-  --spacing-space-14: 160px;
+  /* Primary (brand) */
+  --color-primary-50: #ededfc;
+  --color-primary-75: #b7b3f4;
+  --color-primary-100: #9994f0;
+  --color-primary-200: #6d65e9;
+  --color-primary-300: #4f46e5;
+  --color-primary-400: #3731a0;
+  --color-primary-500: #302b8c;
 
-  /* ------------------------------------------------------------------------
-     SHADOWS
-  ------------------------------------------------------------------------ */
-  --shadow-subtle: 0 1px 2px 0 rgb(16 24 40 / 0.05);
-  --shadow-sm-1: 0 1px 3px 0 rgb(16 24 40 / 0.1);
-  --shadow-sm-2: 0 1px 4px 0 rgb(16 24 40 / 0.06);
-  --shadow-md: 0 4px 8px 0 rgb(16 24 40 / 0.1);
-  --shadow-md: 0 12px 16px 0 rgb(16 24 40 / 0.12);
-  --shadow-xl: 0 20px 24px 0 rgb(16 24 40 / 0.14);
-  --shadow-modal: 0 24px 48px 0 rgb(16 24 40 / 0.2);
-
-  /* ------------------------------------------------------------------------
-     Z-INDEX
-     (Tailwind v4-এ z-index theme namespace নেই, তাই নিচে @utility দিয়ে
-     z-header, z-modal ... বানানো হয়েছে)
-  ------------------------------------------------------------------------ */
-  --z-base: 0;
-  --z-sticky: 10;
-  --z-header: 100;
-  --z-dropdown: 200;
-  --z-overlay: 300;
-  --z-modal: 400;
-  --z-toast: 500;
-  --z-tooltip: 600;
-
-  /* ------------------------------------------------------------------------
-     BORDER RADIUS
-  ------------------------------------------------------------------------ */
-  --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-md: 12px;
-  --radius-xl: 16px;
-  --radius-2xl: 24px;
-  --radius-pill: 9999px;
-  --radius-circle: 50%;
-
-  /* ========================================================================
-     TYPOGRAPHY
-  ======================================================================== */
-
-  /* Font sizes → text-display, text-h1, text-h2 ... */
-  --text-display: clamp(2.25rem, 1.6rem + 3vw, 4rem);
-  --text-h1: clamp(1.875rem, 1.3rem + 2.4vw, 3rem);
-  --text-h2: clamp(1.625rem, 1.3rem + 1.4vw, 2.25rem);
-  --text-h3: clamp(1.375rem, 1.22rem + 0.66vw, 1.75rem);
-  --text-h4: clamp(1.125rem, 1.02rem + 0.44vw, 1.375rem);
-  --text-h5: clamp(1rem, 0.95rem + 0.22vw, 1.125rem);
-  --text-h6: clamp(0.875rem, 0.82rem + 0.22vw, 1rem);
-  --text-lead: clamp(1.125rem, 1.07rem + 0.22vw, 1.25rem);
-
-  --text-body: 1rem;
-  --text-small: 0.875rem;
-  --text-caption: 0.8125rem;
-
-  /* Font weights → font-display, font-h1, font-h2 ... */
-  --font-weight-display: 700;
-  --font-weight-h1: 700;
-  --font-weight-h2: 600;
-  --font-weight-h3: 600;
-  --font-weight-h4: 600;
-  --font-weight-h5: 600;
-  --font-weight-h6: 600;
-
-  --font-weight-lead: 400;
-  --font-weight-body: 400;
-  --font-weight-small: 400;
-  --font-weight-caption: 400;
-
-  /* Line heights → leading-display, leading-h1, leading-h2 ... */
-  --leading-display: 1.1;
-  --leading-h1: 1.15;
-  --leading-h2: 1.2;
-  --leading-h3: 1.25;
-  --leading-h4: 1.3;
-  --leading-h5: 1.4;
-  --leading-h6: 1.4;
-
-  --leading-lead: 1.6;
-  --leading-body: 1.6;
-  --leading-small: 1.5;
-  --leading-caption: 1.4;
-
-  /* ========================================================================
-     COLOR PALETTE
-  ======================================================================== */
+  /* Neutral / Ink (text, border, surface) */
+  --color-neutral-50: #f8fafc;
+  --color-neutral-100: #f1f5f9;
+  --color-neutral-200: #e2e8f0;
+  --color-neutral-300: #cbd5e1;
+  --color-neutral-400: #94a3b8;
+  --color-neutral-500: #64748b;
+  --color-neutral-600: #475569;
+  --color-neutral-700: #334155;
+  --color-neutral-800: #1e293b;
+  --color-neutral-900: #0f172a;
+  --color-neutral-950: #020617;
 
   /* Green */
   --color-green-50: #e6f5f0;
@@ -187,37 +143,135 @@
   --color-red-800: #791515;
   --color-red-900: #5c1010;
 
-  /* Neutral / Ink */
-  --color-neutral-50: #f8fafc;
-  --color-neutral-100: #f1f5f9;
-  --color-neutral-200: #e2e8f0;
-  --color-neutral-300: #cbd5e1;
-  --color-neutral-400: #94a3b8;
-  --color-neutral-500: #64748b;
-  --color-neutral-600: #475569;
-  --color-neutral-700: #334155;
-  --color-neutral-800: #1e293b;
-  --color-neutral-900: #0f172a;
-  --color-neutral-950: #020617;
+  /* ------------------------------------------------------------------------
+     1.4  SPACING
+     Usage: p-space-4, gap-space-6, mt-space-10 ...
+  ------------------------------------------------------------------------ */
+  --spacing-space-0: 0px;
+  --spacing-space-1: 4px;
+  --spacing-space-2: 8px;
+  --spacing-space-3: 12px;
+  --spacing-space-4: 16px;
+  --spacing-space-5: 20px;
+  --spacing-space-6: 24px;
+  --spacing-space-7: 32px;
+  --spacing-space-8: 40px;
+  --spacing-space-9: 48px;
+  --spacing-space-10: 64px;
+  --spacing-space-11: 80px;
+  --spacing-space-12: 96px;
+  --spacing-space-13: 128px;
+  --spacing-space-14: 160px;
 
-  /* Primary / Purple */
-  --color-primary-50: #ededfc;
-  --color-primary-75: #b7b3f4;
-  --color-primary-100: #9994f0;
-  --color-primary-200: #6d65e9;
-  --color-primary-300: #4f46e5;
-  --color-primary-400: #3731a0;
-  --color-primary-500: #302b8c;
+  /* ------------------------------------------------------------------------
+     1.5  BORDER RADIUS
+     Usage: rounded-xs, rounded-md, rounded-pill, rounded-circle ...
+  ------------------------------------------------------------------------ */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  /* TODO: ager file-e --radius-md duibar chhilo (8px ar 12px). Shesh-ta (12px)
+     kaj korchhilo, tai oi-tai rakha hoyeche. 8px-o lagle --radius-md: 8px
+     ar --radius-lg: 12px kore nio (tahole rounded-md-er size change hobe). */
+  --radius-md: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-pill: 9999px;
+  --radius-circle: 50%;
+
+  /* ------------------------------------------------------------------------
+     1.6  SHADOWS
+     Usage: shadow-subtle, shadow-md, shadow-modal ...
+  ------------------------------------------------------------------------ */
+  --shadow-subtle: 0 1px 2px 0 rgb(16 24 40 / 0.05);
+  --shadow-sm-1: 0 1px 3px 0 rgb(16 24 40 / 0.1);
+  --shadow-sm-2: 0 1px 4px 0 rgb(16 24 40 / 0.06);
+  /* TODO: ager file-e --shadow-md duibar chhilo (4px 8px ar 12px 16px).
+     Shesh-ta kaj korchhilo, tai oi-tai rakha hoyeche. Prothom-ta (4px 8px)
+     chaile --shadow-md: 0 4px 8px 0 rgb(16 24 40 / 0.1) ar
+     --shadow-lg: 0 12px 16px 0 rgb(16 24 40 / 0.12) kore nio. */
+  --shadow-md: 0 12px 16px 0 rgb(16 24 40 / 0.12);
+  --shadow-xl: 0 20px 24px 0 rgb(16 24 40 / 0.14);
+  --shadow-modal: 0 24px 48px 0 rgb(16 24 40 / 0.2);
+
+  /* ------------------------------------------------------------------------
+     1.7  Z-INDEX TOKENS
+     Tailwind v4-e z-index theme namespace nei, tai ei variable-gulo
+     section 03-er @utility diye z-header, z-modal ... class hishebe use hoy.
+     (Nicher order = upore-niche stacking order)
+  ------------------------------------------------------------------------ */
+  --z-base: 0;
+  --z-sticky: 10;
+  --z-header: 100;
+  --z-dropdown: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-tooltip: 600;
+
+  /* ========================================================================
+     1.8  TYPOGRAPHY
+     Alada .text-h1 / .text-h2 CSS likhte hobe na, @theme theke
+     automatically toiri hobe.
+
+       className="text-h1"            → font size
+       className="font-h1"            → font weight
+       className="leading-h1"         → line height
+       className="text-h2 md:text-h1" → responsive
+  ======================================================================== */
+
+  /* Font sizes → text-display, text-h1, text-h2 ... */
+  --text-display: clamp(2.25rem, 1.6rem + 3vw, 4rem);
+  --text-h1: clamp(1.875rem, 1.3rem + 2.4vw, 3rem);
+  --text-h2: clamp(1.625rem, 1.3rem + 1.4vw, 2.25rem);
+  --text-h3: clamp(1.375rem, 1.22rem + 0.66vw, 1.75rem);
+  --text-h4: clamp(1.125rem, 1.02rem + 0.44vw, 1.375rem);
+  --text-h5: clamp(1rem, 0.95rem + 0.22vw, 1.125rem);
+  --text-h6: clamp(0.875rem, 0.82rem + 0.22vw, 1rem);
+  --text-lead: clamp(1.125rem, 1.07rem + 0.22vw, 1.25rem);
+
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  --text-caption: 0.8125rem;
+
+  /* Font weights → font-display, font-h1, font-h2 ... */
+  --font-weight-display: 700;
+  --font-weight-h1: 700;
+  --font-weight-h2: 600;
+  --font-weight-h3: 600;
+  --font-weight-h4: 600;
+  --font-weight-h5: 600;
+  --font-weight-h6: 600;
+
+  --font-weight-lead: 400;
+  --font-weight-body: 400;
+  --font-weight-small: 400;
+  --font-weight-caption: 400;
+
+  /* Line heights → leading-display, leading-h1, leading-h2 ... */
+  --leading-display: 1.1;
+  --leading-h1: 1.15;
+  --leading-h2: 1.2;
+  --leading-h3: 1.25;
+  --leading-h4: 1.3;
+  --leading-h5: 1.4;
+  --leading-h6: 1.4;
+
+  --leading-lead: 1.6;
+  --leading-body: 1.6;
+  --leading-small: 1.5;
+  --leading-caption: 1.4;
 }
+
 
 /* ==========================================================================
    02. BASE
+   --------------------------------------------------------------------------
+   Pure HTML element-gulor default style.
    ========================================================================== */
 
 @layer base {
   html {
     font-size: 100%;
-    scrollbar-gutter: stable;
   }
 
   body {
@@ -230,7 +284,7 @@
     cursor: pointer;
   }
 
-  /* Icon font (<i>) center করার জন্য */
+  /* Icon font (<i>) center korar jonno */
   i {
     display: flex;
     align-items: center;
@@ -242,11 +296,15 @@
   }
 }
 
+
 /* ==========================================================================
    03. CUSTOM UTILITIES
+   --------------------------------------------------------------------------
+   Z-index utilities → z-base, z-sticky, z-header, z-dropdown,
+                       z-overlay, z-modal, z-toast, z-tooltip
+   (Value-gulo section 1.7-er variable theke ashe)
    ========================================================================== */
 
-/* Z-index utilities: z-base, z-sticky, z-header, z-modal ... */
 @utility z-base {
   z-index: var(--z-base);
 }
@@ -280,10 +338,20 @@
 }
 
 
-/* ========================================
-   Professional Modal Entrance / Exit
-======================================== */
+/* ==========================================================================
+   04. COMPONENT STYLES
+   ========================================================================== */
 
+/* --------------------------------------------------------------------------
+   4.1  MODAL / DIALOG ANIMATION
+   Kon element-e lagbe: <dialog className="modal-dialog-motion">
+   JS theke open howar por `.is-visible` class add korte hobe.
+
+   Closed state  → exit animation (druto, halka)
+   .is-visible   → enter animation (ektu dhire, smooth settle)
+   -------------------------------------------------------------------------- */
+
+/* Closed / exit state */
 .modal-dialog-motion {
   opacity: 0;
   transform: translate3d(0, 12px, 0) scale(0.985);
@@ -294,6 +362,7 @@
     transform 180ms cubic-bezier(0.4, 0, 1, 1);
 }
 
+/* Open / enter state */
 .modal-dialog-motion.is-visible {
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
@@ -303,7 +372,7 @@
     transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Backdrop fade-in / fade-out */
+/* Backdrop (dialog-er pechoner kalo overlay): fade-in / fade-out */
 .modal-dialog-motion::backdrop {
   background-color: rgb(0 0 0 / 0);
   transition: background-color 150ms ease-in;
@@ -311,11 +380,10 @@
 
 .modal-dialog-motion.is-visible::backdrop {
   background-color: rgb(0 0 0 / 40%);
-
   transition: background-color 280ms ease-out;
 }
 
-/* Accessibility: respect reduced motion */
+/* Accessibility: reduced motion respect kora */
 @media (prefers-reduced-motion: reduce) {
   .modal-dialog-motion,
   .modal-dialog-motion.is-visible,
@@ -325,33 +393,42 @@
   }
 }
 
-/* Mobile menu panel: .modal-dialog-motion er moto same timing ar easing.
-   Panel header er niche theke ektu upor theke neme ashe (translateY negative),
-   tai transform-origin top. */
+/* --------------------------------------------------------------------------
+   4.2  MOBILE MENU ANIMATION
+   Kon element-e lagbe:
+     .mobile-menu-panel   → menu-r panel (header-er niche)
+     .mobile-menu-overlay → panel-er pechoner overlay
+   Duto-te-i open howar por `.is-visible` class add korte hobe.
+
+   Timing/easing .modal-dialog-motion-er motoi same.
+   Panel header-er niche theke ektu upor theke neme ashe
+   (translateY negative), tai transform-origin top.
+   -------------------------------------------------------------------------- */
+
+/* Panel: closed / exit state (druto ar halka) */
 .mobile-menu-panel {
   opacity: 0;
   transform: translate3d(0, -12px, 0) scale(0.985);
   transform-origin: top center;
   pointer-events: none;
 
-  /* Exit: druto ar halka */
   transition:
     opacity 150ms ease-in,
     transform 180ms cubic-bezier(0.4, 0, 1, 1);
 }
 
+/* Panel: open / enter state (ektu dhire, smooth settle) */
 .mobile-menu-panel.is-visible {
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
   pointer-events: auto;
 
-  /* Enter: ektu dhire, smooth settle */
   transition:
     opacity 320ms cubic-bezier(0.16, 1, 0.3, 1),
     transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Backdrop overlay fade-in / fade-out (rong Tailwind class theke ashe) */
+/* Overlay: fade-in / fade-out (rong Tailwind class theke ashe) */
 .mobile-menu-overlay {
   opacity: 0;
   pointer-events: none;
@@ -364,7 +441,7 @@
   transition: opacity 280ms ease-out;
 }
 
-/* Accessibility: respect reduced motion */
+/* Accessibility: reduced motion respect kora */
 @media (prefers-reduced-motion: reduce) {
   .mobile-menu-panel,
   .mobile-menu-panel.is-visible,
@@ -375,36 +452,74 @@
 }
 
 
-/*
-   Typography-এর জন্য আলাদা .text-h1 / .text-h2 CSS লেখার দরকার নেই,
-   @theme থেকে automatically তৈরি হবে।
+/* ==========================================================================
+   05. SCROLLBAR
+   --------------------------------------------------------------------------
+   Color-gulo section 1.2-er variable theke ashe.
+   Normal → chikon thin scrollbar, hover korle mota + track-e halka bg.
+   ========================================================================== */
 
-   className="text-h1"          → font size
-   className="font-h1"          → font weight
-   className="leading-h1"       → line height
-   className="text-h2 md:text-h1"  → responsive
-*/
+/* --- Chrome, Edge, Safari ------------------------------------------------ */
+
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Normally chikon: 14px-er majhe 5px+5px transparent border, tai thumb dekhay ~4px */
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  background-clip: padding-box;
+  border: 5px solid transparent;
+  border-radius: 999px;
+}
+
+/* Track-er upor hover korle halka background ashe */
+::-webkit-scrollbar-track:hover {
+  background: var(--scrollbar-track-hover);
+}
+
+/* Thumb-er upor hover korle mota hoy (border kome jay) */
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover);
+  border-width: 3px;
+}
+
+/* --- Firefox: shudhu thin, hover-e mota hobe na -------------------------- */
+
+@supports (-moz-appearance: none) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+  }
+}
+
 
 /* ==========================================================================
-   04. KEYFRAMES
+   06. KEYFRAMES  (ekhon use hocche na — commented out)
    ========================================================================== */
 
 /*
 @keyframes fade-in {
   from {
     opacity: 0;
-    transform: tranneutralY(10px);
+    transform: translateY(10px);
   }
 
   to {
     opacity: 1;
-    transform: tranneutralY(0);
+    transform: translateY(0);
   }
 }
 */
 
+
 /* ==========================================================================
-   05. OPTIONAL CUSTOM UTILITIES
+   07. OPTIONAL CUSTOM UTILITIES  (ekhon use hocche na — commented out)
    ========================================================================== */
 
 /*
