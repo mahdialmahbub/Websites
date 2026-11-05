@@ -110,13 +110,13 @@ const TestimonialCard = ({
             <Image
               alt={`${name}'s profile photo`}
               src={image || "/user-placeholder.jpg"}
-              width={56}
-              height={56}
-              className="size-14 rounded-full"
+              width={42}
+              height={42}
+              className="size-[42px] rounded-full"
             />
-            <div>
-              <h3 className="font-primary text-lg font-medium">{name}</h3>
-              <p className="text-neutral-400">{jobTitle}</p>
+            <div className="-space-y-0.5">
+              <h3 className="font-primary text-[16px] font-medium">{name}</h3>
+              <p className="text-neutral-400 text-[14px]">{jobTitle}</p>
             </div>
           </div>
 

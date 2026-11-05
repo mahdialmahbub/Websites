@@ -184,7 +184,7 @@ export default function EntryList({
               }`}
             >
               <div className="overflow-hidden">
-                <div className="space-y-space-8 border-t border-neutral-500/10 p-3 pt-4 sm:p-4 sm:pt-5">
+                <div className="space-y-7 border-t border-neutral-500/10 p-3 pt-4 sm:p-4 sm:pt-5">
                   {renderEntry(item, index)}
                 </div>
               </div>

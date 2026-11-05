@@ -83,13 +83,14 @@ const Page = () => {
   return (
     <main className="py-[clamp(1.5rem,calc(0.751vw+1.324rem),2rem)] gap-[clamp(2rem,calc(1.502vw+1.648rem),3rem)]">
       <div className="max-w-300 min-w-[320px] mx-auto px-[clamp(1rem,calc(6.01vw-0.41rem),5rem)]">
-      <h1 className="text-[clamp(1.625rem,calc(0.939vw+1.405rem),2.25rem)] font-primary font-semibold mb-2">
-        Create a Resume
-      </h1>
-      <p className="text-body mb-space-7 text-neutral-500">
-        Enter a title for your resume and pick a template. You can change the
-        template later and your content stays.
-      </p></div>
+        <h1 className="text-[clamp(1.625rem,calc(0.939vw+1.405rem),2.25rem)] font-primary font-semibold mb-[clamp(0.25rem,calc(0.364vw+0.136rem),0.5rem)]">
+          Create a Resume
+        </h1>
+        <p className="text-body mb-space-7 text-neutral-500">
+          Enter a title for your resume and pick a template. You can change the
+          template later and your content stays.
+        </p>
+      </div>
 
       <form onSubmit={create} noValidate>
         <Input

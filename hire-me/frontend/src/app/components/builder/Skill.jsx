@@ -11,26 +11,42 @@ import { useSelector } from "react-redux";
 import { LIMITS } from "@/resume/validation";
 
 const Skill = () => {
-  const { value: skills, dispatch, actions, sectionError } = useSection("skills");
+  const {
+    value: skills,
+    dispatch,
+    actions,
+    sectionError,
+  } = useSection("skills");
   const { addSkill, removeSkill } = actions;
   const { stateKey } = useFormTarget();
   const [text, setText] = useState("");
   const [notice, setNotice] = useState("");
 
   // Optional AI keyword ideas for the job title. Only suggestions: the person clicks the ones they really have.
-  const title = useSelector((state) => state[stateKey].content.personalInformation.professionalTitle);
-  const targetJobTitle = useSelector((state) => state[stateKey].content.targetJob?.title);
-  const [suggestKeywords, { isLoading: ideasLoading }] = useSuggestKeywordsMutation();
+  const title = useSelector(
+    (state) => state[stateKey].content.personalInformation.professionalTitle,
+  );
+  const targetJobTitle = useSelector(
+    (state) => state[stateKey].content.targetJob?.title,
+  );
+  const [suggestKeywords, { isLoading: ideasLoading }] =
+    useSuggestKeywordsMutation();
   const [ideas, setIdeas] = useState([]);
   const [ideasError, setIdeasError] = useState("");
 
   const getIdeas = async () => {
     setIdeasError("");
     try {
-      const result = await suggestKeywords({ professionalTitle: title ?? "", targetJobTitle: targetJobTitle ?? "", skills }).unwrap();
+      const result = await suggestKeywords({
+        professionalTitle: title ?? "",
+        targetJobTitle: targetJobTitle ?? "",
+        skills,
+      }).unwrap();
       setIdeas(result.keywords);
     } catch (error) {
-      setIdeasError(error?.message || "Could not get keyword ideas. Please try again.");
+      setIdeasError(
+        error?.message || "Could not get keyword ideas. Please try again.",
+      );
     }
   };
 
@@ -40,13 +56,19 @@ const Skill = () => {
   };
 
   // A skill the user typed meanwhile is not offered again.
-  const visibleIdeas = ideas.filter((idea) => !skills.some((skill) => skill.toLowerCase() === idea.toLowerCase()));
+  const visibleIdeas = ideas.filter(
+    (idea) =>
+      !skills.some((skill) => skill.toLowerCase() === idea.toLowerCase()),
+  );
 
   const atMax = skills.length >= LIMITS.skills.max;
 
   // "React, Node.js" adds both; duplicates (any letter case) are ignored.
   const add = () => {
-    const names = text.split(",").map((name) => name.trim()).filter(Boolean);
+    const names = text
+      .split(",")
+      .map((name) => name.trim())
+      .filter(Boolean);
     if (names.length === 0) return;
 
     let room = LIMITS.skills.max - skills.length;
@@ -63,7 +85,13 @@ const Skill = () => {
       room -= 1;
     }
     setText("");
-    setNotice(duplicates.length ? `"${duplicates[0]}" is already in your list` : room <= 0 ? `You can add up to ${LIMITS.skills.max} skills` : "");
+    setNotice(
+      duplicates.length
+        ? `"${duplicates[0]}" is already in your list`
+        : room <= 0
+          ? `You can add up to ${LIMITS.skills.max} skills`
+          : "",
+    );
   };
 
   return (
@@ -93,17 +121,23 @@ const Skill = () => {
           icon="fi fi-rr-plus-small"
           disabled={atMax}
           onClick={add}
-          className="text-green-500 bg-green-500/5 hover:bg-green-500/10"
+          className="text-green-500 bg-green-500/5 hover:bg-green-500/10 text-[24px]"
         ></Button>
       </div>
 
       {skills.length === 0 ? (
-        <div className="flex gap-space-2 text-neutral-500/70">No skills yet. Add relevant skills.</div>
+        <div className="flex gap-space-2 text-neutral-500/70">
+          No skills yet. Add relevant skills.
+        </div>
       ) : (
-        <ul aria-label="Your skills" className="flex flex-wrap gap-space-2">
+        <ul aria-label="Your skills" className="flex flex-wrap gap-space-3">
           {skills.map((skill) => (
             <li key={skill}>
-              <Tabs label={skill} variant="remove" onIconClick={() => dispatch(removeSkill(skill))} />
+              <Tabs
+                label={skill}
+                variant="remove"
+                onIconClick={() => dispatch(removeSkill(skill))}
+              />
             </li>
           ))}
         </ul>
@@ -111,9 +145,10 @@ const Skill = () => {
 
       {/* keyword ideas (optional) */}
       <div className="flex flex-col gap-space-3">
-        <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <p className="text-[clamp(0.75rem,calc(0.188vw+0.706rem),0.875rem)] text-neutral-500/80">
-            Match your skills to the job: get keyword ideas for {targetJobTitle || title || "your title"}.
+            Match your skills to the job: get keyword ideas for{" "}
+            {targetJobTitle || title || "your title"}.
           </p>
           <Button
             type="button"
@@ -124,7 +159,11 @@ const Skill = () => {
             onClick={getIdeas}
             className="text-orange-500 hover:text-orange-600"
           >
-            {ideasLoading ? "Thinking…" : visibleIdeas.length > 0 ? "New ideas" : "Get keyword ideas"}
+            {ideasLoading
+              ? "Thinking…"
+              : visibleIdeas.length > 0
+                ? "New ideas"
+                : "Get keyword ideas"}
           </Button>
         </div>
         {ideasError && (
@@ -133,10 +172,17 @@ const Skill = () => {
           </p>
         )}
         {visibleIdeas.length > 0 && (
-          <ul aria-label="Keyword ideas. Add the ones you really have." className="flex flex-wrap gap-space-2">
+          <ul
+            aria-label="Keyword ideas. Add the ones you really have."
+            className="flex flex-wrap gap-space-3"
+          >
             {visibleIdeas.map((keyword) => (
               <li key={keyword}>
-                <Tabs label={keyword} variant="add" onIconClick={() => addIdea(keyword)} />
+                <Tabs
+                  label={keyword}
+                  variant="add"
+                  onIconClick={() => addIdea(keyword)}
+                />
               </li>
             ))}
           </ul>

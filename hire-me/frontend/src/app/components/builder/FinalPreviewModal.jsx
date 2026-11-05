@@ -79,7 +79,7 @@ const FinalPreviewModal = ({
   };
 
   return (
-    <div className="w-full p-[clamp(0.5rem,calc(2vw+0.2rem),2rem)] flex max-md:flex-col gap-[clamp(1.5rem,calc(2.909vw+0.818rem),3rem)] md:*:flex-1 max-w-225">
+    <div className="w-full flex max-md:flex-col gap-[clamp(1.5rem,calc(2.909vw+0.818rem),3rem)] md:*:flex-1 max-w-225">
       <FinalPreview />
       <section className="flex flex-col items-center *:w-full">
         <h1 className="font-primary font-semibold text-[clamp(1.375rem,calc(0.727vw+1.205rem),1.75rem)] mb-[clamp(0.5rem,calc(0.485vw+0.386rem),0.75rem)]">

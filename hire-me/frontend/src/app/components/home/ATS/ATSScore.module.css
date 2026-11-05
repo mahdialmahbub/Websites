@@ -176,29 +176,23 @@
   z-index: 3; /* above the wire overlay */
   pointer-events: none;
   --plug-dir: 180deg; /* gradient direction: top -> bottom (horizontal plug) */
-  border-radius: var(--plug-radius);
+  border-radius: 0 0 var(--plug-radius) var(--plug-radius);
   background: linear-gradient(
     var(--plug-dir),
-    color-mix(in srgb, #fff var(--plug-white-top), var(--c)),
-    color-mix(in srgb, #fff var(--plug-white-bottom), var(--c))
+    color-mix(in srgb, #000 var(--plug-white-top), var(--c)),
+    var(--c)
   );
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 55%),
-    inset 0 -2px 2px rgb(0 0 0 / 22%),
-    0 0 0 1px var(--plug-rim),
-    0 2px 6px rgb(0 0 0 / 55%),
-    0 0 12px color-mix(in srgb, var(--c) var(--plug-glow), transparent);
+    inset -1px 0 1px rgb(0 0 0 / 50%),
+    inset 1px 0 1px rgb(0 0 0 / 25%);
 }
 
 /* 2x2 layout: the plug hangs under the hub, so shine/shade run left -> right */
 .plug[data-orient="v"] {
   --plug-dir: 90deg;
   box-shadow:
-    inset 1px 0 0 rgb(255 255 255 / 55%),
-    inset -2px 0 2px rgb(0 0 0 / 22%),
-    0 0 0 1px var(--plug-rim),
-    0 2px 6px rgb(0 0 0 / 55%),
-    0 0 12px color-mix(in srgb, var(--c) var(--plug-glow), transparent);
+    inset -1px 0 1px rgb(0 0 0 / 50%),
+    inset 1px 0 1px rgb(0 0 0 / 25%);
 }
 
 .plug::after {

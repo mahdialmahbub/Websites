@@ -104,14 +104,14 @@ const MobileMenu = () => {
   useEffect(() => {
     if (!mounted) return;
 
-    // 1) Page scroll lock. html + body duitaite lagai, karon kono site e html
-    //    ei scroll container hoy (jemon html e overflow-x-hidden thakle).
-    //    Kono extra padding dei na, tai header / layout er width bodlay na.
-    const { body, documentElement: html } = document;
+    // 1) Page scroll lock. SHUDHU html e lagai, body te na.
+    //    html + body duitate `overflow: hidden` dile body nijei ekta scroll
+    //    container hoye jay, ar `position: sticky` navbar viewport e stick
+    //    korte pare na (page upore chole jay). Shudhu html lock korle
+    //    overflow viewport e propagate hoy, body normal thake, navbar thik thake.
+    const html = document.documentElement;
     const prevHtmlOverflow = html.style.overflow;
-    const prevBodyOverflow = body.style.overflow;
     html.style.overflow = "hidden";
-    body.style.overflow = "hidden";
 
     // 2) Esc dile bondho, focus abar toggle button e fire jay.
     const onKeyDown = (event) => {
@@ -132,7 +132,6 @@ const MobileMenu = () => {
 
     return () => {
       html.style.overflow = prevHtmlOverflow;
-      body.style.overflow = prevBodyOverflow;
       document.removeEventListener("keydown", onKeyDown);
       mq.removeEventListener("change", onBreakpointChange);
     };

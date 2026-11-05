@@ -41,7 +41,7 @@ import { cn } from "../lib/cn";
 
 // Shob button e same thake.
 const BASE = [
-  "relative isolate inline-flex shrink-0 cursor-pointer select-none items-center justify-center overflow-hidden",
+  "relative isolate inline-flex shrink-0 cursor-pointer select-none items-center justify-center overflow-hidden min-w-11",
   // border sob variant-e ache (transparent), tai className e shudu `border-red-500` dilei color change hoy
   "whitespace-nowrap border border-transparent font-medium outline-none",
   "transition-[color,background-color,border-color,box-shadow] duration-150 motion-reduce:transition-none",
@@ -95,7 +95,7 @@ const VARIANT = {
 // Loading spinner (Flaticon CDN icon). currentColor use kore, tai text color follow kore.
 const SPINNER = (
   <i
-    className="fi fi-rr-spinner animate-spin motion-reduce:[animation-duration:3s]"
+    className="fi fi-rr-loading animate-spin motion-reduce:[animation-duration:10s]"
     aria-hidden="true"
   />
 );

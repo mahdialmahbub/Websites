@@ -65,7 +65,7 @@ function LinkGroup({ id, title, links, layout, open, onToggle }) {
 
   return (
     <div
-      className={`border-neutral-200 py-4 first:pt-0 lg:order-0 lg:border-b-0 lg:py-0 ${layout}`}
+      className={`border-neutral-200 py-5 first:pt-0 lg:order-0 lg:border-b-0 lg:py-0 ${layout}`}
     >
       {/* Desktop: plain heading */}
       <h3 className="hidden lg:block mb-[clamp(0.75rem,calc(0.662rem+0.3756vw),1rem)]">
@@ -117,7 +117,7 @@ function LinkGroup({ id, title, links, layout, open, onToggle }) {
 }
 
 export default function FooterLinks() {
-  const [openId, setOpenId] = useState("company");
+  const [openId, setOpenId] = useState("");
 
   return (
     <div className="flex flex-col md:col-start-2 md:row-span-2 md:row-start-1 lg:contents">

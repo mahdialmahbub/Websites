@@ -210,7 +210,7 @@ function MyResumes() {
     <main className="space-y-[clamp(1.5rem,calc(1.690vw+1.104rem),2.625rem)] py-[clamp(1.5rem,calc(0.751vw+1.324rem),2rem)]">
       {/* resume */}
       <div className="mb-2 mx-auto min-w-[320px] max-w-300 px-[clamp(1rem,calc(6.01vw-0.41rem),5rem)]">
-        <div className="flex items-center max-sm:flex-col gap-space-7 max-sm:items-start mb-space-7 ">
+        <div className="flex items-center max-sm:flex-col gap-space-7 max-sm:gap-6 max-sm:items-start mb-7 ">
           <div className="w-full">
             <h1 className="text-[clamp(1.625rem,calc(0.939vw+1.405rem),2.25rem)] mb-2 font-semibold font-primary">
               Your Resume
@@ -223,13 +223,6 @@ function MyResumes() {
           <ResumeBTN href="/create-resume" />
         </div>
 
-        {/* role="alert" / "status" already carry the live-region behaviour */}
-        <p
-          role={message.tone === "error" ? "alert" : "status"}
-          className={`mb-4 min-h-6 text-small ${message.tone === "error" ? "text-red-600" : "text-green-600"}`}
-        >
-          {message.text}
-        </p>
 
         {loading && (
           <div

@@ -272,10 +272,11 @@
 @layer base {
   html {
     font-size: 100%;
+    overflow-x: clip;
   }
 
   body {
-    @apply bg-background text-neutral-950 overflow-x-hidden;
+    @apply bg-background text-neutral-950 overflow-clip;
     font-family: var(--font-secondary), Arial, Helvetica, sans-serif;
     min-width: 320px;
   }
