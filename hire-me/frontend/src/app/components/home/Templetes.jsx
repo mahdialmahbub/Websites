@@ -62,7 +62,7 @@ const Templetes = async () => {
               <h3 className="text-[clamp(0.875rem,calc(0.188vw+0.831rem),1rem)] font-primary font-medium mb-space-1">
                 Not sure which template to choose?
               </h3>
-              <p className="text-[clamp(0.75rem,calc(-0.188vw+0.919rem),0.875rem)] text-[#5C5C61]/80">
+              <p className="text-[clamp(0.75rem,calc(-0.188vw+0.919rem),0.875rem)] text-neutral-600/80">
                 Don’t worry! You can change your template anytime.
               </p>
             </div>

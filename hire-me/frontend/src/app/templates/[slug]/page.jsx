@@ -63,7 +63,7 @@ export default async function TemplatePage({ params }) {
         }}
       />
 
-      <div className="-mb-2.5 flex flex-col gap-1">
+      <div className="-mb-2.5 max-md:-mt-5 flex flex-col gap-1">
         <nav aria-label="back">
           <Link
             href="/templates"
@@ -76,34 +76,34 @@ export default async function TemplatePage({ params }) {
         </nav>
       </div>
 
-      <article className="grid items-start gap-[clamp(1.5rem,calc(3.005vw+0.796rem),3.5rem)] md:grid-cols-[minmax(0,26rem)_1fr]">
-        <div className="overflow-hidden rounded-2xl border border-neutral-500/10 bg-white shadow-[0_6px_8px_rgba(2,6,23,0.10)]">
+      <article className="grid items-start gap-[clamp(2.5rem,calc(3.005vw+0.796rem),3.5rem)] md:grid-cols-[minmax(0,26rem)_1fr]">
+        <div className="overflow-hidden rounded-xl border border-neutral-500/10 bg-white shadow-[0_6px_8px_rgba(2,6,23,0.10)]">
           <TemplateThumb slug={slug} name={name} />
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-[clamp(0.5rem,calc(0.455vw+0.409rem),0.75rem)]">
           {category && (
             <Link
-          href={categoryPath(category.slug)}
-          className={`rounded-sm bg-violet-900/60 px-space-3 py-space-2 font-primary text-[12px] font-semibold text-violet-50 backdrop-blur-xs hover:bg-violet-900/80 sm:rounded-lg`}
-        >
-          {category.name}
-        </Link>
+              href={categoryPath(category.slug)}
+              className={`rounded-sm bg-violet-900/60 px-space-3 py-space-2 font-primary text-[12px] font-semibold text-violet-50 backdrop-blur-xs hover:bg-violet-900/80 sm:rounded-lg`}
+            >
+              {category.name}
+            </Link>
           )}
-          <h1 className="font-primary text-[clamp(1.5rem,calc(1.878vw+1.06rem),2.75rem)] font-semibold mt-5 leading-14">
+          <h1 className="font-primary text-[clamp(1.5rem,calc(1.878vw+1.06rem),2.5rem)] font-semibold mt-5 leading-[clamp(2rem,calc(2.727vw+1.455rem),3.5rem)]">
             {name} Resume Template
           </h1>
           {description && (
-            <p className="text-[clamp(0.875rem,calc(0.188vw+0.831rem),1rem)] text-[#5C5C61]/80">
+            <p className="text-[clamp(1rem,calc(0.455vw+0.909rem),1.25rem)] text-neutral-600/80">
               {description}
             </p>
           )}
-          <ul className="list-disc space-y-1 pl-5 text-small text-[#5C5C61]/80">
+          <ul className="list-disc space-y-2 pl-5 text-[clamp(0.875rem,calc(0.455vw+0.784rem),1.125rem)] text-neutral-600/80 mt-[clamp(1.25rem,calc(0.455vw+1.159rem),1.5rem)]">
             <li>ATS-friendly layout that recruiters and scanners can read</li>
             <li>Change the colour and template any time, your content stays</li>
             <li>Download as PDF or share a link</li>
           </ul>
-          <div className="flex flex-wrap gap-3 pt-2">
+          <div className="flex flex-wrap gap-3 mt-[clamp(2rem,calc(0.455vw+1.159rem),2.5rem)] *:w-full">
             <Button about="Use this template">
               <Link
                 href={`/builder?template=${encodeURIComponent(slug)}`}
@@ -113,21 +113,17 @@ export default async function TemplatePage({ params }) {
               </Link>
             </Button>
             <Button variant="secondary" about="See all templates">
-              <Link
-                href="/templates"
-              >
-                All templates
-              </Link>
+              <Link href="/templates">All templates</Link>
             </Button>
           </div>
         </div>
       </article>
 
       {related.length > 0 && (
-        <section aria-labelledby="related-heading" className="space-y-5">
+        <section aria-labelledby="related-heading" className="space-y-[clamp(2rem,calc(1.364vw+1.727rem),2.75rem)] mt-[clamp(1.25rem,calc(-1.364vw+2.273rem),2rem)]">
           <h2
             id="related-heading"
-            className="font-primary text-[clamp(1.125rem,calc(0.939vw+0.905rem),1.75rem)] font-medium text-neutral-500"
+            className="font-primary text-[clamp(1.125rem,calc(0.939vw+0.905rem),1.75rem)] font-medium text-neutral-500 leading-0.5"
           >
             More {category.name.toLowerCase()} templates
           </h2>

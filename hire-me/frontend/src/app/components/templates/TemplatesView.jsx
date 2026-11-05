@@ -58,7 +58,7 @@ export default function TemplatesView({ categories, data, page }) {
         <h1 className="font-primary text-[clamp(1.5rem,calc(1.878vw+1.06rem),2.75rem)] font-semibold">
           {heading}
         </h1>
-        <p className="text-[clamp(0.875rem,calc(0.188vw+0.831rem),1rem)] text-[#5C5C61]/80">
+        <p className="text-[clamp(0.875rem,calc(0.188vw+0.831rem),1rem)] text-neutral-600/80">
           {intro}
         </p>
       </header>

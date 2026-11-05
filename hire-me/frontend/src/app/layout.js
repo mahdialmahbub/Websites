@@ -112,6 +112,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${poppins.variable} ${roboto.variable} h-full antialiased scroll-smooth selection:bg-violet-500/20 selection:text-violet-700`}
     >
       <head>

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { twMerge } from "tailwind-merge";
 
 // width/height ekhane shudu aspect ratio er hint (page load e layout shift atkate).
@@ -24,11 +25,8 @@ export default function Logo({
     variant ?? (textWhite ? "textWhite" : text ? "text" : "icon");
 
   return (
-    // Next SVG optimize kore na (automatic unoptimized), tai next/image e kono
-    // laabh nai; ulta width/height modify warning ashe. Plain <img> e oi warning nai.
-    // `priority` er jaygay loading="eager" + fetchPriority="high".
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+
+    <Image
       alt={alt}
       src={SOURCES[resolved]}
       width={LOGO_SIZE.width}
@@ -37,7 +35,6 @@ export default function Logo({
       fetchPriority={priority ? "high" : "auto"}
       decoding="async"
       {...props}
-      // object-contain: flex parent image ke stretch korleo logo distort hoy na.
       className={twMerge("h-auto w-auto object-contain", className)}
     />
   );

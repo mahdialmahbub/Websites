@@ -205,6 +205,7 @@ export function Toaster(props) {
       toastClassName="text-[0.875rem]"
       progressStyle={{ height: "3px" }}
       {...props}
+      className={"z-toast " + (props.className || "")}
     />
   );
 }

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 /**
  * One document per (email, purpose). It stores the HASH of the current code plus the counters
@@ -7,7 +7,11 @@ import mongoose from 'mongoose';
  */
 const otpSchema = new mongoose.Schema({
   email: { type: String, required: true, lowercase: true, trim: true },
-  purpose: { type: String, enum: ['verify_email', 'reset_password'], required: true },
+  purpose: {
+    type: String,
+    enum: ["verify_email", "reset_password", "delete_account"],
+    required: true,
+  },
   codeHash: { type: String, default: null }, // null = no valid code (consumed or too many attempts)
   expiresAt: { type: Date, required: true }, // when the code stops being valid
   attempts: { type: Number, default: 0 }, // wrong guesses for the current code
@@ -20,4 +24,4 @@ const otpSchema = new mongoose.Schema({
 otpSchema.index({ email: 1, purpose: 1 }, { unique: true });
 otpSchema.index({ purgeAt: 1 }, { expireAfterSeconds: 0 });
 
-export const Otp = mongoose.model('Otp', otpSchema);
+export const Otp = mongoose.model("Otp", otpSchema);
