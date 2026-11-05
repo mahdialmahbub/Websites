@@ -17,10 +17,15 @@ import {
 import ProfileTabs from "../components/profile/ProfileTabs";
 import Avatar from "../components/navBar/Avatar";
 import { OTP_LENGTH, ROUTES, useCountdown, withEmail } from "@/app/lib/auth";
-import { useForgotPasswordMutation, useGetMeQuery } from "@/store/api/authApi";
+import {
+  useForgotPasswordMutation,
+  useGetMeQuery,
+  useLogoutMutation,
+} from "@/store/api/authApi";
 import { useGetProfileQuery } from "@/store/api/profileApi";
 import { safeHref } from "@/resume/lib/format";
 import toast from "@/lib/toast";
+import DeleteAccountFlow from "../components/profile/DeleteAccountFlow";
 
 const PROFILE_PATH = "/profile";
 
@@ -210,7 +215,7 @@ const SecurityCard = ({ email }) => {
     <SectionCard
       title="Password"
       description="Keep your account protected."
-      className="max-w-[426px] max-h-max"
+      className="max-w-106.5 max-h-max"
     >
       {/* The password is never shown as a real value, only masked */}
       <div className="flex items-center justify-between gap-3 rounded-lg bg-neutral-500/5 p-3 max-sm:flex-col max-sm:items-start">
@@ -380,6 +385,23 @@ const ProfilePhoto = ({ user, photoUrl, name }) =>
 
 const ProfileView = ({ user, profile }) => {
   const router = useRouter();
+  const [logout] = useLogoutMutation();
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
+  // A full page navigation (not router.replace) on purpose: it wipes the whole
+  // Redux / RTK Query cache, so the next person never sees this user's data,
+  // and it avoids racing with the "401 -> /login?next=/profile" redirect in
+  // ProfileContent when getMe refetches.
+  const handleLogout = async () => {
+    try {
+      await logout().unwrap();
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+      window.location.assign("/login");
+    } catch (err) {
+      toast.error(err?.message ?? "Could not log out. Please try again.");
+    }
+  };
+
   const info = profile.personalInformation;
   const name = info.fullName || user.name;
 
@@ -442,7 +464,10 @@ const ProfileView = ({ user, profile }) => {
             >
               Edit information
             </Button>
-            <BTNDropdown />
+            <BTNDropdown
+              onLogout={handleLogout}
+              onDeleteAccount={() => setDeleteOpen(true)}
+            />
           </div>
         </header>
 
@@ -459,6 +484,12 @@ const ProfileView = ({ user, profile }) => {
           <ProfileTabs tabs={tabs} user={user} />
         </div>
       </div>
+      {deleteOpen && (
+        <DeleteAccountFlow
+          email={user.email}
+          onClose={() => setDeleteOpen(false)}
+        />
+      )}
     </>
   );
 };
@@ -496,18 +527,6 @@ const ProfileContent = () => {
       router.replace(`/login?next=${encodeURIComponent(PROFILE_PATH)}`);
     }
   }, [isLoggedOut, router]);
-
-  // Coming back from the change-password flow or from the editor: show a message once, then clean the URL
-  useEffect(() => {
-    const passwordUpdated = searchParams.get("passwordUpdated") === "1";
-    const saved = searchParams.get("saved") === "1";
-    if (passwordUpdated || saved) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      if (passwordUpdated) setShowUpdated(true);
-      if (saved) setShowSaved(true);
-      router.replace(PROFILE_PATH, { scroll: false });
-    }
-  }, [searchParams, router]);
 
   // Coming back from the change-password flow or from the editor: show a message once, then clean the URL
   useEffect(() => {

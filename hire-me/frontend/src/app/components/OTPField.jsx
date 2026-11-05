@@ -4,6 +4,10 @@ import React, { forwardRef, useRef, useState } from "react";
 const SIZES = {
   sm: { cell: "h-12 w-12 text-xl rounded-lg", gap: "gap-2" },
   md: { cell: "h-14 w-14 text-2xl rounded-xl", gap: "gap-3" },
+  fluid: {
+    cell: "h-12 min-w-0 flex-1 text-xl rounded-lg",
+    gap: "gap-1.5 sm:gap-2",
+  },
 };
 
 // Colors for each validation, split by whether the cell has a value
@@ -71,7 +75,7 @@ export const OTPField = forwardRef(function OTPField(
     className = "",
     "aria-label": ariaLabel = "One-time password",
   },
-  ref
+  ref,
 ) {
   const isControlled = value !== undefined;
   const [inner, setInner] = useState(defaultValue.slice(0, length));
@@ -102,7 +106,7 @@ export const OTPField = forwardRef(function OTPField(
     const at = Math.min(i, current.length);
     const next = (current.slice(0, at) + char + current.slice(at + 1)).slice(
       0,
-      length
+      length,
     );
     commit(next);
     focusCell(at + 1);
@@ -111,8 +115,7 @@ export const OTPField = forwardRef(function OTPField(
   const handleKeyDown = (e, i) => {
     if (e.key === "Backspace" || e.key === "Delete") {
       e.preventDefault();
-      const target =
-        e.key === "Delete" ? i : i < current.length ? i : i - 1;
+      const target = e.key === "Delete" ? i : i < current.length ? i : i - 1;
       if (target < 0 || target >= current.length) return;
       commit(current.slice(0, target) + current.slice(target + 1));
       focusCell(target);
@@ -211,7 +214,10 @@ export default function OTPFieldPreview() {
     { name: "Filled", props: { defaultValue: "123456" } },
     { name: "Disabled", props: { defaultValue: "123456", disabled: true } },
     { name: "Error", props: { defaultValue: "123456", validation: "error" } },
-    { name: "Success", props: { defaultValue: "123456", validation: "success" } },
+    {
+      name: "Success",
+      props: { defaultValue: "123456", validation: "success" },
+    },
   ];
 
   return (
@@ -220,15 +226,24 @@ export default function OTPFieldPreview() {
         <p className="mb-3 text-sm font-medium text-gray-900">
           Try it: type, paste, or use Backspace and arrow keys
         </p>
-        <OTPField value={code} onChange={setCode} onComplete={setDone} autoFocus />
+        <OTPField
+          value={code}
+          onChange={setCode}
+          onComplete={setDone}
+          autoFocus
+        />
         <p className="mt-3 text-xs text-gray-500">
-          {done && done === code ? `Code entered: ${done}` : "Waiting for 6 digits"}
+          {done && done === code
+            ? `Code entered: ${done}`
+            : "Waiting for 6 digits"}
         </p>
       </div>
 
       {["sm", "md"].map((size) => (
         <div key={size} className="mb-8">
-          <h3 className="mb-3 text-sm font-semibold text-gray-700">Size: {size}</h3>
+          <h3 className="mb-3 text-sm font-semibold text-gray-700">
+            Size: {size}
+          </h3>
           <div className="flex flex-col gap-4">
             {rows.map(({ name, props }) => (
               <div key={name} className="flex flex-wrap items-center gap-4">

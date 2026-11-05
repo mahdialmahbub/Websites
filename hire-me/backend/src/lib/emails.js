@@ -1,37 +1,49 @@
-import { env } from '../config/env.js';
-import { sendMail } from './mailer.js';
+import { env } from "../config/env.js";
+import { sendMail } from "./mailer.js";
 
-const escapeHtml = (value = '') =>
-  String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+const escapeHtml = (value = "") =>
+  String(value).replace(
+    /[&<>"']/g,
+    (char) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        char
+      ],
+  );
 
 const COPY = {
   verify_email: {
-    subject: 'Verify your email',
-    heading: 'Confirm your email address',
-    intro: 'Use the code below to finish creating your account.',
+    subject: "Verify your email",
+    heading: "Confirm your email address",
+    intro: "Use the code below to finish creating your account.",
   },
   reset_password: {
-    subject: 'Reset your password',
-    heading: 'Reset your password',
-    intro: 'Use the code below to reset your password.',
+    subject: "Reset your password",
+    heading: "Reset your password",
+    intro: "Use the code below to reset your password.",
+  },
+  delete_account: {
+    subject: "Confirm account deletion",
+    heading: "Confirm account deletion",
+    intro:
+      "We received a request to permanently delete your account and all your resumes. Enter the code below to confirm. This cannot be undone.",
   },
 };
 
-/** @param {{ to: string, name?: string, purpose: 'verify_email'|'reset_password', code: string, expiresInMinutes: number }} input */
+/** @param {{ to: string, name?: string, purpose: 'verify_email'|'reset_password'|'delete_account', code: string, expiresInMinutes: number }} input */
 export function sendOtpEmail({ to, name, purpose, code, expiresInMinutes }) {
   const copy = COPY[purpose];
-  const firstName = (name || '').trim().split(/\s+/)[0] || 'there';
+  const firstName = (name || "").trim().split(/\s+/)[0] || "there";
   const subject = `${copy.subject} - ${env.APP_NAME}`;
 
   const text = [
     `Hi ${firstName},`,
-    '',
+    "",
     copy.intro,
-    '',
+    "",
     `Your code: ${code}`,
-    '',
+    "",
     `It expires in ${expiresInMinutes} minutes. If you did not request it, you can safely ignore this email.`,
-  ].join('\n');
+  ].join("\n");
 
   const html = `<!doctype html>
 <html>

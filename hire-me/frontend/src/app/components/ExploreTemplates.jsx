@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useGetBuilderTemplatesQuery } from "@/store/api/catalogApi";
 import TemplateCard from "./templates/TemplateCard";
 import TemplateCarousel from "./templates/TemplateCarousel";
+import { Button } from "./Button";
 
 // One carousel for every page.
 //  - Without props (my-resume): loads the builder templates itself, first 10, links to the builder.
@@ -71,24 +72,23 @@ export default function ExploreTemplates({
   if (items.length === 0) return null;
 
   return (
-    <section
-      aria-label={label}
-      className="flex flex-col items-center"
-    >
-        <TemplateCarousel
-          key={resetKey}
-          categories={categories}
-          items={items}
-          startAt={startAt}
-          padded={false}
-        />
+    <section aria-label={label} className="flex flex-col items-center">
+      <TemplateCarousel
+        key={resetKey}
+        categories={categories}
+        items={items}
+        startAt={startAt}
+        padded={false}
+      />
 
       {showViewAll && (
         <Link
           href="/templates"
-          className="mt-[clamp(1.5rem,calc(1.127vw+1.236rem),2.25rem)] inline-flex h-11 items-center justify-center rounded-lg bg-violet-500/5 px-4 text-small font-medium text-violet-500 hover:bg-violet-500/10"
+          className="mt-[clamp(1.5rem,calc(1.127vw+1.236rem),2.25rem)] "
         >
-          View all templates
+          <Button variant="secondary" about="View all templates">
+            View all templates
+          </Button>
         </Link>
       )}
     </section>

@@ -66,6 +66,17 @@ export const logout = async (req, res) => {
   ok(res, null, "Logged out");
 };
 
+export const requestDeleteAccount = async (req, res) => {
+  const result = await auth.requestDeleteAccountOtp(req);
+  ok(res, result, "We sent a 6-digit code to your email");
+};
+
+export const deleteAccount = async (req, res) => {
+  await auth.deleteAccount(req.valid.body, req);
+  clearSessionCookie(res);
+  ok(res, null, "Your account has been deleted");
+};
+
 export const verifyResetOtp = async (req, res) => {
   await auth.verifyResetOtp(req.valid.body, req);
   ok(res, null, "Code verified. You can now choose a new password");

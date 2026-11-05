@@ -42,6 +42,18 @@ const PAD_X = "px-[clamp(1rem,calc(1.5vw+0.65rem),2rem)]";
 const PAD_TOP = "pt-[clamp(1rem,calc(1.5vw+0.65rem),2rem)]";
 const PAD_BOTTOM = "pb-[clamp(1rem,calc(1.5vw+0.65rem),2rem)]";
 
+// Width rules for the <dialog>.
+// - Below md (768px): at least 80% of the viewport, on every screen size.
+// - Never wider than 700px, and never touching the screen edges:
+//   the browser's own max-width is replaced by `max-w-*`, so we keep a
+//   1rem gutter on each side ourselves. Without this, a dialog with wide
+//   content stretches edge to edge on phones.
+// - md and up: unchanged (min 320px).
+// `%` here is relative to the viewport, because an open modal <dialog> is
+// fixed-positioned in the top layer.
+const DIALOG_WIDTH =
+  "min-w-[320px] max-md:min-w-[80%] max-w-[min(43.75rem,calc(100%_-_2rem))]";
+
 /**
  * Accessible native dialog with smooth entrance and exit animations.
  * Only the children area scrolls; the header (title + close button) stays fixed.
@@ -165,13 +177,14 @@ export default function Modal({
       // `open:flex` (not plain `flex`) so a closed dialog stays hidden.
       // The dialog itself no longer scrolls: overflow-hidden + flex column,
       // and only the children wrapper below has overflow-y-auto.
-      className={`modal-dialog-motion ${isVisible ? "is-visible" : ""} m-auto min-w-72.5 max-w-175 max-h-[88vh] overflow-hidden rounded-xl border border-neutral-500/10 bg-white p-0 shadow-[0_12px_32px_rgba(2,6,23,0.25)] open:flex open:flex-col ${className}`}
+      className={`modal-dialog-motion ${isVisible ? "is-visible" : ""} m-auto ${DIALOG_WIDTH} max-h-[88vh] overflow-hidden rounded-xl border border-neutral-500/10 bg-white p-0 shadow-[0_12px_32px_rgba(2,6,23,0.25)] open:flex open:flex-col ${className} z-modal`}
     >
+      {/* No min-w here: the dialog sets the width, this just fills it. */}
       <div className="relative flex min-h-0 flex-1 flex-col">
         {/* Fixed header: never scrolls. */}
         <div
           className={`shrink-0 ${PAD_X} ${PAD_TOP} ${
-            titleHidden ? "" : "mb-3 flex items-center justify-between gap-4"
+            titleHidden ? "" : "mb-3 flex items-center justify-between gap-6"
           }`}
         >
           <h2
@@ -189,12 +202,12 @@ export default function Modal({
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className={`flex size-10 items-center justify-center rounded-full transition-colors duration-200 hover:bg-neutral-500/10 ${
+            className={`flex h-11 aspect-square items-center justify-center rounded-full transition-colors duration-200 bg-red-500/3 hover:bg-red-500/10 ${
               titleHidden ? "absolute right-3 top-3 z-10" : ""
             }`}
           >
             <i
-              className="fi fi-rr-cross-small text-[22px]"
+              className="fi fi-rr-cross-small text-[22px] text-red-600"
               aria-hidden="true"
             />
           </button>

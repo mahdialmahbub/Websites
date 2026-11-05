@@ -1,6 +1,6 @@
-import { ApiError } from '../lib/ApiError.js';
-import { clearSessionCookie, destroySession } from '../lib/session.js';
-import { User } from '../modules/users/user.model.js';
+import { ApiError } from "../lib/ApiError.js";
+import { clearSessionCookie, destroySession } from "../lib/session.js";
+import { User } from "../modules/users/user.model.js";
 
 /**
  * Loads the logged-in user from the session.
@@ -10,7 +10,8 @@ import { User } from '../modules/users/user.model.js';
 export async function loadSessionUser(req, res, { required }) {
   const userId = req.session?.userId;
   if (!userId) {
-    if (required) throw new ApiError(401, 'UNAUTHENTICATED', 'Please log in to continue');
+    if (required)
+      throw new ApiError(401, "UNAUTHENTICATED", "Please log in to continue");
     return null;
   }
 
@@ -20,7 +21,11 @@ export async function loadSessionUser(req, res, { required }) {
   if (!user || user.authVersion !== req.session.authVersion) {
     await destroySession(req).catch(() => {});
     clearSessionCookie(res);
-    throw new ApiError(401, 'UNAUTHENTICATED', 'Your session has expired. Please log in again.');
+    throw new ApiError(
+      401,
+      "UNAUTHENTICATED",
+      "Your session has expired. Please log in again.",
+    );
   }
   return user;
 }

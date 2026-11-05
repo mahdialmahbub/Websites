@@ -6,6 +6,8 @@ import styles from "./ATSScore.module.css";
 /*
   Lines marked  FIX   = layout alignment fixes.
   Lines marked  ANIM  = data-flow animation + icon ring (all motion is CSS, see the module).
+  FLUID: every clamp() below is built for screens 320px -> 1200px.
+         small value = 320px screen, big value = 1200px screen.
 */
 
 /*
@@ -76,8 +78,11 @@ const HUB_GLOW = {
   content: "var(--emerald)",
 };
 
-const HUB_LABEL =
-  "text-[clamp(16px,2.2vw,22px)] font-medium leading-[1.2] text-[color:var(--muted)]";
+/*
+  FLUID FIX: font-size removed from here. Both labels below set their own fluid
+  size, and two text-size classes on one element fight each other.
+*/
+const HUB_LABEL = "font-medium leading-[1.2] text-[color:var(--muted)]";
 
 // Shared wrapper so every icon gets the same size / stroke styling.
 function Svg({ children }) {
@@ -351,29 +356,29 @@ export default function ATSScore({
       ref={sectionRef}
       /* ANIM: animations only start once the wires exist, so everything begins in the same frame */
       data-ready={wires.items.length > 0 ? "true" : "false"}
-      className={`${styles.section} w-full bg-(--bg) px-4 py-[clamp(40px,7vw,88px)] font-(family-name:--body) text-(--fg) antialiased scheme-dark`}
+      className={`${styles.section} w-full bg-(--bg) px-4 py-[clamp(2.5rem,calc(5.455vw+1.409rem),5.5rem)] font-(family-name:--body) text-(--fg) antialiased scheme-dark`}
       aria-labelledby="ats-score-title"
     >
       <div className="mx-auto flex min-w-75 max-w-250 flex-col items-center">
-        <header className="mb-[clamp(32px,6vw,64px)] text-center">
+        <header className="mb-[clamp(2rem,calc(3.636vw+1.273rem),4rem)] text-center">
           <h2
-            className="font-(family-name:--display) text-[clamp(22px,5.2vw,38px)] font-bold leading-h2 text-balance bg-[linear-gradient(90deg,#a855f7_0%,#d8b4fe_28%,#f4f4f5_50%,#a7f3d0_74%,#34d399_100%)] bg-clip-text text-transparent"
+            className="font-(family-name:--display) text-[clamp(1.375rem,calc(1.818vw+1.011rem),2.375rem)] font-bold leading-h2 text-balance bg-[linear-gradient(90deg,#a855f7_0%,#d8b4fe_28%,#f4f4f5_50%,#a7f3d0_74%,#34d399_100%)] bg-clip-text text-transparent"
             id="ats-score-title"
           >
             {title}
           </h2>
-          <p className="mx-auto mt-[clamp(0.6rem,calc(0.376vw+0.412rem),0.75rem)] max-w-175 text-[clamp(0.875rem,calc(0.563vw+0.743rem),1.25rem)] leading-normal text-(--muted) text-balance">
+          <p className="mx-auto mt-[clamp(0.6rem,calc(0.273vw+0.545rem),0.75rem)] max-w-175 text-[clamp(0.875rem,calc(0.682vw+0.739rem),1.25rem)] leading-normal text-(--muted) text-balance">
             {subtitle}
           </p>
         </header>
 
         <div
-          className="relative flex w-full flex-col items-center gap-[clamp(26px,4vw,34px)] min-[1100px]:gap-20"
+          className="relative flex w-full flex-col items-center gap-[clamp(1.625rem,calc(0.909vw+1.443rem),2.125rem)] min-[1100px]:gap-20"
           ref={boardRef}
         >
           {/* ANIM: `relative` + styles.hub (pulse) + the 4 glow layers below */}
           <div
-            className={`${styles.hub} relative w-[clamp(200px,52%,300px)] rounded-lg border-5 border-solid border-transparent px-4 py-[clamp(20px,3.4vw,34px)] text-center shadow-[0_12px_40px_rgba(0,0,0,0.55)] [background:linear-gradient(var(--hub),var(--hub))_padding-box,linear-gradient(to_bottom,rgb(110_110_115/30%),rgb(110_110_115/15%))_border-box]`}
+            className={`${styles.hub} relative w-[clamp(12.5rem,calc(11.364vw+10.227rem),18.75rem)] rounded-lg border-5 border-solid border-transparent px-4 py-[clamp(1.25rem,calc(1.591vw+0.932rem),2.125rem)] text-center shadow-[0_12px_40px_rgba(0,0,0,0.55)] [background:linear-gradient(var(--hub),var(--hub))_padding-box,linear-gradient(to_bottom,rgb(110_110_115/30%),rgb(110_110_115/15%))_border-box]`}
             ref={hubRef}
           >
             {ORDER.map((k, i) => (
@@ -384,7 +389,9 @@ export default function ATSScore({
                 style={{ "--i": i, "--c": HUB_GLOW[k] }}
               />
             ))}
-            <div className={`${HUB_LABEL} text-[clamp(12px,8vw,16px)]`}>
+            <div
+              className={`${HUB_LABEL} text-[clamp(0.75rem,calc(0.455vw+0.659rem),1rem)]`}
+            >
               ATS Score
             </div>
             {/*
@@ -394,7 +401,7 @@ export default function ATSScore({
               The sr-only span gives screen readers the final value.
             */}
             <div
-              className={`${styles.score} my-[clamp(6px,1.4vw,12px)] font-(family-name:--display) text-[clamp(32px,8vw,44px)] font-bold leading-display tabular-nums text-(--score) [text-shadow:0_0_30px_rgba(124,108,245,0.5)]`}
+              className={`${styles.score} my-[clamp(0.375rem,calc(0.682vw+0.239rem),0.75rem)] font-(family-name:--display) text-[clamp(2rem,calc(1.364vw+1.727rem),2.75rem)] font-bold leading-display tabular-nums text-(--score) [text-shadow:0_0_30px_rgba(124,108,245,0.5)]`}
               style={{
                 "--score-final": score,
                 "--n1": totals[1],
@@ -406,20 +413,22 @@ export default function ATSScore({
               <span className="sr-only">{score}%</span>
               <span className={styles.count} aria-hidden="true" />
             </div>
-            <div className={`${HUB_LABEL} text-[clamp(8px,8vw,12px)] opacity-50`}>
+            <div
+              className={`${HUB_LABEL} text-[clamp(0.5rem,calc(0.455vw+0.409rem),0.75rem)] opacity-50`}
+            >
               Overall Impact
             </div>
           </div>
 
           {/* FIX: items-stretch so every card in a row has the same height */}
-          <div className="grid w-full grid-cols-[minmax(0,275px)_var(--lane)_minmax(0,275px)] items-stretch justify-center gap-y-[clamp(24px,3vw,34px)] min-[1100px]:grid-cols-[repeat(4,minmax(0,275px))] min-[1100px]:justify-between">
+          <div className="grid w-full grid-cols-[minmax(0,275px)_var(--lane)_minmax(0,275px)] items-stretch justify-center gap-y-[clamp(1.5rem,calc(1.136vw+1.273rem),2.125rem)] min-[1100px]:grid-cols-[repeat(4,minmax(0,275px))] min-[1100px]:justify-between">
             {metrics.map((m) => (
               <article
                 key={m.key}
                 data-key={m.key}
                 /* FIX: w-full so justify-self never shrinks the card to its content; max-w keeps the 220px cap */
                 /* ANIM: `relative` (for the ::after glow) + styles.card, --i = firing order */
-                className={`${styles.card} ${CARD_THEME[m.key]} relative flex w-full min-w-0 max-w-[220px] flex-col items-center rounded-[clamp(12px,3vw,16px)] border-[1.5px] border-solid border-[color-mix(in_srgb,var(--c)_75%,transparent)] bg-(--panel) px-[clamp(12px,2.2vw,24px)] pb-[clamp(20px,3vw,30px)] pt-[clamp(20px,3vw,32px)] text-center [box-shadow:0_0_0_4px_color-mix(in_srgb,var(--c)_9%,transparent),0_0_32px_color-mix(in_srgb,var(--c)_26%,transparent)] min-[1100px]:col-auto min-[1100px]:row-auto`}
+                className={`${styles.card} ${CARD_THEME[m.key]} relative flex w-full min-w-0 max-w-55 flex-col items-center rounded-[clamp(0.75rem,calc(0.455vw+0.659rem),1rem)] border-[1.5px] border-solid border-[color-mix(in_srgb,var(--c)_75%,transparent)] bg-(--panel) px-[clamp(0.75rem,calc(1.364vw+0.477rem),1.5rem)] pb-[clamp(1.25rem,calc(1.136vw+1.023rem),1.875rem)] pt-[clamp(1.25rem,calc(1.364vw+0.977rem),2rem)] text-center [box-shadow:0_0_0_4px_color-mix(in_srgb,var(--c)_9%,transparent),0_0_32px_color-mix(in_srgb,var(--c)_26%,transparent)] min-[1100px]:col-auto min-[1100px]:row-auto`}
                 style={{ "--i": ORDER.indexOf(m.key) }}
                 ref={(el) => {
                   if (el) cardRefs.current[m.key] = el;
@@ -430,22 +439,24 @@ export default function ATSScore({
                   wrapper's padding; the spinning conic ring + dim border are drawn by styles.ring.
                 */}
                 <div
-                  className={`${styles.ring} relative grid aspect-square w-[clamp(48px,7vw,68px)] place-items-center overflow-hidden rounded-[clamp(8px,1.8vw,12px)] p-0.5 text-(--c)`}
+                  className={`${styles.ring} relative grid aspect-square w-[clamp(3rem,calc(2.273vw+2.545rem),4.25rem)] place-items-center overflow-hidden rounded-[clamp(0.5rem,calc(0.455vw+0.409rem),0.75rem)] p-0.5 text-(--c)`}
                   aria-hidden="true"
                 >
-                  <div className="relative z-10 grid place-items-center place-self-stretch rounded-[calc(clamp(8px,1.8vw,12px)-2px)] bg-[color-mix(in_srgb,var(--c)_10%,#0d0d0d)]">
-                    <i className={`${ICONS[m.key]} text-[clamp(1.2rem,calc(0.682vw+0.864rem),2.3rem)]`}></i>
+                  <div className="relative z-10 grid place-items-center place-self-stretch rounded-[clamp(0.375rem,calc(0.455vw+0.284rem),0.625rem)] bg-[color-mix(in_srgb,var(--c)_10%,#0d0d0d)]">
+                    <i
+                      className={`${ICONS[m.key]} text-[clamp(1.2rem,calc(2vw+0.8rem),2.3rem)]`}
+                    ></i>
                   </div>
                 </div>
                 {/* FIX: min-h = 2 lines, so a 2-line title ("Experience Relevance") no longer pushes its % and bar down */}
-                <h3 className="mt-[clamp(10px,2vw,12px)] flex min-h-[2.5em] items-center justify-center text-[clamp(14px,2.2vw,18px)] font-semibold leading-tight text-white text-balance">
+                <h3 className="mt-[clamp(0.625rem,calc(0.227vw+0.58rem),0.75rem)] flex min-h-[2.5em] items-center justify-center text-[clamp(0.875rem,calc(0.455vw+0.784rem),1.125rem)] font-semibold leading-tight text-white text-balance">
                   {m.title}
                 </h3>
-                <div className="mb-[clamp(8px,1.6vw,14px)] mt-[clamp(16px,2vw,22px)] font-(family-name:--display) text-[clamp(20px,5vw,28px)] font-bold leading-none tabular-nums text-(--c)">
+                <div className="mb-[clamp(0.5rem,calc(0.682vw+0.364rem),0.875rem)] mt-[clamp(1rem,calc(0.682vw+0.864rem),1.375rem)] font-(family-name:--display) text-[clamp(1.25rem,calc(0.909vw+1.068rem),1.75rem)] font-bold leading-none tabular-nums text-(--c)">
                   {m.value}%
                 </div>
                 <div
-                  className="h-[clamp(6px,2vw,9px)] w-full overflow-hidden rounded-full bg-[color-mix(in_srgb,var(--c)_12%,#151515)]"
+                  className="h-[clamp(0.375rem,calc(0.341vw+0.307rem),0.5625rem)] w-full overflow-hidden rounded-full bg-[color-mix(in_srgb,var(--c)_12%,#151515)]"
                   role="progressbar"
                   aria-label={m.title}
                   aria-valuemin={0}
@@ -457,7 +468,7 @@ export default function ATSScore({
                     style={{ "--v": `${m.value}%` }}
                   />
                 </div>
-                <p className="mt-[clamp(12px,2vw,16px)] text-[clamp(11.5px,1.5vw,14.5px)] leading-[1.4] text-(--muted) text-pretty">
+                <p className="mt-[clamp(0.75rem,calc(0.455vw+0.659rem),1rem)] text-[clamp(0.719rem,calc(0.341vw+0.651rem),0.906rem)] leading-[1.4] text-(--muted) text-pretty">
                   {m.description}
                 </p>
               </article>
