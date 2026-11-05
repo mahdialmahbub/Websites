@@ -20,22 +20,39 @@ const Language = () => {
   } = useSection("languages");
   const { addItem, removeItem, updateItem } = actions;
   const [text, setText] = useState("");
+  const [notice, setNotice] = useState("");
 
   const atMax = items.length >= L.max;
 
   const add = () => {
     const name = text.trim();
     if (!name || atMax) return;
-    if (!items.some((item) => item.name.toLowerCase() === name.toLowerCase())) {
-      dispatch(
-        addItem({
-          section: "languages",
-          values: { name: name.slice(0, L.name) },
-        }),
-      );
+
+    if (items.some((item) => item.name.toLowerCase() === name.toLowerCase())) {
+      setText("");
+      setNotice(`"${name}" is already in your list`);
+      return;
     }
+
+    dispatch(
+      addItem({
+        section: "languages",
+        values: { name: name.slice(0, L.name) },
+      }),
+    );
     setText("");
+    setNotice(
+      items.length + 1 >= L.max ? `You can add up to ${L.max} languages` : "",
+    );
   };
+
+  // Only one message at a time: section error > add notice
+  const message = sectionError
+    ? { type: "error", text: sectionError }
+    : notice
+      ? { type: "error", text: notice }
+      : null;
+  const isError = message?.type === "error";
 
   return (
     <div className="flex flex-col gap-space-7">
@@ -47,13 +64,17 @@ const Language = () => {
           maxLength={L.name}
           disabled={atMax}
           value={text}
-          onChange={(event) => setText(event.target.value)}
+          onChange={(event) => {
+            setText(event.target.value);
+            if (notice) setNotice("");
+          }}
           onKeyDown={(event) => {
             if (event.key === "Enter") {
               event.preventDefault();
               add();
             }
           }}
+          validation={notice ? "error" : "default"}
         />
         <Button
           type="button"
@@ -62,7 +83,7 @@ const Language = () => {
           icon="fi fi-rr-plus-small"
           disabled={atMax}
           onClick={add}
-          className="text-green-500 bg-green-500/5 hover:bg-green-500/10"
+          className="text-green-500 bg-green-500/5 hover:bg-green-500/10 text-[24px]"
         ></Button>
       </div>
 
@@ -153,16 +174,17 @@ const Language = () => {
         </ul>
       )}
 
-      {sectionError && (
-        <p role="alert" className="text-small text-red-600">
-          {sectionError}
-        </p>
-      )}
-
-      <div className="p-[clamp(0.5rem,calc(0.751vw+0.324rem),1rem)] bg-blue-500/5 text-blue-500 text-center rounded-[clamp(0.5rem,calc(0.376vw+0.412rem),0.75rem)] text-[clamp(0.75rem,calc(0.188vw+0.706rem),0.875rem)]">
+      {/* tip box: shows the message when there is one, otherwise the tip */}
+      <div
+        role={message ? "alert" : undefined}
+        className={`p-[clamp(0.5rem,calc(0.751vw+0.324rem),1rem)] text-center rounded-[clamp(0.5rem,calc(0.376vw+0.412rem),0.75rem)] text-[clamp(0.75rem,calc(0.188vw+0.706rem),0.875rem)] ${
+          isError ? "bg-red-500/5 text-red-600" : "bg-blue-500/5 text-blue-500"
+        }`}
+      >
         <p className="leading-[clamp(1.25rem,calc(0.188vw+1.206rem),1.375rem)]">
-          Tip: Highlight your experience, strongest skills, and what you can
-          bring to the role. Keep it clear, specific, and relevant to the job.
+          {message
+            ? message.text
+            : "Tip: Highlight your experience, strongest skills, and what you can bring to the role. Keep it clear, specific, and relevant to the job."}
         </p>
       </div>
     </div>

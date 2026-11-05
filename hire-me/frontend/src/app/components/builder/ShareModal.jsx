@@ -51,7 +51,7 @@ const share = override?.forResume === resumeId && override ? override.share : re
   const content = store.getState().builder.content;
 
   return (
-    <Modal open={open} onClose={onClose} title="Your resume is ready" titleHidden wide>
+    <Modal open={open} onClose={onClose} title=""  >
       <FinalPreviewModal
         shareUrl={share.url ?? ""}
         sharingOn={Boolean(share.enabled && share.url)}

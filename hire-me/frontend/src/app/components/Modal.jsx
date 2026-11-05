@@ -63,7 +63,6 @@ export default function Modal({
   onClose,
   title,
   titleHidden = false,
-  wide = false,
   children,
   className = "",
 }) {

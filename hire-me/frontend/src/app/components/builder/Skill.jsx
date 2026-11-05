@@ -44,8 +44,11 @@ const Skill = () => {
       }).unwrap();
       setIdeas(result.keywords);
     } catch (error) {
+      console.log("keyword ideas error:", error);
       setIdeasError(
-        error?.message || "Could not get keyword ideas. Please try again.",
+        error?.data?.message ||
+          error?.message ||
+          "Could not get keyword ideas. Please try again.",
       );
     }
   };
@@ -94,6 +97,16 @@ const Skill = () => {
     );
   };
 
+  // Only one message at a time: ideas error > section error > add notice
+  const message = ideasError
+    ? { type: "error", text: ideasError }
+    : sectionError
+      ? { type: "error", text: sectionError }
+      : notice
+        ? { type: "error", text: notice }
+        : null;
+  const isError = message?.type === "error";
+
   return (
     <div className="flex flex-col gap-space-7">
       {/* input and add button */}
@@ -104,7 +117,10 @@ const Skill = () => {
           maxLength={LIMITS.skills.length}
           disabled={atMax}
           value={text}
-          onChange={(event) => setText(event.target.value)}
+          onChange={(event) => {
+            setText(event.target.value);
+            if (notice) setNotice("");
+          }}
           onKeyDown={(event) => {
             if (event.key === "Enter") {
               event.preventDefault();
@@ -112,7 +128,6 @@ const Skill = () => {
             }
           }}
           validation={notice ? "error" : "default"}
-          helperText={notice || undefined}
         />
         <Button
           type="button"
@@ -126,11 +141,14 @@ const Skill = () => {
       </div>
 
       {skills.length === 0 ? (
-        <div className="flex gap-space-2 text-neutral-500/70">
+        <div className="flex gap-space-2 text-neutral-500/70 -mt-2">
           No skills yet. Add relevant skills.
         </div>
       ) : (
-        <ul aria-label="Your skills" className="flex flex-wrap gap-space-3">
+        <ul
+          aria-label="Your skills"
+          className="flex flex-wrap gap-space-3 -mt-2"
+        >
           {skills.map((skill) => (
             <li key={skill}>
               <Tabs
@@ -166,11 +184,6 @@ const Skill = () => {
                 : "Get keyword ideas"}
           </Button>
         </div>
-        {ideasError && (
-          <p role="alert" className="text-small text-red-600">
-            {ideasError}
-          </p>
-        )}
         {visibleIdeas.length > 0 && (
           <ul
             aria-label="Keyword ideas. Add the ones you really have."
@@ -189,16 +202,17 @@ const Skill = () => {
         )}
       </div>
 
-      {sectionError && (
-        <p role="alert" className="text-small text-red-600">
-          {sectionError}
-        </p>
-      )}
-
-      <div className="p-[clamp(0.5rem,calc(0.751vw+0.324rem),1rem)] bg-blue-500/5 text-blue-500 text-center rounded-[clamp(0.5rem,calc(0.376vw+0.412rem),0.75rem)] text-[clamp(0.75rem,calc(0.188vw+0.706rem),0.875rem)]">
+      {/* tip box: shows the message when there is one, otherwise the tip */}
+      <div
+        role={message ? "alert" : undefined}
+        className={`p-[clamp(0.5rem,calc(0.751vw+0.324rem),1rem)] text-center rounded-[clamp(0.5rem,calc(0.376vw+0.412rem),0.75rem)] text-[clamp(0.75rem,calc(0.188vw+0.706rem),0.875rem)] ${
+          isError ? "bg-red-500/5 text-red-600" : "bg-blue-500/5 text-blue-500"
+        }`}
+      >
         <p className="leading-[clamp(1.25rem,calc(0.188vw+1.206rem),1.375rem)]">
-          Tip: Highlight your experience, strongest skills, and what you can
-          bring to the role. Keep it clear, specific, and relevant to the job.
+          {message
+            ? message.text
+            : "Tip: Highlight your experience, strongest skills, and what you can bring to the role. Keep it clear, specific, and relevant to the job."}
         </p>
       </div>
     </div>
