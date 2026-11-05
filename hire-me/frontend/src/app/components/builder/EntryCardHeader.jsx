@@ -97,11 +97,6 @@ const EntryCardHeader = ({
                 {badge}
               </span>
             )}
-            {hasError && (
-              <span className="rounded-full bg-red-500/10 px-2 py-0.5 text-caption font-medium leading-none text-red-600">
-                Fix errors
-              </span>
-            )}
           </span>
           {subtitle && (
             <span className="mt-0.5 block text-small sm:text-body text-neutral-600 wrap-break-word">

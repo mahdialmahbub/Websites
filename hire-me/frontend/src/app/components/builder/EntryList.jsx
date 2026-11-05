@@ -134,7 +134,7 @@ export default function EntryList({
   };
 
   return (
-    <div className="flex flex-col gap-space-7">
+    <div className="flex flex-col gap-4">
       {items.map((item, index) => {
         const isOpen = openId === item.id;
         const hasError = errorIds.includes(item.id);
@@ -211,7 +211,7 @@ export default function EntryList({
         icon="fi fi-rr-plus-small"
         disabled={atMax}
         onClick={() => dispatch(addItem({ section }))}
-        className="bg-green-500/5 text-green-500 hover:bg-green-500/10 w-full"
+        className="bg-green-500/5 text-green-500 hover:bg-green-500/10 w-full mt-4"
       >
         {items.length === 0
           ? `Add ${entryLabel}`

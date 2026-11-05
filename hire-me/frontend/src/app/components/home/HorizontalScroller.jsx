@@ -181,7 +181,7 @@ export default function HorizontalScroller({
           motion-reduce:scroll-auto
           *:shrink-0 *:snap-start
           [-ms-overflow-style:none]
-          [scrollbar-width:none]
+          scrollbar-none
           [&::-webkit-scrollbar]:hidden
           ${className}
         `}

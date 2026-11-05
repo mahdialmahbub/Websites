@@ -17,7 +17,7 @@ const FinalPreview = () => {
     <div
       role="img"
       aria-label="First page of your resume"
-      className="md:max-w-135.5 sm:max-w-95 w-full aspect-210/297 overflow-hidden bg-white shadow-[0_12px_16px_rgba(0,0,0,0.12)] rounded-[13px] pointer-events-none select-none sticky top-[clamp(0.5rem,calc(2vw+0.2rem),2rem)] max-h-max"
+      className="md:max-w-135.5 sm:max-w-95 w-full aspect-210/297 overflow-hidden bg-white shadow-[0_6px_8px_rgba(0,0,0,0.12)] md:shadow-[0_12px_16px_rgba(0,0,0,0.12)] rounded-[13px] pointer-events-none select-none md:sticky md:top-0 max-h-max"
     >
       <ResumePreview
         template={getTemplate(design.templateId)}

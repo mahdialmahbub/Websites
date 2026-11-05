@@ -36,7 +36,7 @@ function ReviewBody({ resumeId, isGuest, onDone }) {
 /** The review dialog shown after every Generate. Closing it any way (Skip, Escape, X) just continues the flow. */
 export default function ReviewModal({ open, resumeId, isGuest, onDone }) {
   return (
-    <Modal open={open} onClose={onDone} title="How was your experience?" titleHidden className="max-w-[40rem]">
+    <Modal open={open} onClose={onDone} title="How was your experience?" titleHidden className="max-w-160">
       <ReviewBody resumeId={resumeId} isGuest={isGuest} onDone={onDone} />
     </Modal>
   );

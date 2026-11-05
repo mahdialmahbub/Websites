@@ -79,10 +79,10 @@ const FinalPreviewModal = ({
   };
 
   return (
-    <div className="w-full flex max-md:flex-col gap-[clamp(1.5rem,calc(2.909vw+0.818rem),3rem)] md:*:flex-1 max-w-225">
+    <div className="w-full flex max-md:flex-col gap-[clamp(2.2rem,calc(2.909vw+0.818rem),2rem)] md:*:flex-1 max-w-225 max-md:items-center">
       <FinalPreview />
       <section className="flex flex-col items-center *:w-full">
-        <h1 className="font-primary font-semibold text-[clamp(1.375rem,calc(0.727vw+1.205rem),1.75rem)] mb-[clamp(0.5rem,calc(0.485vw+0.386rem),0.75rem)]">
+        <h1 className="font-primary font-semibold text-[clamp(1.375rem,calc(0.727vw+1.205rem),1.75rem)] mb-[clamp(0.375rem,calc(0.227vw+0.33rem),0.5rem)]">
           Your Resume is Ready
         </h1>
         <p className="text-neutral-500 text-[clamp(0.875rem,calc(0.242vw+0.818rem),1rem)] mb-[clamp(1.5rem,calc(0.97vw+1.273rem),2rem)]">
@@ -90,7 +90,7 @@ const FinalPreviewModal = ({
           a polished copy for your next opportunity.
         </p>
 
-        <div className="flex items-center gap-space-4 max-sm:flex-col max-sm:*:w-full sm:*:flex-1 mb-space-4">
+        <div className="flex items-center gap-space-4 max-sm:flex-col max-sm:*:w-full sm:*:flex-1 mb-space-7">
           <Button
             icon={icons.resume}
             onClick={onDownload}

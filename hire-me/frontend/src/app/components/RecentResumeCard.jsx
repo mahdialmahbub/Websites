@@ -88,7 +88,7 @@ const RecentResumeCard = ({
           {title}
         </h4>
 
-        <p className="mb-2.5 line-clamp-2 text-caption sm:text-small">
+        <p className="mb-2.5 line-clamp-2 text-caption sm:text-small text-neutral-500">
           {subtitle}
         </p>
 
@@ -100,16 +100,6 @@ const RecentResumeCard = ({
             <span className="flex items-center gap-space-1 rounded-full bg-violet-500/5 px-space-3 py-1.5 text-nowrap font-primary text-[10px] font-medium text-violet-500/80">
               <i className={icons.resume} aria-hidden="true" />
               ATS {atsScore}/100
-            </span>
-          )}
-          {statusLabel && (
-            <span className="rounded-full bg-neutral-500/5 px-space-3 py-1.5 text-nowrap font-primary text-[10px] font-medium text-neutral-500">
-              {statusLabel}
-            </span>
-          )}
-          {shared && (
-            <span className="rounded-full bg-green-500/5 px-space-3 py-1.5 text-nowrap font-primary text-[10px] font-medium text-green-500">
-              Shared
             </span>
           )}
         </div>

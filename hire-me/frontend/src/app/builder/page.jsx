@@ -357,7 +357,7 @@ function BuilderScreen() {
                       className={`${saveStatus === "saving" ? "fi fi-rr-loading animate-spin" : "fi fi-rr-check-circle"}`}
                       aria-hidden="true"
                     ></i>
-                    <span >
+                    <span>
                       {saveStatus === "saving" ? "Saving…" : "Saved to Draft"}
                     </span>
                   </span>
