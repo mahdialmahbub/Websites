@@ -116,7 +116,7 @@ export default function AiEnhanceButton({ section, itemId, field }) {
           aria-busy={isLoading}
           className="text-orange-500 hover:text-orange-600"
         >
-          <span className="hidden sm:inline">{label}</span>
+          <span className="">{label}</span>
         </Button>
       </div>
     </div>

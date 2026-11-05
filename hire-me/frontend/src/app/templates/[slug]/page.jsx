@@ -67,11 +67,10 @@ export default async function TemplatePage({ params }) {
         <nav aria-label="back">
           <Link
             href="/templates"
-            className="h-11 flex items-center gap-[clamp(0.375rem,calc(0.188vw+0.331rem),0.5rem)] text-[clamp(0.8125rem,calc(0.282vw+0.746rem),1rem)] font-primary font-medium max-w-max"
+            className="h-11 flex items-center gap-[clamp(0.375rem,calc(0.188vw+0.331rem),0.5rem)] text-[clamp(0.8125rem,calc(0.282vw+0.746rem),1rem)] font-primary font-medium text-neutral-500"
           >
-            <Button variant="text" icon={icons.left}>
-              Back
-            </Button>
+            <i className="fi fi-rr-arrow-small-left text-[clamp(1rem,calc(0.563vw+0.868rem),1.375rem)]"></i>
+            Back to templates
           </Link>
         </nav>
       </div>
@@ -120,7 +119,10 @@ export default async function TemplatePage({ params }) {
       </article>
 
       {related.length > 0 && (
-        <section aria-labelledby="related-heading" className="space-y-[clamp(2rem,calc(1.364vw+1.727rem),2.75rem)] mt-[clamp(1.25rem,calc(-1.364vw+2.273rem),2rem)]">
+        <section
+          aria-labelledby="related-heading"
+          className="space-y-[clamp(2rem,calc(1.364vw+1.727rem),2.75rem)] mt-[clamp(1.25rem,calc(-1.364vw+2.273rem),2rem)]"
+        >
           <h2
             id="related-heading"
             className="font-primary text-[clamp(1.125rem,calc(0.939vw+0.905rem),1.75rem)] font-medium text-neutral-500 leading-0.5"

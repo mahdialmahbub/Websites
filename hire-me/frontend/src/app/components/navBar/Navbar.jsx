@@ -16,7 +16,7 @@ const Navbar = () => {
       <div className="flex items-center justify-between h-full max-w-300 mx-auto px-[clamp(1rem,calc(6.01vw-0.41rem),5rem)]">
         {/* Logo */}
         <Link href={"/"}>
-          <Logo className="h-[clamp(1.75rem,calc(1.69vw+1.35rem),2.875rem)]" />
+          <Logo className="h-[clamp(2rem,calc(1.69vw+1.35rem),2.875rem)]" />
         </Link>
 
         {/* Navigation Links */}

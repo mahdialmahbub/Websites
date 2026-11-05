@@ -52,7 +52,7 @@ const PersonalInformation = () => {
         </p>
       )}
 
-      <div className="flex flex-col items-start gap-space-8 w-full">
+      <div className="flex flex-col items-start gap-7 w-full">
         <Input
           label="Full Name"
           labelIcon="fi fi-rr-user"

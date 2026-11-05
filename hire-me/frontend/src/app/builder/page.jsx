@@ -351,9 +351,15 @@ function BuilderScreen() {
               {saveStatus === "saving" || saveStatus === "saved" ? (
                 <div className="flex justify-end -mb-space-4">
                   <span
-                    className={`${saveStatus === "saving" ? "text-neutral-500/70" : "text-green-500"} `}
+                    className={`flex max-w-max gap-1 items-center text-small  ${saveStatus === "saving" ? "text-neutral-500/70" : "text-green-500"}`}
                   >
-                    {saveStatus === "saving" ? "Saving…" : "Saved to Draft"}
+                    <i
+                      className={`${saveStatus === "saving" ? "fi fi-rr-loading animate-spin" : "fi fi-rr-check-circle"}`}
+                      aria-hidden="true"
+                    ></i>
+                    <span >
+                      {saveStatus === "saving" ? "Saving…" : "Saved to Draft"}
+                    </span>
                   </span>
                 </div>
               ) : (
@@ -362,8 +368,13 @@ function BuilderScreen() {
               {/* step navigation */}
               <div className="flex items-center *:flex-1 gap-[clamp(1rem,calc(0.939vw+0.780rem),1.625rem)]">
                 {prevStep && (
-                  <Button variant="text" icon={icons.left} onClick={handleBack}>
-                    {prevStep.title}
+                  <Button
+                    variant="text"
+                    icon={icons.left}
+                    onClick={handleBack}
+                    className="max-sm:text-[22px]"
+                  >
+                    <span className="hidden sm:inline">{prevStep.title}</span>
                   </Button>
                 )}
 
@@ -371,6 +382,7 @@ function BuilderScreen() {
                   variant="secondary"
                   iconPosition="right"
                   icon={!nextStep ? icons.resume : icons.right}
+                  className="max-sm:text-[22px]"
                   onClick={handleNext}
                   loading={isGenerating}
                   disabled={isGenerating}

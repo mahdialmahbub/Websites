@@ -26,12 +26,6 @@ const contactInfo = [
 /*  Building blocks                                                           */
 /* -------------------------------------------------------------------------- */
 
-/**
- * Logo that links back to the home page.
- *
- * @param {Object} props
- * @param {string} [props.className] Extra classes for positioning the link.
- */
 const BrandLogo = ({ className = "" }) => (
   <Link href="/" aria-label="HireMe home" className={className}>
     <Logo
@@ -41,7 +35,6 @@ const BrandLogo = ({ className = "" }) => (
   </Link>
 );
 
-/** Phone / email / address list shown in the "Contact" view. */
 const ContactList = () => (
   <div className="w-full">
     <h2
@@ -71,12 +64,6 @@ const ContactList = () => (
  * One control for both directions:
  *  - form view    -> "Need Help? Contact Support"
  *  - contact view -> "Back to Login"
- *
- * @param {Object} props
- * @param {boolean} props.showContact Whether the contact view is open.
- * @param {() => void} props.onToggle Switches between form and contact view.
- * @param {"start" | "center"} [props.align] Horizontal alignment of the control.
- * @param {string} [props.className] Extra classes for the wrapper.
  */
 const ViewToggle = ({
   showContact,
@@ -119,17 +106,10 @@ const ViewToggle = ({
   );
 };
 
-/**
- * Left card (sm and up): image + intro / contact info.
- *
- * @param {Object} props
- * @param {{ title: string, description: string }} props.intro Intro copy shown in the form view.
- * @param {boolean} props.showContact Whether the contact view is open.
- * @param {() => void} props.onToggle Switches between form and contact view.
- */
+/** Left card (sm and up): image + intro / contact info. */
 const SidePanel = ({ intro, showContact, onToggle }) => (
   <aside
-    className={`relative hidden min-h-0 flex-1/3 flex-col overflow-hidden sm:flex ${fluid.panelGap} ${fluid.panelRadius} ${fluid.panelMinW} ${fluid.panelPad}`}
+    className={`relative hidden flex-1/3 flex-col overflow-hidden sm:flex ${fluid.panelGap} ${fluid.panelRadius} ${fluid.panelMinW} ${fluid.panelPad}`}
   >
     <Image
       alt=""
@@ -145,34 +125,33 @@ const SidePanel = ({ intro, showContact, onToggle }) => (
       }`}
     />
 
-    <BrandLogo className="relative z-10 shrink-0 self-start" />
+    <BrandLogo className="relative z-10 self-start" />
 
-    {/* Scrolls internally if the panel is too short, instead of growing */}
-    <div className="relative z-10 flex min-h-0 flex-1 flex-col overflow-y-auto">
-      <div
-        className={`w-full ${showContact ? "my-auto" : "mt-auto"}`}
-      >
-        {showContact ? (
-          <ContactList />
-        ) : (
-          <div className={`flex w-full flex-col ${fluid.panelStack}`}>
-            <h2
-              className={`font-primary font-semibold text-background ${fluid.panelTitle}`}
-            >
-              {intro.title}
-            </h2>
-            <p className={`text-neutral-300 ${fluid.panelDesc}`}>
-              {intro.description}
-            </p>
-          </div>
-        )}
-      </div>
+    <div
+      className={`relative z-10 flex min-h-0 flex-1 flex-col ${
+        showContact ? "justify-center" : "justify-end"
+      }`}
+    >
+      {showContact ? (
+        <ContactList />
+      ) : (
+        <div className={`flex w-full flex-col ${fluid.panelStack}`}>
+          <h2
+            className={`font-primary font-semibold text-background ${fluid.panelTitle}`}
+          >
+            {intro.title}
+          </h2>
+          <p className={`text-neutral-300 ${fluid.panelDesc}`}>
+            {intro.description}
+          </p>
+        </div>
+      )}
     </div>
 
     <ViewToggle
       showContact={showContact}
       onToggle={onToggle}
-      className="relative z-10 shrink-0"
+      className="relative z-10"
     />
   </aside>
 );
@@ -182,16 +161,7 @@ const SidePanel = ({ intro, showContact, onToggle }) => (
 /* -------------------------------------------------------------------------- */
 
 /**
- * Shared layout for the auth pages.
- *
- * Height behaviour:
- *  - below lg : locked to the screen height (h-dvh). Overflowing content
- *               scrolls inside the form area, the page itself never grows.
- *  - lg and up: at least the screen height, can grow with the content.
- *
- * @param {Object} props
- * @param {{ title: string, description: string }} props.intro Title and description for the side panel.
- * @param {React.ReactNode} props.children The page form.
+ * @param {{ intro: { title: string, description: string }, children: React.ReactNode }} props
  */
 const AuthLayout = ({ intro, children }) => {
   // Single source of truth for the "Contact" view:
@@ -201,7 +171,7 @@ const AuthLayout = ({ intro, children }) => {
   const toggleContact = () => setShowContact((prev) => !prev);
 
   return (
-    <main className="relative h-dvh  bg-background ">
+    <main className="relative min-h-dvh bg-background">
       {/* Mobile: full-screen background + overlay */}
       <div className="absolute inset-0 sm:hidden">
         <Image
@@ -221,7 +191,7 @@ const AuthLayout = ({ intro, children }) => {
       </div>
 
       {/* Content container */}
-      <div className="relative mx-auto flex h-full max-w-300 items-stretch justify-center gap-[clamp(1.5rem,4vw,2.5rem)] px-[clamp(1rem,4vw,2.5rem)] py-[clamp(1.5rem,4vw,2.5rem)] lg:h-auto lg:min-h-dvh">
+      <div className="relative mx-auto flex min-h-dvh max-w-300 items-stretch justify-center gap-[clamp(1.5rem,4vw,2.5rem)] px-[clamp(1rem,4vw,2.5rem)] py-[clamp(1.5rem,4vw,2.5rem)]">
         <SidePanel
           intro={intro}
           showContact={showContact}
@@ -229,33 +199,29 @@ const AuthLayout = ({ intro, children }) => {
         />
 
         {/* Right: form (light text on mobile image, dark text on desktop) */}
-        <section className="relative flex min-h-0 flex-2/3 flex-col">
-          {/* Mobile logo (pinned, does not scroll) */}
+        <section
+          className={`relative flex flex-2/3 flex-col items-center justify-center  `}
+        >
+          {/* Mobile logo */}
           <BrandLogo
-            className={`absolute left-1/2 z-10 -translate-x-1/2 sm:hidden ${fluid.mobileTop}`}
+            className={`sm:hidden`}
           />
 
-          {/* Scroll area: only this part scrolls when content is taller than the screen */}
-          <div
-            className={`flex min-h-0 flex-1 flex-col items-center overflow-y-auto lg:overflow-visible ${fluid.mobilePb} ${fluid.mobilePt}`}
-          >
-            {/* my-auto = centered when short, top-aligned (no clipping) when tall */}
-            <div className="my-auto w-full max-w-md">
-              {/* Mobile-only contact view (desktop shows it inside the side panel) */}
-              {showContact && (
-                <div className="z-10 w-full sm:hidden">
-                  <ContactList />
-                </div>
-              )}
-
-              {/* Form: always visible on desktop, hidden on mobile while contact is open */}
-              <div className={showContact ? "max-sm:hidden" : ""}>
-                {children}
-              </div>
+          {/* Mobile-only contact view (desktop shows it inside the side panel) */}
+          {showContact && (
+            <div className="z-10 w-full max-w-md sm:hidden">
+              <ContactList />
             </div>
+          )}
+
+          {/* Form: always visible on desktop, hidden on mobile while contact is open */}
+          <div
+            className={`w-full max-w-md ${showContact ? "max-sm:hidden" : ""}`}
+          >
+            {children}
           </div>
 
-          {/* Mobile-only toggle (pinned to the bottom, does not scroll) */}
+          {/* Mobile-only toggle, pinned to the bottom */}
           <ViewToggle
             showContact={showContact}
             onToggle={toggleContact}

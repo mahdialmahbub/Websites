@@ -53,6 +53,5 @@ export const fluid = {
   // mobile-only offsets (375 -> 640): room for the pinned logo / toggle
   mobilePt: "max-sm:pt-[clamp(6rem,4.585rem_+_6.038vw,7rem)]", // 96 -> 112
   mobilePb: "max-sm:pb-[clamp(5rem,3.585rem_+_6.038vw,6rem)]", // 80 -> 96
-  mobileTop: "top-[clamp(1.5rem,0.792rem_+_3.019vw,2rem)]", // 24 -> 32
   mobileBottom: "bottom-[clamp(1.5rem,0.792rem_+_3.019vw,2rem)]", // 24 -> 32
 };

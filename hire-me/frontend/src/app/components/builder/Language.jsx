@@ -11,7 +11,13 @@ const SELECT =
   "block h-10 w-full rounded-md border border-neutral-300 bg-white px-3 text-[length:var(--text-body,1rem)] text-neutral-950 outline-none hover:border-neutral-400 focus:border-indigo-400 focus:ring-[3px] focus:ring-indigo-200";
 
 const Language = () => {
-  const { value: items, dispatch, actions, field, sectionError } = useSection("languages");
+  const {
+    value: items,
+    dispatch,
+    actions,
+    field,
+    sectionError,
+  } = useSection("languages");
   const { addItem, removeItem, updateItem } = actions;
   const [text, setText] = useState("");
 
@@ -21,7 +27,12 @@ const Language = () => {
     const name = text.trim();
     if (!name || atMax) return;
     if (!items.some((item) => item.name.toLowerCase() === name.toLowerCase())) {
-      dispatch(addItem({ section: "languages", values: { name: name.slice(0, L.name) } }));
+      dispatch(
+        addItem({
+          section: "languages",
+          values: { name: name.slice(0, L.name) },
+        }),
+      );
     }
     setText("");
   };
@@ -59,25 +70,62 @@ const Language = () => {
         <div className=" flex items-center flex-col gap-[clamp(1rem,calc(0.751vw+0.824rem),1.5rem)]">
           <i className="text-[clamp(6.25rem,calc(3.756vw+5.370rem),8.75rem)] fi fi-rr-languages-world text-neutral-100"></i>
           <p className="text-center text-neutral-300">
-            No languages added yet. Add your language skills and make your resume
-            shine a little brighter!
+            No languages added yet. Add your language skills and make your
+            resume shine a little brighter!
           </p>
         </div>
       ) : (
         <ul className="flex flex-col gap-space-4">
           {items.map((item) => (
-            <li key={item.id} className="flex items-start gap-space-3 max-sm:flex-col">
-              <Input
-                aria-label="Language"
-                maxLength={L.name}
-                value={item.name}
-                onChange={(event) => dispatch(updateItem({ section: "languages", id: item.id, field: "name", value: event.target.value }))}
-                {...field(`${item.id}.name`)}
-              />
+            <li
+              key={item.id}
+              className="flex items-start gap-space-3 max-sm:flex-col pb-4 border-b border-neutral-500/20 last:border-b-0 last:pb-0"
+            >
+              <div className="flex gap-space-3 w-full">
+                <Input
+                  aria-label="Language"
+                  maxLength={L.name}
+                  value={item.name}
+                  className="flex-1"
+                  onChange={(event) =>
+                    dispatch(
+                      updateItem({
+                        section: "languages",
+                        id: item.id,
+                        field: "name",
+                        value: event.target.value,
+                      }),
+                    )
+                  }
+                  {...field(`${item.id}.name`)}
+                />
+                <button
+                  type="button"
+                  aria-label={`Remove ${item.name || "language"}`}
+                  onClick={() =>
+                    dispatch(removeItem({ section: "languages", id: item.id }))
+                  }
+                  className="flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-red-500/5 sm:hidden"
+                >
+                  <i
+                    className="fi fi-rr-trash text-[20px] text-red-500/70"
+                    aria-hidden="true"
+                  ></i>
+                </button>
+              </div>
               <select
                 aria-label={`Level of ${item.name || "this language"}`}
                 value={item.level}
-                onChange={(event) => dispatch(updateItem({ section: "languages", id: item.id, field: "level", value: event.target.value }))}
+                onChange={(event) =>
+                  dispatch(
+                    updateItem({
+                      section: "languages",
+                      id: item.id,
+                      field: "level",
+                      value: event.target.value,
+                    }),
+                  )
+                }
                 className={`${SELECT} sm:max-w-44`}
               >
                 <option value="">Level</option>
@@ -90,10 +138,15 @@ const Language = () => {
               <button
                 type="button"
                 aria-label={`Remove ${item.name || "language"}`}
-                onClick={() => dispatch(removeItem({ section: "languages", id: item.id }))}
-                className="flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-red-500/5"
+                onClick={() =>
+                  dispatch(removeItem({ section: "languages", id: item.id }))
+                }
+                className="flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-red-500/5 max-sm:hidden"
               >
-                <i className="fi fi-rr-trash text-[20px] text-red-500/70" aria-hidden="true"></i>
+                <i
+                  className="fi fi-rr-trash text-[20px] text-red-500/70"
+                  aria-hidden="true"
+                ></i>
               </button>
             </li>
           ))}
