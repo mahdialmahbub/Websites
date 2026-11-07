@@ -33,7 +33,7 @@ const Hero = () => {
 
             <FadeUp
               as="p"
-              delay={0.5}
+              delay={0.2}
               className="text-[clamp(0.875rem,0.5568rem+1.5909vw,1.375rem)] text-black/70 dark:text-white/70 flex items-center justify-center max-w-175 text-center"
             >
               No more juggling multiple tools. GrowthPilot helps you automate,
@@ -41,7 +41,7 @@ const Hero = () => {
             </FadeUp>
           </div>
 
-          <FadeUp delay={0.7}>
+          <FadeUp delay={0.5}>
             <Button text="Start Free Trial" />
           </FadeUp>
         </div>
@@ -52,8 +52,6 @@ const Hero = () => {
         blur
         scale
         duration={3}
-        amount={0.01}
-        delay={1}
         className="shadow-[0_20px_24px_rgba(16,24,40,0.14)] mt-[clamp(2rem,1.2727rem+3.6364vw,4rem)]"
       >
         <Image

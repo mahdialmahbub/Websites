@@ -53,7 +53,7 @@ const Feature = () => {
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-[clamp(1.5rem,1.3182rem+0.9091vw,2rem)]">
         {features.map((feature, i) => (
-          <FadeUp key={i} delay={i * 0.3} duration={2}>
+          <FadeUp key={i} delay={i * 0.1} duration={2}>
           <FeatureCard
             title={feature.title}
             subtitle={feature.subtitle}

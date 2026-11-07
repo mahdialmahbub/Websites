@@ -126,7 +126,7 @@ const MobileMenu = ({
         aria-hidden={!isOpen}
         className={`
           absolute inset-x-0 top-full z-20 mt-3 xl:hidden
-          origin-top flex flex-col gap-5 p-6
+          origin-top flex flex-col gap-5 p-6 left-0
           rounded-[28px] border border-black/10 dark:border-white/10
           bg-[#f8fafc]/80 dark:bg-[#080b10]/80 backdrop-blur-[30px]
           shadow-[0_24px_60px_-20px_rgba(0,0,0,0.25)]

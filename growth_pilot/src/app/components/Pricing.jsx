@@ -141,7 +141,7 @@ const Pricing = () => {
         {plans.map((plan) => (
           <FadeUp
             scale={plan.highlighted}
-            delay={!plan.highlighted && 0.5}
+            delay={!plan.highlighted && 0.2}
             duration={plan.highlighted ? 2.5 : 2}
             key={plan.id}
             className={`relative flex flex-col w-full md:flex-1 rounded-4xl p-[24px] md:p-[32px] gap-[20px] bg-[#f8fafc] dark:bg-[#080b10] transition-[box-shadow,border-color,translate] duration-300 xl:hover:-translate-y-3 ${

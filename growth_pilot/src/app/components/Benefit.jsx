@@ -40,7 +40,7 @@ const Benefit = () => {
         </div>
         {/* Benefit 2 Items */}
         <div className="flex flex-col justify-end px-[16px] pt-[32px] bg-accent4-bg max-md:items-center w-full dark:bg-black">
-          <FadeUp delay={0.5} className=" *:max-md:text-center">
+          <FadeUp delay={0.3} className=" *:max-md:text-center">
             <h3 className="text-[clamp(1.125rem,0.8977rem+1.1364vw,1.75rem)] font-semibold mb-[clamp(0.25rem,0.1591rem+0.4545vw,0.5rem)]">
               Boost Your Conversion Rates
             </h3>
@@ -49,7 +49,7 @@ const Benefit = () => {
               into loyal customers.
             </p>
           </FadeUp>
-          <FadeDown delay={0.5}>
+          <FadeDown delay={0.3}>
             <Image
               src={assets.benefit2}
               alt="benefit image"
@@ -59,14 +59,14 @@ const Benefit = () => {
         </div>
         {/* Benefit 3 Items */}
         <div className="flex flex-col px-[16px] pb-[32px] bg-accent2-bg max-md:items-center w-full dark:bg-black">
-          <FadeUp delay={1}>
+          <FadeUp delay={0.5}>
             <Image
               src={assets.benefit3}
               alt="benefit image"
               className="w-full h-[clamp(12.5rem,8.7727rem+18.6364vw,22.75rem)] rounded-b-full object-cover top-2.5 mb-[clamp(1.5rem,0.5909rem+4.5455vw,4rem)]"
             />
           </FadeUp>
-          <FadeDown delay={1} className=" *:max-md:text-center">
+          <FadeDown delay={0.5} className=" *:max-md:text-center">
             <h3 className="text-[clamp(1.125rem,0.8977rem+1.1364vw,1.75rem)] font-semibold mb-[clamp(0.25rem,0.1591rem+0.4545vw,0.5rem)]">
               All-in-One Simple Platform
             </h3>

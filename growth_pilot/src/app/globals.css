@@ -71,6 +71,8 @@
 
 body {
   font-family: var(--font-work-sans), Arial, Helvetica, sans-serif;
+  max-width: 1400px;
+  min-width: 300px
 }
 
 /* .input, .textarea, .select {
