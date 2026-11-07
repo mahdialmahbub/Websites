@@ -91,7 +91,7 @@ const FadeDown = ({
         ...(scale && { scale: 1 }),
         ...(blur && { filter: "blur(0px)" }),
       }}
-      viewport={{ once, amount, margin: "0px 0px -10% 0px" }}
+      viewport={{ once, amount, margin: "0px 0px -5% 0px" }}
       transition={{ duration, delay, ease: EASE_SMOOTH }}
       className={className}
       {...rest}

@@ -140,7 +140,7 @@ const Footer = () => {
 
             <FadeUp delay={0.6} className="flex flex-col gap-4">
               {footerLinks.companyLinks.map((item, i) => (
-                <FadeUp key={i} delay={i * 0.5}>
+                <FadeUp key={i} delay={i * 0.3}>
                   <Link
                     href={item.href}
                     className="

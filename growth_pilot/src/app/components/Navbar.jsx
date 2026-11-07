@@ -28,10 +28,10 @@ const LOGO_SIZE =
 const Navbar = () => {
   return (
     // Sticky wrapper: keeps the navbar and the mobile menu panel together
-    <div className="top-[8px] md:top-[12px] w-full sticky z-40 mt-[16px] md:mt-7.5">
+    <div className="top-[clamp(0.5rem,calc(0.455vw+0.409rem),0.75rem)] w-full sticky z-40 mt-[clamp(1rem,calc(1.591vw+0.682rem),1.875rem)]">
       <FadeDown
         as="nav"
-        className="relative z-10 w-full py-[12px] px-[16px] md:py-[12px] md:px-[32px] xl:py-[16px] xl:px-20 rounded-full bg-[#f8fafc]/80 dark:bg-[#080b10]/80 border border-black/10 dark:border-white/10 flex items-center justify-between backdrop-blur-[30px]"
+        className="relative z-10 w-full py-[clamp(0.75rem,calc(0.455vw+0.659rem),1rem)] px-[clamp(1rem,calc(7.273vw-0.455rem),5rem)] rounded-full bg-[#f8fafc]/80 dark:bg-[#080b10]/80 border border-black/10 dark:border-white/10 flex items-center justify-between backdrop-blur-[30px]"
       >
         {/* Logo */}
         <Link

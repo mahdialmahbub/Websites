@@ -39,14 +39,14 @@ export const metadata = {
     title: "GrowthPilot — Generate Leads & Grow Your Business",
     description:
       "Data-driven marketing that turns visitors into qualified leads and customers.",
-    images: [{ url: "/og/default.png", width: 1200, height: 630 }],
+    images: [{ url: "/defaultOG.jpg", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "GrowthPilot — Generate Leads & Grow Your Business",
     description:
       "Data-driven marketing that turns visitors into qualified leads and customers.",
-    images: ["/og/default.png"],
+    images: ["/defaultOG.jpg"],
   },
   robots: {
     index: true,
@@ -70,6 +70,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${workSans.variable} antialiased`}>
       <head>
+        <link
+          rel="preconnect"
+          href="https://cdn-uicons.flaticon.com"
+          crossOrigin=""
+        />
         <link
           rel="stylesheet"
           href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
