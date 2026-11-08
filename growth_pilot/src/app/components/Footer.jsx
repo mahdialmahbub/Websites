@@ -194,7 +194,7 @@ const Footer = () => {
         </div>
 
         {/* Social */}
-        <div className="flex justify-between max-md:flex-col space-y-space-md2 items-center mt-6">
+        <div className="flex justify-between max-md:flex-col space-y-space-md2 items-center mt-8">
           <div className="flex items-center gap-3.5">
             {socialIcons.map((icon, index) => (
               <FadeUp key={index} delay={index * 0.2}>

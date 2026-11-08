@@ -68,7 +68,7 @@ export const MobileMenuButton = () => {
 const MobileMenu = ({
   links = [],
   socials = [],
-  ctaText = "Get Started",
+  ctaText = "Login",
   ctaHref = "/sign-up",
 }) => {
   const dispatch = useDispatch();
@@ -131,7 +131,7 @@ const MobileMenu = ({
           bg-[#f8fafc]/80 dark:bg-[#080b10]/80 backdrop-blur-[30px]
           shadow-[0_24px_60px_-20px_rgba(0,0,0,0.25)]
           transition-[opacity,transform,visibility] duration-300
-          ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none max-w-100
+          ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none
           ${
             isOpen
               ? "visible translate-y-0 scale-100 opacity-100"

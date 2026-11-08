@@ -42,7 +42,7 @@ const Testimonial = () => {
   ];
 
   return (
-    <section className="flex flex-col items-center py-[clamp(3rem,1.9091rem+5.4545vw,6rem)] px-[clamp(1rem,-0.0909rem+5.4545vw,4rem)] ">
+    <section className="flex flex-col items-center py-[clamp(3rem,1.9091rem+5.4545vw,6rem)] px-[clamp(1rem,-0.0909rem+5.4545vw,4rem)] " id="customer">
       <style>{`
             @keyframes marqueeScroll {
                 0% { transform: translateX(0%); }

@@ -85,7 +85,7 @@ const Pricing = () => {
   ];
 
   return (
-    <section className="section">
+    <section className="section" id="pricing">
       <SectionHeading
         title={"Choose the Plan That Fits Your Growth"}
         subtitle={
