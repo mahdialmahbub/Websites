@@ -5,12 +5,13 @@ import DarkToggle from "./DarkToggle";
 import Button from "./Button";
 import FadeDown from "./motions/FadeDown";
 import MobileMenu, { MobileMenuButton } from "./MobileMenu";
+import NavLinks from "./NavLinks";
 
 const NAV_LINKS = [
-  { text: "Home", link: "/" },
+  { text: "Home", link: "#home" },
   { text: "Features", link: "#feature" },
+  { text: "Customers", link: "#customers" },
   { text: "Pricing", link: "#pricing" },
-  { text: "Customer", link: "#customer" },
 ];
 
 // TODO: replace the "#" placeholders with your real profile URLs
@@ -60,9 +61,7 @@ const Navbar = () => {
 
         {/* Nav links (desktop) */}
         <div className="flex items-center gap-[12px] text-black dark:text-white max-xl:hidden">
-          {NAV_LINKS.map(({ text, link }) => (
-            <NavLink key={link} text={text} link={link} />
-          ))}
+          <NavLinks links={NAV_LINKS} />
         </div>
 
         {/* Actions */}

@@ -67,7 +67,11 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${workSans.variable} antialiased`}>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${workSans.variable} antialiased`}
+    >
       <head>
         <link
           rel="preconnect"

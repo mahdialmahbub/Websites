@@ -131,7 +131,7 @@ const Pricing = () => {
         >
           Annually
         </span>
-        <span className="text-medium font-semibold text-nowrap text-secondary2 dark:text-white bg-secondary2-bg dark:bg-white/10 px-2.5 py-[4px] rounded-full">
+        <span className="text-medium font-semibold text-nowrap text-accent3 bg-accent3/5 px-2.5 py-[4px] rounded-full">
           Save 20%
         </span>
       </Reveal>

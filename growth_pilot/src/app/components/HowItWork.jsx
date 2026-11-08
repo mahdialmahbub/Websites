@@ -66,7 +66,6 @@ const HowItWork = () => {
             <Image
               src={steps[currentStep].image}
               alt={steps[currentStep].title}
-              
               className="relative z-10 transition-all duration-500 w-[62%] object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.18)] dark:drop-shadow-[0_20px_30px_rgba(0,0,0,0.5)]"
             />
           </div>

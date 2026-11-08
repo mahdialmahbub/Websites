@@ -7,7 +7,7 @@ const FinalCTA = () => {
   return (
     <section
       aria-labelledby="final-cta-heading"
-      className="relative py-[20px] px-[16px] md:p-[48px] xl:px-46.5 xl:py-20"
+      className="relative py-[clamp(1.25rem,calc(3.182vw+0.114rem),5rem)] px-[clamp(1rem,calc(19.318vw-2.864rem),11.625rem)]"
     >
       <GridSpotlight
         className="rounded-[clamp(1rem,0.9091rem+0.4545vw,1.25rem)]
@@ -24,7 +24,7 @@ const FinalCTA = () => {
           className="absolute -top-20 -right-10 h-60 w-70 rounded-full bg-accent5/5 blur-[100px]"
         />
 
-        <div className="relative flex flex-col items-center text-center gap-7 md:gap-8 px-6 py-7 md:px-16 md:py-8 xl:px-24 xl:py-4">
+        <div className="relative flex flex-col items-center text-center gap-[clamp(1.75rem,calc(0.455vw+1.659rem),2rem)] px-[clamp(1.5rem,calc(8.182vw-0.136rem),6rem)] py-[clamp(1rem,calc(-1.364vw+2.023rem),1.75rem)]">
           <FadeUp className="flex flex-col items-center gap-2 max-w-xl">
             <h2
               id="final-cta-heading"

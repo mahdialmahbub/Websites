@@ -8,7 +8,7 @@ import FadeUpText from "./motions/FadeUpText";
 
 const Hero = () => {
   return (
-    <section className="relative flex flex-col items-center w-full pt-[clamp(1.5rem,0.2273rem+6.3636vw,3rem)] pb-[clamp(2.5rem,1.5909rem+4.5455vw,5rem)] px-[clamp(1rem,calc(5.455vw-0.091rem),4rem)]">
+    <section id="home" className="relative flex flex-col items-center w-full pt-[clamp(1.5rem,0.2273rem+6.3636vw,3rem)] pb-[clamp(2.5rem,1.5909rem+4.5455vw,5rem)] px-[clamp(1rem,calc(5.455vw-0.091rem),4rem)]">
       {/* Ambient background glow — adds depth behind the content
       
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-150 h-100 md:w-225 md:h-150 bg-[radial-gradient(ellipse_at_center,var(--color-secondary),transparent_70%)]/12 -z-10 pointer-events-none" /> */}
