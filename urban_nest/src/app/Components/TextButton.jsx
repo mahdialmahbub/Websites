@@ -4,8 +4,8 @@ const TextButton = ({ text, type = "submit", className = "" }) => {
   return (
     <button
       type={type}
-      className={`bg-transparent text-primary-5 block items-center
-        font-primary font-bold text-[18px] text-center cursor-pointer group hover:text-primary-6 underline underline-offset-4 ${className}`}
+      className={`bg-transparent text-primary-6 block items-center
+        font-primary font-bold text-[18px] text-center cursor-pointer group hover:text-primary-7 underline underline-offset-4 ${className}`}
     >
       {text}
     </button>

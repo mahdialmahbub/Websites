@@ -142,8 +142,10 @@ const Sidebar = () => {
           `}
         >
           <Image
-            src={isExpanded ? assets.logo : assets.logo_2}
+            src={isExpanded ? "/logo.png" : "/logo-icon.png"}
             alt="Logo"
+            height={40}
+            width={40}
             priority
             className={`
               h-10

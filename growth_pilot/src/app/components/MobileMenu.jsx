@@ -10,6 +10,7 @@ import Image from "next/image";
 import FadeUp from "./motions/FadeUp";
 import { socialIcons } from "../assets/assets";
 import Button from "./Button";
+import useActiveSection from "../features/ui/useActiveSection";
 
 // Tailwind `xl` breakpoint — the menu is hidden from here up.
 const DESKTOP_QUERY = "(min-width: 1280px)";
@@ -29,12 +30,12 @@ export const MobileMenuButton = () => {
       aria-label={isOpen ? "Close menu" : "Open menu"}
       aria-expanded={isOpen}
       aria-controls="mobile-menu"
-      className="xl:hidden inline-flex items-center justify-center size-9 rounded-full text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/10 active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+      className="xl:hidden inline-flex items-center justify-center size-11 rounded-full text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/10 active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
     >
       {isOpen ? (
         <i className="fi fi-rr-cross-small text-[24px]" aria-hidden="true" />
       ) : (
-        <i className="fi fi-br-menu-burger text-[24px]" aria-hidden="true" />
+        <i className="fi fi-br-menu-burger text-[20px]" aria-hidden="true" />
       )}
     </button>
   );
@@ -68,12 +69,21 @@ export const MobileMenuButton = () => {
 const MobileMenu = ({
   links = [],
   socials = [],
-  ctaText = "Get Started",
+  ctaText = "Login",
   ctaHref = "/sign-up",
 }) => {
   const dispatch = useDispatch();
   const pathname = usePathname();
   const isOpen = useSelector((state) => state.ui.isNavbarOpen);
+  const ids = links.map((l) => l.link.replace("#", ""));
+  const active = useActiveSection(ids);
+
+  const handleLinkClick = () => {
+    // scroll lock age release kori, noile anchor scroll block hote pare
+    // eslint-disable-next-line react-hooks/immutability
+    document.body.style.overflow = "";
+    close();
+  };
 
   const close = useCallback(() => dispatch(closeNavbar()), [dispatch]);
 
@@ -131,7 +141,7 @@ const MobileMenu = ({
           bg-[#f8fafc]/80 dark:bg-[#080b10]/80 backdrop-blur-[30px]
           shadow-[0_24px_60px_-20px_rgba(0,0,0,0.25)]
           transition-[opacity,transform,visibility] duration-300
-          ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none max-w-100
+          ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none
           ${
             isOpen
               ? "visible translate-y-0 scale-100 opacity-100"
@@ -142,7 +152,14 @@ const MobileMenu = ({
         {/* Links */}
         <nav aria-label="Mobile" className="flex flex-col gap-4">
           {links.map(({ text, link }) => (
-            <NavLink key={link} text={text} link={link} block onClick={close} />
+            <NavLink
+              key={link}
+              text={text}
+              link={`/${link}`}
+              block
+              isActive={active === link.replace("#", "")}
+              onClick={handleLinkClick}
+            />
           ))}
         </nav>
 

@@ -42,7 +42,10 @@ const Testimonial = () => {
   ];
 
   return (
-    <section className="flex flex-col items-center py-[clamp(3rem,1.9091rem+5.4545vw,6rem)] px-[clamp(1rem,-0.0909rem+5.4545vw,4rem)] ">
+    <section
+      className="flex flex-col items-center py-[clamp(3rem,1.9091rem+5.4545vw,6rem)] px-[clamp(1rem,-0.0909rem+5.4545vw,4rem)] "
+      id="customers"
+    >
       <style>{`
             @keyframes marqueeScroll {
                 0% { transform: translateX(0%); }
@@ -50,19 +53,19 @@ const Testimonial = () => {
             }
 
             .marquee-inner {
-                animation: marqueeScroll 25s linear infinite;
-            }
+  animation: marqueeScroll 25s linear infinite;
+}
 
             .marquee-reverse {
                 animation-direction: reverse;
             }
 
-            /* Below xl: press (hold) to pause. data-pressed is set by MarqueeTrack */
-            @media (max-width: 79.99rem) {
-                .marquee-inner[data-pressed="true"] {
-                    animation-play-state: paused;
-                }
-            }
+            /* Below md: Faster marquee scroll */
+@media (max-width: 47.99rem) {
+  .marquee-inner {
+    animation-duration: 15s;
+  }
+}
 
             /* xl and above: hover to pause */
             @media (min-width: 80rem) {

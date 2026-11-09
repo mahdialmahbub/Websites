@@ -86,7 +86,7 @@ const FeaturedProperty = () => {
   };
 
   return (
-    <section className="mx-auto max-w-360 px-space-10 py-space-9">
+    <section className="mx-auto min-w-300 max-w-360 px-space-10 py-space-9">
       <SectionHeader
         mainText="Property"
         text="Featured"
@@ -130,7 +130,7 @@ const FeaturedProperty = () => {
             absolute inset-y-0 right-0
             z-20
             w-20
-            bg-gradient-to-l
+            bg-linear-to-l
             from-background
             to-transparent
             transition-opacity duration-200

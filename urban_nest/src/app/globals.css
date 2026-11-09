@@ -68,6 +68,10 @@
 /* =========================================================================
    3. BASE ELEMENT STYLES
    ========================================================================= */
+   html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--color-background);
   color: var(--color-foreground);
@@ -236,4 +240,64 @@ h1 {
 
 html {
   scroll-padding-top: 88px;
+}
+
+/* ---------- Edit these values to change the look ---------- */
+.page {
+  --bg: #f1f1f1;
+  --ink: #333333;
+  --muted: #6b6b6b;
+  --button-bg: #333333;
+  --button-bg-hover: #000000;
+  --button-text: #ffffff;
+
+  --title-size: 32px;
+  --text-size: 16px;
+  --button-size: 16px;
+
+  --space-digits-title: 48px;
+  --space-title-text: 12px;
+  --space-text-button: 32px;
+  --button-padding: 14px 32px;
+}
+
+/* ---------- Layout (no border-radius, no breakpoints) ---------- */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  color: var(--ink);
+  text-align: center;
+}
+
+.title {
+  margin: var(--space-digits-title) 0 0;
+  font-size: var(--title-size);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.text {
+  margin: var(--space-title-text) 0 0;
+  font-size: var(--text-size);
+}
+
+.button {
+  margin-top: var(--space-text-button);
+  padding: var(--button-padding);
+  font-size: var(--button-size);
+  font-weight: 600;
+  color: var(--button-text);
+  background: var(--button-bg);
+  border: 0;
+  border-radius: 0;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.button:hover {
+  background: var(--button-bg-hover);
 }

@@ -8,12 +8,12 @@ import FadeUp from "./motions/FadeUp";
 
 const MobileApp = () => {
   return (
-    <section className="p-space-9 gap-space-7 flex items-center max-w-[1440px] container mx-auto">
+    <section className="p-space-9 gap-space-7 flex items-center min-w-300 max-w-360 container mx-auto">
       <FadeRight className="min-w-131.25 min-h-87.5 order-2">
         <Image
           alt="image"
           src={assets.Mobileapp}
-          className="object-cover w-[525px] h-[350px]"
+          className="object-cover w-131.25 h-87.5"
         />
       </FadeRight>
       <div className="">
@@ -32,31 +32,33 @@ const MobileApp = () => {
         </div>
         <div className="flex items-center gap-space-5 mt-8">
           <FadeUp delay={0.4}>
-          <button className="p-space-3 bg-black border border-placeholder flex items-center gap-space-2 ">
-            <Image
-              alt="google play"
-              src={assets.google_play}
-              className="size-[32px]"
-              height={32}
-              width={32}
-            />
-            <div className="text-background flex flex-col items-start">
-              <p className="text-[16px] font-medium">GET IT ON</p>
-              <h3 className="text-[24px] font-primary font-bold">
-                Google Play
-              </h3>
-            </div>
-          </button></FadeUp>
+            <button className="p-space-3 bg-black border border-placeholder flex items-center gap-space-2 ">
+              <Image
+                alt="google play"
+                src={assets.google_play}
+                className="size-[32px]"
+                height={32}
+                width={32}
+              />
+              <div className="text-background flex flex-col items-start">
+                <p className="text-[16px] font-medium">GET IT ON</p>
+                <h3 className="text-[24px] font-primary font-bold">
+                  Google Play
+                </h3>
+              </div>
+            </button>
+          </FadeUp>
           <FadeUp delay={0.6}>
-          <button className="p-space-3 bg-black border border-placeholder flex items-center gap-space-2 ">
-            <i className="fi fi-brands-apple flex items-center justify-content text-[32px] text-white"></i>
-            <div className="text-background flex flex-col items-start">
-              <p className="text-[16px] font-medium">GET IT ON</p>
-              <h3 className="text-[24px] font-primary font-bold">
-                Apple Store
-              </h3>
-            </div>
-          </button></FadeUp>
+            <button className="p-space-3 bg-black border border-placeholder flex items-center gap-space-2 ">
+              <i className="fi fi-brands-apple flex items-center justify-content text-[32px] text-white"></i>
+              <div className="text-background flex flex-col items-start">
+                <p className="text-[16px] font-medium">GET IT ON</p>
+                <h3 className="text-[24px] font-primary font-bold">
+                  Apple Store
+                </h3>
+              </div>
+            </button>
+          </FadeUp>
         </div>
       </div>
     </section>

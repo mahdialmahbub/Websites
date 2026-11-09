@@ -75,6 +75,11 @@ body {
   min-width: 300px
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem; /* navbar height + gap */
+}
+
 /* .input, .textarea, .select {
   @apply placeholder:text-h6 placeholder:font-medium placeholder:text-neutral border-[1.5px] bg-white p-[12px] rounded-lg border-accent/30 hover:border-accent/80 focus:border-accent text-black;
 } */

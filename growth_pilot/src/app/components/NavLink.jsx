@@ -1,28 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 const EASE = "ease-[cubic-bezier(0.22,1,0.36,1)]";
 
-/**
- * @typedef {Object} NavLinkProps
- * @property {string} [text="Text"] Label shown inside the link.
- * @property {string} [link="/"] Route ("/pricing") or in-page anchor ("#feature").
- */
-
-/** @param {NavLinkProps} props */
-const NavLink = ({ text = "Text", link = "/" }) => {
-  const pathname = usePathname();
-
-  const isActive = pathname === link || pathname.startsWith(`${link}#`);
-
+const NavLink = ({
+  text = "Text",
+  link = "/",
+  isActive = false,
+  block = false,
+  onClick,
+}) => {
   return (
     <Link
       href={link}
-      aria-current={isActive ? "page" : undefined}
+      onClick={onClick}
+      aria-current={isActive ? "location" : undefined}
       className={`
-        group relative inline-flex items-center justify-center
+        group relative items-center justify-center
+        ${block ? "flex w-full" : "inline-flex"}
         overflow-hidden whitespace-nowrap rounded-full
         px-space-lg h-10
         text-h6 font-semi
@@ -44,7 +40,6 @@ const NavLink = ({ text = "Text", link = "/" }) => {
         }
       `}
     >
-      {/* Active indicator */}
       <span
         aria-hidden="true"
         className={`
@@ -59,7 +54,6 @@ const NavLink = ({ text = "Text", link = "/" }) => {
         `}
       />
 
-      {/* Text */}
       <span
         className={`
           relative z-10

@@ -1,23 +1,17 @@
 "use client";
 
-import React from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import "./fade-right.css";
 
 /**
- * FadeRight
+ * FadeRight (CSS version)
  * -----------------------------------------------------------------------
  * FadeLeft-er thik ulTo — bam dik theke dan dik e "hele ashe":
  * prothome opacity 0 + bam dike ektu sorano thake, scroll kore
- * element-er kache gele opacity 1 hoye dan dike (nijer jaygay) eshe
- * bose.
+ * element-er kache gele opacity 1 hoye nijer jaygay eshe bose.
  *
- * "Image left, text right" layout-e image-ta FadeRight diye animate
- * korle mone hoy image-ta ese text-er dike settle korlo — FadeLeft
- * (text) ar FadeRight (image) ekshathe use korle dujon-i majhkhane
- * eshe milito hoy, nice symmetrical entrance toiri hoy.
- *
- * FadeUp/FadeDown/FadeLeft-er shathe shob feature hubohu same
- * (easing, blur, scale, reduced-motion support, rest spread).
+ * Animation puro ./fade-right.css e. Ei component shudhu element view-e
+ * ashle data-visible="true" set kore (IntersectionObserver diye).
  *
  * USAGE
  * -----------------------------------------------------------------------
@@ -25,70 +19,74 @@ import { motion, useReducedMotion } from "framer-motion";
  *   <img src="/property-hero.jpg" alt="Property" />
  * </FadeRight>
  *
- * Do-column layout-e opposite direction theke ashar effect:
- * -----------------------------------------------------------------------
  * <div className="grid grid-cols-2 gap-8">
  *   <FadeRight><img src="..." /></FadeRight>
  *   <FadeLeft><PropertyDetails /></FadeLeft>
  * </div>
  * -----------------------------------------------------------------------
  */
-const EASE_SMOOTH = [0.16, 1, 0.3, 1]; // expo-out style — smooth, premium deceleration
-
 const FadeRight = ({
   children,
-  delay = 0,
-  duration = 0.7,
+  delay = 0, // seconds
+  duration = 0.7, // seconds
   distance = 28, // koto px bam dik theke ashbe
   className = "",
-  as = "div", // "h1", "p", "span" — jekono HTML tag hisebe render korate paro
-  once = true, // true hole ekbar animate hoye thakbe, abar scroll korle repeat hobe na
+  as: Tag = "div", // "h1", "p", "span" — jekono HTML tag
+  once = true, // true hole ekbar animate hoye thakbe
   blur = false, // true dile subtle blur-to-sharp effect
-  scale = false, // true dile 0.96 -> 1 subtle scale, "settle into place" feel
-  amount = 0.3, // element koto % view-e ashle trigger hobe
+  scale = false, // true dile 0.96 -> 1 subtle scale
+  amount = 0.3, // element koto % view-e ashle trigger hobe (0 - 1)
+  style,
   ...rest
 }) => {
-  const MotionTag = motion[as] || motion.div;
-  const shouldReduceMotion = useReducedMotion();
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
 
-  // Accessibility: OS-e reduced motion on thakle movement bad diye
-  // shudhu simple fade kori
-  if (shouldReduceMotion) {
-    return (
-      <MotionTag
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once, amount }}
-        transition={{ duration: 0.4, delay }}
-        className={className}
-        {...rest}
-      >
-        {children}
-      </MotionTag>
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          if (once) observer.disconnect();
+        } else if (!once) {
+          setVisible(false);
+        }
+      },
+      // framer er margin: "0px 0px -10% 0px" er moto
+      { threshold: amount, rootMargin: "0px 0px -10% 0px" }
     );
-  }
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [once, amount]);
+
+  const classes = [
+    "fade-right",
+    scale && "fade-right--scale",
+    blur && "fade-right--blur",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
-    <MotionTag
-      initial={{
-        opacity: 0,
-        x: -distance, // bam dik theke shuru, dan dike eshe bose
-        ...(scale && { scale: 0.96 }),
-        ...(blur && { filter: "blur(10px)" }),
+    <Tag
+      ref={ref}
+      data-visible={visible}
+      className={classes}
+      style={{
+        "--fr-delay": `${delay}s`,
+        "--fr-duration": `${duration}s`,
+        "--fr-distance": `${distance}px`,
+        ...style,
       }}
-      whileInView={{
-        opacity: 1,
-        x: 0,
-        ...(scale && { scale: 1 }),
-        ...(blur && { filter: "blur(0px)" }),
-      }}
-      viewport={{ once, amount, margin: "0px 0px -10% 0px" }}
-      transition={{ duration, delay, ease: EASE_SMOOTH }}
-      className={className}
       {...rest}
     >
       {children}
-    </MotionTag>
+    </Tag>
   );
 };
 

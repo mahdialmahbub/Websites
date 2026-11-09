@@ -1,4 +1,3 @@
-import { Metadata, Viewport } from "next";
 import { Work_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
@@ -7,7 +6,7 @@ import Providers from "./providers";
 import SmoothScrolling from "./components/SmoothScrolling";
 import MobileMenu from "./components/MobileMenu";
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://myshop.com";
+const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 const workSans = Work_Sans({
   variable: "--font-work-sans",
@@ -68,7 +67,11 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${workSans.variable} antialiased`}>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${workSans.variable} antialiased`}
+    >
       <head>
         <link
           rel="preconnect"

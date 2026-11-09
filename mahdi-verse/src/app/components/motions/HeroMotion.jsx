@@ -1,23 +1,9 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
-
-const EASE = [0.16, 1, 0.3, 1]; // expo-out, FadeUp family-r moto same feel
+import "./hero-motion.css";
 
 /**
- * Hero-r shob timing ek jaygay (seconds).
- * Speed pochhondo na hole shudhu ekhane change koro.
+ * Pure CSS version — framer-motion lagbe na, "use client"-o lagbe na.
+ * Shob timing / easing ./hero-motion.css er :root variable e ache.
  */
-const TIMELINE = {
-  avatar: 0,
-  icons: 0.45, // avatar prai shesh hole icon beriye ashbe
-  iconStagger: 0.07, // protita icon-er majhe gap
-  badge: 0.95,
-  title: 1.05,
-  subtitle: 1.17,
-  cta: 1.29,
-  stats: 1.41,
-};
 
 /**
  * @typedef {Object} HeroAvatarProps
@@ -31,21 +17,8 @@ const TIMELINE = {
  * @param {HeroAvatarProps} props
  */
 export const HeroAvatar = ({ children, className = "" }) => {
-  const reduce = useReducedMotion();
-  const delay = TIMELINE.avatar;
-
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: reduce ? 1 : 0.6 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{
-        scale: { duration: 0.9, delay, ease: EASE },
-        opacity: { duration: 0.6, delay, ease: "easeOut" },
-      }}
-      className={`relative z-10 ${className}`}
-    >
-      {children}
-    </motion.div>
+    <div className={`hero-avatar relative z-10 ${className}`}>{children}</div>
   );
 };
 
@@ -65,27 +38,13 @@ export const HeroAvatar = ({ children, className = "" }) => {
  * @param {HeroOrbitIconProps} props
  */
 export const HeroOrbitIcon = ({ children, x, y, index = 0, className = "" }) => {
-  const reduce = useReducedMotion();
-  const delay = TIMELINE.icons + index * TIMELINE.iconStagger;
-
   return (
-    <motion.div
-      initial={
-        reduce
-          ? { opacity: 0, x, y }
-          : { opacity: 0, x: 0, y: 0, scale: 0.3 }
-      }
-      animate={{ opacity: 1, x, y, scale: 1 }}
-      transition={{
-        x: { duration: 0.8, delay, ease: EASE },
-        y: { duration: 0.8, delay, ease: EASE },
-        scale: { duration: 0.8, delay, ease: EASE },
-        opacity: { duration: 0.25, delay, ease: "easeOut" },
-      }}
-      className={`absolute left-1/2 top-1/2 z-0 -ml-6.5 -mt-6.5 flex size-13 items-center justify-center rounded-full heroIcon bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] ${className}`}
+    <div
+      style={{ "--x": `${x}px`, "--y": `${y}px`, "--i": index }}
+      className={`hero-orbit-icon absolute left-1/2 top-1/2 z-0 -ml-6.5 -mt-6.5 flex size-13 items-center justify-center rounded-full heroIcon bg-linear-to-br from-[#FFFFFF] to-[#EAEAEA] ${className}`}
     >
       {children}
-    </motion.div>
+    </div>
   );
 };
 
@@ -105,27 +64,19 @@ export const HeroOrbitIcon = ({ children, x, y, index = 0, className = "" }) => 
 export const HeroItem = ({
   children,
   stage = "title",
-  as = "div",
+  as: Tag = "div",
   distance = 20,
   className = "",
+  style,
   ...rest
 }) => {
-  const MotionTag = motion[as] || motion.div;
-  const reduce = useReducedMotion();
-
   return (
-    <MotionTag
-      initial={{ opacity: 0, y: reduce ? 0 : distance }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{
-        duration: reduce ? 0.4 : 0.7,
-        delay: TIMELINE[stage],
-        ease: EASE,
-      }}
-      className={className}
+    <Tag
+      className={`hero-item hero-item--${stage} ${className}`}
+      style={{ "--hero-distance": `${distance}px`, ...style }}
       {...rest}
     >
       {children}
-    </MotionTag>
+    </Tag>
   );
 };

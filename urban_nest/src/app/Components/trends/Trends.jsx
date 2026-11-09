@@ -14,42 +14,46 @@ const Trends = () => {
   return (
     <section className="p-space-9 bg-foreground relative">
       <i className="fi fi-rs-growth-chart-invest text-[350px] absolute top-0 right-0 text-primary-3/10"></i>
-      <div className="max-w-[1440px] container mx-auto relative">
+      <div className="min-w-300 max-w-360 container mx-auto relative">
         <SectionHeader mainText={"Trends"} text={"Market Insight and"} isDark />
-        <div className="flex items-center justify-center gap-space-5 mt-space-7">
+        <div className="flex items-center justify-center gap-space-5 mt-space-7 flex-wrap">
           <FadeUp delay={0}>
-          <TrendCard
-            title="Price Trends"
-            changePercent={12.5}
-            comparisonLabel="vs Last year"
-            data={chartData.data1}
-            color={"#2ECC71"}
-          /></FadeUp>
+            <TrendCard
+              title="Price Trends"
+              changePercent={12.5}
+              comparisonLabel="vs Last year"
+              data={chartData.data1}
+              color={"#2ECC71"}
+            />
+          </FadeUp>
           <FadeUp delay={0.2}>
-          <TrendCard
-            title="Demand Forecast"
-            changePercent={400}
-            comparisonLabel="vs Last year"
-            data={chartData.data2}
-            color={"#8B5CF6"}
-          /></FadeUp>
+            <TrendCard
+              title="Demand Forecast"
+              changePercent={400}
+              comparisonLabel="vs Last year"
+              data={chartData.data2}
+              color={"#8B5CF6"}
+            />
+          </FadeUp>
           <FadeUp delay={0.4}>
-          <TrendCard
-            title="Market Stability"
-            changePercent={"Strong"}
-            percent = {false}
-            comparisonLabel="vs Last year"
-            data={chartData.data3}
-            color={"#F59E0B"}
-          /></FadeUp>
+            <TrendCard
+              title="Market Stability"
+              changePercent={"Strong"}
+              percent={false}
+              comparisonLabel="vs Last year"
+              data={chartData.data3}
+              color={"#F59E0B"}
+            />
+          </FadeUp>
           <FadeUp delay={0.6}>
-          <TrendCard
-            title="Rental Yield"
-            changePercent={20}
-            comparisonLabel="vs Last year"
-            data={chartData.data4}
-            color={"#EC4899"}
-          /></FadeUp>
+            <TrendCard
+              title="Rental Yield"
+              changePercent={20}
+              comparisonLabel="vs Last year"
+              data={chartData.data4}
+              color={"#EC4899"}
+            />
+          </FadeUp>
         </div>
       </div>
     </section>

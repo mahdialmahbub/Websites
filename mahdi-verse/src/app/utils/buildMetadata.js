@@ -3,7 +3,7 @@
 export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
 ).replace(/\/+$/, "");
-const SITE_NAME = "MahdiVerse | MERN Developer, UI/UX Designer & SEO Specialist";
+const SITE_NAME = "MahdiVerse | UI/UX Designer, MERN Developer & SEO Specialist";
 const DEFAULT_OG_IMAGE = "/og/default.png"; // public/og/default.png (1200x630)
 
 const TITLE_MAX = 70;

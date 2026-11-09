@@ -8,7 +8,7 @@ import FadeUp from "./motions/FadeUp";
 const Benefit = () => {
   return (
     <section className="flex max-xl:flex-col xl:items-center gap-[clamp(2rem,1.6364rem+1.8182vw,3rem)] xl:gap-[32px] py-[clamp(3rem,1.9091rem+5.4545vw,6rem)]">
-      <div className=" xl:flex-1/3">
+      <div className=" xl:flex-1/3 pl-[clamp(1rem,-0.0909rem+5.4545vw,4rem)]">
         <SectionHeading
           isCenter={false}
           title={"Why Choose GrowthPilot?"}

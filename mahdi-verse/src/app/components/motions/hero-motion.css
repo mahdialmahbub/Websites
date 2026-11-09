@@ -1,0 +1,118 @@
+/* ==========================================================
+   Hero animations (pure CSS) — framer-motion er replacement
+   ========================================================== */
+
+:root {
+  /* expo-out, FadeUp family-r moto same feel */
+  --hero-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Hero-r shob timing ek jaygay. Speed pochhondo na hole shudhu ekhane change koro. */
+  --hero-t-avatar: 0s;
+  --hero-t-icons: 0.45s; /* avatar prai shesh hole icon beriye ashbe */
+  --hero-icon-stagger: 0.07s; /* protita icon-er majhe gap */
+  --hero-t-badge: 0.95s;
+  --hero-t-title: 1.05s;
+  --hero-t-subtitle: 1.17s;
+  --hero-t-cta: 1.29s;
+  --hero-t-stats: 1.41s;
+}
+
+/* ----------------------------------------------------------
+   Keyframes
+   Shudhu `from` dewa ache — `to` automatically element-er
+   normal (final) style hoye jay. Tai animation na cholleo
+   element thik jaygay thake.
+   ---------------------------------------------------------- */
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes hero-avatar-scale {
+  from {
+    transform: scale(0.6);
+  }
+}
+
+@keyframes hero-orbit {
+  from {
+    transform: translate(0px, 0px) scale(0.3);
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    transform: translateY(var(--hero-distance, 20px));
+  }
+}
+
+/* ----------------------------------------------------------
+   Avatar: opacity 0 + choto theke full size e ashe
+   ---------------------------------------------------------- */
+.hero-avatar {
+  animation:
+    hero-avatar-scale 0.9s var(--hero-ease) var(--hero-t-avatar) backwards,
+    hero-fade 0.6s ease-out var(--hero-t-avatar) backwards;
+}
+
+/* ----------------------------------------------------------
+   Orbit icon: image-er center theke shuru hoye (--x, --y) te
+   giye bose. Shudhu transform + opacity animate hoy
+   (GPU-friendly, layout shift nai).
+   --x, --y, --i inline style diye ashe.
+   ---------------------------------------------------------- */
+.hero-orbit-icon {
+  --hero-delay: calc(
+    var(--hero-t-icons) + var(--i, 0) * var(--hero-icon-stagger)
+  );
+
+  transform: translate(var(--x, 0px), var(--y, 0px)) scale(1);
+  animation:
+    hero-orbit 0.8s var(--hero-ease) var(--hero-delay) backwards,
+    hero-fade 0.25s ease-out var(--hero-delay) backwards;
+}
+
+/* ----------------------------------------------------------
+   Title / subtitle / CTA / badge: ektu niche theke fade kore uthe ashe
+   ---------------------------------------------------------- */
+.hero-item {
+  --hero-delay: var(--hero-t-title);
+
+  animation:
+    hero-rise 0.7s var(--hero-ease) var(--hero-delay) backwards,
+    hero-fade 0.7s var(--hero-ease) var(--hero-delay) backwards;
+}
+
+.hero-item--badge {
+  --hero-delay: var(--hero-t-badge);
+}
+.hero-item--title {
+  --hero-delay: var(--hero-t-title);
+}
+.hero-item--subtitle {
+  --hero-delay: var(--hero-t-subtitle);
+}
+.hero-item--cta {
+  --hero-delay: var(--hero-t-cta);
+}
+.hero-item--stats {
+  --hero-delay: var(--hero-t-stats);
+}
+
+/* ----------------------------------------------------------
+   Reduced motion: movement/scale off, shudhu halka fade
+   ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero-avatar {
+    animation: hero-fade 0.6s ease-out var(--hero-t-avatar) backwards;
+  }
+
+  .hero-orbit-icon {
+    animation: hero-fade 0.25s ease-out var(--hero-delay) backwards;
+  }
+
+  .hero-item {
+    animation: hero-fade 0.4s var(--hero-ease) var(--hero-delay) backwards;
+  }
+}
