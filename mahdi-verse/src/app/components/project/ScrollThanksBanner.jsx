@@ -1,4 +1,3 @@
-import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { assets } from "../../assets/assets";
@@ -53,7 +52,7 @@ export default function ScrollThanksBanner({
             className="inline-flex items-center gap-2 rounded-[8px] bg-linear-to-r from-violet-500 to-purple-500 hover:from-violet-400 hover:to-purple-400 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-purple-500/30 transition-all"
           >
             {secondaryLabel}
-            <ArrowRight className="h-4 w-4" />
+            <i className="fi fi-rr-arrow-small-right text-[4px]"></i>
           </Link>
         </div>
       </div>

@@ -25,9 +25,9 @@
 // Baki client gulor image file ekhono nai, tai randomuser.me (3rd-party API) theke
 // placeholder avatar newa hoyeche. Nijer image add korle shudhu `image` replace kore dio.
 
-export const revalidate = 86400;
+const revalidate = 86400;
 
-export const clientsData = [
+const clientsData = [
   {
     id: "c1",
     slug: "ahmed-al-farsi-south-africa",

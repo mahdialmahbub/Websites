@@ -3,7 +3,7 @@
 // Ex: "FurneiStyle – Premium Furniture Shopping Experience"
 //  -> "furneistyle-premium-furniture-shopping-experience"
 
-export function slugify(text = "") {
+function slugify(text = "") {
   return text
     .toString()
     .normalize("NFKD") // accented characters (é, ñ etc.) ke base form e ante
