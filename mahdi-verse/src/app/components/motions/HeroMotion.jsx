@@ -1,9 +1,5 @@
 import "./hero-motion.css";
 
-/**
- * Pure CSS version — framer-motion lagbe na, "use client"-o lagbe na.
- * Shob timing / easing ./hero-motion.css er :root variable e ache.
- */
 
 /**
  * @typedef {Object} HeroAvatarProps

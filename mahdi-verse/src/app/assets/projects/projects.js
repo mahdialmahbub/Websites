@@ -2829,6 +2829,6 @@ const rawProjects = [
 ];
 
 // views + merged tags jure dey (ProjectCard top level `tags` ei theke pay)
-export const projectsData = rawProjects.map(withProjectMeta);
+const projectsData = rawProjects.map(withProjectMeta);
 
 export default projectsData;

@@ -104,14 +104,14 @@ export default async function RootLayout({ children }) {
         />
       </head>
       <body className="h-dvh bg-background dark:bg-linear-to-br dark:from-secondary-500/5 dark:to-primary-500/2 w-screen min-w-250 min-h-138.5">
-      <WebVitals />
-      <SpeedInsights />
+        <WebVitals />
+        <SpeedInsights />
         <div className="flex h-full gap-6 p-space-4">
           <Sidebar />
           <div className="flex-1 min-w-0 flex flex-col">
             <ErrorPageProvider>
-            <Navbar />
-            <HomePageChecker>{children}</HomePageChecker>
+              <Navbar />
+              <HomePageChecker>{children}</HomePageChecker>
             </ErrorPageProvider>
           </div>
         </div>

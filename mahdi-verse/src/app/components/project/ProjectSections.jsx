@@ -93,7 +93,7 @@ const METHOD_COLORS = {
 /* ------------------------------------------------------------------ */
 
 /** @param {{ label: string, children?: React.ReactNode }} props */
-export function SectionIntro({ label, children }) {
+function SectionIntro({ label, children }) {
   return (
     <div className="space-y-space-2">
       <h4 className="font-primary text-size-lg font-semibold">{label}</h4>

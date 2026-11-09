@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { ChevronLeft, ChevronRight, Eye } from "lucide-react";
 import Image from "next/image";
 
 // Demo data — shape matches the `images` array from projectsData.js
@@ -199,7 +198,7 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
                   />
                   {isSelected && (
                     <div className="absolute inset-0 bg-linear-to-t from-secondary-700/70 via-secondary-600/20 to-transparent flex items-end justify-center pb-1.5">
-                      <i class="fi fi-rr-eye text-size-sm opacity-80"></i>
+                      <i className="fi fi-rr-eye text-size-sm opacity-80 text-[#F8FAFC]"></i>
                     </div>
                   )}
                 </button>
