@@ -1,0 +1,66 @@
+/* ==========================================================
+   FadeRight (pure CSS) — bam dik theke dan dike hele ashe
+   ----------------------------------------------------------
+   JS shudhu data-visible="true" set kore. Baki shob animation CSS e.
+   Inline style diye ashe: --fr-delay, --fr-duration, --fr-distance
+   ========================================================== */
+
+.fade-right {
+  /* expo-out style — smooth, premium deceleration */
+  --fr-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --fr-scale-from: 1;
+  --fr-blur-from: 10px;
+
+  /* Hidden state: opacity 0 + bam dike sorano (negative X) */
+  opacity: 0;
+  transform: translateX(calc(var(--fr-distance, 28px) * -1))
+    scale(var(--fr-scale-from));
+
+  transition:
+    opacity var(--fr-duration, 0.7s) var(--fr-ease) var(--fr-delay, 0s),
+    transform var(--fr-duration, 0.7s) var(--fr-ease) var(--fr-delay, 0s);
+}
+
+/* scale prop: 0.96 -> 1, "settle into place" feel */
+.fade-right--scale {
+  --fr-scale-from: 0.96;
+}
+
+/* blur prop: blur -> sharp */
+.fade-right--blur {
+  filter: blur(var(--fr-blur-from));
+  transition:
+    opacity var(--fr-duration, 0.7s) var(--fr-ease) var(--fr-delay, 0s),
+    transform var(--fr-duration, 0.7s) var(--fr-ease) var(--fr-delay, 0s),
+    filter var(--fr-duration, 0.7s) var(--fr-ease) var(--fr-delay, 0s);
+}
+
+/* Visible state: nijer jaygay eshe bose */
+.fade-right[data-visible="true"] {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+.fade-right--blur[data-visible="true"] {
+  filter: blur(0px);
+}
+
+/* ----------------------------------------------------------
+   Accessibility: reduced motion e movement/scale/blur bad,
+   shudhu simple fade (0.4s)
+   ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .fade-right,
+  .fade-right--scale,
+  .fade-right--blur {
+    transform: none;
+    filter: none;
+    transition: opacity 0.4s ease var(--fr-delay, 0s);
+  }
+
+  .fade-right[data-visible="true"],
+  .fade-right--blur[data-visible="true"] {
+    transform: none;
+    filter: none;
+  }
+}

@@ -6,8 +6,6 @@ import Linkedin from "./Linkedin.svg";
 import Github from "./Github.svg";
 import Twitter from "./Twitter.svg";
 import Gmail from "./Gmail.svg";
-import logo from "./logo.png";
-import logo_2 from "./logo_2.png";
 import profile from "./profile.png";
 import about from "./about.png";
 import Visual_Studio_Code from "./Visual_Studio_Code.svg";
@@ -27,8 +25,6 @@ import illustrator from "./illustrator.svg";
 import photoshop from "./photoshop.svg";
 
 export const assets = {
-  logo,
-  logo_2,
   profile,
   Visual_Studio_Code,
   React_js,

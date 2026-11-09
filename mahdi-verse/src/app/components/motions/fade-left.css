@@ -1,0 +1,65 @@
+/* ==========================================================
+   FadeLeft (pure CSS) — dan dik theke bam dike hele ashe
+   ----------------------------------------------------------
+   JS shudhu data-visible="true" set kore. Baki shob animation CSS e.
+   Inline style diye ashe: --fl-delay, --fl-duration, --fl-distance
+   ========================================================== */
+
+.fade-left {
+  /* expo-out style — smooth, premium deceleration */
+  --fl-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --fl-scale-from: 1;
+  --fl-blur-from: 10px;
+
+  /* Hidden state: opacity 0 + dan dike sorano */
+  opacity: 0;
+  transform: translateX(var(--fl-distance, 28px)) scale(var(--fl-scale-from));
+
+  transition:
+    opacity var(--fl-duration, 0.7s) var(--fl-ease) var(--fl-delay, 0s),
+    transform var(--fl-duration, 0.7s) var(--fl-ease) var(--fl-delay, 0s);
+}
+
+/* scale prop: 0.96 -> 1, "settle into place" feel */
+.fade-left--scale {
+  --fl-scale-from: 0.96;
+}
+
+/* blur prop: blur -> sharp */
+.fade-left--blur {
+  filter: blur(var(--fl-blur-from));
+  transition:
+    opacity var(--fl-duration, 0.7s) var(--fl-ease) var(--fl-delay, 0s),
+    transform var(--fl-duration, 0.7s) var(--fl-ease) var(--fl-delay, 0s),
+    filter var(--fl-duration, 0.7s) var(--fl-ease) var(--fl-delay, 0s);
+}
+
+/* Visible state: nijer jaygay eshe bose */
+.fade-left[data-visible="true"] {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+.fade-left--blur[data-visible="true"] {
+  filter: blur(0px);
+}
+
+/* ----------------------------------------------------------
+   Accessibility: reduced motion e movement/scale/blur bad,
+   shudhu simple fade (0.4s)
+   ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .fade-left,
+  .fade-left--scale,
+  .fade-left--blur {
+    transform: none;
+    filter: none;
+    transition: opacity 0.4s ease var(--fl-delay, 0s);
+  }
+
+  .fade-left[data-visible="true"],
+  .fade-left--blur[data-visible="true"] {
+    transform: none;
+    filter: none;
+  }
+}

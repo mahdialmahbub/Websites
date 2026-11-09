@@ -1,0 +1,65 @@
+/* ==========================================================
+   FadeUp (pure CSS) — niche theke upore fade kore uthe ashe
+   ----------------------------------------------------------
+   JS shudhu data-visible="true" set kore. Baki shob animation CSS e.
+   Inline style diye ashe: --fu-delay, --fu-duration, --fu-distance
+   ========================================================== */
+
+.fade-up {
+  /* expo-out style — smooth, premium deceleration */
+  --fu-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --fu-scale-from: 1;
+  --fu-blur-from: 10px;
+
+  /* Hidden state: opacity 0 + niche dike sorano */
+  opacity: 0;
+  transform: translateY(var(--fu-distance, 28px)) scale(var(--fu-scale-from));
+
+  transition:
+    opacity var(--fu-duration, 0.7s) var(--fu-ease) var(--fu-delay, 0s),
+    transform var(--fu-duration, 0.7s) var(--fu-ease) var(--fu-delay, 0s);
+}
+
+/* scale prop: 0.96 -> 1, "settle into place" feel */
+.fade-up--scale {
+  --fu-scale-from: 0.96;
+}
+
+/* blur prop: blur -> sharp (card grid e onek item thakle off rakho, GPU-heavy) */
+.fade-up--blur {
+  filter: blur(var(--fu-blur-from));
+  transition:
+    opacity var(--fu-duration, 0.7s) var(--fu-ease) var(--fu-delay, 0s),
+    transform var(--fu-duration, 0.7s) var(--fu-ease) var(--fu-delay, 0s),
+    filter var(--fu-duration, 0.7s) var(--fu-ease) var(--fu-delay, 0s);
+}
+
+/* Visible state: nijer jaygay eshe bose */
+.fade-up[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.fade-up--blur[data-visible="true"] {
+  filter: blur(0px);
+}
+
+/* ----------------------------------------------------------
+   Accessibility: reduced motion e movement/scale/blur bad,
+   shudhu simple fade (0.4s)
+   ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .fade-up,
+  .fade-up--scale,
+  .fade-up--blur {
+    transform: none;
+    filter: none;
+    transition: opacity 0.4s ease var(--fu-delay, 0s);
+  }
+
+  .fade-up[data-visible="true"],
+  .fade-up--blur[data-visible="true"] {
+    transform: none;
+    filter: none;
+  }
+}
