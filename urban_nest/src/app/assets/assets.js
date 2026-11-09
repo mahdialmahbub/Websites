@@ -1,4 +1,3 @@
-import logo from "./logo.png";
 import HeroImage from "./HeroImage.png";
 import FinalCTA from "./FinalCTA.jpg";
 import Feature_1 from "./Feature_1.jpg";
@@ -24,7 +23,6 @@ import Linkedin from "./Linkedin.svg";
 import Testimonial from "./Testimonial.svg";
 
 export const assets = {
-  logo,
   HeroImage,
   Feature_1,
   Feature_2,
@@ -51,7 +49,6 @@ export const assets = {
 };
 
 export const navbarItems = {
-  logo: assets.logo,
   navLinks: [
     {
       name: "Home",

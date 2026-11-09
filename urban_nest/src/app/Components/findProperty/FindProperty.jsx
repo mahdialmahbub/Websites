@@ -46,9 +46,9 @@ const FindProperty = () => {
   };
 
   return (
-    <section className="p-space-9 bg-foreground overflow-hidden relative">
+    <section id="properties" className="p-space-9 bg-foreground overflow-hidden relative">
       <i className="fi fi-rs-house-chimney text-[350px] absolute top-0 right-0 text-primary-3/10"></i>
-      <div className="max-w-360 container mx-auto"> 
+      <div className="container mx-auto min-w-300 max-w-360">
         <SectionHeader
           mainText={"Match"}
           text={"Find your perfect"}

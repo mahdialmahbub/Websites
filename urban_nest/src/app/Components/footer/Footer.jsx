@@ -30,14 +30,14 @@ const Footer = () => {
 
   return (
     <section className="p-space-8 bg-primary-1">
-      <div className="container mx-auto max-w-360">
+      <div className="container mx-auto min-w-300 max-w-360">
         {/* Footer Content */}
         <div className="flex flex-wrap justify-between gap-space-6">
           {/* Logo & Social Links */}
           <div className="max-w-79.5">
             <FadeLeft>
               <Image
-                src={assets.logo}
+                src='/logo.png'
                 alt="Urban Nest logo"
                 width={320}
                 height={80}
