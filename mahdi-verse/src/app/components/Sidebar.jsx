@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { assets, socialAssets } from "../assets/assets";
+import { socialAssets } from "../assets/assets";
 
 const navItems = [
   {
