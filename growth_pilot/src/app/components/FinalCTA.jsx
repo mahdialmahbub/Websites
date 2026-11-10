@@ -13,18 +13,18 @@ const FinalCTA = () => {
         className="rounded-[clamp(1rem,0.9091rem+0.4545vw,1.25rem)]
           border border-black/10 dark:border-white/10
           bg-[#f8fafc] dark:bg-[#080b10]
-          p-[clamp(2rem,1.2727rem+3.6364vw,4rem)]"
+          p-[clamp(1rem,1.2727rem+3.6364vw,4rem)]"
       >
         <div
           aria-hidden="true"
-          className="absolute -bottom-24 -left-16 h-70 w-[320px] rounded-full bg-accent5/5 blur-[100px]"
+          className="absolute -bottom-24 -left-16 h-70 rounded-full bg-accent5/5 blur-[100px]"
         />
         <div
           aria-hidden="true"
           className="absolute -top-20 -right-10 h-60 w-70 rounded-full bg-accent5/5 blur-[100px]"
         />
 
-        <div className="relative flex flex-col items-center text-center gap-[clamp(1.75rem,calc(0.455vw+1.659rem),2rem)] px-[clamp(1.5rem,calc(8.182vw-0.136rem),6rem)] py-[clamp(1rem,calc(-1.364vw+2.023rem),1.75rem)]">
+        <div className="relative flex flex-col items-center text-center gap-[clamp(1.75rem,calc(0.455vw+1.659rem),2rem)]">
           <FadeUp className="flex flex-col items-center gap-2 max-w-xl">
             <h2
               id="final-cta-heading"
