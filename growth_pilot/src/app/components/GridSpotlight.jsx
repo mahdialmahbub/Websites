@@ -27,7 +27,7 @@ const GridSpotlight = ({ children, className = "", radius = 200 }) => {
       ref={ref}
       onPointerMove={handlePointerMove}
       style={{ "--spot": `${radius}px` }}
-      className={`group/cta relative overflow-hidden [--mx:50%] [--my:50%] ${className}`}
+      className={`group/cta relative overflow-hidden ${className}`}
     >
       {/* base grid: same grid + glow language as the hero, so the page opens and closes on one idea */}
       <div
