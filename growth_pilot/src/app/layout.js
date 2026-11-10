@@ -5,6 +5,9 @@ import Footer from "./components/Footer";
 import Providers from "./providers";
 import SmoothScrolling from "./components/SmoothScrolling";
 import MobileMenu from "./components/MobileMenu";
+import "@flaticon/flaticon-uicons/css/regular/rounded.css"; // fi-rr-
+import "@flaticon/flaticon-uicons/css/solid/rounded.css"; // fi-sr-
+import "@flaticon/flaticon-uicons/css/bold/rounded.css"; // fi-br-
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -76,42 +79,22 @@ export default function RootLayout({ children }) {
         <link
           rel="preconnect"
           href="https://cdn-uicons.flaticon.com"
-          crossOrigin=""
+          crossOrigin="anonymous"
         />
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
-        ></link>
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css"
-        ></link>
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-chubby/css/uicons-solid-chubby.css"
-        ></link>
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css"
-        ></link>
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css"
-        ></link>
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-straight/css/uicons-solid-straight.css"
-        ></link>
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-straight/css/uicons-solid-straight.css"
-        ></link>
       </head>
       <body className="min-h-screen flex flex-col container mx-auto overflow-hidden bg-white text-black dark:bg-black dark:text-white relative">
         <Providers>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-white focus:px-4 focus:py-2"
+          >
+            Skip to main content
+          </a>
           <Navbar />
           <MobileMenu />
-          <SmoothScrolling>{children}</SmoothScrolling>
+          <SmoothScrolling>
+            <main id="main-content">{children}</main>
+          </SmoothScrolling>
           <Footer />
         </Providers>
       </body>

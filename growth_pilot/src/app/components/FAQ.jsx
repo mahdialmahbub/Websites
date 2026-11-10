@@ -10,7 +10,7 @@ const FAQ = () => {
   const faqData = [
     {
       ques: "Is there a free trial available??",
-      ans: "Yes! You can start with our free trial — no credit card required. Explore all core features and see how GrowthPilot can help your business grow before upgrading.",
+      ans: "Yes! You can start with our free trial no credit card required. Explore all core features and see how GrowthPilot can help your business grow before upgrading.",
     },
     {
       ques: "Do I need technical skills to use GrowthPilot??",
@@ -22,7 +22,7 @@ const FAQ = () => {
     },
     {
       ques: "How does the automation feature work?",
-      ans: "You can create workflows based on user actions — for example, sending emails, follow-ups, or offers automatically. Just set it once, and GrowthPilot handles the rest.",
+      ans: "You can create workflows based on user actions for example, sending emails, follow-ups, or offers automatically. Just set it once, and GrowthPilot handles the rest.",
     },
     {
       ques: "Can I upgrade or cancel my plan anytime?",
@@ -37,9 +37,9 @@ const FAQ = () => {
   return (
     <section className="section">
       <SectionHeading
-        title={"Everything You Need to Automate Your Marketing"}
+        title={"Got Questions? We’ve Got Answers"}
         subtitle={
-          "Powerful tools designed to save your time, boost conversions, and grow your business — all in one place."
+          "Find answers to common questions about GrowthPilot and how it works."
         }
         tagName={"FAQ"}
       />

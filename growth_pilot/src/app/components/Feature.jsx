@@ -46,8 +46,8 @@ const Feature = () => {
   return (
     <section id="feature" className="section">
       <SectionHeading
-        title="Everything You Need to Automate Your Marketing"
-        subtitle="Powerful tools designed to save your time, boost conversions, and grow your business — all in one place."
+        title="Steps to Transform Your Workflow"
+        subtitle="Discover how easy it is to get started, automate your tasks, and achieve better results all with just a few simple steps."
         tagName="Feature"
       />
 

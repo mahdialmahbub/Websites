@@ -40,7 +40,7 @@ const HowItWork = () => {
       <SectionHeading
         title={"Everything You Need to Automate Your Marketing"}
         subtitle={
-          "Powerful tools designed to save your time, boost conversions, and grow your business — all in one place."
+          "Powerful tools designed to save your time, boost conversions, and grow your business all in one place."
         }
         tagName={"How It Works"}
       />

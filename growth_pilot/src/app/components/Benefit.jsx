@@ -13,7 +13,7 @@ const Benefit = () => {
           isCenter={false}
           title={"Why Choose GrowthPilot?"}
           subtitle={
-            "Save time, boost conversions, and simplify your marketing — all from one powerful platform."
+            "Save time, boost conversions, and simplify your marketing all from one powerful platform."
           }
           tagName={"Benefit"}
         />
@@ -34,7 +34,7 @@ const Benefit = () => {
             </h3>
             <p className="text-[clamp(0.75rem,0.6591rem+0.4545vw,1rem)] text-black/70 dark:text-white/70">
               Automate repetitive marketing tasks and focus on what truly
-              matters — growing your business.
+              matters growing your business.
             </p>
           </FadeDown>
         </div>
@@ -71,7 +71,7 @@ const Benefit = () => {
               All-in-One Simple Platform
             </h3>
             <p className="text-[clamp(0.75rem,0.6591rem+0.4545vw,1rem)] text-black/70 dark:text-white/70">
-              Manage campaigns, analytics, and integrations in one place — no
+              Manage campaigns, analytics, and integrations in one place no
               more switching between tools.
             </p>
           </FadeDown>

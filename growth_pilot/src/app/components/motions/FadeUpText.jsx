@@ -1,7 +1,7 @@
 "use client";
 
 import { Children, isValidElement } from "react";
-import { motion } from "framer-motion";
+import { LazyMotion, domAnimation, m } from "framer-motion";
 
 const textVariants = {
   hidden: { opacity: 0, y: 40 },
@@ -30,24 +30,26 @@ const FadeUpText = ({ text, children, delay = 0, className = "" }) => {
   const words = splitToWords(text ?? children);
 
   return (
-    <div className={className}>
-      {words.map((word, index) => (
-        <motion.span
-          key={index}
-          variants={textVariants}
-          initial="hidden"
-          animate="visible"
-          transition={{
-            duration: 0.6,
-            ease: [0.22, 1, 0.36, 1],
-            delay: delay + index * 0.15,
-          }}
-          className="mr-3 inline-block"
-        >
-          {word}
-        </motion.span>
-      ))}
-    </div>
+    <LazyMotion features={domAnimation} strict>
+      <div className={className}>
+        {words.map((word, index) => (
+          <m.span
+            key={index}
+            variants={textVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{
+              duration: 0.6,
+              ease: [0.22, 1, 0.36, 1],
+              delay: delay + index * 0.15,
+            }}
+            className="mr-3 inline-block"
+          >
+            {word}
+          </m.span>
+        ))}
+      </div>
+    </LazyMotion>
   );
 };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { LazyMotion, domAnimation, m, useReducedMotion } from "framer-motion";
 
 /**
  * FadeDown
@@ -22,6 +22,9 @@ import { motion, useReducedMotion } from "framer-motion";
  * blur, scale option, reduced-motion support, rest spread) — tai puro
  * animation family (FadeUp / FadeDown / FadeLeft / FadeRight) ek
  * rokom "feel" dey, alada alada lage na.
+ *
+ * NOTE: LazyMotion strict mode-e `motion` component use kora jay na,
+ * tai ekhane `m` use kora hoyeche (bundle size-o chhoto thake).
  *
  * USAGE
  * -----------------------------------------------------------------------
@@ -57,47 +60,51 @@ const FadeDown = ({
   amount = 0.3, // element koto % view-e ashle trigger hobe
   ...rest
 }) => {
-  const MotionTag = motion[as] || motion.div;
+  const MotionTag = m[as] || m.div;
   const shouldReduceMotion = useReducedMotion();
 
   // Accessibility: OS-e reduced motion on thakle movement bad diye
   // shudhu simple fade kori
   if (shouldReduceMotion) {
     return (
+      <LazyMotion features={domAnimation} strict>
+        <MotionTag
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once, amount }}
+          transition={{ duration: 0.4, delay }}
+          className={className}
+          {...rest}
+        >
+          {children}
+        </MotionTag>
+      </LazyMotion>
+    );
+  }
+
+  return (
+    <LazyMotion features={domAnimation} strict>
       <MotionTag
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once, amount }}
-        transition={{ duration: 0.4, delay }}
+        initial={{
+          opacity: 0,
+          y: -distance, // FadeUp-er ulTo — niche theke na, upore theke shuru
+          ...(scale && { scale: 0.96 }),
+          ...(blur && { filter: "blur(10px)" }),
+        }}
+        whileInView={{
+          opacity: 1,
+          y: 0,
+          ...(scale && { scale: 1 }),
+          ...(blur && { filter: "blur(0px)" }),
+        }}
+        viewport={{ once, amount, margin: "0px 0px -5% 0px" }}
+        transition={{ duration, delay, ease: EASE_SMOOTH }}
         className={className}
         {...rest}
       >
         {children}
       </MotionTag>
-    );
-  }
-
-  return (
-    <MotionTag
-      initial={{
-        opacity: 0,
-        y: -distance, // FadeUp-er ulTo — niche theke na, upore theke shuru
-        ...(scale && { scale: 0.96 }),
-        ...(blur && { filter: "blur(10px)" }),
-      }}
-      whileInView={{
-        opacity: 1,
-        y: 0,
-        ...(scale && { scale: 1 }),
-        ...(blur && { filter: "blur(0px)" }),
-      }}
-      viewport={{ once, amount, margin: "0px 0px -5% 0px" }}
-      transition={{ duration, delay, ease: EASE_SMOOTH }}
-      className={className}
-      {...rest}
-    >
-      {children}
-    </MotionTag>
+    </LazyMotion>
   );
 };
 
