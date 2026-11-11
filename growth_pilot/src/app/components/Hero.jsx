@@ -61,6 +61,7 @@ const Hero = () => {
           src={assets.dashboard}
           alt="Dashboard"
           preload
+          fetchPriority="high"
           sizes="(max-width: 768px) 90vw, 720px"
           className="h-[clamp(12.5rem,calc(31.818vw+6.136rem),30rem)] w-[clamp(18.75rem,calc(47.727vw+9.205rem),45rem)] object-cover object-top rounded-[clamp(0.75rem,calc(1.136vw+0.523rem),1.375rem)] z-10"
         />
