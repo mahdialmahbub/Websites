@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -6,29 +7,33 @@ import ReviewCard from "./ReviewCard";
 import { clientReviews } from "@/app/assets/assets";
 import FadeUp from "../motions/FadeUp";
 
-const SCROLL_AMOUNT = 400; // ekbar arrow click e koto px scroll hobe
+const SCROLL_AMOUNT = 400;
 
 const Review = () => {
   const scrollRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  // Left/right arrow enable-disable korar jonno scroll position check kora
+  // Check scroll position to enable/disable arrows
   const updateScrollButtons = () => {
     const el = scrollRef.current;
     if (!el) return;
+
     setCanScrollLeft(el.scrollLeft > 0);
-    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 1);
+    setCanScrollRight(
+      el.scrollLeft + el.clientWidth < el.scrollWidth - 1
+    );
   };
 
   useEffect(() => {
-    updateScrollButtons(); // initial check — koto card ache tar upor depend kore
+    updateScrollButtons();
 
     const el = scrollRef.current;
     if (!el) return;
 
     el.addEventListener("scroll", updateScrollButtons);
     window.addEventListener("resize", updateScrollButtons);
+
     return () => {
       el.removeEventListener("scroll", updateScrollButtons);
       window.removeEventListener("resize", updateScrollButtons);
@@ -38,6 +43,7 @@ const Review = () => {
   const scroll = (direction) => {
     const el = scrollRef.current;
     if (!el) return;
+
     el.scrollBy({
       left: direction === "left" ? -SCROLL_AMOUNT : SCROLL_AMOUNT,
       behavior: "smooth",
@@ -49,7 +55,7 @@ const Review = () => {
       <SectionHeader mainText={"reviews"} text={"Real Client"} />
 
       <div className="relative w-full">
-        {/* Left arrow */}
+        {/* Left Arrow */}
         <button
           type="button"
           onClick={() => scroll("left")}
@@ -60,25 +66,36 @@ const Review = () => {
           <i className="fi fi-rs-arrow-small-left text-[26px]"></i>
         </button>
 
-        {/* Scrollable card row */}
+        {/* Scrollable Card Container */}
         <FadeUp delay={0.2}>
           <div
             ref={scrollRef}
-            className="flex gap-space-4 overflow-x-scroll scrollbar-hide w-full relative"
+            onScroll={updateScrollButtons}
+            className="flex gap-space-4 overflow-x-scroll scrollbar-hide w-full"
           >
-            {canScrollLeft && (
-              <div className="w-[64px] h-full bg-linear-to-r from-background to-background/0 absolute left-0 top-0 z-10 pointer-events-none"></div>
-            )}
-            {clientReviews.map((item, i) => (
+            {clientReviews.map((item) => (
               <ReviewCard key={item.id} clientInfo={item} />
             ))}
-            {canScrollRight && (
-              <div className="w-[64px] h-full bg-linear-to-l from-background to-background/0 absolute right-0 top-0 z-10 pointer-events-none"></div>
-            )}
           </div>
         </FadeUp>
 
-        {/* Right arrow */}
+        {/* Left Gradient Overlay - Fixed */}
+        {canScrollLeft && (
+          <div
+            aria-hidden="true"
+            className="absolute inset-y-0 left-0 w-[64px] z-10 pointer-events-none bg-linear-to-r from-background to-background/0"
+          />
+        )}
+
+        {/* Right Gradient Overlay - Fixed */}
+        {canScrollRight && (
+          <div
+            aria-hidden="true"
+            className="absolute inset-y-0 right-0 w-[64px] z-10 pointer-events-none bg-linear-to-l from-background to-background/0"
+          />
+        )}
+
+        {/* Right Arrow */}
         <button
           type="button"
           onClick={() => scroll("right")}

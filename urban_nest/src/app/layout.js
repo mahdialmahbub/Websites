@@ -6,7 +6,11 @@ import Footer from "./Components/footer/Footer";
 import "leaflet/dist/leaflet.css";
 import { ToastContainer, toast, Slide } from "react-toastify";
 import SmoothScrollProvider from "./Components/SmoothScrollProvider";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import "@flaticon/flaticon-uicons/css/regular/rounded.css"; // fi-rr-
+import "@flaticon/flaticon-uicons/css/regular/straight.css"; // fi-rs-
+import "@flaticon/flaticon-uicons/css/bold/straight.css"; // fi-bs-
+import "@flaticon/flaticon-uicons/css/solid/straight.css"; // fi-ss-
+import "@flaticon/flaticon-uicons/css/brands/all.css"; // fi-brands-
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -74,41 +78,7 @@ export default function RootLayout({ children }) {
       data-scroll-behavior="smooth"
       className={`${playfairDisplay.variable} ${inter.variable} h-full antialiased mx-auto`}
     >
-      <head>
-        <link
-          rel="preconnect"
-          href="https://cdn-uicons.flaticon.com"
-          crossOrigin=""
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-straight/css/uicons-regular-straight.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
-        ></link>
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-straight/css/uicons-regular-straight.css"
-        ></link>
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-bold-straight/css/uicons-bold-straight.css"
-        ></link>
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-brands/css/uicons-brands.css"
-        ></link>
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-straight/css/uicons-solid-straight.css"
-        ></link>
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-straight/css/uicons-solid-straight.css"
-        ></link>
-      </head>
+      <head></head>
       <body className="min-h-full flex flex-col relative ">
         <Toaster position="top-center" />
         {/* Toast */}

@@ -70,13 +70,16 @@ const FindForm = ({ onSearch, onLocate }) => {
             onClick={handleUseMyLocation}
             disabled={locating}
             aria-label="Use my current location"
+            aria-busy={locating}
             className="flex items-center justify-center p-space-2 bg-primary-1 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            <div
-              className={`size-[24px] rounded-full bg-[#6393F2]/30 flex items-center justify-center ${locating ? "animate-pulse" : ""}`}
-            >
-              <div className="size-2.5 rounded-full bg-[#6393F2] ring-2 ring-white"></div>
-            </div>
+            {locating ? (
+              <i className="fi fi-rs-loading flex size-[24px] items-center justify-center text-[20px] animate-spin"></i>
+            ) : (
+              <div className="size-[24px] rounded-full bg-[#6393F2]/30 flex items-center justify-center">
+                <div className="size-2.5 rounded-full bg-[#6393F2] ring-2 ring-white"></div>
+              </div>
+            )}
           </button>
         </div>
 

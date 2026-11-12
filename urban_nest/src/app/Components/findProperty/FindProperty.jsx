@@ -4,7 +4,6 @@ import React, { useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import toast from "react-hot-toast";
 import SectionHeader from "../SectionHeader";
-import FindFrom from "./FindFrom";
 import { properties as allProperties } from "@/app/assets/assets";
 import PropertyExplorer from "./PropertyExplorer";
 import { filterProperties } from "./filterProperties";
@@ -29,6 +28,20 @@ const FindProperty = () => {
   const [selectedId, setSelectedId] = useState(allProperties[0]?.id ?? null);
   const resultsRef = useRef(null);
 
+  // results section-e (score chart + property cards) smooth scroll kora
+  const scrollToResults = () => {
+    if (!resultsRef.current) return;
+
+    if (window.lenis) {
+      window.lenis.scrollTo(resultsRef.current, {
+        offset: -100, // scroll-mt-[100px]-এর মতো navbar-এর জন্য gap
+      });
+    } else {
+      // lenis na thakle normal scroll (scroll-mt-25 gap ta handle korbe)
+      resultsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   const handleSearch = (filters) => {
     const results = filterProperties(allProperties, filters);
     setFilteredProperties(results);
@@ -40,15 +53,22 @@ const FindProperty = () => {
     }
 
     // ম্যাচ পাওয়া গেলে একটু নিচে স্কোর-চার্ট + প্রপার্টি সেকশনে স্ক্রল করা
-    window.lenis?.scrollTo(resultsRef.current, {
-      offset: -100, // scroll-mt-[100px]-এর মতো navbar-এর জন্য gap
-    });
+    scrollToResults();
+  };
+
+  // Map popup-er "More" e click: oi property-r card active koro + niche scroll koro
+  const handleMore = (property) => {
+    if (!property) return;
+
+    setSelectedId(property.id);
+    scrollToResults();
   };
 
   return (
-    <section id="properties" className="p-space-9 bg-foreground overflow-hidden relative">
+    <section id="properties" className="p-space-9 bg-foreground overflow-hidden">
+      <div className="relative min-w-300 max-w-400 container mx-auto" >
       <i className="fi fi-rs-house-chimney text-[350px] absolute top-0 right-0 text-primary-3/10"></i>
-      <div className="container mx-auto min-w-300 max-w-360">
+      <div className=" min-w-300 max-w-360">
         <SectionHeader
           mainText={"Match"}
           text={"Find your perfect"}
@@ -72,6 +92,7 @@ const FindProperty = () => {
                   properties={filteredProperties}
                   selectedId={selectedId}
                   onSelect={setSelectedId}
+                  onMore={handleMore}
                   flyToLocation={userLocation}
                 />
               </FadeRight>
@@ -92,6 +113,7 @@ const FindProperty = () => {
             </div>
           </FadeUp>
         </div>
+      </div>
       </div>
     </section>
   );

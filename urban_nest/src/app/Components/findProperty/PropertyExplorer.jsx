@@ -10,6 +10,7 @@ export default function PropertyExplorer({
   selectedId,
   onSelect,
 }) {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const list = properties ?? [];
 
   const scrollRef = useRef(null);
@@ -27,9 +28,7 @@ export default function PropertyExplorer({
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
-  /* -------------------------------------------------
-     Check actual horizontal scroll position
-  ------------------------------------------------- */
+  /* Check actual horizontal scroll position */
   const updateScrollState = useCallback(() => {
     const container = scrollRef.current;
 
@@ -38,14 +37,10 @@ export default function PropertyExplorer({
     const { scrollLeft, scrollWidth, clientWidth } = container;
 
     setCanScrollLeft(scrollLeft > 4);
-    setCanScrollRight(
-      scrollLeft + clientWidth < scrollWidth - 4,
-    );
+    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 4);
   }, []);
 
-  /* -------------------------------------------------
-     Setup scroll listener + resize observer
-  ------------------------------------------------- */
+  /* Setup scroll listener + resize observer */
   useEffect(() => {
     const container = scrollRef.current;
 
@@ -62,48 +57,65 @@ export default function PropertyExplorer({
     resizeObserver.observe(container);
 
     return () => {
-      container.removeEventListener(
-        "scroll",
-        updateScrollState,
-      );
-
+      container.removeEventListener("scroll", updateScrollState);
       resizeObserver.disconnect();
     };
   }, [list, updateScrollState]);
 
   /* -------------------------------------------------
-     Reset refs when properties change
+     [NEW] Scroll a card to the center of the carousel.
+     Moves only the carousel horizontally (never the page),
+     so it won't fight with the page scroll (lenis).
   ------------------------------------------------- */
-  useEffect(() => {
-    cardRefs.current = [];
-  }, [properties]);
+  const scrollToCard = useCallback((index) => {
+    const container = scrollRef.current;
+    const card = cardRefs.current[index];
+
+    if (!container || !card) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+
+    const left =
+      container.scrollLeft +
+      (cardRect.left - containerRect.left) -
+      (containerRect.width - cardRect.width) / 2;
+
+    container.scrollTo({
+      left: Math.max(0, left),
+      behavior: "smooth",
+    });
+  }, []);
 
   /* -------------------------------------------------
-     Go to property
+     [NEW] When selectedId changes from OUTSIDE (map marker click,
+     popup "More", new search), bring that card into view.
+
+     The old "Reset refs when properties change" effect is REMOVED:
+     it ran after the ref callbacks and wiped the refs.
   ------------------------------------------------- */
+  useEffect(() => {
+    if (!selectedId) return;
+
+    const index = (properties ?? []).findIndex((p) => p.id === selectedId);
+
+    if (index === -1) return;
+
+    scrollToCard(index);
+  }, [selectedId, properties, scrollToCard]);
+
+  /* Go to property */
   const goTo = (index) => {
     if (!total) return;
 
-    const clamped = Math.max(
-      0,
-      Math.min(total - 1, index),
-    );
+    const clamped = Math.max(0, Math.min(total - 1, index));
 
     const target = list[clamped];
 
     if (!target) return;
 
     onSelect?.(target.id);
-
-    const card = cardRefs.current[clamped];
-
-    if (card) {
-      card.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
-    }
+    scrollToCard(clamped); // [CHANGED] was card.scrollIntoView(...)
   };
 
   const goPrev = () => {
@@ -114,22 +126,16 @@ export default function PropertyExplorer({
     goTo(currentIndex + 1);
   };
 
-  /* -------------------------------------------------
-     Card click
-  ------------------------------------------------- */
+  /* Card click */
   const handleSelect = (id) => {
-    const index = list.findIndex(
-      (property) => property.id === id,
-    );
+    const index = list.findIndex((property) => property.id === id);
 
     if (index !== -1) {
       goTo(index);
     }
   };
 
-  /* -------------------------------------------------
-     Empty state
-  ------------------------------------------------- */
+  /* Empty state */
   if (total === 0) {
     return (
       <div className="mt-space-7">
@@ -148,48 +154,31 @@ export default function PropertyExplorer({
 
   return (
     <div className="mt-space-7">
-      <div className="mx-auto flex flex-col gap-6 lg:flex-row">
-        {/* -----------------------------------------
-            LEFT — Selected Property Score
-        ------------------------------------------ */}
+      <div className="mx-auto flex gap-6">
+        {/* LEFT — Selected Property Score */}
         <div className="flex w-full justify-center lg:w-100 lg:justify-start">
           <PropertyScoreChart property={selectedProperty} />
         </div>
 
-        {/* -----------------------------------------
-            RIGHT — Property Explorer
-        ------------------------------------------ */}
+        {/* RIGHT — Property Explorer */}
         <div className="flex min-w-0 flex-1 flex-col gap-3">
-          {/* ---------------------------------------
-              Scroll Viewport
-          ---------------------------------------- */}
           <div className="relative min-w-0">
-            {/* LEFT EDGE OVERLAY
-                IMPORTANT:
-                This is OUTSIDE the scroll container,
-                so it won't move with the cards.
-            */}
+            {/* LEFT EDGE OVERLAY (outside scroll container) */}
             <div
               className={`
                 pointer-events-none
                 absolute left-0 top-0 bottom-0 z-20
                 w-12
-                bg-gradient-to-r
+                bg-linear-to-r
                 from-foreground
                 to-transparent
                 transition-opacity duration-200
-                ${
-                  canScrollLeft
-                    ? "opacity-100"
-                    : "opacity-0"
-                }
+                ${canScrollLeft ? "opacity-100" : "opacity-0"}
               `}
               aria-hidden="true"
             />
 
-            {/* -------------------------------------
-                Horizontal Scroll Container
-            -------------------------------------- */}
+            {/* Horizontal Scroll Container */}
             <div
               ref={scrollRef}
               onScroll={updateScrollState}
@@ -229,23 +218,17 @@ export default function PropertyExplorer({
                 pointer-events-none
                 absolute right-0 top-0 bottom-0 z-20
                 w-12
-                bg-gradient-to-l
+                bg-linear-to-l
                 from-foreground
                 to-transparent
                 transition-opacity duration-200
-                ${
-                  canScrollRight
-                    ? "opacity-100"
-                    : "opacity-0"
-                }
+                ${canScrollRight ? "opacity-100" : "opacity-0"}
               `}
               aria-hidden="true"
             />
           </div>
 
-          {/* ---------------------------------------
-              Navigation
-          ---------------------------------------- */}
+          {/* Navigation */}
           <div className="flex items-center justify-end gap-3 pr-1">
             {/* Previous */}
             <button
@@ -272,7 +255,7 @@ export default function PropertyExplorer({
               "
               aria-label="Previous property"
             >
-              <i className="fi fi-rr-arrow-small-left flex items-center justify-center text-[28px]" />
+              <i className="fi fi-rs-arrow-small-left flex items-center justify-center text-[28px]" />
             </button>
 
             {/* Counter */}
@@ -311,7 +294,7 @@ export default function PropertyExplorer({
               "
               aria-label="Next property"
             >
-              <i className="fi fi-rr-arrow-small-right flex items-center justify-center text-[28px]" />
+              <i className="fi fi-rs-arrow-small-right flex items-center justify-center text-[28px]" />
             </button>
           </div>
         </div>

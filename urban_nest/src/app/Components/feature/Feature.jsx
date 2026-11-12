@@ -20,7 +20,7 @@ const Feature = () => {
               subtitle={
                 "Find properties that perfectly match your lifestyle and preferences"
               }
-              icon="fi fi-rr-home"
+              icon="fi fi-rs-home"
             />
           </FadeUp>
           <FadeUp>
