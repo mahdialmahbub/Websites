@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -20,9 +19,7 @@ const Review = () => {
     if (!el) return;
 
     setCanScrollLeft(el.scrollLeft > 0);
-    setCanScrollRight(
-      el.scrollLeft + el.clientWidth < el.scrollWidth - 1
-    );
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 1);
   };
 
   useEffect(() => {

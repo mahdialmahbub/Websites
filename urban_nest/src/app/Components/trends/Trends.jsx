@@ -12,8 +12,8 @@ const chartData = {
 
 const Trends = () => {
   return (
-    <section className="p-space-9 bg-foreground relative">
-      <div className="relative min-w-300 max-w-400 container mx-auto">
+    <section className=" bg-foreground relative">
+      <div className="relative min-w-300 max-w-400 container mx-auto p-space-9">
         <i className="fi fi-rs-growth-chart-invest text-[350px] absolute top-0 right-0 text-primary-3/10"></i>
         <div className="min-w-300 max-w-360 container mx-auto relative">
           <SectionHeader

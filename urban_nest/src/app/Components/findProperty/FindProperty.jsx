@@ -65,8 +65,8 @@ const FindProperty = () => {
   };
 
   return (
-    <section id="properties" className="p-space-9 bg-foreground overflow-hidden">
-      <div className="relative min-w-300 max-w-400 container mx-auto" >
+    <section id="properties" className="bg-foreground overflow-hidden">
+      <div className="relative min-w-300 max-w-400 container mx-auto p-space-9 " >
       <i className="fi fi-rs-house-chimney text-[350px] absolute top-0 right-0 text-primary-3/10"></i>
       <div className=" min-w-300 max-w-360">
         <SectionHeader
