@@ -1,11 +1,6 @@
 "use client";
 
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import SectionHeader from "../SectionHeader";
 import PropertyCard from "../PropertyCard";
@@ -32,9 +27,7 @@ const FeaturedProperty = () => {
 
     setCanScrollLeft(el.scrollLeft > 4);
 
-    setCanScrollRight(
-      el.scrollLeft < maxScrollLeft - 4
-    );
+    setCanScrollRight(el.scrollLeft < maxScrollLeft - 4);
   }, []);
 
   /* -----------------------------------------
@@ -59,10 +52,7 @@ const FeaturedProperty = () => {
     resizeObserver.observe(el);
 
     return () => {
-      el.removeEventListener(
-        "scroll",
-        updateScrollButtons
-      );
+      el.removeEventListener("scroll", updateScrollButtons);
 
       resizeObserver.disconnect();
     };
@@ -77,21 +67,14 @@ const FeaturedProperty = () => {
     if (!el) return;
 
     el.scrollBy({
-      left:
-        direction === "left"
-          ? -SCROLL_AMOUNT
-          : SCROLL_AMOUNT,
+      left: direction === "left" ? -SCROLL_AMOUNT : SCROLL_AMOUNT,
       behavior: "smooth",
     });
   };
 
   return (
     <section className="mx-auto min-w-300 max-w-360 px-space-10 py-space-9">
-      <SectionHeader
-        mainText="Property"
-        text="Featured"
-        isButton={true}
-      />
+      <SectionHeader mainText="Property" text="Featured" isButton={true} />
 
       {/* ---------------------------------------
           Slider Wrapper
@@ -111,11 +94,7 @@ const FeaturedProperty = () => {
             from-background
             to-transparent
             transition-opacity duration-200
-            ${
-              canScrollLeft
-                ? "opacity-100"
-                : "opacity-0"
-            }
+            ${canScrollLeft ? "opacity-100" : "opacity-0"}
           `}
           aria-hidden="true"
         />
@@ -134,11 +113,7 @@ const FeaturedProperty = () => {
             from-background
             to-transparent
             transition-opacity duration-200
-            ${
-              canScrollRight
-                ? "opacity-100"
-                : "opacity-0"
-            }
+            ${canScrollRight ? "opacity-100" : "opacity-0"}
           `}
           aria-hidden="true"
         />
@@ -152,33 +127,7 @@ const FeaturedProperty = () => {
           disabled={!canScrollLeft}
           aria-label="Scroll left"
           className={`
-            absolute
-            left-2
-            top-1/2
-            z-30
-            flex
-            size-11
-            -translate-y-1/2
-            items-center
-            justify-center
-            rounded-full
-            border
-            border-foreground/10
-            bg-background
-            text-foreground
-            transition-all
-            duration-200
-            hover:border-primary-5
-            hover:bg-primary-5
-            hover:text-primary-1
-            hover:scale-105
-            focus-visible:outline-none
-            focus-visible:ring-2
-            focus-visible:ring-primary-5
-            focus-visible:ring-offset-2
-            focus-visible:ring-offset-background
-            disabled:pointer-events-none
-            disabled:opacity-0
+            absolute left-2 top-1/2 z-30 size-11 flex items-center justify-center rounded-full bg-primary-1 text-primary-10 shadow hover:bg-primary-5 hover:text-primary-1 transition-colors disabled:opacity-0 disabled:cursor-not-allowed cursor-pointer
           `}
         >
           <i className="fi fi-rs-arrow-small-left flex items-center justify-center text-[26px]" />
@@ -203,15 +152,9 @@ const FeaturedProperty = () => {
           "
         >
           {properties.map((item, index) => (
-            <div
-              key={item.id ?? index}
-              className="shrink-0"
-            >
+            <div key={item.id ?? index} className="shrink-0">
               <FadeUp delay={index * 0.08}>
-                <PropertyCard
-                  property={item}
-                  isProgress
-                />
+                <PropertyCard property={item} isProgress />
               </FadeUp>
             </div>
           ))}
@@ -226,33 +169,7 @@ const FeaturedProperty = () => {
           disabled={!canScrollRight}
           aria-label="Scroll right"
           className={`
-            absolute
-            right-2
-            top-1/2
-            z-30
-            flex
-            size-11
-            -translate-y-1/2
-            items-center
-            justify-center
-            rounded-full
-            border
-            border-foreground/10
-            bg-background
-            text-foreground
-            transition-all
-            duration-200
-            hover:border-primary-5
-            hover:bg-primary-5
-            hover:text-primary-1
-            hover:scale-105
-            focus-visible:outline-none
-            focus-visible:ring-2
-            focus-visible:ring-primary-5
-            focus-visible:ring-offset-2
-            focus-visible:ring-offset-background
-            disabled:pointer-events-none
-            disabled:opacity-0
+            absolute right-2 top-1/2 z-30 size-11 flex items-center justify-center rounded-full bg-primary-1 text-primary-10 shadow hover:bg-primary-5 hover:text-primary-1 transition-colors disabled:opacity-0 disabled:cursor-not-allowed cursor-pointer
           `}
         >
           <i className="fi fi-rs-arrow-small-right flex items-center justify-center text-[26px]" />
