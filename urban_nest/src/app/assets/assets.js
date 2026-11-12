@@ -223,7 +223,7 @@ export const properties = [
         icon: "fi fi-rs-marker",
       },
       {
-        label: "Region",
+        label: "Rooms",
         value: 88,
         color: "#A855F7",
         icon: "fi fi-rs-bed-alt",
@@ -232,7 +232,7 @@ export const properties = [
         label: "Kitchen",
         value: 92,
         color: "#F59E0B",
-        icon: "fi fi-rs-kitchen-set",
+        icon: "fi fi-rs-pan",
       },
       {
         label: "Bathrooms",
@@ -274,7 +274,7 @@ export const properties = [
         icon: "fi fi-rs-marker",
       },
       {
-        label: "Region",
+        label: "Rooms",
         value: 90,
         color: "#A855F7",
         icon: "fi fi-rs-bed-alt",
@@ -283,7 +283,7 @@ export const properties = [
         label: "Kitchen",
         value: 93,
         color: "#F59E0B",
-        icon: "fi fi-rs-kitchen-set",
+        icon: "fi fi-rs-pan",
       },
       {
         label: "Bathrooms",
@@ -322,7 +322,7 @@ export const properties = [
         icon: "fi fi-rs-marker",
       },
       {
-        label: "Region",
+        label: "Rooms",
         value: 86,
         color: "#A855F7",
         icon: "fi fi-rs-bed-alt",
@@ -331,7 +331,7 @@ export const properties = [
         label: "Kitchen",
         value: 87,
         color: "#F59E0B",
-        icon: "fi fi-rs-kitchen-set",
+        icon: "fi fi-rs-pan",
       },
       {
         label: "Bathrooms",
@@ -370,7 +370,7 @@ export const properties = [
         icon: "fi fi-rs-marker",
       },
       {
-        label: "Region",
+        label: "Rooms",
         value: 92,
         color: "#A855F7",
         icon: "fi fi-rs-bed-alt",
@@ -379,7 +379,7 @@ export const properties = [
         label: "Kitchen",
         value: 95,
         color: "#F59E0B",
-        icon: "fi fi-rs-kitchen-set",
+        icon: "fi fi-rs-pan",
       },
       {
         label: "Bathrooms",
@@ -418,7 +418,7 @@ export const properties = [
         icon: "fi fi-rs-marker",
       },
       {
-        label: "Region",
+        label: "Rooms",
         value: 84,
         color: "#A855F7",
         icon: "fi fi-rs-bed-alt",
@@ -427,7 +427,7 @@ export const properties = [
         label: "Kitchen",
         value: 88,
         color: "#F59E0B",
-        icon: "fi fi-rs-kitchen-set",
+        icon: "fi fi-rs-pan",
       },
       {
         label: "Bathrooms",
@@ -469,7 +469,7 @@ export const properties = [
         icon: "fi fi-rs-marker",
       },
       {
-        label: "Region",
+        label: "Rooms",
         value: 96,
         color: "#A855F7",
         icon: "fi fi-rs-bed-alt",
@@ -478,7 +478,7 @@ export const properties = [
         label: "Kitchen",
         value: 98,
         color: "#F59E0B",
-        icon: "fi fi-rs-kitchen-set",
+        icon: "fi fi-rs-pan",
       },
       {
         label: "Bathrooms",
@@ -517,7 +517,7 @@ export const properties = [
         icon: "fi fi-rs-marker",
       },
       {
-        label: "Region",
+        label: "Rooms",
         value: 75,
         color: "#A855F7",
         icon: "fi fi-rs-bed-alt",
@@ -526,7 +526,7 @@ export const properties = [
         label: "Kitchen",
         value: 80,
         color: "#F59E0B",
-        icon: "fi fi-rs-kitchen-set",
+        icon: "fi fi-rs-pan",
       },
       {
         label: "Bathrooms",
@@ -565,7 +565,7 @@ export const properties = [
         icon: "fi fi-rs-marker",
       },
       {
-        label: "Region",
+        label: "Rooms",
         value: 83,
         color: "#A855F7",
         icon: "fi fi-rs-bed-alt",
@@ -574,7 +574,7 @@ export const properties = [
         label: "Kitchen",
         value: 84,
         color: "#F59E0B",
-        icon: "fi fi-rs-kitchen-set",
+        icon: "fi fi-rs-pan",
       },
       {
         label: "Bathrooms",
@@ -613,7 +613,7 @@ export const properties = [
         icon: "fi fi-rs-marker",
       },
       {
-        label: "Region",
+        label: "Rooms",
         value: 81,
         color: "#A855F7",
         icon: "fi fi-rs-bed-alt",
@@ -622,7 +622,7 @@ export const properties = [
         label: "Kitchen",
         value: 83,
         color: "#F59E0B",
-        icon: "fi fi-rs-kitchen-set",
+        icon: "fi fi-rs-pan",
       },
       {
         label: "Bathrooms",
@@ -661,7 +661,7 @@ export const properties = [
         icon: "fi fi-rs-marker",
       },
       {
-        label: "Region",
+        label: "Rooms",
         value: 94,
         color: "#A855F7",
         icon: "fi fi-rs-bed-alt",
@@ -670,7 +670,7 @@ export const properties = [
         label: "Kitchen",
         value: 96,
         color: "#F59E0B",
-        icon: "fi fi-rs-kitchen-set",
+        icon: "fi fi-rs-pan",
       },
       {
         label: "Bathrooms",
