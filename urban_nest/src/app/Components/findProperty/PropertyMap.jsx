@@ -1,10 +1,10 @@
-
 "use client";
 
 import { useEffect, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import PropertyPopup from "../PropertyPopup";
 
 function createPinIcon(isSelected) {
   const color = isSelected ? "#0D9488" : "#334155";
@@ -96,9 +96,17 @@ function FlyToUserLocation({ location }) {
   return null;
 }
 
-export default function PropertyMap({ properties, selectedId, onSelect, flyToLocation }) {
+export default function PropertyMap({
+  properties,
+  selectedId,
+  onSelect,
+  onMore, // popup-er "More" e click korle parent ke jana (card active + scroll)
+  flyToLocation,
+}) {
   const list = properties?.filter((p) => p.lat && p.lng) ?? [];
-  const initialCenter = list[0] ? [list[0].lat, list[0].lng] : [23.8103, 90.4125];
+  const initialCenter = list[0]
+    ? [list[0].lat, list[0].lng]
+    : [23.8103, 90.4125];
   const mapRef = useRef(null);
 
   if (list.length === 0) {
@@ -130,26 +138,22 @@ export default function PropertyMap({ properties, selectedId, onSelect, flyToLoc
       {list.map((property) => (
         <Marker
           key={property.id}
+          title={property.name}
           position={[property.lat, property.lng]}
           icon={createPinIcon(property.id === selectedId)}
           eventHandlers={{
             click: () => onSelect?.(property.id),
           }}
         >
-          <Popup>
-            <div className="text-sm">
-              <p className="font-semibold">{property.name}</p>
-              <p className="text-slate-500">{property.location}</p>
-              <p className="mt-1 font-bold text-teal-700">
-                ${property.price.toLocaleString()}
-              </p>
-            </div>
-          </Popup>
+          <PropertyPopup property={property} onMore={onMore} />
         </Marker>
       ))}
 
       {flyToLocation && (
-        <Marker position={[flyToLocation.lat, flyToLocation.lng]} icon={userLocationIcon}>
+        <Marker
+          position={[flyToLocation.lat, flyToLocation.lng]}
+          icon={userLocationIcon}
+        >
           <Popup>আপনার লোকেশন</Popup>
         </Marker>
       )}

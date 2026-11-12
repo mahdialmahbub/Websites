@@ -138,6 +138,7 @@ const Footer = () => {
                   text="Subscribe"
                   property="secondary"
                   onClick={notify}
+                  className="bg-primary-2"
                 />
               </div>
             </FadeUp>

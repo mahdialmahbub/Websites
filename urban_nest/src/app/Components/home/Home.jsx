@@ -65,6 +65,7 @@ const Home = () => {
               width={500}
               height={300}
               priority
+              fetchPriority="high"
               className="hero-images h-auto w-full rounded-lg object-cover shadow-2xl"
             />
           </FadeRight>

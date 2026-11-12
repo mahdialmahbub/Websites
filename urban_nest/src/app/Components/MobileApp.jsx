@@ -32,7 +32,10 @@ const MobileApp = () => {
         </div>
         <div className="flex items-center gap-space-5 mt-8">
           <FadeUp delay={0.4}>
-            <button className="p-space-3 bg-black border border-placeholder flex items-center gap-space-2 ">
+            <button
+              type="button"
+              className="p-space-3 bg-black border border-placeholder flex items-center gap-space-2 cursor-pointer transition-transform duration-300 ease-out hover:scale-105 active:scale-95 focus-visible:scale-105 focus-visible:outline-none"
+            >
               <Image
                 alt="google play"
                 src={assets.google_play}
@@ -49,7 +52,7 @@ const MobileApp = () => {
             </button>
           </FadeUp>
           <FadeUp delay={0.6}>
-            <button className="p-space-3 bg-black border border-placeholder flex items-center gap-space-2 ">
+            <button className="p-space-3 bg-black border border-placeholder flex items-center gap-space-2 cursor-pointer transition-transform duration-300 ease-out hover:scale-105 active:scale-95 focus-visible:scale-105 focus-visible:outline-none">
               <i className="fi fi-brands-apple flex items-center justify-content text-[32px] text-white"></i>
               <div className="text-background flex flex-col items-start">
                 <p className="text-[16px] font-medium">GET IT ON</p>

@@ -13,7 +13,8 @@ const FeatureCard = ({
   icon = "fi fi-rs-home",
 }) => {
   return (
-    <div className={`flex items-center ${isRight ? "justify-end featureLeft" : "justify-start"} p-space-5 gap-space-6 relative border border-primary-2 shadow-[0_0_8px_rgba(13,100,94,0.10)] overflow-hidden w-full`}
+    <div
+      className={`flex items-center ${isRight ? "justify-end featureLeft" : "justify-start"} p-space-5 gap-space-6 relative border border-primary-2 shadow-[0_0_8px_rgba(13,100,94,0.10)] overflow-hidden w-full`}
     >
       <i
         className={`${icon} text-[348px] text-primary-3 opacity-10 absolute top-0 ${isRight ? "-left-25" : "-right-25"}`}
@@ -23,9 +24,14 @@ const FeatureCard = ({
         src={imageURL}
         height={232}
         width={412}
+        priority
+        fetchPriority="high"
+        sizes="(max-width: 768px) 100vw, 412px"
         className={`${isRight && "order-2"}`}
       />
-      <div className={`flex flex-col ${isRight ? "items-end *:text-end " : "justify-start *:text-start"}`}>
+      <div
+        className={`flex flex-col ${isRight ? "items-end *:text-end " : "justify-start *:text-start"}`}
+      >
         <div
           className={`${isRight ? "justify-center *:text-end " : "justify-start *:text-start"}`}
         >
