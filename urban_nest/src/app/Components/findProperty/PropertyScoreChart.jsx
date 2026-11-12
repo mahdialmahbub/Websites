@@ -82,7 +82,7 @@ export default function PropertyScoreChart({ property }) {
   if (!property) {
     return (
       <div className="w-full max-w-xs rounded-2xl bg-[#0F1B2D] p-6 text-center text-slate-400">
-        একটি প্রপার্টি সিলেক্ট করুন স্কোর দেখার জন্য
+        Select a property to see the score
       </div>
     );
   }

@@ -122,7 +122,7 @@ export default function PropertyMap({
       center={initialCenter}
       zoom={12}
       scrollWheelZoom
-      className="min-h-[426px] w-full rounded-xl"
+      className="min-h-[426px] w-full"
       ref={mapRef}
     >
       <TileLayer
