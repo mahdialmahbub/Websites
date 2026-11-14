@@ -20,6 +20,7 @@ import { cn } from "../lib/cn";
  *   Button er size.
  * @property {string | React.ReactElement} [icon]
  *   CDN class string (jemon `"fi fi-rr-plus"`) ba React element.
+ *   Icon shob shomoy screen reader theke lukano thake (aria-hidden).
  * @property {ButtonIconPosition} [iconPosition="left"]
  *   Label er kon pashe icon boshbe.
  * @property {boolean} [loading=false]
@@ -27,10 +28,13 @@ import { cn } from "../lib/cn";
  * @property {string} [className]
  *   Shob style override ekhane. Background, border, text, ring, size, radius,
  *   hover/focus/active state, even ripple color. Tomar class ta shobar upore jite.
+ *
+ * ACCESSIBILITY: children (text) na thakle (shudhu icon er button) `aria-label`
+ * dite-i hobe, na hole screen reader shudhu "button" bole. Dev e console warning dey.
  */
 
 /**
- * Baki sob (onClick, type, disabled, children ...) normal `<button>` props.
+ * Baki sob (onClick, type, disabled, children, aria-label, aria-pressed ...) normal `<button>` props.
  *
  * @typedef {ButtonOwnProps & Omit<React.ComponentPropsWithoutRef<"button">, keyof ButtonOwnProps>} ButtonProps
  */
@@ -125,87 +129,118 @@ function placeRipple(el, x, y) {
 // Niche `@type` ta shudu parent e prop suggestion er jonno, logic er kono kaj nai.
 export const Button = React.forwardRef(
   /** @type {React.ForwardRefRenderFunction<HTMLButtonElement, ButtonProps>} */
-  (function Button(
-    {
-      variant = "primary",
-      size = "md",
-      icon,
-      iconPosition = "left",
-      loading = false,
-      disabled = false,
-      type = "button",
-      className,
-      children,
-      onPointerDown,
-      onKeyDown,
-      ...rest
-    },
-    ref,
-  ) {
-    // Shudu icon er button (children nai) e aria-label na thakle dev e warning dey.
-    if (
-      process.env.NODE_ENV !== "production" &&
-      !children &&
-      !rest["aria-label"] &&
-      !rest["aria-labelledby"]
+  (
+    function Button(
+      {
+        variant = "primary",
+        size = "md",
+        icon,
+        iconPosition = "left",
+        loading = false,
+        disabled = false,
+        type = "button",
+        className,
+        children,
+        onPointerDown,
+        onKeyDown,
+        ...rest
+      },
+      ref,
     ) {
-      console.warn(
-        "Button: children na thakle `aria-label` dite hobe (screen reader er jonno).",
+      // Nijer ref (accessible name check er jonno) + parent er forwarded ref, duto-i set kore.
+      const innerRef = React.useRef(null);
+      const setRef = React.useCallback(
+        (node) => {
+          innerRef.current = node;
+          if (typeof ref === "function") ref(node);
+          else if (ref) ref.current = node;
+        },
+        [ref],
       );
-    }
 
-    const isDisabled = disabled || loading;
+      // DEV ONLY: asol DOM dekhe check kore button er naam ache kina.
+      // `children` er vitor shudhu icon thakleo (text nai) eta dhore felbe,
+      // ar shudhu change hole chale, tai console spam hoy na.
+      const ariaLabel = rest["aria-label"];
+      const ariaLabelledBy = rest["aria-labelledby"];
+      const title = rest.title;
+      React.useEffect(() => {
+        if (process.env.NODE_ENV === "production") return;
+        const el = innerRef.current;
+        if (!el) return;
+        const hasName =
+          el.textContent?.trim() ||
+          ariaLabel?.trim?.() ||
+          ariaLabelledBy ||
+          title?.trim?.();
+        if (!hasName) {
+          console.warn(
+            "Button: naam nai. Shudhu icon er button e `aria-label` dite hobe (screen reader er jonno).",
+            el,
+          );
+        }
+      }, [children, ariaLabel, ariaLabelledBy, title]);
 
-    // icon string hole <i> banai, element hole seta-i dekhai. Loading hole spinner.
-    const iconNode =
-      typeof icon === "string" ? <i className={icon} aria-hidden="true" /> : icon;
-    const glyph = loading ? SPINNER : iconNode;
+      const isDisabled = disabled || loading;
 
-    // Mouse / touch / pen: jekhane press korbe shekhan theke ripple shuru.
-    // Parent er `onPointerDown` o call hoy (alada destructure kora, nahole `...rest` e overwrite hoto).
-    function handlePointerDown(event) {
-      onPointerDown?.(event);
-      const el = event.currentTarget;
-      const rect = el.getBoundingClientRect();
-      // clientLeft/clientTop = border er width. Circle padding box er sapekkhe boshe, tai minus.
-      placeRipple(
-        el,
-        event.clientX - rect.left - el.clientLeft,
-        event.clientY - rect.top - el.clientTop,
-      );
-    }
+      // icon string hole <i> banai, React element hole span e mure aria-hidden kori
+      // (jate icon ta screen reader e na pore). Loading hole spinner.
+      const iconNode =
+        typeof icon === "string" ? (
+          <i className={icon} aria-hidden="true" />
+        ) : React.isValidElement(icon) ? (
+          <span aria-hidden="true" className="inline-flex">
+            {icon}
+          </span>
+        ) : null;
+      const glyph = loading ? SPINNER : iconNode;
 
-    // Keyboard (Space/Enter) e cursor nai, tai center theke.
-    // Na dile ager click er jaygay theke ripple ashto.
-    function handleKeyDown(event) {
-      onKeyDown?.(event);
-      if ((event.key === " " || event.key === "Enter") && !event.repeat) {
+      // Mouse / touch / pen: jekhane press korbe shekhan theke ripple shuru.
+      // Parent er `onPointerDown` o call hoy (alada destructure kora, nahole `...rest` e overwrite hoto).
+      function handlePointerDown(event) {
+        onPointerDown?.(event);
         const el = event.currentTarget;
-        placeRipple(el, el.clientWidth / 2, el.clientHeight / 2);
+        const rect = el.getBoundingClientRect();
+        // clientLeft/clientTop = border er width. Circle padding box er sapekkhe boshe, tai minus.
+        placeRipple(
+          el,
+          event.clientX - rect.left - el.clientLeft,
+          event.clientY - rect.top - el.clientTop,
+        );
       }
-    }
 
-    return (
-      <button
-        ref={ref}
-        type={type}
-        disabled={isDisabled}
-        aria-busy={loading || undefined}
-        className={cn(
-          BASE,
-          SIZE[size] ?? SIZE.md,
-          VARIANT[variant] ?? VARIANT.primary,
-          loading ? "cursor-progress" : disabled && "cursor-not-allowed",
-          className, // sobar shesh e, tai sobar upore jite
-        )}
-        onPointerDown={handlePointerDown}
-        onKeyDown={handleKeyDown}
-        {...rest}
-      >
-        {iconPosition === "left" && glyph}
-        {children}
-        {iconPosition === "right" && glyph}
-      </button>
-    );
-  }),
+      // Keyboard (Space/Enter) e cursor nai, tai center theke.
+      // Na dile ager click er jaygay theke ripple ashto.
+      function handleKeyDown(event) {
+        onKeyDown?.(event);
+        if ((event.key === " " || event.key === "Enter") && !event.repeat) {
+          const el = event.currentTarget;
+          placeRipple(el, el.clientWidth / 2, el.clientHeight / 2);
+        }
+      }
+
+      return (
+        <button
+          ref={setRef}
+          type={type}
+          disabled={isDisabled}
+          aria-busy={loading || undefined}
+          className={cn(
+            BASE,
+            SIZE[size] ?? SIZE.md,
+            VARIANT[variant] ?? VARIANT.primary,
+            loading ? "cursor-progress" : disabled && "cursor-not-allowed",
+            className, // sobar shesh e, tai sobar upore jite
+          )}
+          onPointerDown={handlePointerDown}
+          onKeyDown={handleKeyDown}
+          {...rest}
+        >
+          {iconPosition === "left" && glyph}
+          {children}
+          {iconPosition === "right" && glyph}
+        </button>
+      );
+    }
+  ),
 );

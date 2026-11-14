@@ -361,12 +361,12 @@ export default function ATSScore({
     >
       <div className="mx-auto flex min-w-75 max-w-250 flex-col items-center">
         <header className="mb-[clamp(2rem,calc(3.636vw+1.273rem),4rem)] text-center">
-          <h2
+          <h3
             className="font-(family-name:--display) text-[clamp(1.5rem,calc(1.818vw+1.011rem),2.375rem)] font-bold leading-h2 text-balance bg-[linear-gradient(90deg,#a855f7_0%,#d8b4fe_28%,#f4f4f5_50%,#a7f3d0_74%,#34d399_100%)] bg-clip-text text-transparent"
             id="ats-score-title"
           >
             {title}
-          </h2>
+          </h3>
           <p className="mx-auto mt-[clamp(0.6rem,calc(0.273vw+0.545rem),0.75rem)] max-w-175 text-[clamp(0.875rem,calc(0.682vw+0.739rem),1.25rem)] leading-normal text-(--muted) text-balance">
             {subtitle}
           </p>
@@ -425,14 +425,12 @@ export default function ATSScore({
               <article
                 key={m.key}
                 data-key={m.key}
-
                 className={`${styles.card} ${CARD_THEME[m.key]} relative flex w-full min-w-0 max-w-55 flex-col items-center rounded-[clamp(0.75rem,calc(0.455vw+0.659rem),1rem)] border-[1.5px] border-solid border-[color-mix(in_srgb,var(--c)_75%,transparent)] bg-(--panel) px-[clamp(0.75rem,calc(1.364vw+0.477rem),1.5rem)] pb-[clamp(1.25rem,calc(1.136vw+1.023rem),1.875rem)] pt-[clamp(1.25rem,calc(1.364vw+0.977rem),2rem)] text-center [box-shadow:0_0_0_4px_color-mix(in_srgb,var(--c)_9%,transparent),0_0_32px_color-mix(in_srgb,var(--c)_26%,transparent)] min-[1100px]:col-auto min-[1100px]:row-auto`}
                 style={{ "--i": ORDER.indexOf(m.key) }}
                 ref={(el) => {
                   if (el) cardRefs.current[m.key] = el;
                 }}
               >
-
                 <div
                   className={`${styles.ring} relative grid aspect-square w-[clamp(3rem,calc(2.273vw+2.545rem),4.25rem)] place-items-center overflow-hidden rounded-[clamp(0.5rem,calc(0.455vw+0.409rem),0.75rem)] p-0.5 text-(--c)`}
                   aria-hidden="true"
@@ -477,12 +475,10 @@ export default function ATSScore({
             focusable="false"
           >
             {wires.items.map((w) => (
-
-<g
+              <g
                 key={w.key}
                 style={{ "--c": w.color, "--i": ORDER.indexOf(w.key) }}
               >
-
                 <path
                   className="fill-none stroke-3 opacity-40"
                   d={w.d}
@@ -530,7 +526,7 @@ export default function ATSScore({
               </g>
             ))}
           </svg>
-          
+
           {wires.items.map((w) => (
             <span
               key={w.key}

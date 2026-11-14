@@ -8,7 +8,7 @@ import { Button } from "../Button";
 // node = <TemplateCard />, so on the home page (server) the cards stay in the first HTML for crawlers.
 //
 // IMPORTANT: <TemplateCard /> should be `w-full` (no fixed width of its own).
-// The slide <li> below owns the width via --card-w, and the centering math depends on it.
+// The slide <div> below owns the width via --card-w, and the centering math depends on it.
 
 const PAD = "px-[clamp(1rem,calc(6.01vw-0.41rem),5rem)]";
 const SWIPE_MIN = 50; // px a drag must travel before it counts as "next / previous"
@@ -105,11 +105,11 @@ function NavArrow({ side, label, disabled, onClick }) {
       onClick={onClick}
       className={`absolute top-1/2 z-10 flex h-11 w-12 -translate-y-1/2 items-center md:h-12 ${
         left
-          ? "left-[-1] justify-start bg-linear-to-r "
-          : "right-[-1] justify-end bg-linear-to-l "
+          ? "left-0 justify-start bg-linear-to-r"
+          : "right-0 justify-end bg-linear-to-l"
       } from-background from-40% to-transparent outline-none transition-opacity duration-200 disabled:pointer-events-none disabled:opacity-0 group`}
     >
-      <span className="flex size-8 items-center justify-center rounded-full border border-indigo-500/15 bg-white text-xl text-indigo-600 shadow-sm transition-[transform,background-color,color] duration-200 group-hover:bg-indigo-100  group-focus-visible:ring-[3px] group-focus-visible:ring-indigo-300 group-active:scale-90">
+      <span className="flex size-8 items-center justify-center rounded-full border border-indigo-500/15 bg-white text-xl text-indigo-600 shadow-sm transition-[transform,background-color,color] duration-200 group-hover:bg-indigo-100 group-focus-visible:ring-[3px] group-focus-visible:ring-indigo-300 group-active:scale-90">
         <i
           aria-hidden="true"
           className={`flex ${left ? icons.leftAngle : icons.rightAngle}`}
@@ -249,7 +249,7 @@ export default function TemplateCarousel({
           When everything fits, the pills stay centered and the arrows hide themselves. */}
       <nav
         aria-label="Template categories"
-        className={`w-full max-w-150 px-[clamp(1rem,calc(6.01vw-0.41rem),5rem)] `}
+        className={`w-full max-w-150 ${PAD}`}
       >
         <div className="relative">
           <NavArrow
@@ -307,7 +307,11 @@ export default function TemplateCarousel({
       </nav>
 
       {/* Carousel: active card is always centered, side cards peek in.
-          overflow-x-clip hides the side overflow without cutting shadows/rings vertically. */}
+          overflow-x-clip hides the side overflow without cutting shadows/rings vertically.
+
+          A11y: this follows the WAI-ARIA carousel pattern (region > group slides),
+          so the track and the slides are plain <div>s. Do NOT use <ul>/<li> here:
+          <li role="group"> is not an allowed role, and a <ul> may only contain <li>. */}
       <div
         role="region"
         aria-roledescription="carousel"
@@ -317,7 +321,7 @@ export default function TemplateCarousel({
         {...cardDrag.bind}
         className="relative w-full touch-pan-y select-none overflow-x-clip rounded-xl py-3 outline-none focus-visible:ring-[3px] focus-visible:ring-indigo-300 [--card-w:clamp(13.125rem,65vw,15.3125rem)] [--gap:2rem] md:[--card-w:15.3125rem] md:[--gap:2.5rem] lg:[--gap:4rem]"
       >
-        <ul
+        <div
           className={`relative left-1/2 flex items-center gap-(--gap) ${MOTION} ${
             cardDrag.dragging ? "transition-none" : ""
           }`}
@@ -328,12 +332,13 @@ export default function TemplateCarousel({
           {visible.map((item, i) => {
             const active = i === current;
             return (
-              <li
+              <div
                 key={item.key}
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`${i + 1} of ${total}`}
                 data-active={active}
+                // mouse/touch shortcut only; keyboard users move with the arrow keys / Prev-Next buttons
                 onClick={() => !active && go(i)}
                 // width comes from --card-w so it always matches the translate math
                 className={`group/slide w-(--card-w) shrink-0 ${active ? "" : "cursor-pointer"}`}
@@ -349,16 +354,16 @@ export default function TemplateCarousel({
                 >
                   {item.node}
                 </div>
-              </li>
+              </div>
             );
           })}
-        </ul>
+        </div>
       </div>
 
       {/* Controls: arrows pushed to the edges on mobile, grouped in the middle from md */}
       {total > 1 && (
         <div
-          className={`flex w-full items-center justify-between md:w-auto md:justify-center md:gap-10 px-[clamp(1rem,calc(6.01vw-0.41rem),5rem)] md:px-0`}
+          className={`flex w-full items-center justify-between md:w-auto md:justify-center md:gap-10 ${PAD} md:px-0`}
         >
           <Button
             type="button"

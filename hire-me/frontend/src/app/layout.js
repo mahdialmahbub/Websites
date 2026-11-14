@@ -17,6 +17,9 @@ import { Toaster } from "@/lib/toast";
 import SiteChrome from "./components/SiteChome";
 import JsonLd from "./components/JsonLd";
 import NoScriptNotice from "./components/NoScriptNotice";
+import "@flaticon/flaticon-uicons/css/regular/rounded.css";
+import "@flaticon/flaticon-uicons/css/solid/rounded.css";
+import "@flaticon/flaticon-uicons/css/brands/all.css";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -115,34 +118,6 @@ export default function RootLayout({ children }) {
       data-scroll-behavior="smooth"
       className={`${poppins.variable} ${roboto.variable} h-full antialiased scroll-smooth selection:bg-violet-500/20 selection:text-violet-700`}
     >
-      <head>
-        <link
-          rel="preconnect"
-          href="https://cdn-uicons.flaticon.com"
-          crossOrigin=""
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-brands/css/uicons-brands.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-chubby/css/uicons-solid-chubby.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css"
-        />
-      </head>
-
       <body className="min-h-full flex flex-col">
         <a
           href="#main-content"

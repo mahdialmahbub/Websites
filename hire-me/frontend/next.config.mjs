@@ -32,6 +32,7 @@ const securityHeaders = [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: { inlineCss: true },
   // Allow development requests from your mobile device
   allowedDevOrigins: ["192.168.0.105"],
 

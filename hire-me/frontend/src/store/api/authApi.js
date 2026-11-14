@@ -3,12 +3,34 @@ import { baseApi } from "./baseApi";
 
 const post = (url) => (body) => ({ url, method: "POST", body });
 
+// The next person on this browser must not inherit the cached user or the resume draft.
+const clearClientState = (dispatch) => {
+  dispatch(baseApi.util.resetApiState());
+  dispatch(resetBuilder());
+};
+
 export const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    /** Current user, or a 401 error when logged out. Use it to protect pages. */
+    /**
+     * Current user, or a 401 error when logged out.
+     * Use it ONLY on protected pages (dashboard, editor, ...) to guard them.
+     * Every 401 is logged to the browser console (hurts the Lighthouse Best Practices
+     * score), so do not call this on public pages: use getSession there.
+     */
     getMe: build.query({
       query: () => "/users/me",
-      transformResponse: (data) => data.user,
+      transformResponse: (data) => data?.user ?? null,
+      providesTags: ["Me"],
+    }),
+
+    /**
+     * Same user, but never a 401: the backend answers 200 { user: null } when logged out.
+     * Use it on public pages / navbar to show "Log in" or the avatar.
+     * Backend route needed: GET /auth/session  ->  200 { user: {...} | null }
+     */
+    getSession: build.query({
+      query: () => "/auth/session",
+      transformResponse: (data) => data?.user ?? null,
       providesTags: ["Me"],
     }),
 
@@ -38,9 +60,11 @@ export const authApi = baseApi.injectEndpoints({
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
+        } catch {
+          // The caller handles the error (unwrap). Swallowing it here avoids an
+          // "Uncaught (in promise)" console error; we still clear local state below.
         } finally {
-          dispatch(baseApi.util.resetApiState());
-          dispatch(resetBuilder()); // the next person on this browser must not inherit the draft
+          clearClientState(dispatch);
         }
       },
     }),
@@ -51,7 +75,18 @@ export const authApi = baseApi.injectEndpoints({
     }),
 
     // body: { otp }  -> backend verifies the code, deletes the account and ends the session
-    deleteAccount: build.mutation({ query: post("/auth/delete-account") }),
+    deleteAccount: build.mutation({
+      query: post("/auth/delete-account"),
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          // Account is gone and the session ended: drop the cached user and the draft too.
+          clearClientState(dispatch);
+        } catch {
+          // Wrong code etc.: the caller shows the error, nothing to clear.
+        }
+      },
+    }),
 
     // Password reset, 3 steps:
     forgotPassword: build.mutation({ query: post("/auth/forgot-password") }), //    { email }
@@ -62,6 +97,7 @@ export const authApi = baseApi.injectEndpoints({
 
 export const {
   useGetMeQuery,
+  useGetSessionQuery,
   useGetAuthProvidersQuery,
   useRegisterMutation,
   useVerifyEmailMutation,

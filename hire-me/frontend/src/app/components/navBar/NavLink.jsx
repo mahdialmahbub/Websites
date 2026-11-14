@@ -3,20 +3,22 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const isActivePath = (pathname, href, exact) => {
-  if (exact || href === "/") return pathname === href;
-  return pathname === href || pathname.startsWith(`${href}/`);
+const normalize = (path = "") => {
+  const clean = path.split(/[?#]/)[0];
+  if (clean.length > 1) return clean.replace(/\/+$/, "");
+  return clean || "/";
 };
 
-/**
- * @param {{
- *   name: string,
- *   href: string,
- *   exact?: boolean,
- *   className?: string,
- *   onClick?: () => void,
- * }} props
- */
+const isActivePath = (pathname, href, exact) => {
+  if (!pathname) return false;
+
+  const current = normalize(pathname);
+  const target = normalize(href);
+
+  if (exact || target === "/") return current === target;
+  return current === target || current.startsWith(`${target}/`);
+};
+
 const NavLink = ({ name, href, exact = false, className = "", onClick }) => {
   const pathname = usePathname();
   const isActive = isActivePath(pathname, href, exact);
@@ -27,17 +29,16 @@ const NavLink = ({ name, href, exact = false, className = "", onClick }) => {
       onClick={onClick}
       aria-current={isActive ? "page" : undefined}
       className={[
-        "group relative flex h-11 items-center justify-center rounded-md px-space-6",
+        "group relative flex h-11 items-center justify-center overflow-hidden rounded-md px-space-6",
         "font-primary text-body font-medium",
         "transition-colors duration-300 hover:bg-violet-500/5",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 focus-visible:ring-offset-2 overflow-hidden",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 focus-visible:ring-offset-2",
         isActive ? "text-violet-500" : "text-neutral-950",
         className,
       ].join(" ")}
     >
       {name}
 
-      {/* Animated underline */}
       <span
         aria-hidden="true"
         className={[

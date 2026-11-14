@@ -6,6 +6,7 @@ import HorizontalScroller from "./HorizontalScroller";
 
 const Testimonial = async () => {
   const reviews = await getReviews();
+  console.log(reviews[0]);
 
   if (reviews.length === 0)
     return (
@@ -32,12 +33,13 @@ const Testimonial = async () => {
           className="gap-[clamp(1.125rem,calc(0.909vw+0.943rem),1.625rem)] py-1 min-w-[320px]"
         >
           {reviews.map((r) => {
-            const { id, name, rating, comment, date } = r;
+            const { id, name, jobTitle, rating, comment, date } = r;
 
             return (
               <div className="px-1" key={id}>
                 <TestimonialCard
                   name={name}
+                  jobTitle={jobTitle}
                   rating={rating}
                   comment={comment}
                   date={date}

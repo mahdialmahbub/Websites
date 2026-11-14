@@ -113,7 +113,7 @@ const PersonalInformation = () => {
 
         <Input
           label="LinkedIn Profile"
-          labelIcon="fi fi-rr-portfolio"
+          labelIcon="fi fi-brands-linkedin"
           placeholder="linkedin.com/in/yourname"
           inputMode="url"
           maxLength={LIMITS.url}

@@ -2,7 +2,7 @@ import React from "react";
 
 const stepContent = [
   {
-    icon: "fi fi-rr-attention-detail",
+    icon: "fi fi-rr-file-edit",
     color: "#9333EA",
     title: "Enter Your Details",
     subtitle: "Provide your information to get started quickly and accurately.",
@@ -70,9 +70,9 @@ const Steps = () => {
 
           {/* Text */}
           <div className="w-full space-y-[clamp(0.25rem,calc(0.188vw+0.206rem),0.375rem)] *:text-center">
-            <h3 className="font-semibold text-neutral-950 text-[clamp(0.875rem,calc(0.188vw+0.831rem),1rem)]">
+            <h2 className="font-semibold text-neutral-950 text-[clamp(0.875rem,calc(0.188vw+0.831rem),1rem)]">
               {item.title}
-            </h3>
+            </h2>
             <p className="text-neutral-500 text-[clamp(0.75rem,calc(0.188vw+0.706rem),0.875rem)]">
               {item.subtitle}
             </p>

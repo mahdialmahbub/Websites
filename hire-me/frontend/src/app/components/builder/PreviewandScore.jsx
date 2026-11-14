@@ -29,7 +29,7 @@ const PreviewandScore = ({
       <div className="flex md:hidden gap-space-3 self-end">
         <Button
           variant="secondary"
-          icon={isScore ? "fi fi-rr-eye" : "fi fi-rr-hard-disk-scan"}
+          icon={isScore ? "fi fi-rr-eye" : "fi fi-rr-qr-scan"}
           aria-pressed={isScore}
           onClick={onToggleScore}
           className="bg-violet-500/5 text-violet-500 hover:bg-violet-500/10 border-violet-500/10"

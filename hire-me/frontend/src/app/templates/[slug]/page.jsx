@@ -63,8 +63,7 @@ export default async function TemplatePage({ params }) {
         }}
       />
 
-      <div className="-mb-2.5 max-md:-mt-5 flex flex-col gap-1">
-        <nav aria-label="back">
+        <nav aria-label="back" className="-mb-2.5 max-md:-mt-5">
           <Link
             href="/templates"
             className="h-11 flex items-center gap-[clamp(0.375rem,calc(0.188vw+0.331rem),0.5rem)] text-[clamp(0.8125rem,calc(0.282vw+0.746rem),1rem)] font-primary font-medium text-neutral-500"
@@ -73,12 +72,11 @@ export default async function TemplatePage({ params }) {
             Back to templates
           </Link>
         </nav>
-      </div>
 
       <article className="grid items-start gap-[clamp(2.5rem,calc(3.005vw+0.796rem),3.5rem)] md:grid-cols-[minmax(0,26rem)_1fr]">
-        <div className="overflow-hidden rounded-xl border border-neutral-500/10 bg-white shadow-[0_6px_8px_rgba(2,6,23,0.10)]">
+        <di v className="overflow-hidden rounded-xl border border-neutral-500/10 bg-white shadow-[0_6px_8px_rgba(2,6,23,0.10)]">
           <TemplateThumb slug={slug} name={name} />
-        </div>
+        </di>
 
         <div className="space-y-[clamp(0.5rem,calc(0.455vw+0.409rem),0.75rem)]">
           {category && (
@@ -86,7 +84,7 @@ export default async function TemplatePage({ params }) {
               href={categoryPath(category.slug)}
               className={`rounded-sm bg-violet-900/60 px-space-3 py-space-2 font-primary text-[12px] font-semibold text-violet-50 backdrop-blur-xs hover:bg-violet-900/80 sm:rounded-lg`}
             >
-              {category.name}
+              {category.name} 
             </Link>
           )}
           <h1 className="font-primary text-[clamp(1.5rem,calc(1.878vw+1.06rem),2.5rem)] font-semibold mt-5 leading-[clamp(2rem,calc(2.727vw+1.455rem),3.5rem)]">

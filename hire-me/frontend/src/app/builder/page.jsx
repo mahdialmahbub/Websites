@@ -246,8 +246,9 @@ function BuilderScreen() {
         <div className="hidden md:flex items-center gap-3.25">
           <Button
             variant="secondary"
-            icon={showScore ? "fi fi-rr-eye" : "fi fi-rr-hard-disk-scan"}
+            icon={showScore ? "fi fi-rr-eye" : "fi fi-rr-qr-scan"}
             aria-pressed={showScore}
+            aria-label="Score and preview show toggle"
             onClick={toggleScore}
             className="bg-violet-500/5 text-violet-500 hover:bg-violet-500/10"
           >
@@ -257,6 +258,7 @@ function BuilderScreen() {
             variant="secondary"
             icon="fi fi-rr-file-download"
             onClick={handleDownload}
+            aria-label="Download resume as a PDF"
             disabled={isDownloading}
             className="bg-green-500/5 text-green-500 hover:bg-green-500/10"
           >
@@ -294,6 +296,7 @@ function BuilderScreen() {
                   variant="secondary"
                   className="text-blue-500 bg-blue-500/5 hover:bg-blue-500/10"
                   icon={icons.templete}
+                  aria-label="Templates modal open button"
                   onClick={() => setPickerOpen("template")}
                 >
                   <span className="hidden sm:inline">Template</span>
@@ -302,6 +305,7 @@ function BuilderScreen() {
                   variant="secondary"
                   className="text-violet-500 bg-violet-500/5 hover:bg-violet-500/10 border-violet-500/5"
                   icon={icons.color}
+                  aria-label="Color modal open button"
                   onClick={() => setPickerOpen("color")}
                 >
                   <span className="hidden sm:inline">Color</span>
@@ -311,6 +315,7 @@ function BuilderScreen() {
                 variant="text"
                 icon={icons.reset}
                 onClick={handleReset}
+                aria-label="Resume information reset button"
                 className="text-red-300 hover:text-red-500 max-sm:w-11"
               >
                 <span className="hidden sm:inline">Reset</span>
@@ -372,6 +377,7 @@ function BuilderScreen() {
                     variant="text"
                     icon={icons.left}
                     onClick={handleBack}
+                    aria-label="Previous step shift button"
                     className="max-sm:text-[22px]"
                   >
                     <span className="hidden sm:inline">{prevStep.title}</span>
