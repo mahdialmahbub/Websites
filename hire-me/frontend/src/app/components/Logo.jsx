@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
 
-// width/height ekhane shudu aspect ratio er hint (page load e layout shift atkate).
-// Asol size CSS (className) diye hoy, tai `h-auto w-auto` diye natural size ba
-// className er size ney.
-const LOGO_SIZE = { width: 200, height: 46 };
+const LOGO_SIZE = {
+  width: 200,
+  height: 46,
+};
 
 const SOURCES = {
   text: "/textLogo.svg",
@@ -25,17 +25,16 @@ export default function Logo({
     variant ?? (textWhite ? "textWhite" : text ? "text" : "icon");
 
   return (
-
     <Image
-      alt={alt}
+      {...props}
       src={SOURCES[resolved]}
+      alt={alt}
       width={LOGO_SIZE.width}
       height={LOGO_SIZE.height}
       loading={priority ? "eager" : "lazy"}
       fetchPriority={priority ? "high" : "auto"}
       decoding="async"
-      {...props}
-      className={twMerge("h-auto w-auto object-contain", className)}
+      className={twMerge("w-auto h-auto object-contain", className)}
     />
   );
 }

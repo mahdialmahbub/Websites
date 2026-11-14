@@ -96,9 +96,9 @@ const Contact = () => {
       >
         {/* Form */}
         <div className="order-1 w-full min-w-0 lg:order-2 lg:flex-1 lg:flex lg:flex-col lg:justify-center">
-          <h2 className="mb-[clamp(1.5rem,calc(0.751vw+1.324rem),2rem)] font-primary font-semibold text-[clamp(1.375rem,calc(0.563vw+1.243rem),1.75rem)]">
+          <h3 className="mb-[clamp(1.5rem,calc(0.751vw+1.324rem),2rem)] font-primary font-semibold text-[clamp(1.375rem,calc(0.563vw+1.243rem),1.75rem)]">
             Message us for your needs
-          </h2>
+          </h3>
 
           <ContactForm />
         </div>
@@ -119,9 +119,9 @@ const Contact = () => {
           <div className="relative z-10">
             {/* Title + description */}
             <div className="hidden lg:block mb-[clamp(1.375rem,calc(0.939vw+1.155rem),2rem)]">
-              <h2 className="mb-2 font-primary font-semibold text-neutral-50 text-[clamp(1.5rem,calc(1.2vw+1.2rem),2rem)]">
+              <h3 className="mb-2 font-primary font-semibold text-neutral-50 text-[clamp(1.5rem,calc(1.2vw+1.2rem),2rem)]">
                 Contact Us As You Want
-              </h2>
+              </h3>
 
               <p className="text-neutral-200 text-[clamp(1rem,calc(0.4vw+0.9rem),1.125rem)]">
                 We’re just a message away. Get in touch and we’ll assist you
@@ -153,9 +153,9 @@ const Contact = () => {
                   <div
                     className={`min-w-0 sm:w-30 ${item.dark ? "text-neutral-950" : "text-neutral-50"}`}
                   >
-                    <h3 className="font-primary font-semibold text-[clamp(0.75rem,calc(0.227vw+0.705rem),0.875rem)]">
+                    <h4 className="font-primary font-semibold text-[clamp(0.75rem,calc(0.227vw+0.705rem),0.875rem)]">
                       {item.name}
-                    </h3>
+                    </h4>
 
                     <p className="font-medium text-[12px] text-nowrap opacity-80">
                       {item.value}
