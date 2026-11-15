@@ -60,7 +60,7 @@ const CARD_THEME = {
   experience:
     "col-start-3 row-start-2 justify-self-start min-[1100px]:justify-self-center [--c:var(--azure)] [--c-dim:var(--azure-dim)]",
   content:
-    "col-start-3 row-start-1 justify-self-start min-[1100px]:justify-self-center [--c:var(--emerald)] [--c-dim:var(--emerald-dim)]",
+    "col-start-3 row-start-1 justify-self-start min-[1100px]:justify-self-center [--c:var(--green)] [--c-dim:var(--green-dim)]",
 };
 
 /*
@@ -75,7 +75,7 @@ const HUB_GLOW = {
   keyword: "var(--violet)",
   skills: "var(--amber)",
   experience: "var(--azure)",
-  content: "var(--emerald)",
+  content: "var(--green)",
 };
 
 /*

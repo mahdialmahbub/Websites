@@ -80,7 +80,7 @@ const ViewToggle = ({
         <button
           type="button"
           onClick={onToggle}
-          className={`${action} ${fluid.helpText}`}
+          className={`${action} ${fluid.helpText} max-sm:justify-start max-sm:w-full max-sm:mt-3`}
         >
           <i
             className="fi fi-rr-arrow-small-left leading-none"
@@ -92,8 +92,11 @@ const ViewToggle = ({
         <p
           className={`flex items-center font-medium text-background ${fluid.helpGap} ${fluid.helpText}`}
         >
-          Need Help?
-          <button type="button" onClick={onToggle} className={action}>
+          <button
+            type="button"
+            onClick={onToggle}
+            className={`${action} text-shadow-2xs`}
+          >
             Contact Support
             <i
               className="fi fi-rr-arrow-small-right leading-none"
@@ -141,7 +144,7 @@ const SidePanel = ({ intro, showContact, onToggle }) => (
           >
             {intro.title}
           </h2>
-          <p className={`text-neutral-300 ${fluid.panelDesc}`}>
+          <p className={`text-neutral-200 ${fluid.panelDesc}`}>
             {intro.description}
           </p>
         </div>
@@ -184,14 +187,12 @@ const AuthLayout = ({ intro, children }) => {
         />
         <div
           aria-hidden="true"
-          className={`absolute inset-0 transition-colors duration-300 ${
-            showContact ? "bg-neutral-950/80" : "bg-neutral-950/60"
-          }`}
+          className={`absolute inset-0 transition-colors duration-300 bg-neutral-950/80 `}
         />
       </div>
 
       {/* Content container */}
-      <div className="relative mx-auto flex min-h-dvh max-w-300 items-stretch justify-center gap-[clamp(1.5rem,4vw,2.5rem)] px-[clamp(1rem,4vw,2.5rem)] py-[clamp(1.5rem,4vw,2.5rem)]">
+      <div className="relative mx-auto flex min-h-dvh max-w-300 justify-center gap-[clamp(1.5rem,4vw,1rem)] px-[clamp(1rem,4vw,2.5rem)] py-[clamp(1.5rem,4vw,2.5rem)]">
         <SidePanel
           intro={intro}
           showContact={showContact}
@@ -203,9 +204,6 @@ const AuthLayout = ({ intro, children }) => {
           className={`relative flex flex-2/3 flex-col items-center justify-center  `}
         >
           {/* Mobile logo */}
-          <BrandLogo
-            className={`sm:hidden`}
-          />
 
           {/* Mobile-only contact view (desktop shows it inside the side panel) */}
           {showContact && (
@@ -226,7 +224,7 @@ const AuthLayout = ({ intro, children }) => {
             showContact={showContact}
             onToggle={toggleContact}
             align="center"
-            className={`absolute inset-x-0 z-10 sm:hidden ${fluid.mobileBottom}`}
+            className={`z-10 sm:hidden ${fluid.mobileBottom} mt-space-2`}
           />
         </section>
       </div>

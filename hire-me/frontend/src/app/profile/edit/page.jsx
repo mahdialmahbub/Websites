@@ -166,6 +166,7 @@ function ContactFields() {
         labelIcon="fi fi-rr-briefcase"
         placeholder="linkedin.com/in/yourname"
         inputMode="url"
+        type="url"
         maxLength={LIMITS.url}
         value={value.linkedin}
         onChange={set("linkedin")}
@@ -176,6 +177,7 @@ function ContactFields() {
         labelIcon="fi fi-rr-site-alt"
         placeholder="yourwebsite.com"
         inputMode="url"
+        type="url"
         maxLength={LIMITS.url}
         value={value.website}
         onChange={set("website")}

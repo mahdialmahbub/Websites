@@ -70,6 +70,7 @@ const SignUpForm = () => {
         </>
       }
     >
+      <SocialAuth disabled={isLoading} />
       <Input
         label="Name"
         placeholder="John Doe"
@@ -122,8 +123,6 @@ const SignUpForm = () => {
       <Button type="submit" disabled={isLoading}>
         {isLoading ? "Creating account..." : "Sign Up"}
       </Button>
-
-      <SocialAuth disabled={isLoading} />
     </AuthForm>
   );
 };

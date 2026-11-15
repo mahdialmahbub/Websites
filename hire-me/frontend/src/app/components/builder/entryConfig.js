@@ -62,7 +62,7 @@ export const ENTRY_CONFIG = {
   },
 
   education: {
-    label: "education entry",
+    label: "education",
     icon: "fi fi-rr-graduation-cap",
     titleKey: "institutionName",
     subtitleKey: "degree",

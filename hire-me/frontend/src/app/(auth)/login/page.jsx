@@ -4,10 +4,7 @@ import { Button } from "@/app/components/Button";
 import { Input } from "@/app/components/Input";
 import { PasswordInput } from "@/app/components/PasswordInput";
 import AuthLayout from "@/app/components/auth/AuthLayout";
-import {
-  AuthForm,
-  FooterLink,
-} from "@/app/components/auth/AuthForm";
+import { AuthForm, FooterLink } from "@/app/components/auth/AuthForm";
 import SocialAuth from "@/app/components/auth/SocialAuth";
 import { fluid } from "@/app/components/auth/fluid";
 import {
@@ -81,10 +78,11 @@ const LoginForm = () => {
         </>
       }
     >
+      <SocialAuth next={next} disabled={isLoading} />
 
       <Input
         label="Email"
-        placeholder="Email"
+        placeholder="you@example.com"
         isLabelIcon
         labelIcon="fi fi-rr-envelope"
         darkBg
@@ -101,25 +99,25 @@ const LoginForm = () => {
 
       {/* Password + forgot link */}
       <div className={`flex flex-col ${fluid.gapTight}`}>
-          <PasswordInput
-            label="Password"
-            placeholder="Password"
-            labelIcon="fi fi-rr-lock"
-            darkBg
-            name="password"
-            autoComplete="current-password"
-            value={values.password}
-            onChange={handleChange}
-            disabled={isLoading}
-            aria-invalid={!!errors.password}
-            validation={
-              errors.password ? "error" : justReset ? "info" : "default"
-            }
-            helperText={errors.password || justReset}
-          />
+        <PasswordInput
+          label="Password"
+          placeholder="******"
+          labelIcon="fi fi-rr-lock"
+          darkBg
+          name="password"
+          autoComplete="current-password"
+          value={values.password}
+          onChange={handleChange}
+          disabled={isLoading}
+          aria-invalid={!!errors.password}
+          validation={
+            errors.password ? "error" : justReset ? "info" : "default"
+          }
+          helperText={errors.password || justReset}
+        />
         <Link
           href={ROUTES.forgotPassword}
-          className={`flex min-h-11 items-center self-start text-red-400 sm:text-red-500 ${fluid.forgot}`}
+          className={`flex min-h-11 items-center self-start text-red-400 sm:text-red-500 max-sm:text-shadow-2xs ${fluid.forgot} `}
         >
           Forgot Password?
         </Link>
@@ -128,8 +126,6 @@ const LoginForm = () => {
       <Button type="submit" disabled={isLoading}>
         {isLoading ? "Logging in..." : "Login"}
       </Button>
-
-      <SocialAuth next={next} disabled={isLoading} />
     </AuthForm>
   );
 };

@@ -143,6 +143,7 @@ export const Button = React.forwardRef(
         children,
         onPointerDown,
         onKeyDown,
+        iconRotate = false,
         ...rest
       },
       ref,
@@ -187,7 +188,10 @@ export const Button = React.forwardRef(
       // (jate icon ta screen reader e na pore). Loading hole spinner.
       const iconNode =
         typeof icon === "string" ? (
-          <i className={icon} aria-hidden="true" />
+          <i
+            className={`${icon} ${iconRotate && "rotate-180"}`}
+            aria-hidden="true"
+          />
         ) : React.isValidElement(icon) ? (
           <span aria-hidden="true" className="inline-flex">
             {icon}

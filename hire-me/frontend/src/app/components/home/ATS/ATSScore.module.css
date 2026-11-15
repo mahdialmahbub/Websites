@@ -30,8 +30,8 @@
   --amber-dim: #7b4a0b;
   --azure: #0a8bdc;
   --azure-dim: #0b5a90;
-  --emerald: #1eb55b;
-  --emerald-dim: #11663a;
+  --green: #1eb55b;
+  --green-dim: #11663a;
   --display: var(--font-poppins), system-ui, -apple-system, "Segoe UI", sans-serif;
   --body: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
   --lane: clamp(56px, 14vw, 260px);

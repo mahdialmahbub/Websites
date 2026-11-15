@@ -17,8 +17,8 @@ export const PALETTE = Object.freeze([
     subtitle: "Creates a calm, modern feel that balances confidence and approachability.",
   },
   {
-    id: "emerald",
-    name: "Emerald",
+    id: "green",
+    name: "green",
     hex: "#047857",
     subtitle: "Adds a fresh, balanced look that reflects growth and professionalism.",
   },
