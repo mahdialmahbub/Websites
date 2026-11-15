@@ -10,8 +10,7 @@ const PROVIDERS = [
   {
     id: "google",
     label: "Google",
-    className:
-      "bg-neutral-50 text-neutral-950 sm:border sm:border-neutral-200",
+    className: "bg-neutral-50 text-neutral-950 sm:border sm:border-neutral-200",
     icon: (
       <Image
         src="/googleLogo.svg"
@@ -62,15 +61,6 @@ const SocialAuth = ({ next, disabled = false }) => {
 
   return (
     <>
-      {/* Divider */}
-      <div
-        className={`flex items-center text-neutral-300 ${fluid.dividerMy} ${fluid.gapMd}`}
-      >
-        <span className="h-px flex-1 rounded-full bg-current opacity-50" />
-        <span className={`font-medium uppercase ${fluid.orText}`}>or</span>
-        <span className="h-px flex-1 rounded-full bg-current opacity-50" />
-      </div>
-
       {/* Social login */}
       <div className={`flex *:flex-1 ${fluid.gapMd}`}>
         {enabled.map(({ id, label, className, icon }) => (
@@ -85,6 +75,13 @@ const SocialAuth = ({ next, disabled = false }) => {
             {icon}
           </button>
         ))}
+      </div>
+      <div
+        className={`flex items-center text-neutral-300 ${fluid.dividerMy} ${fluid.gapMd}`}
+      >
+        <span className="h-px flex-1 rounded-full bg-current opacity-50 max-sm:opacity-30" />
+        <span className={`font-medium uppercase max-sm:opacity-50 ${fluid.orText}`}>or</span>
+        <span className="h-px flex-1 rounded-full bg-current opacity-50 max-sm:opacity-30" />
       </div>
     </>
   );

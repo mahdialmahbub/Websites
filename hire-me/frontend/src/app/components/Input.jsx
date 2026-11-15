@@ -110,8 +110,8 @@ const VALIDATION = {
     help: "text-neutral-500",
   },
   success: {
-    field: "border-[1.5px] border-emerald-600 focus:ring-emerald-100",
-    help: "text-emerald-700",
+    field: "border-[1.5px] border-green-600 focus:ring-green-100",
+    help: "text-green-600",
   },
   error: {
     field: "border-[1.5px] border-red-500 focus:ring-red-100",

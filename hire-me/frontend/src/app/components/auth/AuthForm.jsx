@@ -60,7 +60,7 @@ export const FooterLink = ({ href, arrow = true, children }) => (
 export const FooterButton = ({ children, ...props }) => (
   <button
     type="button"
-    className={`${footerAction} disabled:cursor-not-allowed disabled:opacity-60`}
+    className={`${footerAction} disabled:cursor-not-allowed disabled:text-neutral-100 disabled:opacity-60`}
     {...props}
   >
     {children}

@@ -14,7 +14,7 @@ export const fluid = {
   logo: "h-[clamp(2.125rem,calc(1.13vw+1.86rem),2.875rem)]", // 34 -> 46
   panelTitle: "text-[length:clamp(1.625rem,1.47rem_+_0.663vw,2rem)]", // 26 -> 32
   panelDesc: "text-[length:clamp(1rem,0.948rem_+_0.221vw,1.125rem)]", // 16 -> 18
-  panelStack: "gap-[clamp(0.5rem,0.396rem_+_0.442vw,0.75rem)]", // 8 -> 12
+  panelStack: "gap-[clamp(0.5rem,0.396rem_+_0.442vw,0.5rem)]", // 8 -> 12
   helpText: "text-[length:clamp(0.875rem,0.823rem_+_0.221vw,1rem)]", // 14 -> 16
 
   // contact list

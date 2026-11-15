@@ -43,6 +43,9 @@ const WARNINGS = [
  * Mount it only while the flow is active, so every state resets when it closes:
  *   {deleteOpen && <DeleteAccountFlow email={user.email} onClose={() => setDeleteOpen(false)} />}
  *
+ * In the OTP step every message (error / success / info / warning) is shown as
+ * the OTPField's helper text. Priority: error > notice.
+ *
  * The backend is the only place the code is checked and the account removed:
  *   POST /auth/delete-account/request  -> emails the code (also used by "Resend")
  *   POST /auth/delete-account { otp }  -> verifies the code, deletes the account, ends the session
@@ -51,7 +54,10 @@ export default function DeleteAccountFlow({ email, onClose }) {
   const labelId = useId();
   const [step, setStep] = useState("confirm"); // "confirm" | "otp"
   const [otp, setOtp] = useState("");
+  // Error message: shown in the confirm modal (step 1) or under the OTP cells (step 2).
   const [error, setError] = useState("");
+  // Non-error message for the OTP step: { type: "success" | "info" | "warning", text: string }
+  const [notice, setNotice] = useState(null);
   const [sent, setSent] = useState({ email, expiresInMinutes: null });
   const [cooldown, setCooldown] = useCountdown();
 
@@ -75,6 +81,7 @@ export default function DeleteAccountFlow({ email, onClose }) {
     if (sending || deleting) return;
     if (resend && cooldown > 0) return;
     setError("");
+    setNotice(null);
 
     try {
       const result = await requestOtp().unwrap();
@@ -86,14 +93,27 @@ export default function DeleteAccountFlow({ email, onClose }) {
       setOtp("");
 
       if (resend) {
-        toast.success("A new code was sent to your email.");
+        setNotice({
+          type: "success",
+          text: "A new code was sent to your email.",
+        });
       } else {
         setStep("otp");
       }
     } catch (err) {
       if (isSessionExpired(err)) return redirectToLogin();
-      // The server's own resend limit: follow its remaining time instead of guessing.
-      if (err?.retryAfterSeconds) setCooldown(err.retryAfterSeconds);
+      if (err?.retryAfterSeconds) {
+        // The server's own resend limit: follow its remaining time instead of guessing.
+        setCooldown(err.retryAfterSeconds);
+        if (resend) {
+          // Rate limited, not a real failure: show it as a warning.
+          setNotice({
+            type: "warning",
+            text: err?.message ?? "Please wait before requesting another code.",
+          });
+          return;
+        }
+      }
       setError(err?.message ?? "Could not send the code. Please try again.");
     }
   };
@@ -102,6 +122,7 @@ export default function DeleteAccountFlow({ email, onClose }) {
   const handleDelete = async (event) => {
     event.preventDefault();
     if (deleting) return;
+    setNotice(null);
 
     if (otp.length !== OTP_LENGTH) {
       setError(`Enter the ${OTP_LENGTH}-digit code we emailed you.`);
@@ -130,6 +151,13 @@ export default function DeleteAccountFlow({ email, onClose }) {
     : cooldown > 0
       ? `Resend OTP in ${cooldown}s`
       : "Resend OTP";
+
+  // One message at a time, shown under the OTP cells.
+  const helper = error
+    ? { validation: "error", text: error }
+    : notice
+      ? { validation: notice.type, text: notice.text }
+      : null;
 
   return (
     <>
@@ -177,31 +205,24 @@ export default function DeleteAccountFlow({ email, onClose }) {
             </p>
           </div>
 
-            <div className="flex justify-center mt-9">
-              <OTPField
-                size="fluid"
-                className="w-full max-w-88"
-                length={OTP_LENGTH}
-                value={otp}
-                onChange={(value) => {
-                  setOtp(value);
-                  if (error) setError("");
-                }}
-                validation={error ? "error" : "default"}
-                disabled={deleting}
-                autoFocus
-                aria-label="Verification code"
-              />
-            </div>
-
-          {error && (
-            <p
-              role="alert"
-              className="rounded-md bg-red-500/5 p-3 text-small text-red-600"
-            >
-              {error}
-            </p>
-          )}
+          <div className="mt-9 flex justify-center">
+            <OTPField
+              size="fluid"
+              className="w-full max-w-88"
+              length={OTP_LENGTH}
+              value={otp}
+              onChange={(value) => {
+                setOtp(value);
+                if (error) setError("");
+                setNotice(null);
+              }}
+              validation={helper?.validation}
+              helperText={helper?.text}
+              disabled={deleting}
+              autoFocus
+              aria-label="Verification code"
+            />
+          </div>
 
           <div className="flex items-center justify-center gap-1 text-small text-neutral-500">
             <span>Didn&apos;t get the code?</span>

@@ -116,6 +116,7 @@ const PersonalInformation = () => {
           labelIcon="fi fi-brands-linkedin"
           placeholder="linkedin.com/in/yourname"
           inputMode="url"
+          type="url"
           maxLength={LIMITS.url}
           value={value.linkedin}
           onChange={set("linkedin")}
@@ -127,6 +128,7 @@ const PersonalInformation = () => {
           labelIcon="fi fi-rr-site-alt"
           placeholder="yourname.com"
           inputMode="url"
+          type="url"
           maxLength={LIMITS.url}
           value={value.website}
           onChange={set("website")}

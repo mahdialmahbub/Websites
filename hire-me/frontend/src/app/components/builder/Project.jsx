@@ -110,7 +110,7 @@ const Project = () => {
 
             <TechnologyField item={item} dispatch={dispatch} updateItem={updateItem} error={errors[`${item.id}.technologies`]} />
 
-            <Input label="Project URL" placeholder="yourproject.com" inputMode="url" maxLength={LIMITS.url} value={item.projectUrl} onChange={set("projectUrl")} {...f("projectUrl")} />
+            <Input label="Project URL" placeholder="yourproject.com" inputMode="url" type="url" maxLength={LIMITS.url} value={item.projectUrl} onChange={set("projectUrl")} {...f("projectUrl")} />
             <div className="flex flex-col items-end gap-space-2">
               <Textarea
                 label="Project Description"

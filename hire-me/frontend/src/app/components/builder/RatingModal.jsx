@@ -12,19 +12,19 @@ const EXPERIENCES = [
     label: "Bad",
     rating: 1,
     icon: icons.bad,
-    tone: "bg-orange-500/5 hover:bg-orange-500/10 text-orange-500",
+    tone: "bg-orange-500/5 hover:bg-orange-500/10 text-orange-500 border-orange-500/5",
   },
   {
     label: "Decent",
     rating: 3,
     icon: icons.decent,
-    tone: "bg-violet-500/5 hover:bg-violet-500/10 text-violet-500",
+    tone: "bg-violet-500/5 hover:bg-violet-500/10 text-violet-500 border-violet-500/5",
   },
   {
     label: "Excellent",
     rating: 5,
     icon: icons.happy,
-    tone: "bg-green-500/5 hover:bg-green-500/10 text-green-500",
+    tone: "bg-green-500/5 hover:bg-green-500/10 text-green-500 border-green-500/5",
   },
 ];
 
@@ -97,7 +97,7 @@ const RatingModal = ({
     >
       {/* title and subtitle */}
       <div>
-        <h2 className="text-[clamp(1.5rem,calc(0.485vw+1.386rem),1.75rem)] font-semibold font-primary mb-[clamp(0.375rem,calc(0.227vw+0.33rem),0.5rem)]">
+        <h2 className="text-[clamp(1.2rem,calc(0.485vw+1.386rem),1.75rem)] font-semibold font-primary mb-[clamp(0.375rem,calc(0.227vw+0.33rem),0.5rem)]">
           How was your experience?
         </h2>
         <p className="text-neutral-500 text-[clamp(1rem,calc(0.242vw+0.943rem),1.125rem)]">
@@ -109,11 +109,12 @@ const RatingModal = ({
       <fieldset>
         <legend className="sr-only">Rate your experience</legend>
         <div className="grid grid-cols-2 sm:grid-cols-3  items-center gap-space-4 *:flex-1 *:last:max-sm:col-span-2">
-          {EXPERIENCES.map((item) => (
+          {EXPERIENCES.map((item, index) => (
             <Button
               key={item.rating}
               type="button"
               icon={item.icon}
+              iconRotate={index === 1}
               variant="secondary"
               aria-pressed={rating === item.rating}
               onClick={() => {

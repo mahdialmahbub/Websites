@@ -208,7 +208,7 @@ export default function EntryList({
       <Button
         variant="secondary"
         type="button"
-        icon="fi fi-rr-plus-small"
+        icon="fi fi-rr-add"
         disabled={atMax}
         onClick={() => dispatch(addItem({ section }))}
         className="bg-green-500/5 text-green-500 hover:bg-green-500/10 w-full mt-4"

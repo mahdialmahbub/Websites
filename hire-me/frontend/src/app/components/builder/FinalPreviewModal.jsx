@@ -81,7 +81,7 @@ const FinalPreviewModal = ({
   return (
     <div className="w-full flex max-md:flex-col gap-[clamp(2.2rem,calc(2.909vw+0.818rem),2rem)] md:*:flex-1 max-w-225 max-md:items-center">
       <FinalPreview />
-      <section className="flex flex-col items-center *:w-full">
+      <section className="flex flex-col items-center max-w-full *:w-full">
         <h1 className="font-primary font-semibold text-[clamp(1.375rem,calc(0.727vw+1.205rem),1.75rem)] mb-[clamp(0.375rem,calc(0.227vw+0.33rem),0.5rem)]">
           Your Resume is Ready
         </h1>
@@ -90,7 +90,7 @@ const FinalPreviewModal = ({
           a polished copy for your next opportunity.
         </p>
 
-        <div className="flex items-center gap-space-4 max-sm:flex-col max-sm:*:w-full sm:*:flex-1 mb-space-7">
+        <div className="flex items-center max-sm:gap-space-3 gap-space-4 max-sm:flex-col max-sm:*:w-full sm:*:flex-1 mb-space-7">
           <Button
             icon={icons.resume}
             onClick={onDownload}
@@ -121,7 +121,7 @@ const FinalPreviewModal = ({
           )}
         </div>
         {!isLoggedIn && (
-          <div className="flex items-center gap-space-0 justify-center text-blue-500 text-body mb-space-8">
+          <div className="flex gap-space-0 justify-center text-blue-500 text-body mb-space-8 max-sm:-mt-space-6">
             <i className={icons.information} aria-hidden="true"></i>
             <p className="text-[12px] font-medium ml-2">
               Login to securely save your resume and update it anytime.
@@ -230,7 +230,7 @@ const FinalPreviewModal = ({
 
         {/* the owner's controls */}
         <div className="mb-space-6 flex flex-col gap-space-3 rounded-md border border-neutral-500/10 p-space-4 text-small">
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center justify-between sm:gap-3 max-sm:flex-col max-sm:items-start">
             <p className="text-neutral-500">
               {sharingOn
                 ? "Anyone with the link can view this resume."

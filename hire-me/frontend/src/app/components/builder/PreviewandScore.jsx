@@ -31,6 +31,7 @@ const PreviewandScore = ({
           variant="secondary"
           icon={isScore ? "fi fi-rr-eye" : "fi fi-rr-qr-scan"}
           aria-pressed={isScore}
+          aria-label="Score and preview show toggle"
           onClick={onToggleScore}
           className="bg-violet-500/5 text-violet-500 hover:bg-violet-500/10 border-violet-500/10"
         >
@@ -41,6 +42,7 @@ const PreviewandScore = ({
         <Button
           variant="secondary"
           icon="fi fi-rr-file-download"
+          aria-label="Download resume as a PDF"
           onClick={onDownload}
           className="bg-green-500/5 text-green-500 hover:bg-green-500/10 border-green-500/5"
         >

@@ -377,7 +377,7 @@ function BuilderScreen() {
                     variant="text"
                     icon={icons.left}
                     onClick={handleBack}
-                    aria-label="Previous step shift button"
+                    aria-label={"Previous step shift button"}
                     className="max-sm:text-[22px]"
                   >
                     <span className="hidden sm:inline">{prevStep.title}</span>
