@@ -10,6 +10,8 @@ import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { WebVitals } from "../lib/web-vitals";
 import { ErrorPageProvider } from "./components/ErrorPageContext";
+import "@flaticon/flaticon-uicons/css/regular/rounded.css"; // fi-rr-
+import "@flaticon/flaticon-uicons/css/solid/rounded.css"; // fi-sr-
 
 // Runs before first paint: reads the theme cookie and sets data-theme (no flash)
 const themeInitScript = `(function(){try{var m=document.cookie.match(/(?:^|; )${THEME_COOKIE}=(light|dark)/);if(m){document.documentElement.setAttribute('data-theme',m[1])}}catch(e){}})();`;
@@ -94,26 +96,24 @@ export default async function RootLayout({ children }) {
           href="https://cdn-uicons.flaticon.com"
           crossOrigin="anonymous"
         />
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
-        />
       </head>
       <body className="h-dvh bg-background dark:bg-linear-to-br dark:from-secondary-500/5 dark:to-primary-500/2 w-screen min-w-250 min-h-138.5">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2"
+        >
+          Skip to content
+        </a>
         <WebVitals />
         <SpeedInsights />
         <div className="flex h-full gap-6 p-space-4">
           <Sidebar />
-          <div className="flex-1 min-w-0 flex flex-col">
+          <main id="main-content">
             <ErrorPageProvider>
               <Navbar />
               <HomePageChecker>{children}</HomePageChecker>
             </ErrorPageProvider>
-          </div>
+          </main>
         </div>
         <Toaster
           position="top-center"

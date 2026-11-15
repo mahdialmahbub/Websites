@@ -1,17 +1,17 @@
-
 :root {
   /* expo-out, FadeUp family-r moto same feel */
   --hero-ease: cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* Hero-r shob timing ek jaygay. Speed pochhondo na hole shudhu ekhane change koro. */
+  /* Hero-r shob timing ek jaygay. Speed pochhondo na hole shudhu ekhane change koro.
+     LCP fix: title/badge 0s e shuru hoy, jate h1 first paint e-i visible thake. */
   --hero-t-avatar: 0s;
-  --hero-t-icons: 0.45s; /* avatar prai shesh hole icon beriye ashbe */
-  --hero-icon-stagger: 0.07s; /* protita icon-er majhe gap */
-  --hero-t-badge: 0.95s;
-  --hero-t-title: 1.05s;
-  --hero-t-subtitle: 1.17s;
-  --hero-t-cta: 1.29s;
-  --hero-t-stats: 1.41s;
+  --hero-t-icons: 0.25s; /* avatar er por icon beriye ashbe */
+  --hero-icon-stagger: 0.05s; /* protita icon-er majhe gap */
+  --hero-t-badge: 0s;
+  --hero-t-title: 0s;
+  --hero-t-subtitle: 0.1s;
+  --hero-t-cta: 0.18s;
+  --hero-t-stats: 0.26s;
 }
 
 /* ----------------------------------------------------------
@@ -71,22 +71,27 @@
 }
 
 /* ----------------------------------------------------------
-   Title / subtitle / CTA / badge: ektu niche theke fade kore uthe ashe
+   Badge / subtitle / CTA / stats: ektu niche theke fade kore uthe ashe
    ---------------------------------------------------------- */
 .hero-item {
   --hero-delay: var(--hero-t-title);
 
   animation:
-    hero-rise 0.7s var(--hero-ease) var(--hero-delay) backwards,
-    hero-fade 0.7s var(--hero-ease) var(--hero-delay) backwards;
+    hero-rise 0.6s var(--hero-ease) var(--hero-delay) backwards,
+    hero-fade 0.6s var(--hero-ease) var(--hero-delay) backwards;
 }
 
 .hero-item--badge {
   --hero-delay: var(--hero-t-badge);
 }
+
+/* LCP fix: title (h1) e opacity animate hoy na, shudhu rise hoy.
+   Tai h1 first paint e-i visible, Chrome take LCP hisebe dhore. */
 .hero-item--title {
   --hero-delay: var(--hero-t-title);
+  animation: hero-rise 0.6s var(--hero-ease) var(--hero-delay) backwards;
 }
+
 .hero-item--subtitle {
   --hero-delay: var(--hero-t-subtitle);
 }
@@ -111,5 +116,10 @@
 
   .hero-item {
     animation: hero-fade 0.4s var(--hero-ease) var(--hero-delay) backwards;
+  }
+
+  /* h1 reduced-motion e kono animation nai, shorashori visible */
+  .hero-item--title {
+    animation: none;
   }
 }

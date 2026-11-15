@@ -87,7 +87,6 @@ export default function ClientInfoSection({ client, allProjects = [] }) {
                   tags={tags}
                   slug={slug}
                   index={index}
-                  priority={index < 2}
                 />
               </>
             );

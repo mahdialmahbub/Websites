@@ -64,20 +64,6 @@ const page = () => {
       <JsonLd data={profilePageSchema()} />
       <section className="min-w-full space-y-space-12">
         <div className="overflow-hidden w-full bg-foreground dark:bg-background flex items-center gap-space-8 rounded-xl p-space-7 relative">
-          {/* Background Pattern */}
-          <Image
-            alt="background pattern"
-            src="/Background_patterns.png"
-            fill
-            className="pointer-events-none
-      absolute
-      inset-0
-      -z-20
-      object-cover
-      opacity-[0.035]
-      dark:opacity-[0.045]
-"
-          />
           {/* content */}
           <div className="w-full">
             <div>

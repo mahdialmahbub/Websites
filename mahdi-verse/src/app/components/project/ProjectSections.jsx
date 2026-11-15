@@ -96,7 +96,7 @@ const METHOD_COLORS = {
 function SectionIntro({ label, children }) {
   return (
     <div className="space-y-space-2">
-      <h4 className="font-primary text-size-lg font-semibold">{label}</h4>
+      <h3 className="font-primary text-size-lg font-semibold">{label}</h3>
       {children && (
         <p
           className={` text-size-base text-placeholder_2 dark:text-placeholder/80 leading-6.25`}
@@ -223,11 +223,11 @@ export function ProjectHero({ project, view, data, switchTo }) {
             {description}
           </p>
         )}
-        <ul className="flex flex-wrap gap-2.5 mt-space-5">
+        <div className="flex flex-wrap gap-2.5 mt-space-5">
           {tags.map((item, i) => (
             <Chips varient="small" key={i} text={item} />
           ))}
-        </ul>
+        </div>
         <div className="flex flex-wrap gap-space-2 mt-space-6">
           {ctas
             .filter((cta) => cta.href)
@@ -622,9 +622,9 @@ export function StackSection({ intro, stack = [] }) {
           >
             {/* Header */}
             <div className="flex items-center justify-between gap-4">
-              <h2 className="text-size-lg font-medium opacity-60 tracking-wider uppercase">
+              <h4 className="text-size-lg font-medium opacity-60 tracking-wider uppercase">
                 {title}
-              </h2>
+              </h4>
             </div>
 
             {/* Technology Items */}
@@ -757,7 +757,6 @@ export function OtherProjects({ currentSlug, className = "" }) {
                   tags={tags}
                   slug={slug}
                   index={index}
-                  priority={index < 2}
                 />
               );
             })}

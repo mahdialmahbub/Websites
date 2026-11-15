@@ -571,7 +571,7 @@ const ProfileContent = () => {
   }, [showSaved]);
 
   return (
-    <main className="min-h-screen min-w-[320px] bg-neutral-50 pb-[clamp(2rem,calc(6.009vw+0.592rem),6rem)]">
+    <main className="min-h-screen min-w-[320px] pb-[clamp(2rem,calc(6.009vw+0.592rem),6rem)]">
       {(userLoading || isLoggedOut || (user && profileLoading)) && (
         <ProfileSkeleton />
       )}
