@@ -62,18 +62,15 @@ export async function generateMetadata({ searchParams }) {
   });
 }
 
-const ICON = "fi fi-rr-browser";
+const ALL_ICON = "fi fi-rr-browser";
 
-// VIEW_META theke auto toiri hobe, tai label kokhono mismatch hobe na
 const categories = [
-  { label: "All", icon: ICON },
-  ...Object.values(VIEW_META).map(({ category }) => ({
+  { label: "All", icon: ALL_ICON },
+  ...Object.values(VIEW_META).map(({ category, icon }) => ({
     label: category,
-    icon: ICON,
+    icon,
   })),
 ];
-
-const normalize = (str = "") => str.toLowerCase().replace(/[^a-z0-9]/g, "");
 
 export default async function Page({ searchParams }) {
   const params = await searchParams;

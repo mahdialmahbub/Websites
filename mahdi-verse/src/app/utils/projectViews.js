@@ -12,16 +12,20 @@
  * }} Project
  */
 
-// "UI/UX Design" ar "UI UX Design" duitake same dhore compare korar jonno
 const normalize = (str = "") => str.toLowerCase().replace(/[^a-z0-9]/g, "");
 
 export const VIEW_META = {
-  // switchLabel = onno view te jawar button er text
-  // category    = /projects page er filter button er label (page.jsx er categories er shathe mil thakte hobe)
-  design: { switchLabel: "Design", category: "UI UX Design" },
-  development: { switchLabel: "Development", category: "Development" },
+  design: {
+    switchLabel: "Design",
+    category: "UI UX Design",
+    icon: "fi fi-rr-website-design",
+  },
+  development: {
+    switchLabel: "Development",
+    category: "Development",
+    icon: "fi fi-rr-code-window",
+  },
 };
-
 
 const VIEW_KEYS = Object.keys(VIEW_META);
 

@@ -5,14 +5,12 @@ import ClientInfoSection from "../components/clients/ClientInfoSection";
 import ScrollToDetails from "../components/ScrollToDetails";
 import clientsData, { getClientProjects } from "../assets/clients/clients";
 import projectsData from "../assets/projects/projects";
-// path ta tomar helper file onujayi thik kore nio
 import { VIEW_META, matchesCategory } from "../utils/projectViews";
 import { buildMetadata } from "../utils/buildMetadata";
 import JsonLd from "../components/JsonLd";
 import { clientsPageSchema } from "../utils/schema";
 import FadeLeft from "../components/motions/FadeLeft";
 import FadeRight from "../components/motions/FadeRight";
-import ClientsCarousel from "../components/clients/ClientsCarousel";
 import Carousel from "../components/Carousel";
 
 export const metadata = buildMetadata({
@@ -22,14 +20,13 @@ export const metadata = buildMetadata({
   path: "/clients",
 });
 
-const ICON = "fi fi-rr-browser";
+const ALL_ICON = "fi fi-rr-browser";
 
-// VIEW_META theke auto toiri hobe, tai projects page er shathe label kokhono mismatch hobe na
 const categories = [
-  { label: "All", icon: ICON },
-  ...Object.values(VIEW_META).map(({ category }) => ({
+  { label: "All", icon: ALL_ICON },
+  ...Object.values(VIEW_META).map(({ category, icon }) => ({
     label: category,
-    icon: ICON,
+    icon,
   })),
 ];
 
@@ -91,7 +88,11 @@ export default async function Page({ searchParams }) {
           </div>
 
           {filteredClients.length > 0 && (
-            <Carousel resetKey={activeCategory} label="clients" className="gap-space-4">
+            <Carousel
+              resetKey={activeCategory}
+              label="clients"
+              className="gap-space-4"
+            >
               {filteredClients.map((client, index) => {
                 const { id, slug, name, country, shortIntro, image } = client;
 

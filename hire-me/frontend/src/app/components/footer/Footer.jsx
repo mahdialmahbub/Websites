@@ -44,11 +44,11 @@ import Image from "next/image";
 import { icons } from "../../../../assets/iconCollection";
 
 const SOCIALS = [
-  { label: "Facebook", href: "#", icon: icons.facebook },
+  { label: "Facebook", href: "https://www.facebook.com/mahdi.al.mahbub.webexpert", icon: icons.facebook },
   { label: "X", href: "#", icon: icons.twitter },
-  { label: "Instagram", href: "#", icon: icons.instagram },
-  { label: "LinkedIn", href: "#", icon: icons.linkedin },
-  { label: "WhatsApp", href: "#", icon: icons.whatsapp },
+  { label: "Instagram", href: "https://www.instagram.com/mahdialmahabub/", icon: icons.instagram },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/mahdi-al-mahbub/", icon: icons.linkedin },
+  { label: "WhatsApp", href: "https://wa.me/+8801735999190", icon: icons.whatsapp },
 ];
 
 const LEGAL_LINKS = [
