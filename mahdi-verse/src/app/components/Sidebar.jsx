@@ -145,7 +145,7 @@ const Sidebar = () => {
             src={isExpanded ? "/logo.png" : "/logo-icon.png"}
             alt="Logo"
             height={40}
-            width={40}
+            width={isExpanded ? 170 : 40}
             priority
             className={`
               h-10

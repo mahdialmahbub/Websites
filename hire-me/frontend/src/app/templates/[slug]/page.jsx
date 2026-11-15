@@ -74,9 +74,9 @@ export default async function TemplatePage({ params }) {
         </nav>
 
       <article className="grid items-start gap-[clamp(2.5rem,calc(3.005vw+0.796rem),3.5rem)] md:grid-cols-[minmax(0,26rem)_1fr]">
-        <di v className="overflow-hidden rounded-xl border border-neutral-500/10 bg-white shadow-[0_6px_8px_rgba(2,6,23,0.10)]">
+        <div className="overflow-hidden rounded-xl border border-neutral-500/10 bg-white shadow-[0_6px_8px_rgba(2,6,23,0.10)]">
           <TemplateThumb slug={slug} name={name} />
-        </di>
+        </div>
 
         <div className="space-y-[clamp(0.5rem,calc(0.455vw+0.409rem),0.75rem)]">
           {category && (

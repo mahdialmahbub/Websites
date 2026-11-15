@@ -77,8 +77,8 @@ export default function ClientInfoSection({ client, allProjects = [] }) {
               project?.finalDesign?.images?.[0]?.src ||
               "/placeholder.jpg";
             return (
-              <>
-                <ScrollToDetails key={project.index} targetId="project-details" />
+              <div key={project.index}>
+                <ScrollToDetails targetId="project-details" />
 
                 <ProjectCard
                   key={project.id || slug}
@@ -88,7 +88,7 @@ export default function ClientInfoSection({ client, allProjects = [] }) {
                   slug={slug}
                   index={index}
                 />
-              </>
+              </div>
             );
           })}
         </div>

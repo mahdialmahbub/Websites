@@ -144,7 +144,33 @@ const palette = {
   ],
 };
 
-// ---------- Shared 4/8pt spacing scale (p1 chara baki design view gulo use kore) ----------
+const spacing4pt = {
+  description:
+    "A consistent 4-point spacing scale that keeps layouts balanced, predictable and easy to adapt across screen sizes.",
+  scale: [
+    { name: "Space-1", value: 4 },
+    { name: "Space-2", value: 8 },
+    { name: "Space-3", value: 12 },
+    { name: "Space-4", value: 16 },
+    { name: "Space-5", value: 20 },
+    { name: "Space-6", value: 24 },
+    { name: "Space-7", value: 28 },
+    { name: "Space-8", value: 32 },
+    { name: "Space-9", value: 36 },
+    { name: "Space-10", value: 40 },
+    { name: "Space-11", value: 44 },
+    { name: "Space-12", value: 48 },
+    { name: "Space-13", value: 52 },
+    { name: "Space-14", value: 56 },
+    { name: "Space-15", value: 60 },
+    { name: "Space-16", value: 64 },
+    { name: "Space-17", value: 72 },
+    { name: "Space-18", value: 80 },
+    { name: "Space-19", value: 88 },
+    { name: "Space-20", value: 96 },
+  ],
+};
+
 const spacing8pt = {
   description:
     "A consistent 4/8-point spacing scale that keeps layouts balanced, predictable and easy to adapt across screen sizes.",
@@ -170,14 +196,14 @@ const rawProjects = [
   // ============================================================
   {
     id: "p1",
-    slug: "furneistyle-premium-furniture-shopping-experience",
+    slug: "growthpilot-landing-page-design-&-nextjs-development",
     // primaryView: "design",
 
     // ---------- Shared (dui view-er jonno) ----------
-    title: "FurneiStyle – Premium Furniture Shopping Experience",
+    title: "GrowthPilot – Landing Page Design & Next.js Development",
     // card + SEO description. design view e alada description na dile eta-i hero te dekhabe
     description:
-      "A modern furniture e-commerce platform focused on creating a seamless shopping experience through intuitive navigation, responsive layouts, and engaging product interactions.",
+      "GrowthPilot: A Landing Page That Looks Sharp and Ranks Smart Most landing pages either look great or perform well. GrowthPilot does both. I designed it in Figma and built it in Next.js, so nothing got lost between mockup and final product. ✦ Conversion-focused UI with clear hierarchy and bold typography ✦ Fast, responsive Next.js build ✦ On-page SEO: meta tags, semantic HTML, optimized images ✦ Works on mobile, tablet, and desktop Tools: Figma · Next.js · React · Tailwind CSS · Vercel ",
 
     finalDesign: {
       description:

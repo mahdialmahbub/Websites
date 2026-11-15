@@ -2,22 +2,22 @@ import React from "react";
 
 const stepContent = [
   {
-    icon: "fi fi-rr-file-edit",
+    icon: "fi fi-rr-template",
     color: "#9333EA",
-    title: "Enter Your Details",
-    subtitle: "Provide your information to get started quickly and accurately.",
+    title: "Start with a Title, Find Your Match",
+    subtitle: "Enter your resume title and get personalized template suggestions. Choose any template you like.",
+  },
+  {
+    icon: "fi fi-rr-magic-wand",
+    color: "#D97706",
+    title: "Add Your Details, Let AI Do the Magic",
+    subtitle: "Add your information and let AI create, enhance, and polish your descriptions.",
   },
   {
     icon: "fi fi-rr-file-download",
-    color: "#D97706",
-    title: "Creative Styles",
-    subtitle: "Discover beautifully crafted styles designed for every purpose.",
-  },
-  {
-    icon: "fi fi-rr-file-invoice",
     color: "#0284C7",
-    title: "Download & Use Anywhere",
-    subtitle: "Save, download, and access your designs wherever you go.",
+    title: "Your Resume Is Ready to Make an Impact",
+    subtitle: "Download your professional resume and start applying with confidence.",
   },
 ];
 
@@ -48,13 +48,13 @@ const Steps = () => {
         >
           {/* Icon: colored ring (padding) + white circle. Ring = 4.5px -> 9px, tai total 42px -> 82px */}
           <div
-            className="shrink-0 rounded-full p-[clamp(0.281rem,calc(0.423vw+0.182rem),0.563rem)]"
+            className="shrink-0 rounded-full p-[clamp(0.4rem,calc(0.423vw+0.182rem),0.563rem)]"
             style={{
               background: `color-mix(in srgb, ${item.color} 15%, transparent)`,
             }}
           >
             <span
-              className="flex size-[clamp(2.0625rem,calc(2.911vw+1.38rem),4rem)] items-center justify-center rounded-full bg-white/80"
+              className="flex size-[clamp(3rem,calc(2.911vw+1.38rem),4rem)] items-center justify-center rounded-full bg-white/80"
               style={{
                 border: `0.5px solid color-mix(in srgb, ${item.color} 20%, transparent)`,
                 boxShadow: `0 0 6px 0 color-mix(in srgb, ${item.color} 25%, transparent)`,
@@ -62,7 +62,7 @@ const Steps = () => {
             >
               <i
                 aria-hidden="true"
-                className={`leading-none text-[clamp(0.875rem,calc(1.502vw+0.523rem),1.875rem)] ${item.icon}`}
+                className={`leading-none text-[clamp(1.3rem,calc(1.502vw+0.523rem),1.875rem)] ${item.icon}`}
                 style={{ color: item.color }}
               ></i>
             </span>

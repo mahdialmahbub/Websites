@@ -61,12 +61,12 @@ const FAQCard = ({
           {/* Icon: open hole 45deg ghure "+" theke "x" hoy */}
           <span
             aria-hidden="true"
-            className="flex size-11 shrink-0 items-center justify-center rounded-full text-[12px] transition-colors group-hover:bg-primary-300/5 group-active:bg-primary-300/10"
+            className="flex size-11 shrink-0 items-center justify-center rounded-full text-[32px] transition-colors group-hover:bg-primary-300/5 group-active:bg-primary-300/10"
           >
             <i
               className={cn(
-                icons.addBig,
-                "transition-transform duration-300 ease-out motion-reduce:transition-none",
+                icons.addSmall,
+                "transition-transform duration-300 ease-out motion-reduce:transition-none ",
                 isOpen && "rotate-45",
               )}
             />
