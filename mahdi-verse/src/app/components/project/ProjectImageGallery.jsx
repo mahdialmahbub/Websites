@@ -42,6 +42,12 @@ const edgeButtonBase =
 
 const THUMB_SLOT = 124; // 112px thumb (w-28) + 12px gap (gap-3)
 
+// ✅ IMAGE SIZE FIX: container w-100 = 25rem = 400px, thumb w-28 = 112px.
+// `sizes` browser-ke bole image actually koto px jayga nicche,
+// tai Next.js boro (1200px) variant na pathiye choto variant pathay.
+const PREVIEW_SIZES = "(max-width: 400px) 100vw, 400px";
+const THUMB_SIZES = "112px";
+
 export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
   const [selected, setSelected] = useState(0);
   const trackRef = useRef(null);
@@ -117,8 +123,10 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
             alt={active?.alt}
             width={900}
             height={620}
+            sizes={PREVIEW_SIZES}
+            quality={70}
             className="preview-fade w-full h-full object-cover"
-            priority={selected[0]}
+            priority={selected === 0}
           />
           <div className="absolute" />
 
@@ -194,6 +202,8 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
                     alt={img.alt}
                     width={900}
                     height={620}
+                    sizes={THUMB_SIZES} // ✅ added (biggest saving: ~105 KiB per image)
+                    quality={60} // ✅ added (small thumbnail, high quality dorkar nai)
                     className="w-full h-full object-cover transition-all duration-200"
                   />
                   {isSelected && (

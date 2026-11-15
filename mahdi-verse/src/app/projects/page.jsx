@@ -146,7 +146,6 @@ export default async function Page({ searchParams }) {
                     tags={tags}
                     slug={slug}
                     index={index}
-                    priority={index < 2}
                     selectHref={`?category=${encodeURIComponent(
                       activeCategory,
                     )}&project=${encodeURIComponent(slug)}`}

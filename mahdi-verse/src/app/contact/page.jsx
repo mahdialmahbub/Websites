@@ -44,9 +44,9 @@ const page = () => {
                     height={22}
                     className="size-5.5 max-h-max mt-0.5"
                   />
-                  <h3 className="text-size-md text-placeholder_2 dark:text-placeholder">
+                  <h2 className="text-size-md text-placeholder_2 dark:text-placeholder">
                     {item}
-                  </h3>
+                  </h2>
                 </FadeLeft>
               ))}
             </FadeLeft>
@@ -88,6 +88,7 @@ const page = () => {
             alt=""
             fill
             priority
+            fetchPriority="high"
             className="object-cover"
           />
 

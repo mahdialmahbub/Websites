@@ -18,7 +18,7 @@ export default function CoverImage({
   alt = "",
   priority = false,
   // Adjust to your real grid, for example "(min-width: 1024px) 33vw, 100vw" for 3 columns
-  sizes = "(min-width: 1024px) 40vw, 100vw",
+  sizes = "(min-width: 1024px) 320px, 100vw",
   className = "aspect-3/2",
 }) {
   return (
