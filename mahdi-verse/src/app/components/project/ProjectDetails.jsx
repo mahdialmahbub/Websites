@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { getDefaultView, getProjectViews } from "../../utils/projectViews";
 import { ProjectViewSwitcher } from "./ProjectViewClient";
 import { DesignView, DevelopmentView } from "./ProjectViews";
@@ -22,8 +23,8 @@ export default function ProjectDetails({ project, initialView }) {
   if (!project) return null;
 
   const views = getProjectViews(project);
-  if (!views.length) return null;
-
+  if (!views.length) notFound();
+  
   // prottek view er content server e render hoy, client switcher shudhu show/hide kore
   const panels = Object.fromEntries(
     

@@ -16,7 +16,7 @@ import Carousel from "../components/Carousel";
 export const metadata = buildMetadata({
   title: "Clients",
   description:
-    "Explore the clients I’ve worked with and the testimonials they’ve shared about my UI/UX design and MERN stack development services.",
+    "Explore the clients I’ve worked with and the testimonials they’ve shared about my UI UX design and MERN stack development services.",
   path: "/clients",
 });
 
@@ -124,7 +124,8 @@ export default async function Page({ searchParams }) {
               No clients found in this category.
             </p>
           )} */}
-        {filteredClients.length > 0 && (
+        {/* client thakle divider + details dekhabe, na thakle "coming soon" (projects page er moto) */}
+        {filteredClients.length > 0 ? (
           <>
             <div className="w-full h-0.5 rounded-full opacity-5 bg-placeholder"></div>
             <div id="client-details">
@@ -140,7 +141,7 @@ export default async function Page({ searchParams }) {
                   />
                 </>
               ) : (
-                <div className="bg-secondary-50 dark:bgba rounded-2xl min-h-70 flex items-center justify-center dark:bg-background">
+                <div className="bg-secondary-50 dark:bg-background rounded-2xl min-h-70 flex items-center justify-center">
                   <p className="font-primary text-size-md font-medium tracking-wide text-placeholder_2/80 dark:text-placeholder/80">
                     Select a client to see details
                   </p>
@@ -148,9 +149,7 @@ export default async function Page({ searchParams }) {
               )}
             </div>
           </>
-        )}
-
-        {filteredClients.length < 0 && (
+        ) : (
           <div className="bg-secondary-50 dark:bg-background rounded-2xl min-h-70 flex items-center justify-center flex-col text-placeholder_2 dark:text-placeholder">
             <i className="fi fi-rr-employee-man-alt text-7xl opacity-50"></i>
             <h2 className="font-primary text-size-md font-medium tracking-wide mt-space-4">

@@ -30,7 +30,7 @@ const page = () => {
         <div className="relative">
           <HeroAvatar>
             <Image
-              alt="Mahdi, UI/UX Designer and Next.js Developer"
+              alt="Mahdi, UI UX Designer and Next.js Developer"
               src="/profile.jpg"
               priority
               width={150}
@@ -90,7 +90,7 @@ const page = () => {
               stage="subtitle"
               className="text-size-base text-placeholder_2 dark:text-placeholder w-162.5"
             >
-              I’m Mahdi — a UI/UX Designer and Next.js Frontend Developer
+              I’m Mahdi — a UI UX Designer and Next.js Frontend Developer
               focused on creating aesthetic, user-centered, and high-performance
               digital experiences that feel smooth, modern, and impactful.
             </HeroItem>

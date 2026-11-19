@@ -16,6 +16,8 @@ import FadeRight from "../motions/FadeRight";
 import ProjectCard from "../ProjectCard";
 import Carousel from "../Carousel";
 import projectsData from "../../assets/projects/projects";
+import ScoreRing from "./ScoreRing";
+import PagePreviewViewer from "./PagePreviewViewer";
 
 const subHeading = "font-primary text-[20px] font-semibold";
 
@@ -78,6 +80,15 @@ const TONES = {
     dot: "bg-[#6C63FF]",
     icon: "fi fi-rr-lesson",
   },
+  performance: {
+    box: "bg-[#2563EB]/5",
+    border: "border-[#2563EB]/10",
+    iconColor: "text-[#2563EB]",
+    text: "text-[#2563EB]",
+    dotCover: "bg-[#2563EB]/10",
+    dot: "bg-[#2563EB]",
+    icon: "fi fi-rr-lesson",
+  },
 };
 
 const METHOD_COLORS = {
@@ -117,6 +128,8 @@ function SectionIntro({ label, children }) {
  *   tone?: "danger" | "success" | "info" | "brand",
  *   icon?: string,
  *   delay?: number,
+ *   links?: { label: string, href?: string }[],
+ *   linksTitle?: string,
  * }} props
  */
 export function ListPanel({
@@ -125,8 +138,12 @@ export function ListPanel({
   tone = "info",
   icon,
   delay = 0,
+  links = [],
+  linksTitle = "Check live performance",
 }) {
-  if (!items.length) return null;
+  const validLinks = (links ?? []).filter((link) => link.href);
+
+  if (!items.length && !validLinks.length) return null;
   const t = TONES[tone];
 
   return (
@@ -137,25 +154,48 @@ export function ListPanel({
       className={`relative overflow-hidden rounded-2xl p-space-6 ${t.box} border ${t.border} shadow-[0_1px_4px_rgba(16,24,40,0.10),0_1px_4px_rgba(248,250,252,1)] dark:shadow-none`}
     >
       <h3 className={`mb-space-4 ${subHeading} ${t.text}`}>{title}</h3>
-      <ul className="space-y-2.5 max-w-175">
-        {items.map((item) => (
-          <li
-            key={item}
-            className={`flex items-start gap-2.5 text-size-base max-w-175`}
-          >
-            <span
-              className={`size-3 mt-1.25 ${t.dotCover} rounded-full flex items-center justify-center`}
-              aria-hidden="true"
+
+      {items.length > 0 && (
+        <ul className="space-y-2.5 max-w-175">
+          {items.map((item) => (
+            <li
+              key={item}
+              className={`flex items-start gap-2.5 text-size-base max-w-175`}
             >
               <span
-                className={`size-1.5 rounded-full ${t.dot}`}
+                className={`size-3 mt-1.25 ${t.dotCover} rounded-full flex items-center justify-center`}
                 aria-hidden="true"
-              />
-            </span>
-            {item}
-          </li>
-        ))}
-      </ul>
+              >
+                <span
+                  className={`size-1.5 rounded-full ${t.dot}`}
+                  aria-hidden="true"
+                />
+              </span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* Live links (jemon Lighthouse / PageSpeed report) */}
+      {validLinks.length > 0 && (
+        <div className="relative mt-space-6 space-y-space-3">
+          <p className="text-size-base font-semibold">{linksTitle}</p>
+          <div className="flex flex-wrap gap-space-2">
+            {validLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button text={link.label} />
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
       <i
         aria-hidden="true"
         className={`${icon ?? t.icon} pointer-events-none absolute right-0 bottom-0 text-[100px] opacity-10 ${t.iconColor}`}
@@ -231,11 +271,20 @@ export function ProjectHero({ project, view, data, switchTo }) {
         <div className="flex flex-wrap gap-space-2 mt-space-6">
           {ctas
             .filter((cta) => cta.href)
-            .map((cta) => (
-              <Link key={cta.label} href={cta.href}>
-                <Button text={cta.label} />
-              </Link>
-            ))}
+            .map((cta) => {
+              const isExternal = cta.href.startsWith("http");
+
+              return (
+                <Link
+                  key={cta.label}
+                  href={cta.href}
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noopener noreferrer" : undefined}
+                >
+                  <Button text={cta.label} />
+                </Link>
+              );
+            })}
 
           {switchTo && (
             <ViewToggleButton
@@ -391,6 +440,43 @@ export function FinalDesignSection({ title, finalDesign, showTools = false }) {
 
 /**
  * @param {{
+ *   title?: string,
+ *   pagePreviews?: {
+ *     label?: string,
+ *     description?: string,
+ *     pages?: { name: string, desktop?: any, tablet?: any, mobile?: any }[],
+ *   },
+ * }} props
+ */
+export function PagePreviewSection({ title, pagePreviews }) {
+  const { label = "Full Pages", description, pages = [] } = pagePreviews ?? {};
+
+  const validPages = pages.filter(
+    (p) => p?.desktop || p?.tablet || p?.mobile,
+  );
+  if (!validPages.length) return null;
+
+  return (
+    <section className="space-y-space-7">
+      <div>
+        <div className="flex flex-wrap items-start justify-between gap-space-4">
+          <SectionIntro label={label}>{description}</SectionIntro>
+          <Chips
+            varient="small"
+            text={`${validPages.length} ${validPages.length === 1 ? "page" : "pages"}`}
+          />
+        </div>
+      </div>
+
+      <div>
+        <PagePreviewViewer pages={validPages} title={title} />
+      </div>
+    </section>
+  );
+}
+
+/**
+ * @param {{
  *   intro?: string,
  *   client?: {
  *     name: string,
@@ -422,10 +508,10 @@ export function FeedbackSection({ intro, client }) {
   );
 }
 /** Sobar shesh e "Thank you for scrolling" box. (ScrollThanksBanner nijer animation handle kore, tai ekhane wrap kora hoyni) */
-export function ProjectCTA() {
+export function ProjectCTA({ caseStudyLink }) {
   return (
     <section>
-      <ScrollThanksBanner />
+      <ScrollThanksBanner caseStudyLink={caseStudyLink} />
     </section>
   );
 }
@@ -532,7 +618,9 @@ export function SpacingSection({ spacing }) {
             key={name}
             className="flex items-center justify-between gap-space-3 border-b border-secondary-500/15 pb-space-2 text-size-sm"
           >
-            <span className="font-medium text-secondary-500 dark:text-secondary-700">{name}</span>
+            <span className="font-medium text-secondary-500 dark:text-secondary-700">
+              {name}
+            </span>
             <span className="flex items-center gap-space-3">
               <span
                 aria-hidden="true"
@@ -545,6 +633,428 @@ export function SpacingSection({ spacing }) {
         ))}
       </ul>
     </FadeUp>
+  );
+}
+
+/**
+ * @param {{ rounded?: {
+ *   description?: string,
+ *   scale?: { name: string, value: number, unit?: "px" | "%" }[],
+ * } }} props
+ */
+export function RoundedSection({ rounded }) {
+  if (!rounded?.scale?.length) return null;
+
+  return (
+    <FadeUp as="section" {...REVEAL} amount={0.15} className="space-y-space-7">
+      <SectionIntro label="Rounded">{rounded.description}</SectionIntro>
+
+      <ul className="grid gap-x-space-10 gap-y-space-3 sm:grid-cols-2 lg:grid-cols-3">
+        {rounded.scale.map(({ name, value, unit = "px" }) => {
+          // % radius (circle) hole preview square hobe, na hole circle ta oval dekhabe
+          const isSquare = unit === "%";
+
+          return (
+            <li
+              key={name}
+              className="flex items-center justify-between gap-space-3 border-b border-secondary-500/15 pb-space-2 text-size-sm"
+            >
+              <span className="font-medium text-secondary-500 dark:text-secondary-700">
+                {name}
+              </span>
+
+              <span className="flex items-center gap-space-3">
+                {/* Fixed-width wrapper, jate sob row er alignment ek thake */}
+                <span
+                  aria-hidden="true"
+                  className="flex h-9 w-14 items-center justify-center"
+                >
+                  <span
+                    className={`block h-9 border-2 border-secondary-500/40 bg-secondary-500/15 ${
+                      isSquare ? "w-9" : "w-14"
+                    }`}
+                    style={{ borderRadius: `${value}${unit}` }}
+                  />
+                </span>
+                {value} {unit}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+    </FadeUp>
+  );
+}
+
+/**
+ * @param {{ fontSize?: {
+ *   description?: string,
+ *   device?: string,
+ *   sampleText?: string,
+ *   scale?: { name: string, value: number }[],
+ * } }} props
+ */
+export function FontSizeSection({ fontSize }) {
+  if (!fontSize?.scale?.length) return null;
+
+  const {
+    description,
+    device,
+    sampleText = "Design that feels simple",
+    scale,
+  } = fontSize;
+
+  return (
+    <FadeUp as="section" {...REVEAL} amount={0.15} className="space-y-space-7">
+      <div className="flex flex-wrap items-start justify-between gap-space-4">
+        <SectionIntro label="Font size">{description}</SectionIntro>
+        {device && <Chips varient="small" text={device} />}
+      </div>
+
+      <ul>
+        {scale.map(({ name, value }) => (
+          <li
+            key={name}
+            className="grid items-center gap-x-space-6 gap-y-space-2 border-b border-secondary-500/15 py-space-4 text-size-sm sm:grid-cols-[9rem_1fr_4rem]"
+          >
+            <span className="font-medium text-secondary-500 dark:text-secondary-700">
+              {name}
+            </span>
+
+            {/* Sample text oi font size-e. boro size hole truncate hobe, wrap korbe na */}
+            <span
+              aria-hidden="true"
+              className="min-w-0 truncate font-primary font-semibold leading-tight"
+              style={{ fontSize: value }}
+            >
+              {sampleText}
+            </span>
+
+            <span className="sm:text-right">{value} px</span>
+          </li>
+        ))}
+      </ul>
+    </FadeUp>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Lighthouse scores                                                   */
+/* ------------------------------------------------------------------ */
+
+const MAIN_SCORE = { key: "performance", label: "Performance" };
+
+const OTHER_SCORES = [
+  { key: "accessibility", label: "Accessibility" },
+  { key: "bestPractices", label: "Best Practices" },
+  { key: "seo", label: "SEO" },
+];
+
+const DEVICE_ICONS = {
+  desktop: "fi fi-rr-screen",
+  mobile: "fi fi-rr-mobile-button",
+};
+
+const LEGEND = [
+  { color: "#0CCE6B", range: "90 – 100", label: "Perfect" },
+  { color: "#FFA400", range: "50 – 89", label: "Needs improvement" },
+  { color: "#FF4E42", range: "0 – 49", label: "Poor" },
+];
+
+/** Lighthouse standard: 90+ green, 50-89 orange, 0-49 red */
+function scoreColor(score) {
+  if (score >= 90) return "#0CCE6B";
+  if (score >= 50) return "#FFA400";
+  return "#FF4E42";
+}
+
+/**
+ * @param {{ performanceScores?: {
+ *   description?: string,
+ *   testedOn?: string,
+ *   reports?: {
+ *     device: string,
+ *     summary?: string,
+ *     scores: { performance: number, accessibility: number, bestPractices: number, seo: number },
+ *     agentic?: string,
+ *     href?: string,
+ *   }[],
+ * } }} props
+ */
+export function PerformanceScoresSection({ performanceScores }) {
+  const { description, testedOn, reports = [] } = performanceScores ?? {};
+  if (!reports.length) return null;
+
+  return (
+    <section className="space-y-space-7">
+      <FadeUp {...REVEAL}>
+        <SectionIntro label="Lighthouse Scores">{description}</SectionIntro>
+      </FadeUp>
+
+      <div className="grid gap-space-6 lg:grid-cols-2">
+        {reports.map(
+          ({ device, summary, scores = {}, agentic, href }, index) => {
+            const mainScore = scores[MAIN_SCORE.key];
+            const mainColor = scoreColor(mainScore ?? 0);
+
+            const available = [MAIN_SCORE, ...OTHER_SCORES].filter(
+              ({ key }) => scores[key] != null,
+            );
+            const allGreen =
+              available.length > 0 &&
+              available.every(({ key }) => scores[key] >= 90);
+
+            const tags = [
+              "Lighthouse",
+              "PageSpeed Insights",
+              agentic && `Agentic Browsing ${agentic}`,
+              testedOn && `Tested ${testedOn}`,
+            ].filter(Boolean);
+
+            return (
+              <FadeUp
+                key={device}
+                {...REVEAL}
+                delay={stagger(index)}
+                className="h-full"
+              >
+                <article
+                  className="
+                    group relative h-full w-full overflow-hidden rounded-3xl
+
+                    border border-[#D6EEF0]
+                    bg-background/70
+
+                    dark:border-white/[0.07]
+                    dark:bg-[#0B1117]
+
+                    transition-all duration-500
+                    ease-[cubic-bezier(0.22,1,0.36,1)]
+
+                    hover:-translate-y-1
+                    hover:border-cyan-300
+                    dark:hover:border-cyan-400/25
+                  "
+                >
+                  {/* Ambient glow */}
+                  <div
+                    aria-hidden="true"
+                    className="
+                      pointer-events-none absolute -right-20 -top-20
+                      size-48 rounded-full
+                      bg-cyan-300/12 blur-3xl
+                      dark:bg-cyan-400/[0.07]
+                      transition-all duration-700
+                      group-hover:scale-125 group-hover:bg-cyan-300/18
+                      dark:group-hover:bg-cyan-400/12
+                    "
+                  />
+                  <div
+                    aria-hidden="true"
+                    className="
+                      pointer-events-none absolute -bottom-16 -left-16
+                      size-36 rounded-full
+                      bg-cyan-200/12 blur-3xl opacity-0
+                      transition-all duration-700
+                      group-hover:opacity-100
+                      dark:bg-transparent
+                    "
+                  />
+
+                  <div className="relative z-10 flex h-full flex-col justify-between gap-space-7 p-8">
+                    {/* ---------- Header ---------- */}
+                    <div>
+                      <div className="flex flex-wrap items-center justify-between gap-space-3">
+                        <div className="flex items-center gap-4">
+                          <div
+                            className="
+                              relative flex size-14 shrink-0 items-center justify-center
+                              overflow-hidden rounded-2xl
+                              border border-cyan-200 text-cyan-600
+                              shadow-[0_6px_18px_rgba(6,182,212,0.10)]
+                              dark:border-cyan-400/15 dark:bg-cyan-400/6
+                              dark:text-cyan-400 dark:shadow-none
+                              transition-all duration-500
+                              group-hover:rotate-1 group-hover:scale-105
+                              group-hover:border-cyan-300
+                              group-hover:shadow-[0_10px_25px_rgba(6,182,212,0.16)]
+                              dark:group-hover:border-cyan-400/30
+                              dark:group-hover:bg-cyan-400/10
+                              dark:group-hover:shadow-[0_0_25px_rgba(34,211,238,0.10)]
+                            "
+                          >
+                            <span
+                              aria-hidden="true"
+                              className="pointer-events-none absolute inset-0 bg-cyan-400/6 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-100"
+                            />
+                            <i
+                              aria-hidden="true"
+                              className={`${DEVICE_ICONS[device.toLowerCase()] ?? "fi fi-rr-browser"} relative z-10 text-[23px]`}
+                            />
+                          </div>
+
+                          <div className="min-w-0">
+                            <h4 className="font-primary text-size-lg font-semibold leading-tight tracking-[-0.02em] text-foreground">
+                              {device}
+                            </h4>
+                            <p className="mt-2 font-mono text-size-xs_2 font-medium capitalize tracking-[0.03em] text-cyan-700 dark:text-cyan-400/80">
+                              Google PageSpeed Insights
+                            </p>
+                          </div>
+                        </div>
+
+                        {allGreen && (
+                          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#0CCE6B]/20 bg-[#0CCE6B]/10 px-space-3 py-1 text-size-sm font-medium text-[#0CCE6B]">
+                            <span
+                              aria-hidden="true"
+                              className="size-1.5 rounded-full bg-[#0CCE6B]"
+                            />
+                            All scores in Perfect
+                          </span>
+                        )}
+                      </div>
+
+                      {summary && (
+                        <p className="mt-7 max-w-155 text-size-sm leading-7 tracking-wide text-slate-600 dark:text-slate-300">
+                          {summary}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* ---------- Score rings ---------- */}
+                    <div className="rounded-2xl border border-cyan-100 bg-white/60 p-space-5 dark:border-white/8 dark:bg-white/2.5">
+                      <div className="flex items-center gap-space-7">
+                        {mainScore != null && (
+                          <div className="relative shrink-0">
+                            <span
+                              aria-hidden="true"
+                              className="pointer-events-none absolute inset-0 rounded-full opacity-25 blur-2xl"
+                              style={{ backgroundColor: mainColor }}
+                            />
+                            <ul className="relative">
+                              <ScoreRing
+                                score={mainScore}
+                                label={MAIN_SCORE.label}
+                                color={mainColor}
+                                size={136}
+                                strokeWidth={9}
+                                featured
+                              />
+                            </ul>
+                          </div>
+                        )}
+
+                        <span
+                          aria-hidden="true"
+                          className="hidden h-24 w-px shrink-0 bg-cyan-200/60 dark:bg-white/10 sm:block"
+                        />
+
+                        <ul className="flex w-full flex-wrap flex-1 gap-space-5 items-center justify-center">
+                          {OTHER_SCORES.filter(
+                            ({ key }) => scores[key] != null,
+                          ).map(({ key, label }) => (
+                            <ScoreRing
+                              key={key}
+                              score={scores[key]}
+                              label={label}
+                              color={scoreColor(scores[key])}
+                              size={72}
+                              strokeWidth={6}
+                            />
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* ---------- Tags + CTA ---------- */}
+                    <div>
+                      <div className="flex flex-wrap gap-2">
+                        {tags.map((tag, i) => (
+                          <span
+                            key={tag}
+                            style={{ animationDelay: `${i * 120}ms` }}
+                            className="
+                              rounded-lg border border-cyan-100 bg-white/80
+                              px-3 py-1.5
+                              font-primary text-[11px] font-medium tracking-wide text-slate-600
+                              shadow-[0_2px_8px_rgba(15,118,110,0.04)]
+                              transition-all duration-300
+                              group-hover:animate-tag-wave
+                              motion-reduce:group-hover:animate-none
+                              hover:border-cyan-200 hover:bg-cyan-50 hover:text-cyan-700
+                              dark:border-white/8 dark:bg-white/2.5 dark:text-slate-300 dark:shadow-none
+                              dark:hover:border-cyan-400/15 dark:hover:bg-cyan-400/[0.035] dark:hover:text-slate-200
+                            "
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      {href && (
+                        <Link
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Check live ${device} performance report`}
+                          className="
+                            group/cta mt-7 inline-flex items-center gap-2.5
+                            font-primary text-size-sm font-semibold
+                            text-slate-800 dark:text-foreground
+                            transition-all duration-300
+                            group-hover:gap-3.5
+                          "
+                        >
+                          <span className="opacity-80 transition-opacity duration-300 group-hover/cta:opacity-100 dark:opacity-40">
+                            Check live {device.toLowerCase()} performance
+                          </span>
+
+                          <span
+                            className="
+                              flex size-7 items-center justify-center rounded-full
+                              border border-cyan-200 bg-cyan-50 text-cyan-700
+                              transition-all duration-300
+                              group-hover/cta:border-cyan-300 group-hover/cta:bg-cyan-100
+                              group-hover/cta:shadow-[0_5px_15px_rgba(6,182,212,0.12)]
+                              dark:border-white/10 dark:bg-white/[0.035] dark:text-cyan-400
+                              dark:group-hover/cta:border-cyan-400/20
+                              dark:group-hover/cta:bg-cyan-400/8
+                              dark:group-hover/cta:shadow-none
+                            "
+                          >
+                            <i
+                              aria-hidden="true"
+                              className="fi fi-rr-arrow-small-right text-[13px] transition-transform duration-300 group-hover/cta:translate-x-0.5"
+                            />
+                          </span>
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              </FadeUp>
+            );
+          },
+        )}
+      </div>
+
+      {/* Legend */}
+      <FadeUp {...REVEAL} delay={0.1}>
+        <ul className="flex flex-wrap items-center justify-center gap-x-space-6 gap-y-space-2 text-size-sm text-placeholder_2 dark:text-placeholder/80">
+          {LEGEND.map(({ color, range, label }) => (
+            <li key={range} className="flex items-center gap-space-2">
+              <span
+                aria-hidden="true"
+                className="size-2.5 rounded-full"
+                style={{ backgroundColor: color }}
+              />
+              <span className="font-medium">{range}</span>
+              <span>{label}</span>
+            </li>
+          ))}
+        </ul>
+      </FadeUp>
+    </section>
   );
 }
 
@@ -695,7 +1205,7 @@ export function DataModelSection({ intro, collections = [] }) {
             <Terminal title={name} className="h-full">
               <ul className="flex flex-wrap gap-space-3">
                 {fields.map((field) => (
-                  <Chips key={field} text={field} varient={"small"} code  />
+                  <Chips key={field} text={field} varient={"small"} code />
                 ))}
               </ul>
             </Terminal>
@@ -735,7 +1245,7 @@ export function OtherProjects({ currentSlug, className = "" }) {
     <section aria-labelledby="other-projects-heading" className={className}>
       <FadeUp {...REVEAL}>
         <SectionIntro label="Other Projects">
-          More of my UI/UX design and full stack development work.
+          More of my UI UX design and full stack development work.
         </SectionIntro>
       </FadeUp>
       <div className="mt-space-6">

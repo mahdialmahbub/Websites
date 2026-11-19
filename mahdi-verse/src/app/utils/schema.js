@@ -6,7 +6,7 @@ import { assets, contactPageInfo } from '@/src/app/assets/assets'
 const PERSON = {
   name: 'Mahdi Al Mahbub',
   jobTitle: 'UI UX Designer and MERN Stack Developer',
-  description: 'MERN stack developer and UI/UX designer building fast, SEO-friendly websites with Next.js. Web design, development, and technical SEO services.',
+  description: 'MERN stack developer and UI UX designer building fast, SEO-friendly websites with Next.js. Web design, development, and technical SEO services.',
   // Verified profile URLs. For the same site, these win over the links in assets.js
   sameAs: [
     'https://github.com/mahdialmahbub',
@@ -144,7 +144,7 @@ export function contactPageSchema(path = '/contact') {
       '@id': `${canonical(path)}#page`,
       url: canonical(path),
       name: CONTACT_TITLE,
-      description: `Get in touch with ${PERSON.name} for Development and UI/UX design projects.`,
+      description: `Get in touch with ${PERSON.name} for Development and UI UX design projects.`,
       isPartOf: { '@id': WEBSITE_ID },
       mainEntity: { '@id': PERSON_ID },
     },
@@ -168,7 +168,7 @@ export function contactPageSchema(path = '/contact') {
 
 /**
  * @typedef {Object} Process
- * @property {string} name - Process er naam, jemon 'My UI/UX Design Process'
+ * @property {string} name - Process er naam, jemon 'My UI UX Design Process'
  * @property {string} [description]
  * @property {WorkflowStep[]} steps - UIUXWorkflow ba MERNStackWorkflow
  */
@@ -265,7 +265,7 @@ export function projectsPageSchema(projects, path = '/projects') {
       '@id': `${canonical(path)}#page`,
       url: canonical(path),
       name: `Projects by ${PERSON.name}`,
-      description: `UI/UX design and full stack development projects by ${PERSON.name}.`,
+      description: `UI UX design and full stack development projects by ${PERSON.name}.`,
       isPartOf: { '@id': WEBSITE_ID },
       mainEntity: {
         '@type': 'ItemList',

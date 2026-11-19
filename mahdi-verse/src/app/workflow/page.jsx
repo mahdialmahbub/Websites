@@ -7,14 +7,16 @@ import WorkflowCard from "../components/workFlow/WorkflowCard";
 import JsonLd from "../components/JsonLd";
 import { buildMetadata } from "../utils/buildMetadata";
 import { workflowPageSchema } from "../utils/schema";
+import Button from "../components/Button";
+import Link from "next/link";
 
 // URL: ?workflow=ui-ux-design  ba  ?workflow=web-development
 // Notun workflow lagle shudhu ekhane ekta entry add korlei switch button o ashe jabe
 const WORKFLOWS = {
   "ui-ux-design": {
-    label: "UI UX Design",
+    label: "Design",
     icon: "fi fi-rr-website-design",
-    title: "My UI/UX Design Process",
+    title: "My UI UX Design Process",
     description:
       "From research and wireframes to polished prototypes, every design decision is made around your users.",
     steps: UIUXWorkflow,
@@ -50,6 +52,10 @@ export default async function Page({ searchParams }) {
   const activeKey = getActiveKey(workflow);
   const active = WORKFLOWS[activeKey];
   const steps = active.steps ?? [];
+  const keys = Object.keys(WORKFLOWS);
+  const activeIndex = keys.indexOf(activeKey);
+  const prevKey = keys[activeIndex - 1];
+  const nextKey = keys[activeIndex + 1];
 
   return (
     <>
@@ -91,9 +97,7 @@ export default async function Page({ searchParams }) {
             ))}
           </FadeRight>
         </div>
-
         <div className="h-0.5 w-full rounded-full opacity-5 bg-placeholder my-space-7"></div>
-
         <div className="flex flex-col gap-space-6">
           {steps.map((item, index) => (
             // key te workflow er nam dewa hoyeche, jate switch korle entrance animation abar cholay
@@ -110,6 +114,36 @@ export default async function Page({ searchParams }) {
             </FadeUp>
           ))}
         </div>
+        <nav
+          aria-label="Workflow navigation"
+          className="my-space-5 flex w-full items-center justify-between"
+        >
+          {prevKey ? (
+            <Link href={`?workflow=${prevKey}`}>
+              <Button
+                text={WORKFLOWS[prevKey].label}
+                varient="text"
+                leftIcon
+                icon="fi fi-rr-arrow-small-left"
+              />
+            </Link>
+          ) : (
+            <span />
+          )}
+
+          {nextKey ? (
+            <Link href={`?workflow=${nextKey}`}>
+              <Button
+                text={WORKFLOWS[nextKey].label}
+                varient="text"
+                rightIcon
+                icon="fi fi-rr-arrow-small-right"
+              />
+            </Link>
+          ) : (
+            <span />
+          )}
+        </nav>{" "}
       </section>
     </>
   );

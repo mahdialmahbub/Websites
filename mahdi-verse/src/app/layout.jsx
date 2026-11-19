@@ -30,9 +30,9 @@ const inter = Inter({
 // Replace with your own details
 const SITE_NAME = "MahdiVerse";
 const DEFAULT_TITLE =
-  "MahdiVerse | UI/UX Designer, MERN Developer & SEO Specialist";
+  "MahdiVerse | UI UX Designer, MERN Developer & SEO Specialist";
 const DESCRIPTION =
-  "Portfolio of a MERN stack developer and UI/UX designer building fast, SEO-friendly websites with Next.js. Web design, development, and technical SEO services.";
+  "Portfolio of a MERN stack developer and UI UX designer building fast, SEO-friendly websites with Next.js. Web design, development, and technical SEO services.";
 
 // Optional: search engine ownership meta tags (only rendered when the env var is set)
 const verification = {

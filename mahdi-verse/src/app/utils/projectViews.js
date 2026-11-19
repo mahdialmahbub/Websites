@@ -17,7 +17,7 @@ const normalize = (str = "") => str.toLowerCase().replace(/[^a-z0-9]/g, "");
 export const VIEW_META = {
   design: {
     switchLabel: "Design",
-    category: "UI UX Design",
+    category: "Design",
     icon: "fi fi-rr-website-design",
   },
   development: {
@@ -54,7 +54,7 @@ export const getDefaultView = (project, preferred) => {
 };
 
 /**
- * Category filter: design wala project "UI UX Design" e, development wala "Development" e dekhabe.
+ * Category filter: design wala project "Design" e, development wala "Development" e dekhabe.
  * Dui view thakle duitai te dekhabe.
  * @param {Project} project
  * @param {string} category
