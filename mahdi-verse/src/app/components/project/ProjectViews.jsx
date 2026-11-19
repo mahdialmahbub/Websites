@@ -14,6 +14,10 @@ import {
   StackSection,
   TypographySection,
   OtherProjects,
+  PerformanceScoresSection,
+  RoundedSection,
+  FontSizeSection,
+  PagePreviewSection,
 } from "./ProjectSections";
 
 /**
@@ -25,7 +29,7 @@ import {
  */
 
 /**
- * UI/UX Design view. data = project.design
+ * UI UX Design view. data = project.design
  * @param {ViewProps} props
  */
 export function DesignView({ project, data, switchTo }) {
@@ -52,12 +56,15 @@ export function DesignView({ project, data, switchTo }) {
       />
       <ColorsSection colors={data.colors} />
       <SpacingSection spacing={data.spacing} />
+      <RoundedSection rounded={data.rounded} />
       <TypographySection intro={data.typographyIntro} fonts={data.typography} />
+      <FontSizeSection fontSize={data.fontSize} />
       <FinalDesignSection
         title={project.title}
         finalDesign={project.finalDesign}
         showTools
       />
+      <PagePreviewSection title={project.title} pagePreviews={project.pagePreviews} />
       <FeedbackSection intro={project.clientIntro} client={project.client} />
       <ListPanel
         title={data.learningsTitle ?? "What I learned from this project"}
@@ -65,7 +72,7 @@ export function DesignView({ project, data, switchTo }) {
         tone="brand"
       />
       <OtherProjects currentSlug={project.slug} />
-      <ProjectCTA />
+      <ProjectCTA caseStudyLink={project.design.caseStudyLink} />
     </div>
   );
 }
@@ -105,8 +112,10 @@ export function DevelopmentView({ project, data, switchTo }) {
         title="Performance"
         items={data.performance}
         tone="info"
+        links={data.performanceReports}
         icon="fi fi-rr-dashboard"
       />
+      <PerformanceScoresSection performanceScores={data.performanceScores} />
       <ListPanel
         title="Security"
         items={data.security}
@@ -117,6 +126,7 @@ export function DevelopmentView({ project, data, switchTo }) {
         title={project.title}
         finalDesign={project.finalDesign}
       />
+      <PagePreviewSection title={project.title} pagePreviews={project.pagePreviews} />
       <FeedbackSection intro={project.clientIntro} client={project.client} />
       <ListPanel
         title={data.learningsTitle ?? "Takeaways"}

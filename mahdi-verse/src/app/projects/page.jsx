@@ -15,6 +15,7 @@ import { buildMetadata } from "../utils/buildMetadata";
 import JsonLd from "../components/JsonLd";
 import { projectsPageSchema } from "../utils/schema";
 import Carousel from "../components/Carousel";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({ searchParams }) {
   const { project: slug } = await searchParams;
@@ -57,7 +58,7 @@ export async function generateMetadata({ searchParams }) {
   return buildMetadata({
     title: "Projects",
     description:
-      "Explore my UI/UX design and MERN stack development projects. See real-world apps built with MongoDB, Express, React, and Node.js, from design to deployment.",
+      "Explore my UI UX design and MERN stack development projects. See real-world apps built with MongoDB, Express, React, and Node.js, from design to deployment.",
     path: "/projects",
   });
 }
@@ -83,11 +84,12 @@ export default async function Page({ searchParams }) {
     matchesCategory(project, activeCategory),
   );
 
-  const selectedProject =
-    projectsData.find((p) => String(p.slug) === String(projectSlugFromUrl)) ||
-    null;
+  const selectedProject = projectSlugFromUrl
+    ? projectsData.find((p) => String(p.slug) === String(projectSlugFromUrl))
+    : null;
 
-  selectedProject;
+  // ?project= dewa ache kintu kono project mile na, tokhon 404
+  if (projectSlugFromUrl && !selectedProject) notFound();
 
   return (
     <>
@@ -179,7 +181,7 @@ export default async function Page({ searchParams }) {
           </>
         ) : (
           <div className="bg-secondary-50 dark:bg-background rounded-2xl min-h-70 flex items-center justify-center flex-col text-placeholder_2 dark:text-placeholder">
-            <i className="fi fi-rr-layout-fluid text-7xl opacity-50"></i>
+            <i className="fi fi-rr-browser text-7xl opacity-50"></i>
             <h2 className="font-primary text-size-md font-medium tracking-wide mt-space-4">
               Projects coming soon
             </h2>

@@ -63,22 +63,63 @@ function getTags(project) {
 
 // Remote URL hole shoja use hoy, local (/projects/..., /logo.png) hole public folder theke porhe data URI banay.
 // ImageResponse (Satori) relative URL ("/logo.png") resolve korte pare na, tai data URI dorkar.
-async function getImageSrc(src) {
-  if (!src) return null;
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+const MIME = {
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  png: "image/png",
+  svg: "image/svg+xml",
+};
+
+const toDataUri = (buffer, mime) =>
+  `data:${mime};base64,${buffer.toString("base64")}`;
+
+// src hote pare: string path, remote URL, ba static import object { src, width, height }
+async function getImageSrc(input) {
+  if (!input) return null;
+
+  const src = typeof input === "string" ? input : input.src;
+  if (!src || typeof src !== "string") return null;
+
+  if (src.startsWith("data:")) return src;
   if (/^https?:\/\//i.test(src)) return src;
 
-  const ext = path.extname(src).slice(1).toLowerCase();
-  const mime = {
-    jpg: "image/jpeg",
-    jpeg: "image/jpeg",
-    png: "image/png",
-    svg: "image/svg+xml",
-  }[ext];
-  if (!mime) return null; // webp ImageResponse e support kore na
+  const ext = path.extname(src.split("?")[0]).slice(1).toLowerCase();
+  const mime = MIME[ext];
+  if (!mime) return null; // webp/avif ImageResponse e support kore na
 
+  // 1) Static import: /_next/static/media/... → .next folder e thake
+  if (src.startsWith("/_next/")) {
+    const relative = src.replace(/^\/_next\//, "").split("?")[0];
+    const candidates = [
+      path.join(process.cwd(), ".next", relative), // production build
+      path.join(process.cwd(), ".next", "dev", relative), // dev (Turbopack)
+    ];
+
+    for (const file of candidates) {
+      try {
+        return toDataUri(await readFile(file), mime);
+      } catch {
+        // porer candidate try koro
+      }
+    }
+
+    // 2) Fallback: dev server theke fetch
+    try {
+      const res = await fetch(new URL(src, SITE_URL));
+      if (res.ok) {
+        return toDataUri(Buffer.from(await res.arrayBuffer()), mime);
+      }
+    } catch {}
+
+    return null;
+  }
+
+  // 3) public folder er file (jemon /logo.png)
   try {
     const file = await readFile(path.join(process.cwd(), "public", src));
-    return `data:${mime};base64,${file.toString("base64")}`;
+    return toDataUri(file, mime);
   } catch {
     return null;
   }

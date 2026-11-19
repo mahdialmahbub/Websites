@@ -43,6 +43,7 @@ export const tools = {
   figma1,
   illustrator,
   photoshop,
+  nextjs,
 };
 
 export const socialAssets = {
@@ -63,50 +64,51 @@ export const UIUXWorkflow = [
     phaseLabel: "PHASE 01",
     icon: "fi fi-rr-search-alt",
     title: "Research & Discovery",
-    tagline: "Understanding the problem before designing the solution.",
+    tagline: "Skip this, and you’re paying to build on guesses.",
     description:
-      "I begin by learning about your business, goals, target audience, and competitors to ensure every design decision is backed by insights rather than assumptions.",
+      "Most websites fail because they’re built on assumptions about customers, not facts. I study your business, audience and competitors first, so every design decision has a reason behind it, and you start ahead of competitors who guessed.",
     points: [
       {
         id: 1,
         number: "01",
         title: "Stakeholder Discussions",
         description:
-          "Understanding your vision, business objectives, and project expectations.",
+          "Unclear expectations lead to endless revisions. A focused kickoff puts your vision, budget and deadlines on paper from day one.",
       },
       {
         id: 2,
         number: "02",
         title: "Business Goals Analysis",
         description:
-          "Identifying business challenges, opportunities, and success metrics.",
+          "A site without goals looks nice and sells nothing. I turn your goals into measurable targets like leads, sign-ups or sales.",
       },
       {
         id: 3,
         number: "03",
         title: "User Research",
         description:
-          "Learning user behaviors, needs, motivations, and pain points.",
+          "Designing for “everyone” converts no one. Interviews and surveys show what your customers need and what makes them leave.",
       },
       {
         id: 4,
         number: "04",
         title: "Competitor Analysis",
         description:
-          "Studying competitors to discover strengths, gaps, and opportunities.",
+          "Copy your competitors and you blend in. I study what they do well and badly to find the gap only you can fill.",
       },
       {
         id: 5,
         number: "05",
         title: "Market Research",
-        description: "Analyzing industry trends and customer expectations.",
+        description:
+          "An outdated look signals an outdated business. I check industry trends and customer expectations so your site feels current.",
       },
       {
         id: 6,
         number: "06",
         title: "Project Requirements",
         description:
-          "Defining project scope, features, and technical requirements.",
+          "Vague scope brings surprise costs and delays. I define pages, features and technical needs up front, so there are no surprises later.",
       },
     ],
   },
@@ -116,50 +118,51 @@ export const UIUXWorkflow = [
     phaseLabel: "PHASE 02",
     icon: "fi fi-rr-location-crosshairs",
     title: "Define & Strategy",
-    tagline: "Turning research into a clear direction.",
+    tagline: "Without a plan, every page pulls in a different direction.",
     description:
-      "I synthesize all research findings into actionable insights, defining the core problem clearly and setting a strategic direction that the entire design will follow.",
+      "Research only helps if it turns into decisions. I boil everything down to one clear problem statement and a strategy, so the whole design pulls in one direction: toward your goals.",
     points: [
       {
         id: 1,
         number: "01",
         title: "User Personas",
         description:
-          "Creating detailed personas representing key user segments and their goals.",
+          "If you don’t know who you’re talking to, you can’t persuade them. Personas keep every screen focused on a real person’s goals.",
       },
       {
         id: 2,
         number: "02",
         title: "User Journey Mapping",
         description:
-          "Mapping end-to-end user journeys to identify pain points and opportunities.",
+          "Visitors rarely leave without a reason. I map their path from first click to purchase and find exactly where they drop off.",
       },
       {
         id: 3,
         number: "03",
         title: "Problem Statement",
-        description: "Defining a clear, focused problem statement to solve.",
+        description:
+          "Solving the wrong problem is the most expensive mistake. One sharp sentence keeps the whole project on target.",
       },
       {
         id: 4,
         number: "04",
         title: "Information Architecture",
         description:
-          "Structuring content and features into a logical, intuitive hierarchy.",
+          "If people can’t find it, it doesn’t exist. I structure your pages and content so everything is where visitors expect it.",
       },
       {
         id: 5,
         number: "05",
         title: "Design Strategy",
         description:
-          "Establishing the design approach, principles, and success metrics.",
+          "Design without principles turns into opinion battles. I set the approach and success metrics so decisions are made on evidence.",
       },
       {
         id: 6,
         number: "06",
         title: "Feature Prioritization",
         description:
-          "Prioritizing features based on user value and business impact.",
+          "Too many features slow the launch and confuse users. I rank them by user value and business impact, so the important ones ship first.",
       },
     ],
   },
@@ -169,50 +172,51 @@ export const UIUXWorkflow = [
     phaseLabel: "PHASE 03",
     icon: "fi fi-rr-layout-fluid",
     title: "Ideation & Wireframing",
-    tagline: "Exploring ideas and shaping the structure.",
+    tagline: "Fixing a layout on paper takes minutes. Fixing it in code takes days.",
     description:
-      "With a clear strategy in place, I brainstorm multiple solutions and translate the strongest ideas into low-fidelity wireframes to define layout, flow, and hierarchy.",
+      "Before any colors or fonts, I explore several ideas and shape the strongest into simple wireframes. You see and approve the structure while changes are still cheap and fast.",
     points: [
       {
         id: 1,
         number: "01",
         title: "Sketching & Brainstorming",
-        description: "Rapidly exploring multiple concepts and layout ideas.",
+        description:
+          "The first idea is rarely the best one. I explore multiple concepts quickly and keep the strongest.",
       },
       {
         id: 2,
         number: "02",
         title: "User Flows",
         description:
-          "Mapping step-by-step paths users take to complete key tasks.",
+          "Every extra step costs you customers. I map the shortest path for key tasks like booking, buying or contacting you.",
       },
       {
         id: 3,
         number: "03",
         title: "Low-Fidelity Wireframes",
         description:
-          "Creating basic wireframes to establish structure and hierarchy.",
+          "Colors hide structural problems. Plain grey wireframes show layout and hierarchy problems while they’re easy to fix.",
       },
       {
         id: 4,
         number: "04",
         title: "Content Layout",
         description:
-          "Organizing content blocks and page structure for clarity and usability.",
+          "Walls of text and buried buttons lose visitors. I arrange content so the most important thing is seen first.",
       },
       {
         id: 5,
         number: "05",
         title: "Navigation Design",
         description:
-          "Designing intuitive navigation patterns and menu structures.",
+          "Confusing menus are the quickest way to lose a visitor. I design navigation that feels obvious on phone and desktop.",
       },
       {
         id: 6,
         number: "06",
-        title: "Internal Feedback",
+        title: "Feedback & Approval",
         description:
-          "Gathering early feedback to refine direction before visual design.",
+          "Surprises after design are expensive. You review the wireframes, and I refine them before any visual design starts.",
       },
     ],
   },
@@ -222,51 +226,51 @@ export const UIUXWorkflow = [
     phaseLabel: "PHASE 04",
     icon: "fi fi-rr-website-design",
     title: "UI Design & Prototyping",
-    tagline: "Bringing the interface to life.",
+    tagline: "A cluttered, inconsistent design makes visitors doubt your business.",
     description:
-      "I craft high-fidelity visual designs, applying branding, typography, and color systems, then build interactive prototypes to simulate the real product experience.",
+      "I turn the approved structure into polished high-fidelity screens in Figma, then link them into a clickable prototype. You can click through your website before a single line of code is written.",
     points: [
       {
         id: 1,
         number: "01",
         title: "Visual Design System",
         description:
-          "Defining colors, typography, spacing, and reusable components.",
+          "Random styles make a brand look amateur. A defined set of colors, type scale and spacing keeps everything consistent and easy to update later.",
       },
       {
         id: 2,
         number: "02",
         title: "High-Fidelity Mockups",
         description:
-          "Designing polished, pixel-perfect screens for every key state.",
+          "Designing only the happy path leaves gaps. I design hover, error, empty and loading states too, so nothing is improvised later.",
       },
       {
         id: 3,
         number: "03",
         title: "Interaction Design",
         description:
-          "Crafting micro-interactions, transitions, and animations.",
+          "Static sites feel lifeless. Subtle micro-interactions give feedback and guide attention without slowing the page.",
       },
       {
         id: 4,
         number: "04",
         title: "Responsive Design",
         description:
-          "Adapting layouts for desktop, tablet, and mobile devices.",
+          "Most of your visitors are on phones. I design mobile-first, then scale up to tablet and desktop.",
       },
       {
         id: 5,
         number: "05",
         title: "Interactive Prototyping",
         description:
-          "Building clickable prototypes to simulate real user flows.",
+          "Static images can’t show how a site feels. A clickable prototype lets you and real users try the flow before development.",
       },
       {
         id: 6,
         number: "06",
-        title: "Design Consistency Check",
+        title: "Accessibility & Consistency Check",
         description:
-          "Reviewing designs for consistency across all screens and states.",
+          "Low contrast and tiny text push people away. I check contrast, text sizes and touch targets across every screen and state.",
       },
     ],
   },
@@ -276,50 +280,51 @@ export const UIUXWorkflow = [
     phaseLabel: "PHASE 05",
     icon: "fi fi-rr-web-test",
     title: "Usability Testing & Validation",
-    tagline: "Validating design decisions with real users.",
+    tagline: "A design only you have approved is still a guess.",
     description:
-      "Before finalizing designs, I test prototypes with real users to uncover usability issues and validate that the solution truly solves their problems.",
+      "I put the prototype in front of real users and watch where they hesitate, misclick or get lost. Every problem found goes back into the design, gets fixed, and is tested again, so your visitors never find the flaws before we do.",
     points: [
       {
         id: 1,
         number: "01",
         title: "Test Planning",
-        description: "Defining testing goals, tasks, and target participants.",
+        description:
+          "Random testing gives random answers. I define goals, tasks and the right participants before the first session.",
       },
       {
         id: 2,
         number: "02",
         title: "Usability Testing",
         description:
-          "Observing real users interact with prototypes to uncover friction.",
+          "Opinions lie, behavior doesn’t. I watch real users complete real tasks and note every moment of friction.",
       },
       {
         id: 3,
         number: "03",
         title: "A/B Testing",
         description:
-          "Comparing design variations to determine the most effective option.",
+          "Not sure which version converts better? I compare variations, so the winner is chosen by results, not taste.",
       },
       {
         id: 4,
         number: "04",
         title: "Feedback Analysis",
         description:
-          "Analyzing test results to identify patterns and pain points.",
+          "Not every problem is equally serious. I rank issues by severity so the ones hurting conversions are fixed first.",
       },
       {
         id: 5,
         number: "05",
-        title: "Design Iteration",
+        title: "Update the Design",
         description:
-          "Refining designs based on user feedback and test findings.",
+          "Found a problem? The design gets updated right away. Nothing is postponed to “after launch”.",
       },
       {
         id: 6,
         number: "06",
-        title: "Accessibility Review",
+        title: "Re-test & Accessibility Review",
         description:
-          "Ensuring designs meet accessibility standards and best practices.",
+          "A fix isn’t finished until it’s proven. I test again until the problem is gone and the design meets accessibility best practices.",
       },
     ],
   },
@@ -329,49 +334,51 @@ export const UIUXWorkflow = [
     phaseLabel: "PHASE 06",
     icon: "fi fi-rr-clip-file",
     title: "Development Handoff",
-    tagline: "Preparing designs for seamless development.",
+    tagline: "Designs usually get lost in translation here. Not with me.",
     description:
-      "I prepare detailed design specifications and assets, working closely with developers to ensure the final build matches the design vision precisely.",
+      "On most projects the designer and developer are two different people, and details are lost in the handoff. I design and build it myself, so the final website matches the approved design, not a rough copy of it.",
     points: [
       {
         id: 1,
         number: "01",
         title: "Design Documentation",
         description:
-          "Preparing detailed specs, guidelines, and design rationale.",
+          "Undocumented decisions get forgotten. Specs and design rationale are written down for you and for future updates.",
       },
       {
         id: 2,
         number: "02",
         title: "Asset Preparation",
-        description: "Exporting optimized icons, images, and design assets.",
+        description:
+          "Heavy images slow your site. I export optimized icons, SVGs and modern image formats, ready for fast loading.",
       },
       {
         id: 3,
         number: "03",
-        title: "Developer Collaboration",
+        title: "Design-to-Code Alignment",
         description:
-          "Working closely with developers to clarify design intent.",
+          "No hand-off gap and no “that’s not what I designed”. The person who made the design is the person who builds it.",
       },
       {
         id: 4,
         number: "04",
         title: "Component Handoff",
-        description: "Sharing design system components and style guides.",
+        description:
+          "Rebuilding the same button ten times wastes budget. Design components map directly to reusable code components.",
       },
       {
         id: 5,
         number: "05",
         title: "QA & Design Review",
         description:
-          "Reviewing the built product against the original designs.",
+          "Small spacing and color drifts add up. I compare the built pages against the design, screen by screen.",
       },
       {
         id: 6,
         number: "06",
         title: "Final Adjustments",
         description:
-          "Making last refinements based on development constraints.",
+          "Real browsers always reveal surprises. I make last refinements so the design holds up on real devices.",
       },
     ],
   },
@@ -381,46 +388,51 @@ export const UIUXWorkflow = [
     phaseLabel: "PHASE 07",
     icon: "fi fi-rr-browser",
     title: "Launch & Post-Launch Support",
-    tagline: "Ensuring long-term success beyond launch.",
+    tagline: "Launch day is the starting line, not the finish.",
     description:
-      "After launch, I monitor real-world performance, gather user feedback, and continue refining the product to ensure it keeps meeting user and business goals.",
+      "Most people disappear after launch and leave you to figure out what’s working. I keep watching real behavior and keep improving, so your website gets better while competitors’ sites stay the same.",
     points: [
       {
         id: 1,
         number: "01",
         title: "Launch Monitoring",
         description:
-          "Tracking performance and user behavior right after launch.",
+          "Problems are cheapest to fix in the first hours. I track performance and behavior right after launch.",
       },
       {
         id: 2,
         number: "02",
         title: "Analytics Review",
-        description: "Analyzing usage data to measure success against goals.",
+        description:
+          "Without data you’re flying blind. I measure results against the goals we set in Phase 01.",
       },
       {
         id: 3,
         number: "03",
         title: "User Feedback Collection",
-        description: "Gathering ongoing feedback from real users.",
+        description:
+          "Your customers will tell you what’s wrong if you ask. I gather ongoing feedback from real users.",
       },
       {
         id: 4,
         number: "04",
         title: "Continuous Improvement",
-        description: "Iterating on the design based on data and feedback.",
+        description:
+          "A site that never changes falls behind. I iterate on the design based on data and feedback.",
       },
       {
         id: 5,
         number: "05",
         title: "Performance Optimization",
-        description: "Improving usability and experience over time.",
+        description:
+          "Small usability wins compound into more leads. I keep improving the experience over time.",
       },
       {
         id: 6,
         number: "06",
         title: "Documentation & Reporting",
-        description: "Summarizing outcomes and learnings for future projects.",
+        description:
+          "You deserve to know what worked. I summarize outcomes and recommend what’s actually worth doing next.",
       },
     ],
   },
@@ -433,49 +445,51 @@ export const MERNStackWorkflow = [
     phaseLabel: "PHASE 01",
     icon: "fi fi-rr-search-alt",
     title: "Requirement Analysis & Planning",
-    tagline: "Laying the foundation before writing any code.",
+    tagline: "Code written without a plan becomes code you pay to rewrite.",
     description:
-      "I start by understanding the project requirements, planning the architecture, and defining the technology approach to ensure a scalable and maintainable application.",
+      "Skipping planning is how projects blow past budgets and deadlines. I map features, data and architecture before writing a line of code, so you get a scalable app instead of a patchwork.",
     points: [
       {
         id: 1,
         number: "01",
         title: "Requirement Gathering",
         description:
-          "Understanding client goals, features, and functional requirements.",
+          "Misunderstood features mean rebuilding later. I write clear user stories with acceptance criteria, so “done” means the same to both of us.",
       },
       {
         id: 2,
         number: "02",
         title: "Tech Stack Planning",
         description:
-          "Deciding on MongoDB, Express, React, Node.js versions and libraries.",
+          "The wrong tools limit growth. I choose MongoDB, Express, React/Next.js and Node.js for what your project needs, not what’s trendy.",
       },
       {
         id: 3,
         number: "03",
         title: "Database Schema Design",
-        description: "Designing collections, relationships, and data models.",
+        description:
+          "A poorly designed database slows down everything built on top of it. I model collections and relationships carefully first.",
       },
       {
         id: 4,
         number: "04",
         title: "API Planning",
         description:
-          "Outlining REST endpoints, request/response formats, and data flow.",
+          "Frontend and backend that disagree cause bugs. I define endpoints and data formats up front as a contract both sides follow.",
       },
       {
         id: 5,
         number: "05",
         title: "Wireframe & UI Reference",
         description:
-          "Reviewing design files or wireframes for frontend structure.",
+          "Building from memory leads to “that’s not what we agreed”. I build from the approved Figma design.",
       },
       {
         id: 6,
         number: "06",
         title: "Project Timeline",
-        description: "Breaking down tasks into milestones and sprints.",
+        description:
+          "Not knowing progress is stressful. Work is split into milestones, so you always see what’s done and what’s next.",
       },
     ],
   },
@@ -485,51 +499,51 @@ export const MERNStackWorkflow = [
     phaseLabel: "PHASE 02",
     icon: "fi fi-rr-master-plan",
     title: "Project Setup & Architecture",
-    tagline: "Building a solid technical foundation.",
+    tagline: "A messy foundation makes every future update slower and costlier.",
     description:
-      "I set up the development environment, folder structure, and core configurations for both frontend and backend to keep the codebase clean and scalable.",
+      "I set up the environment, folder structure and core configuration the way professional teams do. A clean base means faster features now and easy changes years later, even by another developer.",
     points: [
       {
         id: 1,
         number: "01",
         title: "Repository Setup",
         description:
-          "Initializing Git repo, branching strategy, and version control.",
+          "Lost code and overwritten work are painful. Git with a clear branching strategy keeps every change tracked and reversible.",
       },
       {
         id: 2,
         number: "02",
         title: "Folder Structure",
         description:
-          "Organizing client and server folders following best practices.",
+          "Tangled files make bugs hard to find. Client and server are organized by feature, so everything has an obvious place.",
       },
       {
         id: 3,
         number: "03",
         title: "Environment Configuration",
         description:
-          "Setting up .env files, environment variables, and configs.",
+          "Leaked passwords can sink a business. Secrets live in environment variables and never in the code.",
       },
       {
         id: 4,
         number: "04",
         title: "Package Installation",
         description:
-          "Installing core dependencies like Express, Mongoose, React, and Axios.",
+          "Unnecessary packages bloat your site. I install only what’s needed, plus ESLint and Prettier to keep the code clean and consistent.",
       },
       {
         id: 5,
         number: "05",
         title: "Database Connection",
         description:
-          "Connecting MongoDB using Mongoose with proper error handling.",
+          "A dropped connection takes the whole site down. MongoDB connects via Mongoose with proper error handling and retries.",
       },
       {
         id: 6,
         number: "06",
         title: "Base Server Setup",
         description:
-          "Setting up the Express server, middleware, and routing structure.",
+          "Retrofitting structure later is painful. The Express server starts with middleware, routing and error handling already in place.",
       },
     ],
   },
@@ -539,47 +553,51 @@ export const MERNStackWorkflow = [
     phaseLabel: "PHASE 03",
     icon: "fi fi-rr-database-management",
     title: "Backend Development",
-    tagline: "Building the server, database, and business logic.",
+    tagline: "A weak backend means slow pages, leaked data, or a site that crashes under traffic.",
     description:
-      "I develop RESTful APIs, database models, and server-side logic using Node.js, Express, and MongoDB, following clean architecture and security best practices.",
+      "I build secure, fast REST APIs and database logic with Node.js, Express and MongoDB. Your data stays protected and your site keeps working as your business grows.",
     points: [
       {
         id: 1,
         number: "01",
         title: "Database Models",
-        description: "Creating Mongoose schemas and models for all entities.",
+        description:
+          "Bad data in means bad results out. Mongoose schemas enforce validation and indexes keep queries fast.",
       },
       {
         id: 2,
         number: "02",
         title: "API Development",
-        description: "Building RESTful endpoints for CRUD operations.",
+        description:
+          "Messy APIs are hard to extend. I build clean REST endpoints with proper status codes and pagination for large data.",
       },
       {
         id: 3,
         number: "03",
         title: "Authentication & Authorization",
         description:
-          "Implementing JWT-based auth and role-based access control.",
+          "Weak login means stolen accounts. Passwords are hashed, sessions use JWT, and role-based access keeps users in their lane.",
       },
       {
         id: 4,
         number: "04",
-        title: "Middleware Development",
+        title: "",
         description:
-          "Writing validation, error-handling, and security middleware.",
+          "Open servers invite attacks. Input validation, secure headers, CORS rules and rate limiting protect against abuse and brute force.",
       },
       {
         id: 5,
         number: "05",
         title: "Business Logic",
-        description: "Implementing core application logic and data processing.",
+        description:
+          "Logic scattered everywhere breeds bugs. Core rules live in one tested place, so behavior stays predictable.",
       },
       {
         id: 6,
         number: "06",
         title: "API Documentation",
-        description: "Documenting endpoints using Postman or Swagger.",
+        description:
+          "Undocumented APIs are a trap for the next developer. Endpoints are documented in Postman or Swagger.",
       },
     ],
   },
@@ -589,48 +607,51 @@ export const MERNStackWorkflow = [
     phaseLabel: "PHASE 04",
     icon: "fi fi-rr-code-window",
     title: "Frontend Development",
-    tagline: "Crafting the user interface with React.",
+    tagline: "A slow, clunky interface sends visitors straight to your competitor.",
     description:
-      "I build responsive, reusable React components, implement routing, and structure the UI layer to deliver a smooth and consistent user experience.",
+      "I build responsive, reusable interfaces with React and Next.js. Pages are rendered on the server, so they load fast for visitors and are easy for Google to read.",
     points: [
       {
         id: 1,
         number: "01",
         title: "Component Architecture",
-        description: "Structuring reusable, modular React components.",
+        description:
+          "Copy-pasted code makes every change slow. Reusable components mean one fix updates the whole site.",
       },
       {
         id: 2,
         number: "02",
-        title: "Routing Setup",
-        description: "Implementing client-side routing with React Router.",
+        title: "Routing & Rendering",
+        description:
+          "Client-only rendering hurts speed and SEO. Next.js App Router with server components sends visitors fast, ready-to-read pages.",
       },
       {
         id: 3,
         number: "03",
         title: "State Management",
-        description: "Managing application state using Context API or Redux.",
+        description:
+          "Tangled state causes glitchy screens. I use Context or Redux only where it’s needed, to keep the app predictable.",
       },
       {
         id: 4,
         number: "04",
-        title: "UI Implementation",
+        title: "UI Implementation & Responsiveness",
         description:
-          "Converting designs into pixel-perfect, responsive interfaces.",
+          "A design that breaks on phones loses most visitors. I build pixel-accurate, mobile-first layouts that match the Figma file.",
       },
       {
         id: 5,
         number: "05",
         title: "Form Handling & Validation",
         description:
-          "Building forms with client-side validation and error states.",
+          "Frustrating forms kill leads. Clear validation and helpful error messages make it easy to get in touch or sign up.",
       },
       {
         id: 6,
         number: "06",
-        title: "Styling & Responsiveness",
+        title: "SEO-Ready Foundations",
         description:
-          "Implementing styles using CSS/Tailwind and ensuring cross-device responsiveness.",
+          "SEO bolted on afterwards never works as well. Semantic HTML, metadata, sitemap, robots and structured data are built in from the start.",
       },
     ],
   },
@@ -640,49 +661,51 @@ export const MERNStackWorkflow = [
     phaseLabel: "PHASE 05",
     icon: "fi fi-rr-api-cloud",
     title: "API Integration & State Sync",
-    tagline: "Connecting frontend and backend seamlessly.",
+    tagline: "When frontend and backend don’t talk properly, users see blank screens and stale data.",
     description:
-      "I integrate frontend components with backend APIs, handle asynchronous data flow, and manage global state for a consistent, real-time user experience.",
+      "I connect the interface to the backend so data flows smoothly, loading and error states are handled gracefully, and users always see up-to-date information.",
     points: [
       {
         id: 1,
         number: "01",
         title: "API Integration",
         description:
-          "Connecting React components with backend endpoints using Axios/Fetch.",
+          "Broken connections show up as broken features. I wire components to endpoints with Axios or Fetch and verify every flow.",
       },
       {
         id: 2,
         number: "02",
         title: "Data Fetching & Caching",
         description:
-          "Implementing efficient data fetching and caching strategies.",
+          "Re-fetching everything makes pages feel slow. Smart caching shows data instantly and saves server load.",
       },
       {
         id: 3,
         number: "03",
         title: "Error Handling",
         description:
-          "Managing API errors and displaying user-friendly messages.",
+          "Cryptic errors scare customers away. Failures show clear, friendly messages and tell users what to do next.",
       },
       {
         id: 4,
         number: "04",
         title: "Loading & Async States",
-        description: "Handling loading, success, and error states gracefully.",
+        description:
+          "Blank screens feel broken. Skeletons and spinners tell users that something is happening.",
       },
       {
         id: 5,
         number: "05",
         title: "Global State Sync",
-        description: "Syncing global state (Redux/Context) with server data.",
+        description:
+          "Stale data causes confusion. Redux or Context is kept in sync with the server, so every screen shows the same truth.",
       },
       {
         id: 6,
         number: "06",
         title: "Real-Time Features",
         description:
-          "Implementing real-time updates using WebSockets or Socket.io where needed.",
+          "Where live updates matter, such as chat or notifications, I use WebSockets or Socket.io so users never need to refresh.",
       },
     ],
   },
@@ -691,48 +714,52 @@ export const MERNStackWorkflow = [
     phaseNumber: "06",
     phaseLabel: "PHASE 06",
     icon: "fi fi-rr-web-test",
-    title: "Testing & Debugging",
-    tagline: "Ensuring reliability before deployment.",
+    title: "Testing & Bug Fixing",
+    tagline: "Bugs found by your customers cost you trust. Bugs found by me cost you nothing.",
     description:
-      "I test the application thoroughly across frontend and backend, fixing bugs and edge cases to ensure a stable, production-ready product.",
+      "I test the frontend, backend and the connection between them. Every bug found goes back into the code, gets fixed, and is tested again, so it doesn’t return and nothing else breaks while fixing it.",
     points: [
       {
         id: 1,
         number: "01",
         title: "Unit Testing",
-        description: "Writing unit tests for components and API functions.",
+        description:
+          "Small bugs hide in small functions. I test components and API functions individually, so the problem is caught at its source.",
       },
       {
         id: 2,
         number: "02",
         title: "Integration Testing",
-        description: "Testing API endpoints and data flow end-to-end.",
+        description:
+          "Parts that work alone can fail together. I test endpoints and data flow end to end.",
       },
       {
         id: 3,
         number: "03",
         title: "Manual QA Testing",
-        description: "Manually testing features across devices and browsers.",
+        description:
+          "Your customers use all kinds of devices. I test every feature across phones, tablets, desktops and major browsers.",
       },
       {
         id: 4,
         number: "04",
-        title: "Bug Fixing",
-        description: "Identifying and resolving bugs and edge cases.",
+        title: "Edge Cases & Error Handling",
+        description:
+          "Real users type strange things and lose connection. I test empty, invalid and slow-network situations so the site never breaks.",
       },
       {
         id: 5,
         number: "05",
-        title: "Performance Testing",
+        title: "Security Testing",
         description:
-          "Testing load times, API response speed, and optimization.",
+          "One vulnerability can cost your reputation. I check for XSS, CSRF, injection attacks and exposed data.",
       },
       {
         id: 6,
         number: "06",
-        title: "Security Testing",
+        title: "Bug Fixing & Regression Testing",
         description:
-          "Checking for vulnerabilities like XSS, CSRF, and injection attacks.",
+          "Found a problem? It gets fixed and updated. Then I re-test the whole flow to make sure the fix didn’t break something else.",
       },
     ],
   },
@@ -740,51 +767,53 @@ export const MERNStackWorkflow = [
     id: 7,
     phaseNumber: "07",
     phaseLabel: "PHASE 07",
-    icon: "fi fi-rr-browser",
-    title: "Deployment & DevOps",
-    tagline: "Taking the application live.",
+    icon: "fi fi-rr-bolt",
+    title: "Lighthouse Audit & Optimization",
+    tagline: "A slow, inaccessible, hard-to-find website quietly loses customers every day.",
     description:
-      "I deploy the frontend and backend to production, configure hosting and databases, and set up CI/CD pipelines to ensure a smooth and reliable launch.",
+      "Lighthouse scores every site on Performance, Accessibility, Best Practices and SEO. Many sites never even run it. I audit on a production build, fix what drags each score down, and re-test until all four are as high as possible, with a target of 90+ on each. That’s how you get ahead of competitors.",
     points: [
       {
         id: 1,
         number: "01",
-        title: "Environment Setup",
+        title: "Baseline Audit",
         description:
-          "Configuring production environment variables and secrets.",
+          "You can’t improve what you don’t measure. I run Lighthouse on mobile and desktop and record the starting scores.",
       },
       {
         id: 2,
         number: "02",
-        title: "Backend Deployment",
+        title: "Performance",
         description:
-          "Deploying the Node/Express server to platforms like Render, AWS, or Railway.",
+          "Every extra second of loading loses visitors. I optimize images with next/image, fonts, code splitting and caching, and tune Core Web Vitals (LCP, INP, CLS).",
       },
       {
         id: 3,
         number: "03",
-        title: "Frontend Deployment",
+        title: "Accessibility",
         description:
-          "Deploying the React app to Vercel, Netlify, or similar platforms.",
+          "Inaccessible sites shut out real customers. I fix contrast, alt text, form labels, keyboard navigation and ARIA, so everyone can use your site.",
       },
       {
         id: 4,
         number: "04",
-        title: "Database Hosting",
+        title: "Best Practices",
         description:
-          "Setting up production MongoDB (Atlas) with backups and monitoring.",
+          "Small technical slips damage trust. I enforce HTTPS, secure headers, zero console errors and up-to-date dependencies.",
       },
       {
         id: 5,
         number: "05",
-        title: "CI/CD Pipeline",
-        description: "Automating build, test, and deployment workflows.",
+        title: "SEO",
+        description:
+          "If Google can’t read it, it can’t rank it. Titles, meta descriptions, canonical URLs, sitemap, robots, structured data and mobile-friendliness are all checked.",
       },
       {
         id: 6,
         number: "06",
-        title: "Domain & SSL Setup",
-        description: "Configuring a custom domain and HTTPS/SSL certificates.",
+        title: "Fix, Re-test & Verify",
+        description:
+          "One pass isn’t enough. I repeat fix and re-test until scores are high, then add Lighthouse checks so they can’t quietly slip later.",
       },
     ],
   },
@@ -792,50 +821,107 @@ export const MERNStackWorkflow = [
     id: 8,
     phaseNumber: "08",
     phaseLabel: "PHASE 08",
+    icon: "fi fi-rr-browser",
+    title: "Deployment & DevOps",
+    tagline: "A launch that goes wrong on day one is hard to recover from.",
+    description:
+      "I deploy the frontend, backend and database to production and automate the process, so launch day is calm and every future update ships safely.",
+    points: [
+      {
+        id: 1,
+        number: "01",
+        title: "Environment Setup",
+        description:
+          "Wrong settings in production cause strange failures. Production variables and secrets are configured and double-checked.",
+      },
+      {
+        id: 2,
+        number: "02",
+        title: "Backend Deployment",
+        description:
+          "Servers that sleep or crash lose sales. I deploy the Node/Express API to a reliable host such as Render, AWS or Railway.",
+      },
+      {
+        id: 3,
+        number: "03",
+        title: "Frontend Deployment",
+        description:
+          "Slow delivery wastes all our optimization. The Next.js app goes live on Vercel or similar with a global CDN.",
+      },
+      {
+        id: 4,
+        number: "04",
+        title: "Database Hosting",
+        description:
+          "Losing your data is the worst case. Production MongoDB on Atlas runs with backups and monitoring.",
+      },
+      {
+        id: 5,
+        number: "05",
+        title: "CI/CD Pipeline",
+        description:
+          "Manual deploys invite human error. Build, test and Lighthouse checks run automatically before every release.",
+      },
+      {
+        id: 6,
+        number: "06",
+        title: "Domain & SSL Setup",
+        description:
+          "No HTTPS means browser warnings and lost trust. I connect your custom domain with a valid SSL certificate.",
+      },
+    ],
+  },
+  {
+    id: 9,
+    phaseNumber: "09",
+    phaseLabel: "PHASE 09",
     icon: "fi fi-rr-it-alt",
     title: "Maintenance & Post-Launch Support",
-    tagline: "Keeping the application running smoothly.",
+    tagline: "Websites that aren’t looked after slowly break, slow down and become insecure.",
     description:
-      "After launch, I monitor performance, fix issues, and continue improving the application based on real-world usage, security needs, and user feedback.",
+      "After launch I keep watching performance, fix issues and improve the app based on real usage. You never have to chase a new freelancer for every update, and I’ll tell you honestly what’s helping or hurting your site.",
     points: [
       {
         id: 1,
         number: "01",
         title: "Performance Monitoring",
-        description: "Tracking server uptime, response times, and error rates.",
+        description:
+          "Slow-downs are silent. I track uptime, response times and error rates, and re-run Lighthouse to keep scores high.",
       },
       {
         id: 2,
         number: "02",
         title: "Bug Fixes & Patches",
-        description: "Resolving issues reported after launch.",
+        description:
+          "A bug reported after launch shouldn’t sit for weeks. Issues are fixed and re-tested quickly.",
       },
       {
         id: 3,
         number: "03",
         title: "Feature Updates",
         description:
-          "Adding new features based on user feedback and business needs.",
+          "Your business will grow. I add new features based on user feedback and what’s worth doing next.",
       },
       {
         id: 4,
         number: "04",
         title: "Security Updates",
-        description: "Keeping dependencies and packages up to date and secure.",
+        description:
+          "Outdated packages are an open door. Dependencies are kept up to date and secure.",
       },
       {
         id: 5,
         number: "05",
         title: "Database Maintenance",
         description:
-          "Optimizing queries, indexes, and managing database growth.",
+          "Growing data slows everything down. I optimize queries and indexes and manage database growth.",
       },
       {
         id: 6,
         number: "06",
         title: "Documentation & Handover",
         description:
-          "Providing documentation and knowledge transfer for future development.",
+          "You should never be locked in. Clear documentation lets you or any developer continue the work.",
       },
     ],
   },

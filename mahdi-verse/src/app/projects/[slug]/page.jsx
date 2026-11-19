@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { notFound } from "next/navigation";
 import ProjectDetails from "../../components/project/ProjectDetails";
 import BackButton from "../../components/project/BackButton";
 import projectsData from "../../assets/projects/projects";
@@ -7,55 +7,54 @@ import { buildMetadata } from "../../utils/buildMetadata";
 import JsonLd from "../../components/JsonLd";
 import { projectSchema } from "../../utils/schema";
 
+// Shob jaygay ekoi slug logic, jate generateMetadata, generateStaticParams ar page mile thake
+const getSlug = (p) => p.slug || slugify(p.title);
+
+// Slug theke project khuje ber kore. Na pele (ba URL encoding vul hole) undefined
+function findProject(rawSlug) {
+  let slug = rawSlug;
+  try {
+    slug = decodeURIComponent(rawSlug);
+  } catch {
+    return undefined;
+  }
+  return projectsData.find((p) => getSlug(p) === slug);
+}
+
+// List e na thaka slug shorashori 404 hobe
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return projectsData.map((p) => ({ slug: getSlug(p) }));
+}
 
 export async function generateMetadata({ params }) {
-  const { slug } = await params
-  const project = projectsData.find((p) => p.slug === slug)
+  const { slug } = await params;
+  const project = findProject(slug);
 
-  if (!project) return {}
+  if (!project) return { title: "Project not found" };
 
   return buildMetadata({
     title: project.title,
     description: project.description,
-    path: `/projects/${slug}`,
-    image: false, // ager baniye deya opengraph-image.jsx automatic use hobe
-  })
-}
-
-// build time e shob project page static generate hobe (bonus, SSR er shathe ekdom kaj kore)
-export function generateStaticParams() {
-  return projectsData.map((p) => ({ slug: p.slug || slugify(p.title) }));
+    path: `/projects/${getSlug(project)}`,
+    image: false, // opengraph-image.jsx automatic use hobe
+  });
 }
 
 export default async function ProjectDetailsPage({ params }) {
-  // Next 14 ar 15+ duitai e await kaj kore
   const { slug } = await params;
+  const project = findProject(slug);
 
-  const project = projectsData.find(
-    (p) => (p.slug || slugify(p.title)) === slug,
-  );
+  if (!project) notFound(); // not-found.jsx dekhabe
 
   return (
     <>
       <JsonLd data={projectSchema(project)} />
-    <section className="min-w-full space-y-space-7">
-      <BackButton />
-      {project ? (
+      <section className="min-w-full space-y-space-7">
+        <BackButton />
         <ProjectDetails project={project} />
-      ) : (
-        <div className="bg-secondary-50 dark:bg-background rounded-2xl min-h-75 flex flex-col items-center justify-center gap-space-3">
-          <p className="font-medium text-size-base text-placeholder_2 dark:text-placeholder/80">
-            Project not found.
-          </p>
-          <Link
-            href="/projects"
-            className="text-size-sm font-semibold text-secondary-500 hover:underline"
-          >
-            Back to all projects
-          </Link>
-        </div>
-      )}
-    </section>
+      </section>
     </>
   );
 }

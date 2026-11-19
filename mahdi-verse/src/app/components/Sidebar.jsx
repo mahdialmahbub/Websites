@@ -29,8 +29,8 @@ const navItems = [
   {
     label: "Projects",
     href: "/projects",
-    icon: "fi fi-rr-layout-fluid",
-    fillIcon: "fi fi-sr-layout-fluid",
+    icon: "fi fi-rr-browser",
+    fillIcon: "fi fi-sr-browser",
   },
   {
     label: "Clients",
