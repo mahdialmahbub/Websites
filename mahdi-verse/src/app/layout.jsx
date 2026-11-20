@@ -54,6 +54,9 @@ export const metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description: DESCRIPTION,
+  verification: {
+    google: "srWmSxUlYwoUomN0Xki4NnScod21FyvSByfLMcYPsc0",
+  },
   applicationName: SITE_NAME,
   authors: [{ name: SITE_NAME, url: SITE_URL }],
   openGraph: {
