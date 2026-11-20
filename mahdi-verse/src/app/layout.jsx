@@ -54,6 +54,9 @@ export const metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description: DESCRIPTION,
+  verification: {
+    google: "tomar-google-verification-code",
+  },
   applicationName: SITE_NAME,
   authors: [{ name: SITE_NAME, url: SITE_URL }],
   openGraph: {
