@@ -3,25 +3,6 @@ import Link from "next/link";
 import Button from "../Button";
 import FadeUp from "../motions/FadeUp";
 
-const contactLinks = [
-  {
-    label: "Email",
-    href: "mailto:hello@example.com",
-  },
-  {
-    label: "LinkedIn",
-    href: "https://linkedin.com",
-  },
-  {
-    label: "GitHub",
-    href: "https://github.com",
-  },
-  {
-    label: "Behance",
-    href: "https://behance.net",
-  },
-];
-
 const ContactCTA = () => {
   return (
     <FadeUp as="section" className="relative w-full overflow-hidden">

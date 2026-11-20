@@ -18,6 +18,7 @@ import {
   RoundedSection,
   FontSizeSection,
   PagePreviewSection,
+  ViewToggle,
 } from "./ProjectSections";
 
 /**
@@ -64,13 +65,17 @@ export function DesignView({ project, data, switchTo }) {
         finalDesign={project.finalDesign}
         showTools
       />
-      <PagePreviewSection title={project.title} pagePreviews={project.pagePreviews} />
+      <PagePreviewSection
+        title={project.title}
+        pagePreviews={project.pagePreviews}
+      />
       <FeedbackSection intro={project.clientIntro} client={project.client} />
       <ListPanel
         title={data.learningsTitle ?? "What I learned from this project"}
         items={data.learnings}
         tone="brand"
       />
+      {switchTo && <ViewToggle switchTo={switchTo} />}
       <OtherProjects currentSlug={project.slug} />
       <ProjectCTA caseStudyLink={project.design.caseStudyLink} />
     </div>
@@ -83,7 +88,7 @@ export function DesignView({ project, data, switchTo }) {
  */
 export function DevelopmentView({ project, data, switchTo }) {
   return (
-    <div className="space-y-space-10 p-space-6 bg-secondary-50 dark:bg-background rounded-2xl">
+    <div className="space-y-space-12 p-space-6 bg-secondary-50 dark:bg-background rounded-2xl">
       <ProjectHero
         project={project}
         view="development"
@@ -126,13 +131,17 @@ export function DevelopmentView({ project, data, switchTo }) {
         title={project.title}
         finalDesign={project.finalDesign}
       />
-      <PagePreviewSection title={project.title} pagePreviews={project.pagePreviews} />
+      <PagePreviewSection
+        title={project.title}
+        pagePreviews={project.pagePreviews}
+      />
       <FeedbackSection intro={project.clientIntro} client={project.client} />
       <ListPanel
         title={data.learningsTitle ?? "Takeaways"}
         items={data.learnings}
         tone="brand"
       />
+      {switchTo && <ViewToggle switchTo={switchTo} />}
       <OtherProjects currentSlug={project.slug} />
       <ProjectCTA />
     </div>

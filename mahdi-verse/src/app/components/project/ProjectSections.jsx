@@ -290,6 +290,7 @@ export function ProjectHero({ project, view, data, switchTo }) {
             <ViewToggleButton
               to={switchTo}
               label={VIEW_META[switchTo].switchLabel}
+              varient={"text"}
             />
           )}
         </div>
@@ -451,9 +452,7 @@ export function FinalDesignSection({ title, finalDesign, showTools = false }) {
 export function PagePreviewSection({ title, pagePreviews }) {
   const { label = "Full Pages", description, pages = [] } = pagePreviews ?? {};
 
-  const validPages = pages.filter(
-    (p) => p?.desktop || p?.tablet || p?.mobile,
-  );
+  const validPages = pages.filter((p) => p?.desktop || p?.tablet || p?.mobile);
   if (!validPages.length) return null;
 
   return (
@@ -1213,6 +1212,37 @@ export function DataModelSection({ intro, collections = [] }) {
         ))}
       </div>
     </section>
+  );
+}
+
+export function ViewToggle({ switchTo }) {
+  return (
+    <FadeUp as="section" className="relative w-full overflow-hidden">
+      <div className="relative mx-auto flex min-h-50 w-full items-center justify-center">
+        <div className="relative z-10 flex max-w-162.5 flex-col items-center text-center">
+          {/* Heading */}
+          <h2
+            className="
+              mb-6
+              text-3xl
+              font-semibold
+              leading-tight
+              tracking-[-0.04em] text-size-2xl
+            "
+          >
+            Explore the {VIEW_META[switchTo].switchLabel} Process
+          </h2>
+
+          {/* CTA */}
+          <ViewToggleButton
+            to={switchTo}
+            label={VIEW_META[switchTo].switchLabel}
+          />
+
+          {/* Contact links */}
+        </div>
+      </div>
+    </FadeUp>
   );
 }
 
