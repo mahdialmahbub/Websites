@@ -50,26 +50,20 @@ const social = [
   {
     name: "LinkedIn",
     icon: socialAssets.Linkedin,
-    href: "https://linkedin.com",
+    href: "https://www.linkedin.com/in/mahdi-al-mahbub",
     bg: "bg-[#0077B5]",
   },
   {
     name: "WhatsApp",
     icon: socialAssets.Whats_App,
-    href: "https://whatsapp.com",
+    href: "https://wa.me/8801735999190",
     bg: "bg-[#25D366]",
   },
   {
     name: "Facebook",
     icon: socialAssets.Facebook,
-    href: "https://facebook.com",
+    href: "https://www.facebook.com/mahdi.al.mahbub.webexpert",
     bg: "bg-[#1877F2]",
-  },
-  {
-    name: "Twitter",
-    icon: socialAssets.Twitter,
-    href: "https://twitter.com",
-    bg: "bg-[#111111]",
   },
 ];
 
@@ -143,7 +137,7 @@ const Sidebar = () => {
         >
           <Image
             src={isExpanded ? "/logo.png" : "/logo-icon.png"}
-            alt="Logo"
+            alt="MahdiVerse logo"
             height={40}
             width={isExpanded ? 170 : 40}
             priority

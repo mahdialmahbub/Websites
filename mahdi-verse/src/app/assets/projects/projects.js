@@ -231,6 +231,12 @@ import GrowthPilot_6 from "./GrowthPilot/6.jpg";
 import GrowthPilot_7 from "./GrowthPilot/7.jpg";
 import GrowthPilot_8 from "./GrowthPilot/8.jpg";
 import GrowthPilot_9 from "./GrowthPilot/9.jpg";
+import GrowthPilot_Home_Desktop_Light from "./GrowthPilot/GrowthPilot_Home_Desktop_Light.jpg";
+import GrowthPilot_Home_Tab_Light from "./GrowthPilot/GrowthPilot_Home_Tab_Light.jpg";
+import GrowthPilot_Home_Mobile_Light from "./GrowthPilot/GrowthPilot_Home_Mobile_Light.jpg";
+import GrowthPilot_Home_Desktop_Dark from "./GrowthPilot/GrowthPilot_Home_Desktop_Dark.jpg";
+import GrowthPilot_Home_Tab_Dark from "./GrowthPilot/GrowthPilot_Home_Tab_Dark.jpg";
+import GrowthPilot_Home_Mobile_Dark from "./GrowthPilot/GrowthPilot_Home_Mobile_Dark.jpg";
 
 //Urban Nest
 import UrbanNest_Cover from "./UrbanNest/Cover.jpg";
@@ -424,6 +430,28 @@ const rawProjects = [
       },
 
       images: growthPilotImages,
+    },
+    pagePreviews: {
+      label: "Full Landing Page",
+      description:
+        "The complete page across desktop, tablet and mobile, so you can see how the layout adapts on every screen.",
+      pages: [
+        {
+          name: "Home",
+          desktop: {
+            light: GrowthPilot_Home_Desktop_Light,
+            dark: GrowthPilot_Home_Desktop_Dark,
+          },
+          tablet: {
+            light: GrowthPilot_Home_Tab_Light,
+            dark: GrowthPilot_Home_Tab_Dark,
+          },
+          mobile: {
+            light: GrowthPilot_Home_Mobile_Light,
+            dark: GrowthPilot_Home_Mobile_Dark,
+          },
+        },
+      ],
     },
 
     // ============================================================
@@ -778,57 +806,7 @@ const rawProjects = [
       pages: [
         {
           name: "Home",
-          desktop: {
-            // UrbanNest_LandingPage,
-            light: UrbanNest_LandingPage,
-            dark: UrbanNest_LandingPage,
-          },
-          tablet: {
-            // UrbanNest_LandingPage,
-            light: UrbanNest_LandingPage,
-            dark: UrbanNest_LandingPage,
-          },
-          mobile: {
-            // UrbanNest_LandingPage,
-            light: UrbanNest_LandingPage,
-            dark: UrbanNest_LandingPage,
-          },
-        },
-        {
-          name: "About",
-          desktop: {
-            // UrbanNest_LandingPage,
-            light: UrbanNest_LandingPage,
-            dark: UrbanNest_LandingPage,
-          },
-          tablet: {
-            // UrbanNest_LandingPage,
-            light: UrbanNest_LandingPage,
-            dark: UrbanNest_LandingPage,
-          },
-          mobile: {
-            // UrbanNest_LandingPage,
-            light: UrbanNest_LandingPage,
-            dark: UrbanNest_LandingPage,
-          },
-        },
-        {
-          name: "Pricing",
-          desktop: {
-            // UrbanNest_LandingPage,
-            light: UrbanNest_LandingPage,
-            dark: UrbanNest_LandingPage,
-          },
-          tablet: {
-            // UrbanNest_LandingPage,
-            light: UrbanNest_LandingPage,
-            dark: UrbanNest_LandingPage,
-          },
-          mobile: {
-            // UrbanNest_LandingPage,
-            light: UrbanNest_LandingPage,
-            dark: UrbanNest_LandingPage,
-          },
+          desktop: UrbanNest_LandingPage,
         },
       ],
     },

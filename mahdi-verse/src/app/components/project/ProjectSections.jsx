@@ -1219,7 +1219,7 @@ export function ViewToggle({ switchTo }) {
   return (
     <FadeUp as="section" className="relative w-full overflow-hidden">
       <div className="relative mx-auto flex min-h-50 w-full items-center justify-center">
-        <div className="relative z-10 flex max-w-162.5 flex-col items-center text-center">
+        <div className="relative z-10 flex max-w-162.5 w-full flex-col items-center text-center">
           {/* Heading */}
           <h2
             className="

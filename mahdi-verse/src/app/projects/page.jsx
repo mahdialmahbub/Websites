@@ -58,7 +58,7 @@ export async function generateMetadata({ searchParams }) {
   return buildMetadata({
     title: "Projects",
     description:
-      "Explore my UI UX design and MERN stack development projects. See real-world apps built with MongoDB, Express, React, and Node.js, from design to deployment.",
+      "Explore my UI UX design and MERN stack & Next.js development projects. See real-world apps built with MongoDB, Express, React, and Node.js, from design to deployment.",
     path: "/projects",
   });
 }
