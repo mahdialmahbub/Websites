@@ -13,7 +13,7 @@ const Navbar = () => {
         <NavbarAction />
       </div>
     </div>
-  );
+  ); 
 };
 
 export default Navbar;

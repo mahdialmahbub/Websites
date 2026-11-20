@@ -136,7 +136,7 @@ const WorkflowCard = ({
         <p
           className="
             mt-2
-            max-w-162.5
+            max-w-162.5 w-full
             text-size-sm
             leading-6
             tracking-wide

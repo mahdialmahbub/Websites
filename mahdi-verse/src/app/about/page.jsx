@@ -18,7 +18,7 @@ import Chips from "../components/Chips";
 export const metadata = buildMetadata({
   title: "About",
   description:
-    "I’m Mahdi Al Mahbub, a UI UX designer and full-stack MERN developer. One person, one vision: I design and build fast, SEO-ready websites for new businesses.",
+    "Hi, I’m Mahdi, a UI UX Designer, MERN & Next.js Developer. I build fast, accessible, SEO-friendly websites that follow best practices and bring you more leads.",
   path: "/about",
 });
 
@@ -190,7 +190,7 @@ const page = () => {
               <FadeLeft
                 as="p"
                 delay={0.1}
-                className="text-size-md text-placeholder max-w-162.5"
+                className="text-size-md text-placeholder max-w-162.5 w-full"
               >
                 Starting a business is exciting. Building the website usually
                 isn’t. I’m a UI UX Designer and MERN Stack Developer in one, so
@@ -207,7 +207,7 @@ const page = () => {
                     className="flex items-center gap-1.5"
                   >
                     <Image
-                      alt="checkBox"
+                      alt=""
                       width={22}
                       height={22}
                       src={assets.CheckBox}
@@ -231,7 +231,7 @@ const page = () => {
               <i className="fi fi-rr-website-design absolute top-1 left-1 transform -translate-x-1/2 -translate-y-1/2 z-20 text-secondary-500/10 text-[86px]"></i>
               <i className="fi fi-rr-code-window absolute -bottom-20 left-1 transform -translate-x-1/2 -translate-y-1/2 z-20 text-secondary-500/10 text-[86px]"></i>
               <Image
-                alt="about"
+                alt="Mahdi working on UI UX design and web development"
                 src={assets.about}
                 width={600}
                 height={400}
@@ -383,7 +383,13 @@ const page = () => {
 
         {/* -------------------------------- PROMISE -------------------------------- */}
         <FadeUp className="mx-auto max-w-3xl flex items-center gap-space-8 rounded-xl bg-foreground p-space-7 dark:bg-background w-full">
-          <Image alt="Mahdi's Image" src={"/profile.jpg"} width={160} height={160} className="rounded-lg"/>
+          <Image
+            alt="Mahdi's Image"
+            src={"/profile.jpg"}
+            width={160}
+            height={160}
+            className="rounded-lg"
+          />
           <blockquote className="font-primary text-size-xl font-semibold leading-snug tracking-[-0.02em] text-white">
             I treat every project like it’s my own, working within your budget
             and never cutting corners on quality or detail.

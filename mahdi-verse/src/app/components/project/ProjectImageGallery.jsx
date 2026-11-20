@@ -124,7 +124,7 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
             width={900}
             height={620}
             sizes={PREVIEW_SIZES}
-            quality={70}
+            quality={75}
             className="preview-fade w-full h-full object-cover"
             priority={selected === 0}
           />
@@ -203,7 +203,7 @@ export default function ProjectImageGallery({ images = DEMO_IMAGES }) {
                     width={900}
                     height={620}
                     sizes={THUMB_SIZES} // ✅ added (biggest saving: ~105 KiB per image)
-                    quality={60} // ✅ added (small thumbnail, high quality dorkar nai)
+                    quality={75} // ✅ added (small thumbnail, high quality dorkar nai)
                     className="w-full h-full object-cover transition-all duration-200"
                   />
                   {isSelected && (

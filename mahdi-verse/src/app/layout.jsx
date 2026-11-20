@@ -10,6 +10,7 @@ import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { WebVitals } from "../lib/web-vitals";
 import { ErrorPageProvider } from "./components/ErrorPageContext";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 // Runs before first paint: reads the theme cookie and sets data-theme (no flash)
 const themeInitScript = `(function(){try{var m=document.cookie.match(/(?:^|; )${THEME_COOKIE}=(light|dark)/);if(m){document.documentElement.setAttribute('data-theme',m[1])}}catch(e){}})();`;
@@ -30,9 +31,9 @@ const inter = Inter({
 // Replace with your own details
 const SITE_NAME = "MahdiVerse";
 const DEFAULT_TITLE =
-  "MahdiVerse | UI UX Designer, MERN Developer & SEO Specialist";
+  "Mahdi | UI UX Designer, MERN & Next.js Developer for Fast Websites";
 const DESCRIPTION =
-  "Portfolio of a MERN stack developer and UI UX designer building fast, SEO-friendly websites with Next.js. Web design, development, and technical SEO services.";
+  "Hi, I’m Mahdi, a UI UX Designer, MERN & Next.js Developer. I build fast, accessible, SEO-friendly websites that follow best practices and bring you more leads.";
 
 // Optional: search engine ownership meta tags (only rendered when the env var is set)
 const verification = {
@@ -94,8 +95,14 @@ export default async function RootLayout({ children }) {
           href="https://cdn-uicons.flaticon.com"
           crossOrigin="anonymous"
         />
-        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'></link>
-        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'></link>
+        <link
+          rel="stylesheet"
+          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css"
+        ></link>
+        <link
+          rel="stylesheet"
+          href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
+        ></link>
       </head>
       <body className="h-dvh bg-background dark:bg-linear-to-br dark:from-secondary-500/5 dark:to-primary-500/2 w-screen min-w-250 min-h-138.5">
         <a
@@ -127,6 +134,7 @@ export default async function RootLayout({ children }) {
           }}
         />
       </body>
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
     </html>
   );
 }

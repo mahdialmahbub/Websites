@@ -265,7 +265,7 @@ export function projectsPageSchema(projects, path = '/projects') {
       '@id': `${canonical(path)}#page`,
       url: canonical(path),
       name: `Projects by ${PERSON.name}`,
-      description: `UI UX design and full stack development projects by ${PERSON.name}.`,
+      description: `UI UX design and MERN stack development projects by ${PERSON.name}.`,
       isPartOf: { '@id': WEBSITE_ID },
       mainEntity: {
         '@type': 'ItemList',

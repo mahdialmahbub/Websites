@@ -18,6 +18,7 @@ export default function ScrollThanksBanner({
         alt=""
         fill
         priority
+        sizes="(max-width: 1280px) 100vw, 1280px"
         className="object-cover"
       />
 
@@ -40,7 +41,7 @@ export default function ScrollThanksBanner({
             href={caseStudyLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-[8px] bg-linear-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition-all"
+            className="inline-flex items-center gap-2 rounded-lg bg-linear-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition-all"
           >
             {primaryLabel}
             <span className="font-bold italic tracking-tight">Bē</span>
@@ -49,10 +50,10 @@ export default function ScrollThanksBanner({
           {/* Contact link */}
           <Link
             href={contactLink}
-            className="inline-flex items-center gap-2 rounded-[8px] bg-linear-to-r from-violet-500 to-purple-500 hover:from-violet-400 hover:to-purple-400 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-purple-500/30 transition-all"
+            className="inline-flex items-center gap-2 rounded-lg bg-linear-to-r from-violet-500 to-purple-500 hover:from-violet-400 hover:to-purple-400 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-purple-500/30 transition-all"
           >
             {secondaryLabel}
-            <i className="fi fi-rr-arrow-small-right text-[18px]"></i>
+            <i className="fi fi-rr-arrow-small-right text-size-md"></i>
           </Link>
         </div>
       </div>
