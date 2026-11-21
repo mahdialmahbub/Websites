@@ -21,6 +21,7 @@ import "@flaticon/flaticon-uicons/css/regular/rounded.css";
 import "@flaticon/flaticon-uicons/css/solid/rounded.css";
 import "@flaticon/flaticon-uicons/css/brands/all.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -145,6 +146,7 @@ export default function RootLayout({ children }) {
                 className="flex-1 outline-none"
               >
                 {children}
+                <ScrollToTopButton />
               </main>
             </ConfirmProvider>
           </SiteChrome>
