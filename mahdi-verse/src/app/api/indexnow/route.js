@@ -1,6 +1,6 @@
 // src/app/api/indexnow/route.js
 import { timingSafeEqual } from 'node:crypto'
-import sitemap from '@/src/app/sitemap'
+import sitemap from '../../sitemap'
 
 const ENDPOINT = 'https://api.indexnow.org/indexnow'
 const MAX_URLS = 10000
