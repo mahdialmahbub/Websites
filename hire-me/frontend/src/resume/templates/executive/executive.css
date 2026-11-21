@@ -1,0 +1,62 @@
+/*
+ * "Executive" template - dark sidebar (left) + main column (right) with a name banner on page 1.
+ * RULES FOR EVERY TEMPLATE CSS:
+ *   - colours ONLY from the theme variables (var(--resume-...)), never #hex / rgb()
+ *   - class names start with the template prefix (rex-) so templates never clash
+ *   - blocks use PADDING for spacing (no outer margin), the engine measures their height
+ */
+
+.rex-page { position: relative; display: flex; width: 100%; height: 100%; box-sizing: border-box; overflow: hidden; font-family: var(--resume-font); font-size: 11.5px; line-height: 1.5; color: var(--resume-text); background: var(--resume-paper); }
+
+/* ───────── name banner (first page only, sits on top of both columns) ───────── */
+.rex-head { position: absolute; z-index: 1; top: 36px; left: 36px; right: 36px; display: flex; align-items: center; gap: 24px; box-sizing: border-box; height: 150px; padding: 0 28px 0 24px; background: color-mix(in srgb, var(--resume-accent) 45%, var(--resume-paper)); color: var(--resume-paper); outline: 1px solid color-mix(in srgb, var(--resume-accent) 45%, var(--resume-paper)); outline-offset: 6px; }
+.rex-photo { flex: none; width: 112px; height: 112px; box-sizing: border-box; border: 4px solid var(--resume-paper); border-radius: 50%; object-fit: cover; background: var(--resume-border); }
+.rex-ident { min-width: 0; }
+.rex-name { margin: 0; padding: 0; font-size: 28px; line-height: 1.25; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; }
+.rex-title { margin: 0; padding: 8px 0 0; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; opacity: 0.85; }
+
+/* ───────── columns ───────── */
+.rex-side { flex: 0 0 270px; min-height: 0; box-sizing: border-box; padding: 40px 26px 28px 32px; background: var(--resume-text); color: var(--resume-paper); }
+.rex-main { flex: 1; min-width: 0; min-height: 0; box-sizing: border-box; padding: 40px 36px 0 34px; }
+.rex-first .rex-side { padding-top: 212px; }
+.rex-first .rex-main { padding-top: 212px; }
+
+/* ───────── sidebar ───────── */
+.rex-side-heading { margin: 0; padding: 26px 0 8px; font-size: 13px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; }
+.rex-side-heading::after, .rex-heading::after { content: ''; display: block; width: 30px; margin-top: 8px; border-top: 2px solid var(--resume-accent); }
+.rex-contact { display: flex; gap: 10px; padding: 7px 0 0; }
+.rex-ico { display: inline-flex; flex: none; width: 18px; padding-top: 1px; justify-content: center; }
+.rex-contact-text { min-width: 0; font-size: 10px; overflow-wrap: anywhere; }
+.rex-label { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+.rex-side-link { color: inherit; text-decoration: none; }
+.rex-skill { padding: 8px 0 0; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
+.rex-skill::after { content: ''; display: block; margin-top: 5px; border-top: 1px solid color-mix(in srgb, var(--resume-paper) 40%, var(--resume-text)); }
+.rex-edu { padding: 8px 0 0; }
+.rex-edu-date { font-size: 10px; opacity: 0.8; }
+.rex-edu-degree { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.rex-edu-school { font-size: 10px; opacity: 0.85; }
+.rex-lines { margin: 0; padding: 8px 0 0; list-style: none; font-size: 11px; }
+.rex-lines li { padding: 2px 0; }
+
+/* ───────── main column ───────── */
+.rex-heading { margin: 0; padding: 22px 0 8px; font-size: 13px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; }
+.rex-paragraph { margin: 0; padding: 4px 0 0; }
+.rex-entry-head { padding: 12px 0 0; }
+
+.rex-job-title { font-size: 12px; font-weight: 800; letter-spacing: 0.03em; text-transform: uppercase; }
+.rex-job-sub { color: var(--resume-muted); }
+.rex-link { color: var(--resume-accent); text-decoration: none; }
+.rex-bullets { margin: 0; padding: 3px 0 0 16px; }
+.rex-bullets li { padding-left: 2px; }
+.rex-bullets li::marker { color: var(--resume-accent); }
+.rex-bullets-side { padding-left: 14px; font-size: 10px; }
+.rex-tech { margin: 0; padding: 3px 0 0; font-size: 10.5px; color: var(--resume-muted); }
+.rex-ref { padding: 10px 0 0; }
+.rex-ref strong { display: block; }
+
+/* timeline: the vertical line, the dot and the date tag belong to every block of the job */
+.rex-job, .rex-job-line { position: relative; box-sizing: border-box; padding-left: 94px; }
+.rex-job::before, .rex-job-line::before { content: ''; position: absolute; top: 0; bottom: 0; left: 80px; border-left: 1px solid var(--resume-border); }
+.rex-job { padding-top: 16px; }
+.rex-job::after { content: ''; position: absolute; top: 20px; left: 76px; width: 9px; height: 9px; border-radius: 50%; background: var(--resume-text); }
+.rex-tag { position: absolute; top: 16px; left: 0; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; width: 68px; padding: 3px 10px 3px 4px; background: var(--resume-text); color: var(--resume-paper); font-size: 9px; line-height: 1.3; font-weight: 700; clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%); }

@@ -1,0 +1,47 @@
+/*
+ * "Elegant" template - left column (name, contact, education, skills) | thin line | right column.
+ * RULES FOR EVERY TEMPLATE CSS:
+ *   - colours ONLY from the theme variables (var(--resume-...)), never #hex / rgb()
+ *     (--rel-box below is only a mix of theme variables)
+ *   - class names start with the template prefix (rel-) so templates never clash
+ *   - blocks use PADDING for spacing (no outer margin), the engine measures their height
+ */
+
+.rel-page { --rel-box: color-mix(in srgb, var(--resume-text) 9%, var(--resume-paper)); display: flex; width: 100%; height: 100%; box-sizing: border-box; font-family: var(--resume-font); font-size: 12px; line-height: 1.5; color: var(--resume-text); background: var(--resume-paper); }
+
+/* ───────── columns ───────── */
+.rel-side { flex: 0 0 36%; min-height: 0; box-sizing: border-box; padding: 46px 26px 0 38px; border-right: 1px solid var(--resume-text); }
+.rel-main { flex: 1; min-width: 0; min-height: 0; box-sizing: border-box; padding: 46px 38px 0 28px; }
+
+/* ───────── left column ───────── */
+.rel-name { margin: 0; padding: 0; font-family: Georgia, 'Times New Roman', serif; font-size: 42px; line-height: 1.15; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; }
+.rel-name-word { display: block; }
+.rel-title { margin: 0; padding: 12px 0 0; font-family: Georgia, 'Times New Roman', serif; font-size: 15px; letter-spacing: 0.06em; }
+
+.rel-hwrap { padding: 26px 0 8px; }
+.rel-short { width: 130px; border-top: 2px solid var(--resume-text); } /* short line above the heading */
+.rel-heading { margin: 0; padding: 0; font-size: 18px; font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; }
+.rel-heading-ruled { padding-top: 22px; }
+
+.rel-contact { margin: 0; padding: 4px 0 0; list-style: none; }
+.rel-contact li { display: flex; align-items: center; gap: 10px; padding: 3px 0; overflow-wrap: anywhere; }
+.rel-ico { display: inline-flex; flex: none; width: 16px; justify-content: center; color: var(--resume-muted); }
+.rel-link { color: inherit; text-decoration: none; }
+
+.rel-edu { padding: 8px 0 0; }
+.rel-edu-degree { font-weight: 700; }
+.rel-list { margin: 0; padding: 4px 0 0 18px; }
+.rel-list li { padding: 2px 0; }
+
+/* ───────── right column ───────── */
+.rel-summary { margin: 0; padding: 20px 22px; font-size: 12.5px; background: var(--rel-box); }
+
+.rel-job { padding: 12px 0 0; }
+.rel-job-title { font-size: 13px; font-weight: 800; text-transform: uppercase; }
+.rel-job-sub { text-transform: uppercase; color: var(--resume-text); }
+.rel-bullets { margin: 0; padding: 6px 0 0 20px; }
+.rel-bullets li { padding-left: 2px; }
+.rel-bullets li::marker { color: var(--resume-text); }
+.rel-tech { margin: 0; padding: 4px 0 0 20px; font-size: 11px; color: var(--resume-muted); }
+.rel-ref { padding: 10px 0 0; }
+.rel-ref strong { display: block; }

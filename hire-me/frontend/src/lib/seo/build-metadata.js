@@ -1,7 +1,7 @@
 import { DEFAULT_KEYWORDS, SITE_NAME, SITE_URL } from "@/lib/site";
 import { canonical } from "@/lib/seo/canonical";
 
-const DEFAULT_OG_IMAGE = "/opengraph-image"; // app/opengraph-image.jsx er route
+const DEFAULT_OG_IMAGE = "/og/default.jpg"; // app/opengraph-image.jsx er route
 const TWITTER_HANDLE = process.env.NEXT_PUBLIC_TWITTER_HANDLE;
 
 // Lomba text ke shobdo er shimay kete "…" dey (title 70, description 160)

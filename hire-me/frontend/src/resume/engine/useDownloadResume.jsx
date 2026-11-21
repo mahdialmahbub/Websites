@@ -17,8 +17,11 @@ import ResumeDocument from './ResumeDocument';
  * The libraries are loaded only when the button is clicked, so they don't make the first page load heavier.
  *
  * Needs:  npm i html2canvas-pro jspdf
- * Tip:    add `data-resume-page` to each A4 page element in ResumeDocument (print mode) so pages are found
- *         for sure. Without it, the hook looks for the outermost A4-shaped boxes.
+ * Tip:    add `data-resume-page` to each REAL A4 page element in ResumeDocument (print mode) and to nothing else
+ *         (not to hidden measuring/probe pages). Without it, the hook looks for the outermost A4-shaped boxes.
+ *
+ * Blank-page protection (this file): hidden elements, empty elements, nested duplicates and pages that come out
+ * completely white are skipped. If that happens a console warning shows it, so the cause can be fixed at the source.
  */
 
 /**
@@ -55,21 +58,73 @@ async function waitForAssets(root) {
   await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 }
 
-function findPages(root) {
-  const marked = root.querySelectorAll(PAGE_SELECTOR);
-  if (marked.length) return [...marked];
+/**
+ * true if the browser really shows the element. Hidden "measuring" copies of a page (visibility:hidden,
+ * opacity:0, display:none) are drawn as blank white sheets by html2canvas, so they must never become PDF pages.
+ */
+function isShown(el, root) {
+  // visibility is inherited, so this also catches a hidden parent
+  if (getComputedStyle(el).visibility === 'hidden') return false;
+  for (let node = el; node && node !== root; node = node.parentElement) {
+    const style = getComputedStyle(node);
+    if (style.display === 'none' || Number(style.opacity) === 0) return false;
+  }
+  return true;
+}
 
-  // Fallback: the outermost elements that are shaped like an A4 sheet
-  const pages = [];
+const hasContent = (el) => el.textContent.trim() !== '' || el.querySelector('img, svg, canvas') !== null;
+
+// Fallback when no element has data-resume-page: the outermost elements that are shaped like an A4 sheet
+function a4ShapedBoxes(root) {
+  const boxes = [];
   const walk = (el) => {
     for (const child of el.children) {
       const { width, height } = child.getBoundingClientRect();
-      if (width > 300 && height > 0 && Math.abs(width / height - A4_RATIO) < 0.02) pages.push(child);
+      if (width > 300 && height > 0 && Math.abs(width / height - A4_RATIO) < 0.02) boxes.push(child);
       else walk(child);
     }
   };
   walk(root);
+  return boxes;
+}
+
+function findPages(root) {
+  const marked = [...root.querySelectorAll(PAGE_SELECTOR)];
+  const candidates = marked.length ? marked : a4ShapedBoxes(root);
+
+  const pages = candidates.filter(
+    (el) =>
+      isShown(el, root) &&
+      hasContent(el) &&
+      // a marked element inside another marked element would be captured twice
+      !candidates.some((other) => other !== el && other.contains(el)),
+  );
+
+  if (pages.length !== candidates.length) {
+    console.warn(
+      `[resume-pdf] ${candidates.length - pages.length} of ${candidates.length} page candidates were skipped (hidden, empty or nested). ` +
+        'Check that data-resume-page is only on the real A4 pages in ResumeDocument.',
+    );
+  }
   return pages;
+}
+
+// true if every pixel is (almost) white. Stops at the first dark pixel, so real pages are checked in no time.
+function isBlankCanvas(canvas) {
+  try {
+    const ctx = canvas.getContext('2d');
+    const { width, height } = canvas;
+    const STRIP = 256; // rows per read, keeps memory small
+    for (let y = 0; y < height; y += STRIP) {
+      const { data } = ctx.getImageData(0, y, width, Math.min(STRIP, height - y));
+      for (let i = 0; i < data.length; i += 4) {
+        if (data[i] < 250 || data[i + 1] < 250 || data[i + 2] < 250) return false;
+      }
+    }
+    return true;
+  } catch {
+    return false; // can't read the pixels (tainted canvas): keep the page
+  }
 }
 
 async function buildPdf(root, fileName) {
@@ -86,6 +141,7 @@ async function buildPdf(root, fileName) {
   }
 
   const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+  let added = 0;
 
   // One page at a time, so only one big canvas is in memory at once
   for (let i = 0; i < pages.length; i++) {
@@ -94,13 +150,22 @@ async function buildPdf(root, fileName) {
       backgroundColor: '#ffffff',
       useCORS: true, // profile photo from another domain (e.g. Cloudinary) needs CORS headers
       logging: false,
+      scrollX: 0, // don't depend on how far the user has scrolled the editor
+      scrollY: 0,
     });
 
-    if (i > 0) pdf.addPage();
-    pdf.addImage(canvas.toDataURL('image/jpeg', JPEG_QUALITY), 'JPEG', 0, 0, A4_W, A4_H, undefined, 'FAST');
+    if (isBlankCanvas(canvas)) {
+      console.warn(`[resume-pdf] page ${i + 1} came out completely white and was left out of the PDF.`);
+    } else {
+      if (added > 0) pdf.addPage();
+      pdf.addImage(canvas.toDataURL('image/jpeg', JPEG_QUALITY), 'JPEG', 0, 0, A4_W, A4_H, undefined, 'FAST');
+      added += 1;
+    }
 
     canvas.width = canvas.height = 0; // free the memory
   }
+
+  if (!added) throw new Error('Every resume page came out blank.');
 
   pdf.save(fileName);
 }

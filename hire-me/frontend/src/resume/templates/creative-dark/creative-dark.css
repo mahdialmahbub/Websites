@@ -1,0 +1,79 @@
+/*
+ * "Creative Dark" template - dark page, left column | coloured centre strip | right column.
+ * RULES FOR EVERY TEMPLATE CSS:
+ *   - colours ONLY from the theme variables (var(--resume-...)), never #hex / rgb()
+ *     (the --rcd-... variables below are only mixes of the theme variables)
+ *   - class names start with the template prefix (rcd-) so templates never clash
+ *   - blocks use PADDING for spacing (no outer margin), the engine measures their height
+ */
+
+.rcd-page {
+  --rcd-soft: color-mix(in srgb, var(--resume-accent) 55%, var(--resume-paper));   /* company names, values */
+  --rcd-dim: color-mix(in srgb, var(--resume-paper) 55%, var(--resume-text));       /* dates */
+  --rcd-dots: color-mix(in srgb, var(--resume-paper) 35%, var(--resume-text));      /* dotted lines */
+  --rcd-strip: color-mix(in srgb, var(--resume-accent) 28%, var(--resume-text));    /* centre strip */
+  position: relative; display: flex; width: 100%; height: 100%; box-sizing: border-box; overflow: hidden;
+  font-family: var(--resume-font); font-size: 11.5px; line-height: 1.5;
+  color: var(--resume-paper); background: var(--resume-text);
+}
+
+/* ───────── centre strip (every page) ───────── */
+.rcd-strip { position: absolute; top: 0; bottom: 0; left: 50%; width: 220px; margin-left: -110px; background: var(--rcd-strip); }
+.rcd-first .rcd-strip { top: 120px; }
+.rcd-nophoto .rcd-strip { top: 0; }
+.rcd-mid { flex: 0 0 220px; }
+
+/* ───────── sketch icons (first page) ───────── */
+.rcd-doodles { position: absolute; top: 0; left: 0; pointer-events: none; }
+.rcd-doodles g { fill: none; stroke: var(--rcd-dim); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.rcd-doodle-text { fill: var(--rcd-dim); font-family: var(--resume-font); font-weight: 700; }
+
+/* ───────── columns ───────── */
+.rcd-left, .rcd-right { position: relative; z-index: 1; flex: 1; min-width: 0; min-height: 0; box-sizing: border-box; }
+.rcd-left { padding: 40px 22px 30px 30px; }
+.rcd-right { padding: 40px 30px 30px 22px; }
+.rcd-first .rcd-left, .rcd-first .rcd-right { padding-top: 262px; }
+
+.rcd-hwrap { padding: 24px 0 0; }
+.rcd-heading { margin: 0; padding: 12px 0; font-size: 19px; font-weight: 300; letter-spacing: 0.08em; text-align: center; text-transform: uppercase; border-top: 2px dotted var(--rcd-dots); border-bottom: 2px dotted var(--rcd-dots); }
+.rcd-paragraph { margin: 0; padding: 12px 0 0; }
+
+.rcd-entry-head { padding: 18px 0 0; }
+.rcd-left .rcd-entry-head { text-align: right; }
+.rcd-company { font-size: 15px; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; color: var(--rcd-soft); }
+.rcd-role { font-size: 11.5px; font-weight: 800; text-transform: uppercase; }
+.rcd-date { font-size: 10.5px; color: var(--rcd-dim); }
+
+.rcd-bullets { margin: 0; padding: 5px 0 0 14px; font-size: 11px; }
+.rcd-bullets li::marker { color: var(--rcd-soft); }
+/* left column: text is right-aligned, so the bullet dot sits on the right */
+.rcd-left .rcd-bullets { padding-left: 0; list-style: none; text-align: right; }
+.rcd-left .rcd-bullets li { position: relative; padding-right: 14px; }
+.rcd-left .rcd-bullets li::after { content: ''; position: absolute; right: 0; top: 0.6em; width: 5px; height: 5px; border-radius: 50%; background: var(--rcd-soft); }
+.rcd-tech { margin: 0; padding: 4px 0 0; font-size: 10.5px; color: var(--rcd-dim); }
+.rcd-left .rcd-tech { text-align: right; }
+.rcd-link-text { color: var(--rcd-soft); text-decoration: none; }
+
+/* skills / languages with a small hexagon in front */
+.rcd-hexlist { margin: 0; padding: 12px 0 0; list-style: none; }
+.rcd-hexlist li { position: relative; padding: 3px 0 3px 22px; }
+.rcd-hexlist li::before { content: ''; position: absolute; left: 0; top: 0.6em; width: 11px; height: 12px; background: var(--rcd-soft); clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); }
+
+/* ───────── centre content (first page) ───────── */
+.rcd-center { position: absolute; z-index: 2; top: 40px; left: 50%; width: 220px; margin-left: -110px; box-sizing: border-box; padding: 0 22px; text-align: center; }
+.rcd-nophoto .rcd-center { top: 140px; }
+.rcd-hex { position: relative; width: 168px; height: 190px; margin: 0 auto; background: var(--resume-paper); clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); }
+.rcd-hex img { position: absolute; top: 8px; left: 8px; width: calc(100% - 16px); height: calc(100% - 16px); object-fit: cover; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); }
+.rcd-name { margin: 0; padding: 18px 0 0; font-size: 34px; line-height: 1.02; font-weight: 800; letter-spacing: 0.01em; text-transform: uppercase; overflow-wrap: anywhere; }
+.rcd-title { margin: 0; padding: 6px 0 0; font-size: 12px; font-style: italic; }
+.rcd-rule { margin-top: 22px; border-top: 2px dotted var(--rcd-dots); }
+.rcd-contact { padding: 14px 0 0; }
+.rcd-label { display: block; font-size: 12px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+.rcd-value { display: block; padding: 2px 0 0; font-size: 10.5px; letter-spacing: 0.03em; color: var(--rcd-soft); overflow-wrap: anywhere; }
+.rcd-rule-links { margin-top: 24px; }
+.rcd-links { display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 20px 0 0; }
+.rcd-link { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; font-size: 10px; overflow-wrap: anywhere; }
+.rcd-badge { color: var(--resume-paper); }
+.rcd-badge polygon { fill: none; stroke: currentColor; stroke-width: 1.6; }
+.rcd-badge text { fill: currentColor; font-family: var(--resume-font); }
+.rcd-badge-line { fill: none; stroke: currentColor; stroke-width: 2; }

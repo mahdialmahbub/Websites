@@ -1,0 +1,61 @@
+/*
+ * "Rounded" template - round photo + name banner on top, pill headings, grey content boxes.
+ * RULES FOR EVERY TEMPLATE CSS:
+ *   - colours ONLY from the theme variables (var(--resume-...)), never #hex / rgb()
+ *     (--rrd-box below is only a mix of theme variables)
+ *   - class names start with the template prefix (rrd-) so templates never clash
+ *   - blocks use PADDING for spacing (no outer margin), the engine measures their height
+ */
+
+.rrd-page { --rrd-box: color-mix(in srgb, var(--resume-text) 8%, var(--resume-paper)); display: flex; flex-direction: column; width: 100%; height: 100%; box-sizing: border-box; font-family: var(--resume-font); font-size: 11.5px; line-height: 1.5; color: var(--resume-text); background: var(--resume-paper); }
+
+/* ───────── header (first page) ───────── */
+.rrd-head { position: relative; flex: none; height: 168px; }
+.rrd-tab { position: absolute; top: 0; left: 58px; width: 104px; height: 90px; background: var(--resume-accent); }
+.rrd-banner { position: absolute; top: 46px; left: 110px; right: 34px; box-sizing: border-box; height: 100px; padding: 0 34px 0 104px; display: flex; flex-direction: column; justify-content: center; background: var(--resume-accent); color: var(--resume-accent-contrast); border-radius: 0 50px 50px 0; }
+.rrd-head-nophoto .rrd-banner { left: 0; padding-left: 40px; }
+.rrd-name { margin: 0; padding: 0; font-size: 30px; line-height: 1.1; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+.rrd-title { margin: 0; padding: 6px 0 0; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.9; }
+.rrd-photo { position: absolute; top: 24px; left: 34px; width: 132px; height: 132px; box-sizing: border-box; border: 5px solid var(--resume-paper); border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 5px var(--resume-accent); background: var(--resume-border); }
+
+/* ───────── columns ───────── */
+.rrd-cols { display: flex; flex: 1; min-height: 0; }
+.rrd-side { flex: 0 0 232px; min-height: 0; box-sizing: border-box; padding: 4px 18px 28px 0; }
+.rrd-main { flex: 1; min-width: 0; min-height: 0; box-sizing: border-box; padding: 4px 34px 28px 14px; }
+.rrd-later .rrd-side, .rrd-later .rrd-main { padding-top: 34px; }
+
+/* pill headings */
+.rrd-hwrap { padding: 16px 0 10px; }
+.rrd-pill { margin: 0; padding: 6px 18px; border-radius: 20px; background: var(--resume-accent); color: var(--resume-accent-contrast); font-size: 14.5px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+.rrd-pill-side { padding-left: 28px; border-radius: 0 20px 20px 0; }
+
+/* ───────── left column ───────── */
+.rrd-side-pad { padding-left: 28px; }
+.rrd-contact { padding-top: 5px; }
+.rrd-contact-label { font-size: 14px; font-weight: 700; }
+.rrd-contact-value { font-size: 10.5px; overflow-wrap: anywhere; }
+.rrd-link-plain { color: inherit; text-decoration: none; }
+.rrd-dots { margin: 0; padding-top: 2px; padding-left: 46px; font-size: 11px; }
+.rrd-dots li { padding: 2px 0; }
+.rrd-dots li::marker { color: var(--resume-accent); }
+.rrd-lang { display: flex; justify-content: space-between; gap: 8px; padding-top: 5px; padding-right: 4px; font-size: 11px; }
+.rrd-lang-level { color: var(--resume-muted); }
+.rrd-ref { padding-top: 8px; font-size: 10.5px; }
+.rrd-ref strong { display: block; font-size: 11px; }
+.rrd-ref-sub { color: var(--resume-muted); font-style: italic; }
+
+/* ───────── right column ───────── */
+.rrd-paragraph { margin: 0; padding: 2px 4px 0; font-size: 11px; }
+
+/* grey boxes: every block of an entry carries the grey background, so the entries join up */
+.rrd-box { box-sizing: border-box; padding-left: 16px; padding-right: 16px; background: var(--rrd-box); }
+.rrd-box-head { padding-top: 12px; }
+.rrd-box-b { padding-top: 0; }
+.rrd-box-last { padding-bottom: 12px; }
+.rrd-box-title { font-weight: 700; font-style: italic; }
+.rrd-box-title::before { content: ''; display: inline-block; width: 5px; height: 5px; margin-right: 8px; border-radius: 50%; background: var(--resume-text); vertical-align: middle; }
+.rrd-box-sub { padding: 1px 0 0 13px; color: var(--resume-muted); }
+.rrd-bullets { margin: 0; padding: 4px 0 0 30px; }
+.rrd-bullets li { padding-left: 2px; }
+.rrd-bullets li::marker { color: var(--resume-accent); }
+.rrd-tech { margin: 0; padding-top: 3px; padding-left: 30px; font-size: 10.5px; color: var(--resume-muted); }

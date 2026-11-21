@@ -27,7 +27,16 @@
 
 /* sidebar column */
 .rmd-heading-side { padding: 20px 0 6px; color: var(--resume-paper); border-bottom: 1px solid var(--resume-paper); border-bottom-color: color-mix(in srgb, var(--resume-paper) 45%, transparent); }
-.rmd-side .rmd-heading-side:first-child { padding-top: 0; }
+.rmd-heading-first { padding-top: 0; } /* explicit class: :first-child breaks when the engine wraps every block in its own element */
 .rmd-list { margin: 0; padding: 8px 0 0; list-style: none; }
 .rmd-list li { padding: 0 0 5px; overflow-wrap: anywhere; }
 .rmd-skill { margin: 0; padding: 6px 0 0; }
+.rmd-photo { display: block; width: 120px; height: 120px; margin: 0 auto; padding: 0; border-radius: 50%; object-fit: cover; border: 3px solid var(--resume-paper); }
+.rmd-side-link { color: inherit; text-decoration: none; }
+
+/* entries */
+.rmd-sub { color: var(--resume-muted); }
+.rmd-link { color: var(--resume-accent); text-decoration: none; }
+.rmd-tech { margin: 0; padding: 3px 0 0; font-size: 11px; color: var(--resume-muted); }
+.rmd-ref { padding: 8px 0 0; }
+.rmd-ref strong { display: block; }
