@@ -54,7 +54,9 @@ export const metadata = {
     default: DEFAULT_TITLE,
     template: `%s | ${SITE_NAME}`,
   },
-
+  verification: {
+    google: "srWmSxUlYwoUomN0Xki4NnScod21FyvSByfLMcYPsc0", 
+  },
   description: DESCRIPTION,
 
   verification: {
