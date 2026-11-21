@@ -118,7 +118,7 @@ export default function RootLayout({ children }) {
       data-scroll-behavior="smooth"
       className={`${poppins.variable} ${roboto.variable} h-full antialiased scroll-smooth`}
     >
-      <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
+      <GoogleTagManager gaId={process.env.NEXT_PUBLIC_GA_ID} />
       <body className="min-h-full flex flex-col">
         <a
           href="#main-content"
