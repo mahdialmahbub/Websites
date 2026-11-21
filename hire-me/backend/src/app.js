@@ -11,6 +11,7 @@ import { errorHandler, notFound } from "./middleware/errorHandler.js";
 import { originGuard } from "./middleware/originGuard.js";
 import { apiLimiter } from "./middleware/rateLimiters.js";
 import routes from "./routes/index.js";
+import { connectDB } from "./config/db.js";
 
 /** Call after the database is connected (the session store re-uses Mongoose's connection). */
 export function createApp() {
@@ -62,4 +63,16 @@ export function createApp() {
   app.use(errorHandler);
 
   return app;
+}
+
+let appPromise;
+
+export default async function handler(req, res) {
+  // DB connect hoye tarpor createApp (session store mongoose connection use kore)
+  appPromise ??= (async () => {
+    await connectDB();
+    return createApp();
+  })();
+  const app = await appPromise;
+  return app(req, res);
 }
