@@ -20,6 +20,7 @@ import NoScriptNotice from "./components/NoScriptNotice";
 import "@flaticon/flaticon-uicons/css/regular/rounded.css";
 import "@flaticon/flaticon-uicons/css/solid/rounded.css";
 import "@flaticon/flaticon-uicons/css/brands/all.css";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -117,6 +118,7 @@ export default function RootLayout({ children }) {
       data-scroll-behavior="smooth"
       className={`${poppins.variable} ${roboto.variable} h-full antialiased scroll-smooth`}
     >
+      <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
       <body className="min-h-full flex flex-col">
         <a
           href="#main-content"

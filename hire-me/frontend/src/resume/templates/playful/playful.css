@@ -1,0 +1,63 @@
+/*
+ * "Playful" template - header band + two columns (main left, narrow column right) + confetti.
+ * RULES FOR EVERY TEMPLATE CSS:
+ *   - colours ONLY from the theme variables (var(--resume-...)), never #hex / rgb()
+ *   - class names start with the template prefix (rpl-) so templates never clash
+ *   - blocks use PADDING for spacing (no outer margin), the engine measures their height
+ */
+
+.rpl-page { display: flex; flex-direction: column; width: 100%; height: 100%; box-sizing: border-box; overflow: hidden; font-family: var(--resume-font); font-size: 12.5px; line-height: 1.45; color: var(--resume-text); background: var(--resume-paper); }
+
+/* ───────── header (first page) ───────── */
+.rpl-head { flex: none; position: relative; }
+.rpl-head-top { position: relative; display: flex; justify-content: space-between; align-items: flex-start; min-height: 118px; box-sizing: border-box; padding: 34px 48px 8px; }
+.rpl-ident { position: relative; max-width: 340px; }
+.rpl-name { margin: 0; padding: 0; font-family: Georgia, 'Times New Roman', serif; font-size: 29px; line-height: 1.12; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; }
+.rpl-title { margin: 0; padding: 4px 0 0; font-size: 20px; line-height: 1.2; }
+.rpl-social { position: relative; margin: 0; padding: 4px 0 0; list-style: none; font-size: 11px; }
+.rpl-social li { display: flex; align-items: center; gap: 8px; padding: 0 0 7px; }
+.rpl-dot { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; background: var(--resume-text); color: var(--resume-paper); }
+
+.rpl-band { display: grid; grid-template-columns: 1fr 190px 1fr; align-items: center; height: 124px; box-sizing: border-box; padding: 0 48px; background: var(--resume-accent); color: var(--resume-accent-contrast); }
+.rpl-band-list { margin: 0; padding: 0; list-style: none; font-size: 12.5px; line-height: 1.35; }
+.rpl-band-list li { display: flex; align-items: center; gap: 10px; padding: 5px 0; overflow-wrap: anywhere; }
+.rpl-ring { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 28px; height: 28px; box-sizing: border-box; border: 2px solid var(--resume-accent-contrast); border-radius: 50%; }
+.rpl-photo { position: absolute; top: 50px; left: 50%; width: 158px; height: 158px; margin-left: -79px; box-sizing: border-box; border: 7px solid var(--resume-paper); border-radius: 50%; object-fit: cover; background: var(--resume-border); }
+
+.rpl-running { flex: none; padding: 26px 48px 0; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--resume-muted); }
+
+/* ───────── confetti ───────── */
+.rpl-confetti { display: block; pointer-events: none; }
+.rpl-confetti-top { position: absolute; left: 0; top: 0; }
+.rpl-confetti g { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.rpl-k-a { stroke: var(--resume-accent); }
+.rpl-k-p { stroke: color-mix(in srgb, var(--resume-accent) 50%, var(--resume-paper)); }
+.rpl-k-t { stroke: var(--resume-text); }
+.rpl-k-m { stroke: var(--resume-muted); }
+.rpl-foot { flex: none; height: 86px; overflow: hidden; }
+
+/* ───────── columns ───────── */
+.rpl-cols { display: flex; flex: 1; min-height: 0; }
+.rpl-main { flex: 1; min-width: 0; min-height: 0; box-sizing: border-box; padding: 6px 28px 0 48px; }
+.rpl-side { flex: 0 0 33%; min-width: 0; min-height: 0; box-sizing: border-box; padding: 6px 48px 0 0; }
+
+.rpl-hwrap { padding: 18px 0 0; }
+.rpl-heading { margin: 0; padding: 8px 12px; font-family: Georgia, 'Times New Roman', serif; font-size: 15px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: var(--resume-border); }
+.rpl-paragraph { margin: 0; padding: 10px 0 0; }
+
+.rpl-entry-head { padding: 10px 0 0; }
+.rpl-entry-title { font-weight: 700; font-size: 12.5px; text-transform: uppercase; }
+.rpl-entry-date { font-weight: 700; }
+.rpl-entry-sub { color: var(--resume-muted); }
+.rpl-bullets { margin: 0; padding: 3px 0 0 16px; }
+.rpl-bullets li { padding-left: 2px; }
+.rpl-bullets li::marker { color: var(--resume-accent); }
+.rpl-tech { margin: 0; padding: 3px 0 0; font-size: 11px; color: var(--resume-muted); }
+.rpl-link { color: var(--resume-accent); text-decoration: none; }
+.rpl-ref { padding: 8px 0 0; }
+.rpl-ref strong { display: block; }
+
+/* narrow column */
+.rpl-lines { margin: 0; padding: 10px 0 0; list-style: none; }
+.rpl-side-entry { padding: 10px 0 0; }
+.rpl-side-date { font-weight: 700; }

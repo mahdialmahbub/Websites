@@ -63,15 +63,15 @@ export default async function TemplatePage({ params }) {
         }}
       />
 
-        <nav aria-label="back" className="-mb-2.5 max-md:-mt-5">
-          <Link
-            href="/templates"
-            className="h-11 flex items-center gap-[clamp(0.375rem,calc(0.188vw+0.331rem),0.5rem)] text-[clamp(0.8125rem,calc(0.282vw+0.746rem),1rem)] font-primary font-medium text-neutral-500"
-          >
-            <i className="fi fi-rr-arrow-small-left text-[clamp(1rem,calc(0.563vw+0.868rem),1.375rem)]"></i>
-            Back to templates
-          </Link>
-        </nav>
+      <nav aria-label="back" className="-mb-2.5 max-md:-mt-5">
+        <Link
+          href="/templates"
+          className="h-11 flex items-center gap-[clamp(0.375rem,calc(0.188vw+0.331rem),0.5rem)] text-[clamp(0.8125rem,calc(0.282vw+0.746rem),1rem)] font-primary font-medium text-neutral-500"
+        >
+          <i className="fi fi-rr-arrow-small-left text-[clamp(1rem,calc(0.563vw+0.868rem),1.375rem)]"></i>
+          Back to templates
+        </Link>
+      </nav>
 
       <article className="grid items-start gap-[clamp(2.5rem,calc(3.005vw+0.796rem),3.5rem)] md:grid-cols-[minmax(0,26rem)_1fr]">
         <div className="overflow-hidden rounded-xl border border-neutral-500/10 bg-white shadow-[0_6px_8px_rgba(2,6,23,0.10)]">
@@ -84,7 +84,7 @@ export default async function TemplatePage({ params }) {
               href={categoryPath(category.slug)}
               className={`rounded-sm bg-violet-900/60 px-space-3 py-space-2 font-primary text-[12px] font-semibold text-violet-50 backdrop-blur-xs hover:bg-violet-900/80 sm:rounded-lg`}
             >
-              {category.name} 
+              {category.name}
             </Link>
           )}
           <h1 className="font-primary text-[clamp(1.5rem,calc(1.878vw+1.06rem),2.5rem)] font-semibold mt-5 leading-[clamp(2rem,calc(2.727vw+1.455rem),3.5rem)]">
@@ -100,18 +100,19 @@ export default async function TemplatePage({ params }) {
             <li>Change the colour and template any time, your content stays</li>
             <li>Download as PDF or share a link</li>
           </ul>
-          <div className="flex flex-wrap gap-3 mt-[clamp(2rem,calc(0.455vw+1.159rem),2.5rem)] *:w-full">
-            <Button about="Use this template">
-              <Link
-                href={`/builder?template=${encodeURIComponent(slug)}`}
-                rel="nofollow"
-              >
-                Use this template
-              </Link>
-            </Button>
-            <Button variant="secondary" about="See all templates">
-              <Link href="/templates">All templates</Link>
-            </Button>
+          <div className="flex flex-wrap gap-3 mt-[clamp(2rem,calc(0.455vw+1.159rem),2.5rem)] **:w-full">
+            <Link
+              href={`/builder?template=${encodeURIComponent(slug)}`}
+              rel="nofollow"
+            >
+              <Button about="Use this template">Use this template</Button>
+            </Link>
+
+            <Link href="/templates">
+              <Button variant="secondary" about="See all templates">
+                All templates
+              </Button>
+            </Link>
           </div>
         </div>
       </article>

@@ -19,3 +19,7 @@
 .rmn-bullets { margin: 0; padding: 4px 0 0 44px; }
 .rmn-bullets li { padding: 0 0 2px 6px; }
 .rmn-bullets li::marker { color: var(--resume-accent); }
+.rmn-link { color: var(--resume-text); text-decoration: none; }
+.rmn-tech { margin: 0; padding: 3px 0 0 44px; font-size: 11px; color: var(--resume-muted); }
+.rmn-ref { padding: 10px 0 0 10px; }
+.rmn-ref strong { display: block; font-weight: 500; }

@@ -1,0 +1,40 @@
+/*
+ * "Arch" template - soft rounded sidebar (left) + main column (right).
+ * RULES FOR EVERY TEMPLATE CSS:
+ *   - colours ONLY from the theme variables (var(--resume-...)), never #hex / rgb()
+ *   - class names start with the template prefix (rar-) so templates never clash
+ *   - blocks use PADDING for spacing (no outer margin), the engine measures their height
+ */
+
+.rar-page { display: flex; width: 100%; height: 100%; box-sizing: border-box; font-family: var(--resume-font); font-size: 12px; line-height: 1.5; color: var(--resume-text); background: var(--resume-paper); }
+
+/* ───────── sidebar (same on EVERY page, rounded at the bottom) ───────── */
+.rar-side { flex: 0 0 300px; min-height: 0; box-sizing: border-box; margin: 0 0 30px 32px; padding: 0 30px 100px; background: color-mix(in srgb, var(--resume-accent) 22%, var(--resume-paper)); border-radius: 0 0 999px 999px; }
+.rar-photo-wrap { box-sizing: border-box; min-height: 340px; padding: 72px 0 0; }
+.rar-photo { display: block; width: 226px; height: 226px; margin: 0 auto; border-radius: 50%; object-fit: cover; }
+.rar-contact, .rar-lines { margin: 0; padding: 8px 0 0; list-style: none; }
+.rar-contact li { display: flex; align-items: center; gap: 10px; padding: 5px 0; overflow-wrap: anywhere; }
+.rar-ico { display: inline-flex; flex: none; width: 18px; justify-content: center; }
+.rar-link { color: inherit; text-decoration: none; }
+.rar-lines li { padding: 2px 0; }
+.rar-ref { padding: 8px 0 0; }
+.rar-ref strong { display: block; }
+
+/* ───────── main column ───────── */
+.rar-main { flex: 1; min-width: 0; min-height: 0; box-sizing: border-box; padding: 0 44px 0 40px; }
+.rar-namebox { box-sizing: border-box; min-height: 340px; padding: 80px 0 0; }
+.rar-name { margin: 0; padding: 0; font-size: 52px; line-height: 1.08; font-weight: 500; letter-spacing: -0.01em; }
+.rar-name-word { display: block; }
+.rar-title { margin: 0; padding: 30px 0 0; font-size: 16px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; }
+
+/* the same heading is used in both columns, so "Contact" and "Education" line up on page 1 */
+.rar-heading { margin: 0; padding: 34px 0 6px; font-size: 17px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--resume-text); }
+.rar-paragraph { margin: 0; padding: 8px 0 0; }
+
+.rar-entry-head { padding: 8px 0 0; }
+.rar-entry-title { font-weight: 700; }
+.rar-entry-sub { color: var(--resume-text); }
+.rar-bullets { margin: 0; padding: 3px 0 0 16px; }
+.rar-bullets li { padding-left: 2px; }
+.rar-bullets li::marker { color: var(--resume-accent); }
+.rar-tech { margin: 0; padding: 3px 0 0; font-size: 11px; color: var(--resume-muted); }

@@ -1,0 +1,48 @@
+/*
+ * "Bold Teal" template - coloured sidebar (left) + main column (right) with a big name block.
+ * RULES FOR EVERY TEMPLATE CSS:
+ *   - colours ONLY from the theme variables (var(--resume-...)), never #hex / rgb()
+ *   - class names start with the template prefix (rbt-) so templates never clash
+ *   - blocks use PADDING for spacing (no outer margin), the engine measures their height
+ */
+
+.rbt-page { display: flex; width: 100%; height: 100%; box-sizing: border-box; font-family: var(--resume-font); font-size: 12px; line-height: 1.5; color: var(--resume-text); background: var(--resume-paper); }
+
+/* ───────── sidebar (same on EVERY page) ───────── */
+.rbt-side { flex: 0 0 36%; min-height: 0; box-sizing: border-box; padding: 0 24px 32px 28px; background: var(--resume-accent); color: var(--resume-accent-contrast); border-right: 10px solid color-mix(in srgb, var(--resume-accent) 30%, var(--resume-paper)); }
+.rbt-photo-wrap { display: flex; justify-content: center; padding: 34px 0 0; }
+.rbt-photo { display: block; width: 148px; height: 148px; box-sizing: border-box; border: 6px solid var(--resume-accent-contrast); border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 10px color-mix(in srgb, var(--resume-accent-contrast) 35%, var(--resume-accent)); }
+.rbt-side-heading { margin: 0; padding: 32px 0 8px; font-size: 15px; font-weight: 700; letter-spacing: 0.1em; text-align: center; text-transform: uppercase; }
+.rbt-contact, .rbt-skills { margin: 0; padding: 4px 0 0; list-style: none; }
+.rbt-contact li { display: flex; align-items: center; gap: 10px; padding: 6px 0; overflow-wrap: anywhere; }
+.rbt-ico { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 22px; }
+.rbt-side-link { color: inherit; text-decoration: none; }
+.rbt-skills li { padding: 4px 0; border-bottom: 1px solid color-mix(in srgb, var(--resume-accent-contrast) 30%, var(--resume-accent)); }
+.rbt-lang { display: flex; justify-content: space-between; gap: 8px; }
+.rbt-lang-level { opacity: 0.8; }
+
+/* ───────── main column ───────── */
+.rbt-main { flex: 1; min-width: 0; min-height: 0; box-sizing: border-box; padding: 0 28px 0 20px; }
+
+.rbt-name-pad { padding: 22px 0 0; }
+.rbt-namebox { padding: 26px 28px 24px; background: var(--resume-accent); color: var(--resume-accent-contrast); }
+.rbt-name { margin: 0; padding: 0; font-size: 50px; line-height: 1.05; font-weight: 300; letter-spacing: 0.02em; color: color-mix(in srgb, var(--resume-accent-contrast) 72%, var(--resume-accent)); }
+.rbt-name b { font-weight: 800; color: var(--resume-accent-contrast); }
+.rbt-name-word { display: block; }
+.rbt-title { margin: 0; padding: 12px 0 0; font-size: 11px; letter-spacing: 0.04em; }
+
+.rbt-heading { display: flex; align-items: center; gap: 12px; margin: 0; padding: 22px 0 8px; font-size: 15px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--resume-text); }
+.rbt-heading::before, .rbt-heading::after { content: ''; flex: 1; border-top: 2px solid color-mix(in srgb, var(--resume-accent) 30%, var(--resume-paper)); }
+.rbt-paragraph { margin: 0; padding: 4px 0 0; }
+
+.rbt-entry-head { padding: 10px 0 0; }
+.rbt-entry-date { font-size: 10.5px; color: var(--resume-muted); }
+.rbt-entry-title { font-weight: 700; font-size: 12.5px; }
+.rbt-entry-sub { color: var(--resume-muted); }
+.rbt-bullets { margin: 0; padding: 3px 0 0 16px; }
+.rbt-bullets li { padding-left: 2px; }
+.rbt-bullets li::marker { color: var(--resume-accent); }
+.rbt-tech { margin: 0; padding: 3px 0 0; font-size: 11px; color: var(--resume-muted); }
+.rbt-link { color: var(--resume-accent); text-decoration: none; }
+.rbt-ref { padding: 8px 0 0; }
+.rbt-ref strong { display: block; }

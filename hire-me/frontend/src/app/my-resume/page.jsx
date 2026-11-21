@@ -10,7 +10,7 @@ import ResumePreviewModal from "../components/resumes/ResumePreviewModal";
 import ResumeThumb from "../components/resumes/ResumeThumb";
 import useUndoableDelete from "@/app/hooks/useUndoableDelete";
 import { copyText } from "@/lib/share";
-import { usePrintResume } from "@/resume/engine/usePrintResume";
+import { useDownloadResume } from "@/resume/engine/useDownloadResume";
 import { getTemplate } from "@/resume/templates/registry";
 import { useGetMeQuery } from "@/store/api/authApi";
 import {
@@ -68,7 +68,12 @@ function MyResumes() {
   const [shareResume] = useShareResumeMutation();
   const [fetchResume] = useLazyGetResumeQuery();
   const undoableDelete = useUndoableDelete({ delay: UNDO_DELAY });
-  const printResume = usePrintResume();
+  // Same hook the public resume page uses. `downloadPortal` must be rendered once (see the bottom of the page).
+  const {
+    downloadResume,
+    downloadPortal,
+    error: downloadError,
+  } = useDownloadResume();
 
   const [previewing, setPreviewing] = useState(null);
   const [busyId, setBusyId] = useState(null);
@@ -159,12 +164,13 @@ function MyResumes() {
       "We could not get the share link.",
     );
 
+  // The card stays disabled (busyId) until the PDF is ready. A PDF error shows in the alert above the cards.
   const handleDownload = (item) =>
     run(
       item,
       async () => {
         const resume = await fetchResume(item.id, true).unwrap();
-        printResume({
+        await downloadResume({
           template: getTemplate(resume.design?.templateId),
           data: resume,
           color: resume.design?.color,
@@ -223,7 +229,6 @@ function MyResumes() {
           <ResumeBTN href="/create-resume" />
         </div>
 
-
         {loading && (
           <div
             aria-label="Loading your resumes"
@@ -247,6 +252,12 @@ function MyResumes() {
             </Button>
           </div>
         )}
+
+        {downloadError ? (
+          <p role="alert" className="mt-4 text-small text-red-600">
+            The PDF could not be created. Please try again.
+          </p>
+        ) : null}
 
         {showEmpty && (
           <p className="rounded-lg bg-neutral-100 p-6 text-center text-neutral-500">
@@ -337,6 +348,9 @@ function MyResumes() {
         title={previewing?.title}
         onClose={() => setPreviewing(null)}
       />
+
+      {/* Needed by useDownloadResume: it renders the hidden resume that becomes the PDF. */}
+      {downloadPortal}
     </main>
   );
 }

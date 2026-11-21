@@ -81,34 +81,12 @@ export default function LazyVideo({
         controls={manual}
         disablePictureInPicture
         aria-label={label}
-        className="block h-auto w-full"
-        style={{ aspectRatio: `${width} / ${height}` }}
+        className="block h-full w-full object-cover"
       >
         Your browser does not support the video tag.
       </video>
 
-      {/* Autoplay video te pause korar upay thaka accessibility er niyom */}
-      {!manual && src && (
-        <button
-          type="button"
-          onClick={() => setUserPaused((p) => !p)}
-          aria-label={userPaused ? "Play video" : "Pause video"}
-          className="absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-        >
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 24 24"
-            className="h-4 w-4"
-            fill="currentColor"
-          >
-            {userPaused ? (
-              <path d="M8 5v14l11-7z" />
-            ) : (
-              <path d="M6 5h4v14H6zM14 5h4v14h-4z" />
-            )}
-          </svg>
-        </button>
-      )}
+      {/* pause button same */}
     </div>
   );
 }

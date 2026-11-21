@@ -29,7 +29,7 @@
 /* ---- main: experience timeline ---- */
 .rtl-job, .rtl-job-line { position: relative; box-sizing: border-box; padding-left: 122px; padding-right: 32px; }
 .rtl-job::before, .rtl-job-line::before { content: ''; position: absolute; top: 0; bottom: 0; left: 100px; border-left: 1px solid var(--resume-border); } /* the vertical line runs through every block */
-.rtl-job { padding-top: 16px; }
+.rtl-job { min-height: 58px; padding-top: 16px; } /* min-height: the absolute date box (up to 3 lines) must not run into the next entry */
 .rtl-job::after { content: ''; position: absolute; top: 20px; left: 96px; width: 7px; height: 7px; box-sizing: border-box; border: 1px solid var(--resume-muted); border-radius: 50%; background: var(--resume-paper); }
 .rtl-dates { position: absolute; top: 17px; left: 32px; width: 58px; font-size: 10px; line-height: 1.25; font-weight: 700; color: var(--resume-muted); }
 .rtl-job-title { font-size: 12.5px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
@@ -42,3 +42,11 @@
 .rtl-ico { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--resume-accent); color: var(--resume-paper); }
 .rtl-contact-text { min-width: 0; overflow-wrap: anywhere; }
 .rtl-skill { padding: 8px 0 5px; font-size: 11px; border-bottom: 1px solid var(--resume-paper); border-bottom-color: color-mix(in srgb, var(--resume-paper) 25%, transparent); }
+
+/* ---- photo, links, extra entries ---- */
+.rtl-photo { display: block; width: 112px; height: 112px; margin: 0 auto; padding: 0; border-radius: 50%; object-fit: cover; border: 3px solid var(--resume-paper); }
+.rtl-sub { font-size: 11px; color: var(--resume-muted); }
+.rtl-link { color: var(--resume-accent); text-decoration: none; }
+.rtl-tech { margin: 0; padding: 3px 0 0 14px; font-size: 10.5px; color: var(--resume-muted); }
+.rtl-ref { padding: 10px 32px 0; }
+.rtl-ref strong { display: block; }

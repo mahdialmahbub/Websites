@@ -47,6 +47,78 @@ const TEMPLATES = [
       "A clean two-column layout with a coloured sidebar for contact details and skills.",
     sortOrder: 3,
   },
+  {
+    slug: "playful",
+    name: "Playful",
+    category: "Creative",
+    description:
+      "A friendly layout with a coloured contact band, a round photo and a light confetti pattern.",
+    sortOrder: 4,
+  },
+  {
+    slug: "bold-teal",
+    name: "Bold Teal",
+    category: "Modern",
+    description:
+      "A strong coloured sidebar with a round photo, a big name block and centred section headings.",
+    sortOrder: 5,
+  },
+  {
+    slug: "arch",
+    name: "Arch",
+    category: "Simple",
+    description:
+      "A soft rounded sidebar with a round photo, a large name and plenty of white space.",
+    sortOrder: 6,
+  },
+  {
+    slug: "executive",
+    name: "Executive",
+    category: "Professional",
+    description:
+      "A dark sidebar, a wide name banner with a round photo and a work timeline with date tags.",
+    sortOrder: 7,
+  },
+  {
+    slug: "creative-dark",
+    name: "Creative Dark",
+    category: "Creative",
+    description:
+      "A dark three-column layout with a hexagon photo, a coloured centre strip and sketch-style icons.",
+    sortOrder: 8,
+  },
+  {
+    slug: "classic-serif",
+    name: "Classic Serif",
+    category: "Professional",
+    description:
+      "A traditional layout with a centred serif name, a ruled header and two columns. No photo.",
+    sortOrder: 9,
+  },
+  {
+    slug: "elegant",
+    name: "Elegant",
+    category: "Simple",
+    description:
+      "A calm layout with a big serif name, a grey summary box and a thin dividing line. No photo.",
+    sortOrder: 10,
+  },
+  {
+    slug: "rounded",
+    name: "Rounded",
+    category: "Student",
+    description:
+      "A friendly layout with a round photo, a coloured name banner, pill-shaped headings and grey content boxes.",
+    sortOrder: 11,
+  },
+  {
+    slug: "wave",
+    name: "Wave",
+    category: "Modern",
+    description:
+      "A coloured header with a soft wave, a round photo, a light sidebar and icons on the experience.",
+    sortOrder: 12,
+  },
 ];
 
 const DEFAULT_CATEGORY = "General";

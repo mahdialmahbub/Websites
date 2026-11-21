@@ -10,6 +10,7 @@ import { icons } from "../../../../assets/iconCollection";
 
 const LoginBTN = () => {
   const { data: user, isLoading } = useGetMeQuery();
+  
 
   // Loading state
   if (isLoading) {
@@ -41,7 +42,7 @@ const LoginBTN = () => {
 
   // Logged-in state
   return (
-    <div className="group flex items-center gap-space-6 max-md:flex-col max-md:gap-space-5">
+    <div className="flex items-center gap-space-6 max-md:flex-col max-md:gap-space-5">
       <Link href="/my-resume" className="max-md:w-full">
         <Button variant="secondary" className="max-md:w-full">
           My Resume
@@ -51,7 +52,7 @@ const LoginBTN = () => {
       <Link
         href="/profile"
         aria-label={`View profile for ${user.name}`}
-        className="flex items-center gap-space-3 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300"
+        className="flex items-center gap-space-3 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300 group"
       >
         {/* Avatar */}
         <span className="relative flex rounded-full">
