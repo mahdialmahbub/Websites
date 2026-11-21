@@ -49,6 +49,7 @@ const verification = {
 // come from buildMetadata() in each page
 export const metadata = {
   metadataBase: new URL(SITE_URL),
+
   title: {
     default: DEFAULT_TITLE,
     template: `%s | ${SITE_NAME}`,
@@ -57,8 +58,16 @@ export const metadata = {
     google: "srWmSxUlYwoUomN0Xki4NnScod21FyvSByfLMcYPsc0", 
   },
   description: DESCRIPTION,
+
+  verification: {
+    google: "srWmSxUlYwoUomN0Xki4NnScod21FyvSByfLMcYPsc0",
+    other: { "msvalidate.01": "D5BB02EBAE47C04EF9F0ED5C10DDFD8D" },
+  },
+
   applicationName: SITE_NAME,
+
   authors: [{ name: SITE_NAME, url: SITE_URL }],
+
   openGraph: {
     type: "website",
     siteName: SITE_NAME,
@@ -67,6 +76,7 @@ export const metadata = {
       { url: "/og/default.png", width: 1200, height: 630, alt: DEFAULT_TITLE },
     ],
   },
+
   twitter: { card: "summary_large_image" },
   ...(Object.keys(verification).length > 0 && { verification }),
 };
