@@ -4,20 +4,6 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Modal from "../Modal";
 
-const SocialIcon = ({ social }) => {
-  if (!social) return null;
-
-  return (
-    <div className="flex items-center text-[12px] text-neutral-800">
-      {social === "facebook" && <i className="fi fi-brands-facebook" />}
-      {social === "instagram" && (
-        <i className="fi fi-brands-instagram-circle" />
-      )}
-      {social === "twitter" && <i className="fi fi-brands-twitter-alt-circle" />}
-      {social === "linkedin" && <i className="fi fi-brands-linkedin-circle" />}
-    </div>
-  );
-};
 
 const formatDate = (date) =>
   new Date(date).toLocaleDateString("en-US", {
@@ -31,7 +17,6 @@ const TestimonialCard = ({
   name = "John Doe",
   jobTitle = "@example",
   comment = "comment",
-  social = "linkedin",
   date = "May 10, 2025",
 }) => {
   const [open, setOpen] = useState(false);
@@ -89,12 +74,8 @@ const TestimonialCard = ({
   )}
 </div>
 
-        {/* social and date */}
+        {/* date */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5 text-[clamp(0.75rem,calc(0.282vw+0.684rem),0.9375rem)] text-neutral-400">
-            Posted on
-            <SocialIcon social={social} />
-          </div>
           <time
             dateTime={date}
             className="text-[clamp(0.625rem,calc(0.282vw+0.559rem),0.8125rem)] text-neutral-400"
@@ -125,10 +106,6 @@ const TestimonialCard = ({
           </p>
 
           <div className="flex items-center justify-between border-t border-neutral-500/10 pt-4">
-            <div className="flex items-center gap-1.5 text-sm text-neutral-400">
-              Posted on
-              <SocialIcon social={social} />
-            </div>
             <time dateTime={date} className="text-sm text-neutral-400">
               {formatDate(date)}
             </time>
