@@ -118,7 +118,9 @@ export default function RootLayout({ children }) {
       data-scroll-behavior="smooth"
       className={`${poppins.variable} ${roboto.variable} h-full antialiased scroll-smooth`}
     >
-      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+      {process.env.NEXT_PUBLIC_GA_ID && (
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+      )}
       <body className="min-h-full flex flex-col">
         <a
           href="#main-content"
