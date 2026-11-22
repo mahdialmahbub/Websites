@@ -15,6 +15,7 @@ import {
 import { evaluateAts } from "./ats.engine.js";
 import { Resume } from "./resume.model.js";
 import { checkReadyToGenerate } from "./resume.rules.js";
+import { buildResumeTitle } from "./resume.title.js";
 import { enableShare, shareUrl } from "./share.service.js";
 
 /*
@@ -164,10 +165,11 @@ export async function getResume(owner, id) {
  *  - content sent                -> created from it (a browser draft); the profile is topped up where it is empty
  *  - guest                       -> blank unless content is sent (the browser fills it from its saved data)
  *
+ * The title is always "<name>'s resume" (see resume.title.js); the client cannot set it.
  * `clientDraftId` (users only) makes the call safe to repeat.
  */
 export async function createResume(owner, input) {
-  const { title, design, clientDraftId, targetJob, ...rest } = input;
+  const { design, clientDraftId, targetJob, ...rest } = input;
   const provided = pickSections(rest);
   const hasContent = Object.keys(provided).length > 0;
   const draftId = owner.kind === "user" ? clientDraftId : undefined;
@@ -202,7 +204,7 @@ export async function createResume(owner, input) {
   try {
     doc = await Resume.create({
       ...owner.create,
-      title: title ?? "Untitled Resume",
+      title: buildResumeTitle(owner.kind === "user" ? owner.user.name : null),
       design: design ?? {},
       ...sections,
       atsScore: computeAtsScore(sections),
@@ -234,10 +236,9 @@ export async function createResume(owner, input) {
  * It always UPDATES the same resume, so the share link never changes.
  */
 export async function updateResume(owner, id, patch) {
-  const { revision, design, title, targetJob, ...rest } = patch;
+  const { revision, design, targetJob, ...rest } = patch;
 
   const $set = prepareSections(owner.key, pickSections(rest));
-  if (title !== undefined) $set.title = title;
   if (targetJob !== undefined) $set.targetJob = targetJob;
   if (design) {
     if (design.templateId) await assertTemplateAvailable(design.templateId);
@@ -285,8 +286,7 @@ export async function updateResume(owner, id, patch) {
 
   // Only a content change can change the score (a template or colour change cannot).
   const contentChanged = Object.keys($set).some(
-    (key) =>
-      !key.startsWith("design.") && key !== "title" && key !== "targetJob",
+    (key) => !key.startsWith("design.") && key !== "targetJob",
   );
   const atsScore = contentChanged
     ? await refreshAtsScore(owner, id)
@@ -329,9 +329,10 @@ export async function duplicateResume(owner, id) {
     generatedAt,
     ...data
   } = original;
+
   const doc = await Resume.create({
     ...data,
-    title: `${original.title} (copy)`.slice(0, 100),
+    title: buildResumeTitle(owner.kind === "user" ? owner.user.name : null),
     revision: 0,
   });
   return present(doc.toObject());
@@ -348,6 +349,17 @@ export async function deleteResume(owner, id) {
 
 export async function deleteResumesOfUser(userId) {
   await Resume.deleteMany({ user: userId }); // model/field naam tomar project onujayi
+}
+
+/**
+ * User er name change hole tar shob resume er title update hoy ("Mahdi's resume").
+ * User service e name save howar PORE ei function ta call koro.
+ */
+export async function syncResumeTitlesWithName(userId, name) {
+  await Resume.updateMany(
+    { user: userId },
+    { $set: { title: buildResumeTitle(name) } },
+  );
 }
 
 /**
@@ -395,6 +407,7 @@ export async function generateResume(owner, id, { hideContact } = {}) {
  *  - idempotent: after the first run there is nothing left under that guest id, so a repeat does nothing
  *  - never overwrites non-empty profile data (mode "fill"); the newest data fills the gaps first
  *  - `draft` = the guest's latest data from the browser (localStorage), treated as the newest
+ *  - the moved resumes get the user's title ("<name>'s resume")
  *
  * @returns {{ claimed: number, updatedSections: string[] }}
  */
@@ -420,7 +433,10 @@ export async function claimGuestResumes(user, guestId, draft = {}) {
   if (guestResumes.length > 0) {
     await Resume.updateMany(
       { _id: { $in: guestResumes.map((resume) => resume._id) }, guestId },
-      { $set: { user: user._id }, $unset: { guestId: "" } },
+      {
+        $set: { user: user._id, title: buildResumeTitle(user.name) },
+        $unset: { guestId: "" },
+      },
     );
   }
 

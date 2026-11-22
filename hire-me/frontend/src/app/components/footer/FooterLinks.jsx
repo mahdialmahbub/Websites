@@ -27,11 +27,11 @@ const LINK_GROUPS = [
     title: "Product Links",
     layout: "order-1 border-b",
     links: [
-      { label: "Features", href: "/features" },
-      { label: "Pricing", href: "/pricing" },
+      { label: "Features", href: "#" },
+      { label: "Pricing", href: "#" },
       { label: "Templates", href: "/templates" },
-      { label: "AI Score", href: "/ai-score" },
-      { label: "Changelog", href: "/changelog" },
+      { label: "AI Score", href: "#" },
+      { label: "Changelog", href: "#" },
     ],
   },
   {

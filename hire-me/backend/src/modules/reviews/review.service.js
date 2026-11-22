@@ -1,7 +1,7 @@
-import { ApiError } from '../../lib/ApiError.js';
-import { Template } from '../catalog/template.model.js';
-import { Resume } from '../resumes/resume.model.js';
-import { Review } from './review.model.js';
+import { ApiError } from "../../lib/ApiError.js";
+import { Template } from "../catalog/template.model.js";
+import { Resume } from "../resumes/resume.model.js";
+import { Review } from "./review.model.js";
 
 const DOUBLE_SUBMIT_WINDOW_MS = 10 * 60 * 1000;
 
@@ -9,9 +9,11 @@ const reviewDto = (doc) => ({
   id: String(doc._id),
   rating: doc.rating,
   comment: doc.comment,
-  authorName: doc.user?.name ?? (doc.guestName || 'Guest'),
+  authorName: doc.user?.name ?? (doc.guestName || "Guest"),
+  photo: doc.resume?.personalInformation?.photo?.url ?? null,
   isGuest: !doc.user,
-  resumeId: String(doc.resume),
+  resumeId: String(doc.resume?._id ?? doc.resume), // populated hole _id, na hole direct id
+  jobTitle: doc.resume?.personalInformation?.professionalTitle ?? "",
   templateSlug: doc.templateSlug,
   status: doc.status,
   createdAt: doc.createdAt,
@@ -22,10 +24,13 @@ const reviewDto = (doc) => ({
  * A double click / retry within 10 minutes returns the review that was just saved instead of a second one.
  */
 export async function createReview(owner, input) {
-  const resume = await Resume.findOne({ _id: input.resumeId, ...owner.filter }).select('design.templateId').lean();
-  if (!resume) throw new ApiError(404, 'RESUME_NOT_FOUND', 'Resume not found');
+  const resume = await Resume.findOne({ _id: input.resumeId, ...owner.filter })
+    .select("design.templateId")
+    .lean();
+  if (!resume) throw new ApiError(404, "RESUME_NOT_FOUND", "Resume not found");
 
-  const who = owner.kind === 'user' ? { user: owner.userId } : { guestId: owner.guestId };
+  const who =
+    owner.kind === "user" ? { user: owner.userId } : { guestId: owner.guestId };
 
   const recent = await Review.findOne({
     resume: resume._id,
@@ -34,13 +39,15 @@ export async function createReview(owner, input) {
   }).lean();
   if (recent) return { review: reviewDto(recent), existing: true };
 
-  const templateSlug = resume.design?.templateId ?? '';
-  const template = templateSlug ? await Template.findOne({ slug: templateSlug }).select('_id').lean() : null;
+  const templateSlug = resume.design?.templateId ?? "";
+  const template = templateSlug
+    ? await Template.findOne({ slug: templateSlug }).select("_id").lean()
+    : null;
 
   const doc = await Review.create({
     rating: input.rating,
     comment: input.comment,
-    guestName: owner.kind === 'guest' ? input.guestName : '',
+    guestName: owner.kind === "guest" ? input.guestName : "",
     ...who,
     resume: resume._id,
     template: template?._id ?? null,
@@ -58,17 +65,30 @@ export async function listReviews({ status, page, limit }) {
       .sort({ createdAt: -1, _id: -1 })
       .skip((page - 1) * limit)
       .limit(limit)
-      .populate('user', 'name')
+      .populate("user", "name")
+      .populate('resume', 'personalInformation.professionalTitle personalInformation.photo')
       .lean(),
   ]);
   return {
     reviews: docs.map(reviewDto),
-    pagination: { page, limit, total, totalPages: Math.max(Math.ceil(total / limit), 1) },
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages: Math.max(Math.ceil(total / limit), 1),
+    },
   };
 }
 
 export async function setReviewStatus(id, status) {
-  const doc = await Review.findByIdAndUpdate(id, { $set: { status } }, { returnDocument: "after" }).populate('user', 'name').lean();
-  if (!doc) throw new ApiError(404, 'REVIEW_NOT_FOUND', 'Review not found');
+  const doc = await Review.findByIdAndUpdate(
+    id,
+    { $set: { status } },
+    { returnDocument: "after" },
+  )
+    .populate("user", "name")
+    .populate("resume", "personalInformation.professionalTitle")
+    .lean();
+  if (!doc) throw new ApiError(404, "REVIEW_NOT_FOUND", "Review not found");
   return reviewDto(doc);
 }

@@ -55,8 +55,9 @@ export default function ScrollToTopButton({
     <button
       type="button"
       aria-label={label}
-      aria-hidden={!visible}
-      tabIndex={visible ? 0 : -1}
+      // `inert` hidden obosthay button ke focus, click ar screen reader theke shoriye dey.
+      // (aria-hidden + focusable = browser er error, tai eta use kora hoyeche.)
+      inert={!visible}
       onClick={scrollToTop}
       className={`
         group fixed bottom-6 right-4 z-50

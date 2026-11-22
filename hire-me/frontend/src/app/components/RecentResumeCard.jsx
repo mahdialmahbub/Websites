@@ -120,7 +120,7 @@ const RecentResumeCard = ({
             aria-label={`Download ${title}`}
             disabled={busy}
             onClick={onDownload}
-            className={`${ICON_BUTTON} bg-green-500/5 text-green-500 hover:bg-green-500/10`}
+            className={`${ICON_BUTTON} bg-green-500/5 text-green-500 hover:bg-green-500/10 ${busy && "hidden"}`}
           />
           <Button
             variant="secondary"

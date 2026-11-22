@@ -93,7 +93,9 @@ const resumeSchema = new Schema(
     // A guest's resumes move to the user (guestId is removed) when the guest logs in - see claimGuestResumes.
     user: { type: Schema.Types.ObjectId, ref: 'User' },
     guestId: { type: String },
-    title: { type: String, default: 'Untitled Resume' },
+
+    // Always "<name>'s resume" (see resume.title.js). The server sets it; the client cannot change it.
+    title: { type: String, default: 'My resume' },
 
     // draft = being edited, generated = the user pressed "Generate" at least once (it has a share link).
     // There is NO limit on resumes per template or per user.

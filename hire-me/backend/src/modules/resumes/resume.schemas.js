@@ -126,7 +126,7 @@ const design = z.object({
   font: z.string().trim().regex(/^[\w\s-]{1,50}$/, 'Invalid font name').optional(),
 });
 
-const titleField = z.string().trim().min(1, 'Title is required').max(100, 'Maximum 100 characters').transform(clean);
+// NOTE: there is no `title` field on purpose. The title is always "<name>'s resume" and is set by the server.
 const targetJob = z.object({ title: field(120), description: field(5000) });
 
 /**
@@ -157,7 +157,6 @@ export const profileUpdateBody = z.object(sections);
  *  - { clientDraftId, ...sections } -> create from a browser draft (guest draft after login). Safe to retry.
  */
 export const createResumeBody = z.object({
-  title: titleField.optional(),
   design: design.optional(),
   clientDraftId: z.string().regex(/^[\w-]{8,64}$/, 'Invalid draft id').optional(),
   targetJob: targetJob.optional(),
@@ -169,7 +168,6 @@ export const createResumeBody = z.object({
  * (arrays included), except `design`, which is merged key by key.
  */
 export const updateResumeBody = z.object({
-  title: titleField.optional(),
   design: design.optional(),
   targetJob: targetJob.optional(),
   revision: z.number().int().min(0).optional(),

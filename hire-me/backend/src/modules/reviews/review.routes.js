@@ -31,29 +31,32 @@ router.get("/", async (req, res) => {
   try {
     const page = Math.max(parseInt(req.query.page) || 1, 1);
     const limit = Math.min(parseInt(req.query.limit) || 12, 50);
-    const filter = { status: "approved" }; // shudhu approved
+    const filter = { status: "approved" };
 
     const [docs, total] = await Promise.all([
       Review.find(filter)
         .sort({ createdAt: -1 })
         .skip((page - 1) * limit)
         .limit(limit)
-        .select("rating comment guestName templateSlug createdAt user")
-        .populate("user", "name") // User model e name field er nam onujayi change koro
-        .lean(),
-      Review.countDocuments(filter),
+.select("rating comment guestName templateSlug createdAt user resume")
+.populate("user", "name")
+.populate(
+  "resume",
+  "personalInformation.professionalTitle personalInformation.photo",
+)
+.lean(),      Review.countDocuments(filter),
     ]);
 
-    const reviews = docs.map((r) => ({
-      id: r._id.toString(),
-      rating: r.rating,
-      comment: r.comment,
-      name: r.user?.name || r.guestName || "Anonymous",
-      jobTitle: r.resume?.personalInformation?.professionalTitle,
-      templateSlug: r.templateSlug,
-      createdAt: r.createdAt,
-    }));
-
+const reviews = docs.map((r) => ({
+  id: r._id.toString(),
+  rating: r.rating,
+  comment: r.comment,
+  name: r.user?.name || r.guestName || "Anonymous",
+  jobTitle: r.resume?.personalInformation?.professionalTitle || "",
+  photo: r.resume?.personalInformation?.photo?.url || null, // field nam photoSchema onujayi
+  templateSlug: r.templateSlug,
+  createdAt: r.createdAt,
+}));
     res.json({ reviews, total, page, pages: Math.ceil(total / limit) });
   } catch (err) {
     res.status(500).json({ error: "Review load kora jachhe na" });

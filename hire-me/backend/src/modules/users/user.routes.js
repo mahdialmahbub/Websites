@@ -4,6 +4,7 @@ import { ok } from '../../lib/respond.js';
 import { requireAuth } from '../../middleware/requireAuth.js';
 import { validate } from '../../middleware/validate.js';
 import { toPublicUser } from './user.model.js';
+import { syncResumeTitlesWithName } from '../resumes/resume.service.js';
 
 const router = Router();
 router.use(requireAuth);
@@ -15,6 +16,7 @@ router.patch(
   validate({ body: z.object({ name: z.string().trim().min(2, 'Name is too short').max(80, 'Name is too long') }) }),
   async (req, res) => {
     req.user.name = req.valid.body.name;
+    await syncResumeTitlesWithName(req.user._id, req.user.name);
     await req.user.save();
     ok(res, { user: toPublicUser(req.user) }, 'Profile updated');
   },
