@@ -52,9 +52,9 @@ const SOCIALS = [
 ];
 
 const LEGAL_LINKS = [
-  { label: "Privacy Policy", href: "/privacy-policy" },
-  { label: "Terms & Conditions", href: "/terms" },
-  { label: "Cookies Policy", href: "/cookies" },
+  { label: "Privacy Policy", href: "#" },
+  { label: "Terms & Conditions", href: "#" },
+  { label: "Cookies Policy", href: "#" },
 ];
 
 export default function Footer({ onSubscribe }) {

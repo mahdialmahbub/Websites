@@ -12,9 +12,9 @@ import { homeSchema } from "./utils/schema";
 import { buildMetadata } from "./utils/buildMetadata";
 
 export const metadata = buildMetadata({
-  title: "Mahdi | UI UX Designer, MERN & Next.js Developer for Fast Websites",
+  title: "MahdiVerse | UI/UX Designer & MERN Stack Website Developer",
   description:
-    "Hi, I’m Mahdi, a UI UX Designer, MERN & Next.js Developer. I build fast, accessible, SEO-friendly websites that follow best practices and bring you more leads.",
+    "I'm Mahdi, a UI/UX Designer and MERN Stack Website Developer. I design and build fast, accessible, SEO-friendly websites focused on performance and business growth.",
   path: "/",
 });
 

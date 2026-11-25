@@ -102,7 +102,7 @@ const FinalPreviewModal = ({
           {isLoggedIn ? (
             <Link
               href="/my-resume"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-violet-500/5 px-4 font-medium text-violet-500 hover:bg-violet-500/10"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-violet-500/5 px-4 font-medium text-violet-500 hover:bg-violet-500/10 text-nowrap"
             >
               <i className={icons.user} aria-hidden="true"></i> My resumes
             </Link>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useDispatch, useStore } from "react-redux";
 import ResumeBTN from "../components/ResumeBTN";
 import { Button } from "../components/Button";
@@ -10,6 +10,7 @@ import ResumePreviewModal from "../components/resumes/ResumePreviewModal";
 import ResumeThumb from "../components/resumes/ResumeThumb";
 import useUndoableDelete from "@/app/hooks/useUndoableDelete";
 import { copyText } from "@/lib/share";
+import toast from "@/lib/toast";
 import { useDownloadResume } from "@/resume/engine/useDownloadResume";
 import { getTemplate } from "@/resume/templates/registry";
 import { useGetMeQuery } from "@/store/api/authApi";
@@ -77,10 +78,10 @@ function MyResumes() {
 
   const [previewing, setPreviewing] = useState(null);
   const [busyId, setBusyId] = useState(null);
+  // Which action is running on that card: "download" | "duplicate" | "link". Only the download button shows a spinner.
+  const [busyAction, setBusyAction] = useState(null);
   // Ids of resumes the user deleted that are still inside the Undo window (or being deleted on the server).
   const [hiddenIds, setHiddenIds] = useState(() => new Set());
-  const [message, setMessage] = useState({ text: "", tone: "info" });
-  const timer = useRef(null);
 
   const isLoggedOut =
     meFailed &&
@@ -101,26 +102,17 @@ function MyResumes() {
       );
   }, [data, page, lastPage, router]);
 
-  useEffect(() => () => clearTimeout(timer.current), []);
-
-  const notify = (text, tone = "info") => {
-    setMessage({ text, tone });
-    clearTimeout(timer.current);
-    timer.current = setTimeout(
-      () => setMessage({ text: "", tone: "info" }),
-      5000,
-    );
-  };
-
   // Runs one action on one card (the card's buttons are disabled meanwhile) and reports what happened.
-  const run = async (item, action, failure) => {
+  const run = async (item, name, action, failure) => {
     setBusyId(item.id);
+    setBusyAction(name);
     try {
       await action();
     } catch (err) {
-      notify(err?.message || failure, "error");
+      toast.error(err?.message || failure);
     } finally {
       setBusyId(null);
+      setBusyAction(null);
     }
   };
 
@@ -137,9 +129,10 @@ function MyResumes() {
   const handleDuplicate = (item) =>
     run(
       item,
+      "duplicate",
       async () => {
         await duplicateResume(item.id).unwrap();
-        notify(`A copy of "${item.title}" was created.`);
+        toast.success("An exact copy of your resume has been created.");
       },
       "We could not duplicate this resume.",
     );
@@ -147,19 +140,15 @@ function MyResumes() {
   const handleCopyLink = (item) =>
     run(
       item,
+      "link",
       async () => {
         // A resume that is not shared yet gets its link now (the same link every time after that).
         const url =
           item.shareUrl ?? (await shareResume({ id: item.id }).unwrap()).url;
         const copied = await copyText(url);
-        notify(
-          copied
-            ? item.shareUrl
-              ? "Link copied."
-              : "Sharing is on now. Link copied."
-            : `Copy this link by hand: ${url}`,
-          copied ? "info" : "error",
-        );
+        if (copied)
+          toast.success("Your resume link has been copied successfully.");
+        else toast.error(`Copy this link by hand: ${url}`);
       },
       "We could not get the share link.",
     );
@@ -168,6 +157,7 @@ function MyResumes() {
   const handleDownload = (item) =>
     run(
       item,
+      "download",
       async () => {
         const resume = await fetchResume(item.id, true).unwrap();
         await downloadResume({
@@ -296,6 +286,7 @@ function MyResumes() {
                     }
                     shared={item.shared}
                     busy={busyId === item.id}
+                    busyAction={busyId === item.id ? busyAction : null}
                     onPreview={() =>
                       setPreviewing({ id: item.id, title: item.title })
                     }

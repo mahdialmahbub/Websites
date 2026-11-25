@@ -27,11 +27,11 @@ const ErrorPage = ({ error, reset }) => {
           className="h-[clamp(7.5rem,calc(7.51vw+5.74rem),12.5rem)] w-auto"
         />
 
-        <div className="text-center space-y-space-3">
+        <div className="text-center space-y-space-1 md:space-y-space-2">
           <h1 className="text-[clamp(1.625rem,calc(0.94vw+1.405rem),2.25rem)] font-bold font-primary">
             Something went wrong
           </h1>
-          <p className="text-[clamp(1rem,calc(0.376vw+0.912rem),1.25rem)] text-neutral-500">
+          <p className="text-[clamp(1rem,calc(0.376vw+0.912rem),1.25rem)] text-neutral-500 max-w-162.5">
             It&apos;s a temporary problem. Please try again in a moment.
           </p>
         </div>

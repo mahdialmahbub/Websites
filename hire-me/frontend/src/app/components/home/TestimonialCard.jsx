@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Modal from "../Modal";
-
+import { DEMO_AVATAR } from "@/resume/demo/avatar";
 
 const formatDate = (date) =>
   new Date(date).toLocaleDateString("en-US", {
@@ -13,7 +13,7 @@ const formatDate = (date) =>
   });
 
 const TestimonialCard = ({
-  image = "/user-placeholder.jpg",
+  image = null,
   name = "John Doe",
   jobTitle = "@example",
   comment = "comment",
@@ -21,7 +21,12 @@ const TestimonialCard = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [isTruncated, setIsTruncated] = useState(false);
+  const [imageBroken, setImageBroken] = useState(false);
   const commentRef = useRef(null);
+
+  // image na thakle (null/""), ba load na hole placeholder
+  const avatar = !image || imageBroken ? DEMO_AVATAR : image;
+  const isPlaceholder = avatar === DEMO_AVATAR;
 
   // Comment 3 line er beshi hole truncated = true
   useEffect(() => {
@@ -42,37 +47,39 @@ const TestimonialCard = ({
         <div className="flex items-center gap-[clamp(0.5rem,calc(0.188vw+0.456rem),0.625rem)]">
           <Image
             alt="User image who review our resume product"
-            src={image || "/user-placeholder.jpg"}
+            src={avatar}
             width={44}
             height={44}
-            className="size-[clamp(1.75rem,calc(1.502vw+1.398rem),2.75rem)] rounded-full"
+            unoptimized={isPlaceholder}
+            onError={() => setImageBroken(true)}
+            className="size-[clamp(1.75rem,calc(1.502vw+1.398rem),2.75rem)] rounded-full object-cover"
           />
           <div>
             <h4 className="text-[clamp(0.625rem,calc(0.563vw+0.493rem),1rem)] font-primary font-medium w-full">
               {name}
             </h4>
-            <p className="text-[clamp(0.625rem,calc(0.563vw+0.493rem),1rem)] text-neutral-400">
+            <p className="text-[clamp(0.625rem,calc(0.563vw+0.493rem),1rem)] text-neutral-400 truncate">
               {jobTitle}
             </p>
           </div>
         </div>
 
         <div className="relative">
-  <p ref={commentRef} className="text-neutral-900 line-clamp-3">
-    {comment}
-  </p>
+          <p ref={commentRef} className="text-neutral-900 line-clamp-3">
+            {comment}
+          </p>
 
-  {isTruncated && (
-    <button
-      type="button"
-      onClick={() => setOpen(true)}
-      aria-haspopup="dialog"
-      className="absolute bottom-0 right-0 bg-linear-to-l from-white from-75% to-transparent pl-8 font-medium text-orange-600 hover:underline focus-visible:underline"
-    >
-      … See more
-    </button>
-  )}
-</div>
+          {isTruncated && (
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              aria-haspopup="dialog"
+              className="absolute bottom-0 right-0 bg-linear-to-l from-white from-75% to-transparent pl-8 font-medium text-orange-600 hover:underline focus-visible:underline"
+            >
+              … See more
+            </button>
+          )}
+        </div>
 
         {/* date */}
         <div className="flex items-center justify-between">
@@ -90,10 +97,12 @@ const TestimonialCard = ({
           <div className="flex items-center gap-3">
             <Image
               alt={`${name}'s profile photo`}
-              src={image || "/user-placeholder.jpg"}
+              src={avatar}
               width={42}
               height={42}
-              className="size-[42px] rounded-full"
+              unoptimized={isPlaceholder}
+              onError={() => setImageBroken(true)}
+              className="size-[42px] rounded-full object-cover"
             />
             <div className="-space-y-0.5">
               <h3 className="font-primary text-[16px] font-medium">{name}</h3>
