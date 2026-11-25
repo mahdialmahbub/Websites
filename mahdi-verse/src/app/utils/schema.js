@@ -74,7 +74,7 @@ function websiteSchema() {
   return {
     '@type': 'WebSite',
     '@id': WEBSITE_ID,
-    name: PERSON.name,
+    name: "MahdiVerse",
     url: canonical('/'),
     inLanguage: 'en',
     publisher: { '@id': PERSON_ID },

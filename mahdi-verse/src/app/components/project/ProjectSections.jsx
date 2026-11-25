@@ -1224,7 +1224,6 @@ export function ViewToggle({ switchTo }) {
           <h2
             className="
               mb-6
-              text-3xl
               font-semibold
               leading-tight
               tracking-[-0.04em] text-size-2xl
