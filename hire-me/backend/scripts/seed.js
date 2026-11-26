@@ -113,7 +113,7 @@ const TEMPLATES = [
   },
 ];
 
-const DEFAULT_CATEGORY = "General";
+const DEFAULT_CATEGORY = "professional";
 
 await connectDB();
 

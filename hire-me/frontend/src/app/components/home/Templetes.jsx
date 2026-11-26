@@ -16,7 +16,7 @@ const Templetes = async () => {
   try {
     const [allCategories, data] = await Promise.all([
       getCategories(),
-      getTemplates({ limit: 10 }),
+      getTemplates(),
     ]);
     categories = allCategories;
     templates = data?.templates ?? [];
