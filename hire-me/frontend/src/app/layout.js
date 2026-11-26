@@ -20,8 +20,8 @@ import NoScriptNotice from "./components/NoScriptNotice";
 import "@flaticon/flaticon-uicons/css/regular/rounded.css";
 import "@flaticon/flaticon-uicons/css/solid/rounded.css";
 import "@flaticon/flaticon-uicons/css/brands/all.css";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import ScrollToTopButton from "./components/ScrollToTopButton";
+import Script from "next/script";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -112,6 +112,8 @@ export const viewport = {
   initialScale: 1,
 };
 
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+
 export default function RootLayout({ children }) {
   return (
     <html
@@ -119,9 +121,6 @@ export default function RootLayout({ children }) {
       data-scroll-behavior="smooth"
       className={`${poppins.variable} ${roboto.variable} h-full antialiased scroll-smooth`}
     >
-      {process.env.NEXT_PUBLIC_GA_ID && (
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
-      )}
       <body className="min-h-full flex flex-col">
         <a
           href="#main-content"
@@ -152,6 +151,23 @@ export default function RootLayout({ children }) {
           </SiteChrome>
         </StoreProvider>
       </body>
+
+      {GA_ID && (
+        <>
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+            strategy="afterInteractive"
+          />
+          <Script id="google-analytics" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_ID}');
+            `}
+          </Script>
+        </>
+      )}
     </html>
   );
 }

@@ -22,17 +22,19 @@ export const SITE_DESCRIPTION =
   "Build a professional, ATS-friendly resume with smart templates and AI-powered guidance. Free to start.";
 
 export const DEFAULT_KEYWORDS = [
+  "hireme",
   "resume builder",
   "free resume builder",
   "ATS friendly resume",
-  "CV maker",
-  "online CV builder",
+  "AI powered resume",
+  "resume maker",
+  "online resume builder",
   "resume templates",
   "professional resume",
 ];
 
 // Optional: social profile, jodi thake (Organization schema te sameAs hishebe jabe)
 export const SOCIAL_LINKS = [
-  // "https://www.linkedin.com/company/hireme",
-  // "https://twitter.com/hireme",
+  "https://www.linkedin.com/in/mahdi-al-mahbub",
+  "https://www.facebook.com/mahdi.al.mahbub.webexpert",
 ];

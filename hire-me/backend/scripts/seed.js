@@ -40,14 +40,6 @@ const TEMPLATES = [
     sortOrder: 1,
   },
   {
-    slug: "modern",
-    name: "Modern",
-    category: "Modern",
-    description:
-      "A clean two-column layout with a coloured sidebar for contact details and skills.",
-    sortOrder: 3,
-  },
-  {
     slug: "playful",
     name: "Playful",
     category: "Creative",
