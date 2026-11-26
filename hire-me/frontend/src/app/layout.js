@@ -87,14 +87,6 @@ export const metadata = {
     ...(TWITTER_HANDLE && { site: TWITTER_HANDLE, creator: TWITTER_HANDLE }),
   },
 
-  icons: {
-    icon: [
-      { url: "/logo.png", type: "image/png" },
-      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
-    ],
-    apple: "/apple-icon.png",
-  },
-
   robots: {
     index: true,
     follow: true,
