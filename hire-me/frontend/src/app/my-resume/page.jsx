@@ -266,7 +266,7 @@ function MyResumes() {
           >
             <HorizontalScroller
               label="Your resumes"
-              className={`py-2 ${CARD_GAP}`}
+              className={`py-2 px-1 ${CARD_GAP}`}
             >
               {resumes.map((item) => (
                 // This wrapper owns the width; the card fills it, so cards resize with the screen.
