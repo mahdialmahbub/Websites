@@ -20,7 +20,6 @@ import NoScriptNotice from "./components/NoScriptNotice";
 import "@flaticon/flaticon-uicons/css/regular/rounded.css";
 import "@flaticon/flaticon-uicons/css/solid/rounded.css";
 import "@flaticon/flaticon-uicons/css/brands/all.css";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import Script from "next/script";
 
