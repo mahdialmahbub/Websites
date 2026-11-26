@@ -53,6 +53,10 @@ export const metadata = {
   },
   description: SITE_DESCRIPTION,
 
+  verification: {
+    google: "srWmSxUlYwoUomN0Xki4NnScod21FyvSByfLMcYPsc0",
+  },
+
   keywords: DEFAULT_KEYWORDS,
 
   applicationName: SITE_NAME,
