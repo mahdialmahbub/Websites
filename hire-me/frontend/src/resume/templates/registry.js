@@ -1,5 +1,4 @@
 import minimal from "./minimal";
-import modern from "./modern";
 import professional from "./professional";
 import timeline from "./timeline";
 import arch from "./arch";
@@ -20,7 +19,6 @@ import wave from "./wave";
  */
 const TEMPLATES = [
   professional,
-  modern,
   timeline,
   minimal,
   arch,
